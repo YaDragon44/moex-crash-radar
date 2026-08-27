@@ -13,6 +13,7 @@ class GateCandidate:
     score_threshold: float
     confirmations: int
     persistence: int
+    max_5d_return_pct: float | None
     signal_events: int
     false_events: int
     false_event_rate: float | None
@@ -21,18 +22,44 @@ class GateCandidate:
     median_lead_days: float | None
 
 
-def _qualifies(row: DailyEvidence, score_threshold: float, confirmations: int) -> bool:
-    return row.score is not None and row.score >= score_threshold and row.critical_confirmations >= confirmations
+def _return_5d(evidence: Sequence[DailyEvidence], index: int) -> float | None:
+    if index < 5:
+        return None
+    base = evidence[index - 5].close
+    if base <= 0:
+        return None
+    return (evidence[index].close / base - 1.0) * 100.0
+
+
+def _qualifies(
+    evidence: Sequence[DailyEvidence],
+    index: int,
+    score_threshold: float,
+    confirmations: int,
+    max_5d_return_pct: float | None,
+) -> bool:
+    row = evidence[index]
+    if row.score is None or row.score < score_threshold or row.critical_confirmations < confirmations:
+        return False
+    if max_5d_return_pct is None:
+        return True
+    ret5 = _return_5d(evidence, index)
+    return ret5 is not None and ret5 <= max_5d_return_pct
 
 
 def signal_event_indices(
-    evidence: Sequence[DailyEvidence], *, score_threshold: float, confirmations: int, persistence: int = 1
+    evidence: Sequence[DailyEvidence],
+    *,
+    score_threshold: float,
+    confirmations: int,
+    persistence: int = 1,
+    max_5d_return_pct: float | None = None,
 ) -> list[int]:
-    """Return starts of independent warning events.
+    """Return starts of independent EXIT warning events.
 
-    A persistent risk regime produces one event, not one false-positive observation per
-    trading day. `persistence` is the number of consecutive qualifying evidence rows
-    required before the event is emitted.
+    Crash Score is the early-warning regime layer. `max_5d_return_pct` adds a price
+    confirmation layer so CASH is not triggered merely because structural risk is
+    elevated for a long time while the index is still stable/rising.
     """
     if persistence < 1:
         raise ValueError("persistence must be >= 1")
@@ -40,8 +67,8 @@ def signal_event_indices(
     events: list[int] = []
     in_event = False
     run = 0
-    for i, row in enumerate(evidence):
-        if _qualifies(row, score_threshold, confirmations):
+    for i in range(len(evidence)):
+        if _qualifies(evidence, i, score_threshold, confirmations, max_5d_return_pct):
             run += 1
             if not in_event and run >= persistence:
                 events.append(i)
@@ -105,37 +132,42 @@ def calibrate_cash_gate(
     thresholds: Sequence[float] = (56, 60, 65, 70),
     confirmations_options: Sequence[int] = (3, 4),
     persistence_options: Sequence[int] = (1, 2, 3),
+    max_5d_return_options: Sequence[float | None] = (None, -1.0, -2.0, -3.0, -4.0),
 ) -> list[GateCandidate]:
     candidates: list[GateCandidate] = []
     for threshold in thresholds:
         for confirmations in confirmations_options:
             for persistence in persistence_options:
-                events = signal_event_indices(
-                    evidence,
-                    score_threshold=threshold,
-                    confirmations=confirmations,
-                    persistence=persistence,
-                )
-                evaluated, false, false_rate = false_event_stats(evidence, events)
-                detected, total, median_lead = episode_detection(evidence, events, episodes)
-                candidates.append(
-                    GateCandidate(
+                for max_ret5 in max_5d_return_options:
+                    events = signal_event_indices(
+                        evidence,
                         score_threshold=threshold,
                         confirmations=confirmations,
                         persistence=persistence,
-                        signal_events=evaluated,
-                        false_events=false,
-                        false_event_rate=false_rate,
-                        detected_episodes=detected,
-                        total_episodes=total,
-                        median_lead_days=median_lead,
+                        max_5d_return_pct=max_ret5,
                     )
-                )
+                    evaluated, false, false_rate = false_event_stats(evidence, events)
+                    detected, total, median_lead = episode_detection(evidence, events, episodes)
+                    candidates.append(
+                        GateCandidate(
+                            score_threshold=threshold,
+                            confirmations=confirmations,
+                            persistence=persistence,
+                            max_5d_return_pct=max_ret5,
+                            signal_events=evaluated,
+                            false_events=false,
+                            false_event_rate=false_rate,
+                            detected_episodes=detected,
+                            total_episodes=total,
+                            median_lead_days=median_lead,
+                        )
+                    )
     return sorted(
         candidates,
         key=lambda x: (
             -(x.detected_episodes / max(x.total_episodes, 1)),
             x.false_event_rate if x.false_event_rate is not None else 1.0,
             -(x.median_lead_days or 0),
+            x.signal_events,
         ),
     )
