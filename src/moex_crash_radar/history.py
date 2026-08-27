@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from bisect import bisect_right
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Mapping, Sequence
@@ -57,25 +58,31 @@ def build_daily_evidence(
 ) -> list[DailyEvidence]:
     """Build point-in-time evidence with no look-ahead.
 
-    Every feature function receives candles only up to the current day. Missing
-    equity history suppresses breadth/distribution rather than imputing values.
+    Only the trailing 60 equity candles available as of the current index day are
+    passed into breadth/distribution calculations. This is sufficient for MA50
+    and volume features and avoids scanning/copying full future histories.
     """
     if not index_candles:
         return []
 
     result: list[DailyEvidence] = []
     basket_size = max(len(equity_candles), 1)
+    equity_days = {ticker: [_day(c) for c in candles] for ticker, candles in equity_candles.items()}
 
     for i in range(warmup, len(index_candles)):
         index_history = index_candles[: i + 1]
         day = _day(index_history[-1])
         signals = derive_index_signals(index_history)
 
-        point_histories: dict[str, list[Candle]] = {}
+        point_histories: dict[str, Sequence[Candle]] = {}
         for ticker, full in equity_candles.items():
-            hist = [c for c in full if _day(c) <= day]
-            if len(hist) >= 51 and _day(hist[-1]) == day:
-                point_histories[ticker] = hist
+            days = equity_days[ticker]
+            pos = bisect_right(days, day)
+            if pos < 51:
+                continue
+            if days[pos - 1] != day:
+                continue
+            point_histories[ticker] = full[max(0, pos - 60) : pos]
 
         coverage = len(point_histories) / basket_size
         if coverage >= min_equity_coverage:
