@@ -22,6 +22,10 @@ class DailyEvidence:
     cash_signal: bool
     critical_confirmations: int
     coverage: float
+    market_structure_score: float | None = None
+    breadth_score: float | None = None
+    volume_distribution_score: float | None = None
+    volatility_liquidity_score: float | None = None
 
 
 @dataclass(frozen=True)
@@ -49,6 +53,11 @@ def _days_between(a: str | None, b: str) -> int | None:
     return (datetime.fromisoformat(b) - datetime.fromisoformat(a)).days
 
 
+def _score(signals, key: str) -> float | None:
+    signal = signals.get(key)
+    return None if signal is None else round(signal.score, 2)
+
+
 def build_daily_evidence(
     index_candles: Sequence[Candle],
     equity_candles: Mapping[str, Sequence[Candle]],
@@ -58,9 +67,10 @@ def build_daily_evidence(
 ) -> list[DailyEvidence]:
     """Build point-in-time evidence with no look-ahead.
 
-    Only the trailing 60 equity candles available as of the current index day are
-    passed into breadth/distribution calculations. This is sufficient for MA50
-    and volume features and avoids scanning/copying full future histories.
+    Only trailing data available as of the current index day is passed into
+    breadth/distribution calculations. Critical component scores are persisted so
+    later EXIT calibration can distinguish broad market deterioration from a high
+    aggregate score caused by other components.
     """
     if not index_candles:
         return []
@@ -104,6 +114,10 @@ def build_daily_evidence(
                 cash_signal=crash.cash_signal,
                 critical_confirmations=crash.critical_confirmations,
                 coverage=round(coverage, 4),
+                market_structure_score=_score(signals, "market_structure"),
+                breadth_score=_score(signals, "breadth"),
+                volume_distribution_score=_score(signals, "volume_distribution"),
+                volatility_liquidity_score=_score(signals, "volatility_liquidity"),
             )
         )
     return result
