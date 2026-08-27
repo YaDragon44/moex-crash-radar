@@ -1,0 +1,1 @@
+# moex-crash-radar
