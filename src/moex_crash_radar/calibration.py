@@ -34,7 +34,6 @@ def _return_5d(evidence: Sequence[DailyEvidence], index: int) -> float | None:
 
 
 def _breadth_volume_confirmed(row: DailyEvidence) -> bool:
-    """Require broad internal deterioration, not only a high aggregate score."""
     return (
         row.breadth_score is not None
         and row.volume_distribution_score is not None
@@ -79,9 +78,9 @@ def signal_event_indices(
       EXIT_WATCH: critical confirmations + downside confirmation.
       CASH_CONFIRMED: EXIT_WATCH persists and optional breadth+volume confirmation holds.
 
-    `cooldown_rows` is hysteresis: after one CASH_CONFIRMED event, brief relief/re-entry
-    inside the same risk regime cannot create a new independent event immediately.
-    All inputs are current/past-only; no future rows are used to emit a signal.
+    A continuous qualifying regime emits one event. After it breaks, `cooldown_rows`
+    prevents a brief relief/re-entry sequence from being counted as a fresh independent
+    event. All emission logic uses only present/past evidence.
     """
     if persistence < 1:
         raise ValueError("persistence must be >= 1")
@@ -90,7 +89,9 @@ def signal_event_indices(
 
     events: list[int] = []
     run = 0
+    in_event = False
     last_event = -10**9
+
     for i in range(len(evidence)):
         qualifies = _qualifies(
             evidence,
@@ -100,16 +101,16 @@ def signal_event_indices(
             max_5d_return_pct,
             require_breadth_volume,
         )
-        run = run + 1 if qualifies else 0
-        if run < persistence:
-            continue
-        if i - last_event <= cooldown_rows:
-            continue
-        events.append(i)
-        last_event = i
-        # Require a fresh persistence run after emission. This prevents one continuous
-        # qualifying regime from generating a new event every cooldown interval.
-        run = 0
+        if qualifies:
+            run += 1
+            if not in_event and run >= persistence and i - last_event > cooldown_rows:
+                events.append(i)
+                last_event = i
+                in_event = True
+        else:
+            run = 0
+            in_event = False
+
     return events
 
 
