@@ -5,6 +5,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 from moex_crash_radar.breadth import breadth_signal, calculate_breadth, index_vs_breadth_divergence
+from moex_crash_radar.distribution import calculate_distribution, distribution_signal
 from moex_crash_radar.engine import calculate_crash
 from moex_crash_radar.features import derive_index_signals
 from moex_crash_radar.moex import fetch_index_candles, fetch_share_candles
@@ -39,12 +40,13 @@ def main() -> None:
 
     breadth = calculate_breadth(universe)
     breadth_payload = None
+    breadth_coverage = 0.0
     if breadth is not None:
-        coverage = breadth.usable_size / len(BREADTH_UNIVERSE)
+        breadth_coverage = breadth.usable_size / len(BREADTH_UNIVERSE)
         breadth_payload = {
             "universe_size": len(BREADTH_UNIVERSE),
             "usable_size": breadth.usable_size,
-            "coverage": round(coverage, 4),
+            "coverage": round(breadth_coverage, 4),
             "pct_above_ma20": breadth.pct_above_ma20,
             "pct_above_ma50": breadth.pct_above_ma50,
             "pct_new_20d_lows": breadth.pct_new_20d_lows,
@@ -54,8 +56,20 @@ def main() -> None:
             "index_vs_breadth_divergence": index_vs_breadth_divergence(index_candles, breadth),
             "failed_secids": failed,
         }
-        if breadth.usable_size >= 12 and coverage >= 0.50:
+        if breadth.usable_size >= 12 and breadth_coverage >= 0.50:
             signals["breadth"] = breadth_signal(breadth)
+
+    distribution = calculate_distribution(universe)
+    distribution_payload = None
+    if distribution is not None:
+        distribution_payload = {
+            "usable_size": distribution.usable_size,
+            "pct_down_rvol": distribution.pct_down_rvol,
+            "pct_distribution_5d": distribution.pct_distribution_5d,
+            "mean_down_up_volume_ratio": distribution.mean_down_up_volume_ratio,
+        }
+        if distribution.usable_size >= 12 and breadth_coverage >= 0.50:
+            signals["volume_distribution"] = distribution_signal(distribution)
 
     crash = calculate_crash(signals)
     payload = {
@@ -66,6 +80,7 @@ def main() -> None:
         "data_quality": crash.quality.value,
         "signals": {k: {"score": v.score, "quality": v.quality.value} for k, v in signals.items()},
         "breadth": breadth_payload,
+        "volume_distribution": distribution_payload,
         "crash": {
             "score": crash.score,
             "state": crash.state.value,
@@ -73,7 +88,7 @@ def main() -> None:
             "critical_confirmations": crash.critical_confirmations,
             "cash_signal": crash.cash_signal,
         },
-        "note": "MOEX index + breadth evidence. Missing groups are intentionally omitted; DATA_INSUFFICIENT remains mandatory until usable Crash Score weight reaches 70%.",
+        "note": "MOEX index + breadth + volume/distribution evidence. If coverage is sufficient these five market groups provide 72% of Crash Score weight; macro/news groups remain absent until sourced.",
     }
 
     out = Path("artifacts/market_snapshot.json")
