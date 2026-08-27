@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
-from datetime import date
-from typing import Iterable
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -60,8 +58,9 @@ def _get_json(url: str, timeout: int = 20) -> dict:
         return json.loads(response.read().decode("utf-8"))
 
 
-def fetch_index_candles(
-    secid: str = "IMOEX",
+def _fetch_candles(
+    market: str,
+    secid: str,
     *,
     start: str | None = None,
     end: str | None = None,
@@ -77,5 +76,25 @@ def fetch_index_candles(
         params["from"] = start
     if end:
         params["till"] = end
-    url = f"{ISS_BASE}/engines/stock/markets/index/securities/{secid}/candles.json?{urlencode(params)}"
+    url = f"{ISS_BASE}/engines/stock/markets/{market}/securities/{secid}/candles.json?{urlencode(params)}"
     return parse_candles(_get_json(url))
+
+
+def fetch_index_candles(
+    secid: str = "IMOEX",
+    *,
+    start: str | None = None,
+    end: str | None = None,
+    interval: int = 24,
+) -> list[Candle]:
+    return _fetch_candles("index", secid, start=start, end=end, interval=interval)
+
+
+def fetch_share_candles(
+    secid: str,
+    *,
+    start: str | None = None,
+    end: str | None = None,
+    interval: int = 24,
+) -> list[Candle]:
+    return _fetch_candles("shares", secid, start=start, end=end, interval=interval)
