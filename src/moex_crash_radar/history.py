@@ -4,10 +4,10 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Mapping, Sequence
 
-from .engine import CrashResult, calculate_crash
+from .breadth import breadth_signal, calculate_breadth
+from .distribution import calculate_distribution, distribution_signal
+from .engine import calculate_crash
 from .features import derive_index_signals
-from .breadth import breadth_signal
-from .distribution import distribution_signal
 from .moex import Candle
 
 
@@ -55,49 +55,42 @@ def build_daily_evidence(
     min_equity_coverage: float = 0.70,
     warmup: int = 60,
 ) -> list[DailyEvidence]:
-    """Build point-in-time evidence using only data available on each day.
+    """Build point-in-time evidence with no look-ahead.
 
-    No future candles are passed into feature functions. Equity coverage is measured
-    against the configured basket; insufficient coverage suppresses breadth and
-    distribution rather than imputing values.
+    Every feature function receives candles only up to the current day. Missing
+    equity history suppresses breadth/distribution rather than imputing values.
     """
     if not index_candles:
         return []
 
-    equity_by_day: dict[str, dict[str, Candle]] = {}
-    for ticker, candles in equity_candles.items():
-        equity_by_day[ticker] = {_day(c): c for c in candles}
-
     result: list[DailyEvidence] = []
-    basket_size = max(len(equity_by_day), 1)
+    basket_size = max(len(equity_candles), 1)
 
     for i in range(warmup, len(index_candles)):
-        history = index_candles[: i + 1]
-        day = _day(history[-1])
-        signals = derive_index_signals(history)
+        index_history = index_candles[: i + 1]
+        day = _day(index_history[-1])
+        signals = derive_index_signals(index_history)
 
         point_histories: dict[str, list[Candle]] = {}
-        available = 0
         for ticker, full in equity_candles.items():
             hist = [c for c in full if _day(c) <= day]
-            if len(hist) >= 50 and _day(hist[-1]) == day:
+            if len(hist) >= 51 and _day(hist[-1]) == day:
                 point_histories[ticker] = hist
-                available += 1
 
-        coverage = available / basket_size
+        coverage = len(point_histories) / basket_size
         if coverage >= min_equity_coverage:
-            b = breadth_signal(point_histories)
-            d = distribution_signal(point_histories)
-            if b is not None:
-                signals["breadth"] = b
-            if d is not None:
-                signals["volume_distribution"] = d
+            breadth = calculate_breadth(point_histories)
+            distribution = calculate_distribution(point_histories)
+            if breadth is not None:
+                signals["breadth"] = breadth_signal(breadth)
+            if distribution is not None:
+                signals["volume_distribution"] = distribution_signal(distribution)
 
         crash = calculate_crash(signals)
         result.append(
             DailyEvidence(
                 day=day,
-                close=history[-1].close,
+                close=index_history[-1].close,
                 score=crash.score,
                 state=crash.state.value,
                 available_weight=round(crash.available_weight, 4),
@@ -147,19 +140,16 @@ def evaluate_episode(
 def count_false_positive_days(
     evidence: Sequence[DailyEvidence], *, horizon_days: int = 20, drawdown_threshold_pct: float = -8.0
 ) -> tuple[int, int]:
-    """Count CASH days not followed by a material decline in the next horizon.
-
-    This is a simple calibration metric, not a trading-PnL backtest.
-    """
+    """Count CASH days not followed by a material decline in the next horizon."""
     cash_days = 0
     false_days = 0
     for i, row in enumerate(evidence):
         if not row.cash_signal:
             continue
-        cash_days += 1
         future = evidence[i : i + horizon_days + 1]
         if len(future) < 2:
             continue
+        cash_days += 1
         min_close = min(x.close for x in future)
         dd = (min_close / row.close - 1.0) * 100.0
         if dd > drawdown_threshold_pct:
