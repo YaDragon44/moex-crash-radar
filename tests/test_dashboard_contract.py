@@ -13,7 +13,7 @@ def good_snapshot():
         )
     }
     return {
-        "release": "R0.4.3 Analytical UX Completion",
+        "release": "R0.4.4 Visual & Investment Logic Review",
         "as_of": "2026-08-27T17:00:00+03:00",
         "source": "MOEX ISS",
         "secid": "IMOEX",
@@ -81,13 +81,26 @@ def test_crash_history_is_required():
     assert any("crash_history" in e for e in validate_dashboard_snapshot(s))
 
 
-def test_dashboard_html_has_r043_analytical_ux_hooks():
-    html = open("web/index.html", encoding="utf-8").read()
+def test_dashboard_html_has_r044_review_hooks():
+    html = open("web/r044.html", encoding="utf-8").read()
     for token in (
-        "market_snapshot.json", "CASH CONFIRMED", "falseRate", "episodes", "lead",
-        "rate_ofz", "news_geopolitics", "ВЫВОДЫ", "ГИПОТЕЗЫ", "РЕКОМЕНДАЦИИ",
-        "investorAction", "traderAction", "whyInvestor", "whyTrader", "crash_history", "R0.4.3",
+        "market_snapshot.json", "R0.4.4", "MARKET", "ТОЛПА", "РИСК", "РЕЖИМ",
+        "ПЕРЕХОД", "ДЕЙСТВИЕ", "9 КЛЮЧЕВЫХ ИНДИКАТОРОВ", "ВЫВОД:",
+        "РЕКОМЕНДАЦИЯ:", "ИНВЕСТОР", "ТРЕЙДЕР", "КРИЗИСЫ", "Начало СВО",
+        "COVID", "crash_history", "data_quality==='LIVE'", "DELAYED",
     ):
         assert token in html
     assert "@media(max-width:1200px)" in html
     assert "@media(max-width:700px)" in html
+
+
+def test_r044_does_not_turn_crowd_na_into_fake_score():
+    html = open("web/r044.html", encoding="utf-8").read()
+    assert "Crowd Engine ещё не подключён" in html
+    assert "crowdState').textContent='N/A" in html
+
+
+def test_r044_delayed_quality_downgrades_new_actions():
+    html = open("web/r044.html", encoding="utf-8").read()
+    assert "WAIT ДО LIVE-ПОДТВЕРЖДЕНИЯ" in html
+    assert "СОХРАНЯТЬ СНИЖЕННЫЙ РИСК" in html
