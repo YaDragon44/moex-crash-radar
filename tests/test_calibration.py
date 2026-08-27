@@ -37,6 +37,19 @@ def test_persistence_delays_event_until_confirmed():
     assert signal_event_indices(evidence, score_threshold=56, confirmations=3, persistence=3) == [2]
 
 
+def test_price_confirmation_suppresses_stable_market_warning():
+    evidence = [
+        row("2026-01-01", 100, 70, 4),
+        row("2026-01-02", 101, 70, 4),
+        row("2026-01-03", 101, 70, 4),
+        row("2026-01-04", 100, 70, 4),
+        row("2026-01-05", 100, 70, 4),
+        row("2026-01-06", 100, 70, 4),
+        row("2026-01-07", 96, 70, 4),
+    ]
+    assert signal_event_indices(evidence, score_threshold=65, confirmations=4, max_5d_return_pct=-2.0) == [6]
+
+
 def test_false_event_uses_forward_only_window():
     evidence = [row(f"2026-01-{i:02d}", 100 - (i - 1), 60 if i == 1 else 20, 3 if i == 1 else 0) for i in range(1, 22)]
     events = signal_event_indices(evidence, score_threshold=56, confirmations=3)
