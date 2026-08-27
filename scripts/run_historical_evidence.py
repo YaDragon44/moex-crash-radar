@@ -4,7 +4,7 @@ import json
 from dataclasses import asdict
 from pathlib import Path
 
-from moex_crash_radar.calibration import calibrate_cash_gate
+from moex_crash_radar.calibration import calibrate_cash_gate, signal_event_indices
 from moex_crash_radar.history import build_daily_evidence, count_false_positive_days, evaluate_episode
 from moex_crash_radar.moex import fetch_index_history, fetch_share_history
 
@@ -23,6 +23,43 @@ EPISODES = (
     ("MARKET_2025_2026", "2025-01-01", "2026-08-27"),
 )
 CALIBRATION_EPISODES = EPISODES[:4]
+
+
+def event_diagnostics(evidence, preferred):
+    if not preferred:
+        return []
+    events = signal_event_indices(
+        evidence,
+        score_threshold=preferred["score_threshold"],
+        confirmations=preferred["confirmations"],
+        persistence=preferred["persistence"],
+        max_5d_return_pct=preferred["max_5d_return_pct"],
+        cooldown_rows=preferred["cooldown_rows"],
+        require_breadth_volume=preferred["require_breadth_volume"],
+        rearm_clear_rows=preferred["rearm_clear_rows"],
+    )
+    out = []
+    for i in events:
+        future = evidence[i : i + 21]
+        if len(future) < 21:
+            continue
+        base = evidence[i].close
+        min_close = min(x.close for x in future)
+        dd = (min_close / base - 1.0) * 100.0
+        row = evidence[i]
+        out.append(
+            {
+                "day": row.day,
+                "close": row.close,
+                "score": row.score,
+                "critical_confirmations": row.critical_confirmations,
+                "breadth_score": row.breadth_score,
+                "volume_distribution_score": row.volume_distribution_score,
+                "forward_20row_min_drawdown_pct": round(dd, 2),
+                "false_event": dd > -8.0,
+            }
+        )
+    return out
 
 
 def main() -> None:
@@ -59,6 +96,7 @@ def main() -> None:
     candidates = calibrate_cash_gate(evidence, CALIBRATION_EPISODES)
     calibration = [asdict(x) for x in candidates]
     preferred = calibration[0] if calibration else None
+    diagnostics = event_diagnostics(evidence, preferred)
 
     scored = [x for x in evidence if x.score is not None]
     coverage_values = [x.coverage for x in evidence]
@@ -73,7 +111,7 @@ def main() -> None:
     )
 
     payload = {
-        "release": "R0.3.2 False Positive Reduction",
+        "release": "R0.3.3 Regime Rearm Precision Gate",
         "source": "MOEX ISS",
         "range": {"start": start, "end": end},
         "index_rows": len(index),
@@ -85,8 +123,8 @@ def main() -> None:
             "look_ahead": False,
             "min_breadth_coverage": 0.50,
             "score_data_gate": 0.70,
-            "state_machine": "EARLY_WARNING -> EXIT_WATCH -> CASH_CONFIRMED",
-            "cash_confirmed_inputs": "Crash Score + critical confirmations + persistence + optional 5D downside + optional breadth/volume confirmation + cooldown hysteresis",
+            "state_machine": "EARLY_WARNING -> EXIT_WATCH -> CASH_CONFIRMED -> DISARMED -> REARMED",
+            "cash_confirmed_inputs": "Crash Score + critical confirmations + persistence + optional 5D downside + optional breadth/volume confirmation + cooldown + clear-regime rearm hysteresis",
             "calibration_false_positive_definition": "Independent CASH_CONFIRMED event not followed by <= -8% decline within next 20 evidence rows",
             "calibration_episodes": [x[0] for x in CALIBRATION_EPISODES],
             "excluded_from_threshold_fit": ["MARKET_2025_2026: broad regime window, not a clean crash episode"],
@@ -110,6 +148,7 @@ def main() -> None:
         "calibration": {
             "preferred_candidate": preferred,
             "top_candidates": calibration[:15],
+            "preferred_event_diagnostics": diagnostics,
             "release_gate": {
                 "pass": gate_pass,
                 "requirements": "detect all four clean calibration episodes; false_event_rate <= 35%; median lead >= 5 calendar days",
