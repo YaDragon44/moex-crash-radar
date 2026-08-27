@@ -9,9 +9,6 @@ from moex_crash_radar.history import build_daily_evidence, count_false_positive_
 from moex_crash_radar.moex import fetch_index_history, fetch_share_history
 
 
-# Current liquid basket. IMPORTANT: this is not a historical constituent set, so the
-# 2020/2022 breadth backtest has survivorship/availability bias. The report exposes
-# coverage and never silently substitutes missing tickers.
 UNIVERSE = (
     "SBER", "SBERP", "LKOH", "GAZP", "YDEX", "T", "X5", "GMKN",
     "NVTK", "ROSN", "TATN", "TATNP", "PLZL", "CHMF", "NLMK", "ALRS",
@@ -25,10 +22,6 @@ EPISODES = (
     ("CORRECTION_2024", "2024-05-01", "2024-09-30"),
     ("MARKET_2025_2026", "2025-01-01", "2026-08-27"),
 )
-
-# The 2025–2026 window is useful as a regime observation but is too broad to be a
-# clean crash episode: the trough comes hundreds of days after the first warning.
-# It is therefore reported, but not used to tune the production EXIT threshold.
 CALIBRATION_EPISODES = EPISODES[:4]
 
 
@@ -80,6 +73,7 @@ def main() -> None:
     )
 
     payload = {
+        "release": "R0.3.2 False Positive Reduction",
         "source": "MOEX ISS",
         "range": {"start": start, "end": end},
         "index_rows": len(index),
@@ -91,13 +85,12 @@ def main() -> None:
             "look_ahead": False,
             "min_breadth_coverage": 0.50,
             "score_data_gate": 0.70,
-            "current_cash_gate": "Crash Score >=56 and >=3/4 critical market confirmations",
-            "candidate_exit_gate": "Crash Score + critical confirmations + persistence + 5D downside confirmation",
-            "legacy_false_positive_definition": "CASH day not followed by <= -8% decline within next 20 evidence rows",
-            "calibration_false_positive_definition": "Independent EXIT event not followed by <= -8% decline within next 20 evidence rows",
-            "calibration_episodes": [name for name, _, _ in CALIBRATION_EPISODES],
+            "state_machine": "EARLY_WARNING -> EXIT_WATCH -> CASH_CONFIRMED",
+            "cash_confirmed_inputs": "Crash Score + critical confirmations + persistence + optional 5D downside + optional breadth/volume confirmation + cooldown hysteresis",
+            "calibration_false_positive_definition": "Independent CASH_CONFIRMED event not followed by <= -8% decline within next 20 evidence rows",
+            "calibration_episodes": [x[0] for x in CALIBRATION_EPISODES],
             "excluded_from_threshold_fit": ["MARKET_2025_2026: broad regime window, not a clean crash episode"],
-            "warning": "Breadth uses a present-day liquid basket, not historical index constituents. 2020/2022 results therefore have survivorship and listing-history bias and must be treated as calibration evidence, not production-grade unbiased performance.",
+            "warning": "Breadth uses a present-day liquid basket, not historical index constituents. 2020/2022 results have survivorship/listing-history bias and remain calibration evidence, not unbiased production performance.",
         },
         "evidence_rows": len(evidence),
         "scored_rows": len(scored),
