@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install
-        run: pip install -e .
+        run: pip install -e . pytest
       - name: Collect live IMOEX snapshot
         run: python scripts/collect_snapshot.py
       - name: Validate dashboard contract
