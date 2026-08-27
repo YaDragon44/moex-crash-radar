@@ -16,7 +16,7 @@ OPTIONAL_SIGNALS = (
     "news_geopolitics",
 )
 EXIT_STAGES = {"NORMAL", "EARLY_WARNING", "EXIT_WATCH", "CASH_CONFIRMED", "DATA_INSUFFICIENT"}
-DASHBOARD_RELEASE = "R0.4.3 Analytical UX Completion"
+DASHBOARD_RELEASE = "R0.4.4 Visual & Investment Logic Review"
 
 
 def validate_dashboard_snapshot(snapshot: dict[str, Any]) -> list[str]:
@@ -64,7 +64,7 @@ def validate_dashboard_snapshot(snapshot: dict[str, Any]) -> list[str]:
 
     history = snapshot.get("crash_history")
     if not isinstance(history, list) or not history:
-        errors.append("crash_history is required for R0.4.3 analytical UX")
+        errors.append("crash_history is required for R0.4.4 visual review")
     else:
         for row in history:
             if not isinstance(row, dict) or not row.get("day"):
