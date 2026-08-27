@@ -14,6 +14,8 @@ class GateCandidate:
     confirmations: int
     persistence: int
     max_5d_return_pct: float | None
+    cooldown_rows: int
+    require_breadth_volume: bool
     signal_events: int
     false_events: int
     false_event_rate: float | None
@@ -31,15 +33,28 @@ def _return_5d(evidence: Sequence[DailyEvidence], index: int) -> float | None:
     return (evidence[index].close / base - 1.0) * 100.0
 
 
+def _breadth_volume_confirmed(row: DailyEvidence) -> bool:
+    """Require broad internal deterioration, not only a high aggregate score."""
+    return (
+        row.breadth_score is not None
+        and row.volume_distribution_score is not None
+        and row.breadth_score >= 60
+        and row.volume_distribution_score >= 60
+    )
+
+
 def _qualifies(
     evidence: Sequence[DailyEvidence],
     index: int,
     score_threshold: float,
     confirmations: int,
     max_5d_return_pct: float | None,
+    require_breadth_volume: bool,
 ) -> bool:
     row = evidence[index]
     if row.score is None or row.score < score_threshold or row.critical_confirmations < confirmations:
+        return False
+    if require_breadth_volume and not _breadth_volume_confirmed(row):
         return False
     if max_5d_return_pct is None:
         return True
@@ -54,28 +69,47 @@ def signal_event_indices(
     confirmations: int,
     persistence: int = 1,
     max_5d_return_pct: float | None = None,
+    cooldown_rows: int = 0,
+    require_breadth_volume: bool = False,
 ) -> list[int]:
-    """Return starts of independent EXIT warning events.
+    """Return starts of independent CASH_CONFIRMED events.
 
-    Crash Score is the early-warning regime layer. `max_5d_return_pct` adds a price
-    confirmation layer so CASH is not triggered merely because structural risk is
-    elevated for a long time while the index is still stable/rising.
+    R0.3.2 state logic:
+      EARLY_WARNING: elevated Crash Score.
+      EXIT_WATCH: critical confirmations + downside confirmation.
+      CASH_CONFIRMED: EXIT_WATCH persists and optional breadth+volume confirmation holds.
+
+    `cooldown_rows` is hysteresis: after one CASH_CONFIRMED event, brief relief/re-entry
+    inside the same risk regime cannot create a new independent event immediately.
+    All inputs are current/past-only; no future rows are used to emit a signal.
     """
     if persistence < 1:
         raise ValueError("persistence must be >= 1")
+    if cooldown_rows < 0:
+        raise ValueError("cooldown_rows must be >= 0")
 
     events: list[int] = []
-    in_event = False
     run = 0
+    last_event = -10**9
     for i in range(len(evidence)):
-        if _qualifies(evidence, i, score_threshold, confirmations, max_5d_return_pct):
-            run += 1
-            if not in_event and run >= persistence:
-                events.append(i)
-                in_event = True
-        else:
-            run = 0
-            in_event = False
+        qualifies = _qualifies(
+            evidence,
+            i,
+            score_threshold,
+            confirmations,
+            max_5d_return_pct,
+            require_breadth_volume,
+        )
+        run = run + 1 if qualifies else 0
+        if run < persistence:
+            continue
+        if i - last_event <= cooldown_rows:
+            continue
+        events.append(i)
+        last_event = i
+        # Require a fresh persistence run after emission. This prevents one continuous
+        # qualifying regime from generating a new event every cooldown interval.
+        run = 0
     return events
 
 
@@ -133,35 +167,43 @@ def calibrate_cash_gate(
     confirmations_options: Sequence[int] = (3, 4),
     persistence_options: Sequence[int] = (1, 2, 3),
     max_5d_return_options: Sequence[float | None] = (None, -1.0, -2.0, -3.0, -4.0),
+    cooldown_options: Sequence[int] = (0, 5, 10, 20, 30),
+    breadth_volume_options: Sequence[bool] = (False, True),
 ) -> list[GateCandidate]:
     candidates: list[GateCandidate] = []
     for threshold in thresholds:
         for confirmations in confirmations_options:
             for persistence in persistence_options:
                 for max_ret5 in max_5d_return_options:
-                    events = signal_event_indices(
-                        evidence,
-                        score_threshold=threshold,
-                        confirmations=confirmations,
-                        persistence=persistence,
-                        max_5d_return_pct=max_ret5,
-                    )
-                    evaluated, false, false_rate = false_event_stats(evidence, events)
-                    detected, total, median_lead = episode_detection(evidence, events, episodes)
-                    candidates.append(
-                        GateCandidate(
-                            score_threshold=threshold,
-                            confirmations=confirmations,
-                            persistence=persistence,
-                            max_5d_return_pct=max_ret5,
-                            signal_events=evaluated,
-                            false_events=false,
-                            false_event_rate=false_rate,
-                            detected_episodes=detected,
-                            total_episodes=total,
-                            median_lead_days=median_lead,
-                        )
-                    )
+                    for cooldown in cooldown_options:
+                        for require_bv in breadth_volume_options:
+                            events = signal_event_indices(
+                                evidence,
+                                score_threshold=threshold,
+                                confirmations=confirmations,
+                                persistence=persistence,
+                                max_5d_return_pct=max_ret5,
+                                cooldown_rows=cooldown,
+                                require_breadth_volume=require_bv,
+                            )
+                            evaluated, false, false_rate = false_event_stats(evidence, events)
+                            detected, total, median_lead = episode_detection(evidence, events, episodes)
+                            candidates.append(
+                                GateCandidate(
+                                    score_threshold=threshold,
+                                    confirmations=confirmations,
+                                    persistence=persistence,
+                                    max_5d_return_pct=max_ret5,
+                                    cooldown_rows=cooldown,
+                                    require_breadth_volume=require_bv,
+                                    signal_events=evaluated,
+                                    false_events=false,
+                                    false_event_rate=false_rate,
+                                    detected_episodes=detected,
+                                    total_episodes=total,
+                                    median_lead_days=median_lead,
+                                )
+                            )
     return sorted(
         candidates,
         key=lambda x: (
