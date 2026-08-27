@@ -2,7 +2,7 @@ from moex_crash_radar.calibration import false_event_stats, signal_event_indices
 from moex_crash_radar.history import DailyEvidence
 
 
-def row(day, close, score, confirmations):
+def row(day, close, score, confirmations, *, breadth=70, volume=70):
     return DailyEvidence(
         day=day,
         close=close,
@@ -12,6 +12,8 @@ def row(day, close, score, confirmations):
         cash_signal=False,
         critical_confirmations=confirmations,
         coverage=1.0,
+        breadth_score=breadth,
+        volume_distribution_score=volume,
     )
 
 
@@ -48,6 +50,31 @@ def test_price_confirmation_suppresses_stable_market_warning():
         row("2026-01-07", 96, 70, 4),
     ]
     assert signal_event_indices(evidence, score_threshold=65, confirmations=4, max_5d_return_pct=-2.0) == [6]
+
+
+def test_breadth_volume_gate_blocks_narrow_risk_signal():
+    evidence = [
+        row("2026-01-01", 100, 70, 4, breadth=45, volume=75),
+        row("2026-01-02", 96, 70, 4, breadth=45, volume=75),
+    ]
+    assert signal_event_indices(
+        evidence,
+        score_threshold=65,
+        confirmations=4,
+        require_breadth_volume=True,
+    ) == []
+
+
+def test_cooldown_suppresses_brief_reentry():
+    evidence = [
+        row("2026-01-01", 100, 70, 4),
+        row("2026-01-02", 99, 40, 1),
+        row("2026-01-03", 98, 70, 4),
+        row("2026-01-04", 97, 40, 1),
+        row("2026-01-05", 96, 40, 1),
+        row("2026-01-06", 95, 70, 4),
+    ]
+    assert signal_event_indices(evidence, score_threshold=65, confirmations=4, cooldown_rows=3) == [0, 5]
 
 
 def test_false_event_uses_forward_only_window():
