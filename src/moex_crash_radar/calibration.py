@@ -16,6 +16,7 @@ class GateCandidate:
     max_5d_return_pct: float | None
     cooldown_rows: int
     require_breadth_volume: bool
+    rearm_clear_rows: int
     signal_events: int
     false_events: int
     false_event_rate: float | None
@@ -70,26 +71,26 @@ def signal_event_indices(
     max_5d_return_pct: float | None = None,
     cooldown_rows: int = 0,
     require_breadth_volume: bool = False,
+    rearm_clear_rows: int = 1,
 ) -> list[int]:
-    """Return starts of independent CASH_CONFIRMED events.
+    """Return starts of independent CASH_CONFIRMED events without look-ahead.
 
-    R0.3.2 state logic:
-      EARLY_WARNING: elevated Crash Score.
-      EXIT_WATCH: critical confirmations + downside confirmation.
-      CASH_CONFIRMED: EXIT_WATCH persists and optional breadth+volume confirmation holds.
-
-    A continuous qualifying regime emits one event. After it breaks, `cooldown_rows`
-    prevents a brief relief/re-entry sequence from being counted as a fresh independent
-    event. All emission logic uses only present/past evidence.
+    R0.3.3 adds a re-arm rule. After CASH_CONFIRMED the detector is disarmed until
+    the qualifying condition has been absent for `rearm_clear_rows` consecutive
+    evidence rows. This is stronger than a time-only cooldown and prevents a single
+    persistent risk regime from being counted as many independent EXIT events.
     """
     if persistence < 1:
         raise ValueError("persistence must be >= 1")
     if cooldown_rows < 0:
         raise ValueError("cooldown_rows must be >= 0")
+    if rearm_clear_rows < 1:
+        raise ValueError("rearm_clear_rows must be >= 1")
 
     events: list[int] = []
     run = 0
-    in_event = False
+    clear_run = rearm_clear_rows
+    armed = True
     last_event = -10**9
 
     for i in range(len(evidence)):
@@ -101,15 +102,24 @@ def signal_event_indices(
             max_5d_return_pct,
             require_breadth_volume,
         )
+
         if qualifies:
+            clear_run = 0
+            if not armed:
+                run = 0
+                continue
             run += 1
-            if not in_event and run >= persistence and i - last_event > cooldown_rows:
-                events.append(i)
-                last_event = i
-                in_event = True
+            if run < persistence or i - last_event <= cooldown_rows:
+                continue
+            events.append(i)
+            last_event = i
+            armed = False
+            run = 0
         else:
             run = 0
-            in_event = False
+            clear_run += 1
+            if not armed and clear_run >= rearm_clear_rows and i - last_event > cooldown_rows:
+                armed = True
 
     return events
 
@@ -170,6 +180,7 @@ def calibrate_cash_gate(
     max_5d_return_options: Sequence[float | None] = (None, -1.0, -2.0, -3.0, -4.0),
     cooldown_options: Sequence[int] = (0, 5, 10, 20, 30),
     breadth_volume_options: Sequence[bool] = (False, True),
+    rearm_clear_options: Sequence[int] = (1, 3, 5, 10),
 ) -> list[GateCandidate]:
     candidates: list[GateCandidate] = []
     for threshold in thresholds:
@@ -178,33 +189,36 @@ def calibrate_cash_gate(
                 for max_ret5 in max_5d_return_options:
                     for cooldown in cooldown_options:
                         for require_bv in breadth_volume_options:
-                            events = signal_event_indices(
-                                evidence,
-                                score_threshold=threshold,
-                                confirmations=confirmations,
-                                persistence=persistence,
-                                max_5d_return_pct=max_ret5,
-                                cooldown_rows=cooldown,
-                                require_breadth_volume=require_bv,
-                            )
-                            evaluated, false, false_rate = false_event_stats(evidence, events)
-                            detected, total, median_lead = episode_detection(evidence, events, episodes)
-                            candidates.append(
-                                GateCandidate(
+                            for rearm_clear in rearm_clear_options:
+                                events = signal_event_indices(
+                                    evidence,
                                     score_threshold=threshold,
                                     confirmations=confirmations,
                                     persistence=persistence,
                                     max_5d_return_pct=max_ret5,
                                     cooldown_rows=cooldown,
                                     require_breadth_volume=require_bv,
-                                    signal_events=evaluated,
-                                    false_events=false,
-                                    false_event_rate=false_rate,
-                                    detected_episodes=detected,
-                                    total_episodes=total,
-                                    median_lead_days=median_lead,
+                                    rearm_clear_rows=rearm_clear,
                                 )
-                            )
+                                evaluated, false, false_rate = false_event_stats(evidence, events)
+                                detected, total, median_lead = episode_detection(evidence, events, episodes)
+                                candidates.append(
+                                    GateCandidate(
+                                        score_threshold=threshold,
+                                        confirmations=confirmations,
+                                        persistence=persistence,
+                                        max_5d_return_pct=max_ret5,
+                                        cooldown_rows=cooldown,
+                                        require_breadth_volume=require_bv,
+                                        rearm_clear_rows=rearm_clear,
+                                        signal_events=evaluated,
+                                        false_events=false,
+                                        false_event_rate=false_rate,
+                                        detected_episodes=detected,
+                                        total_episodes=total,
+                                        median_lead_days=median_lead,
+                                    )
+                                )
     return sorted(
         candidates,
         key=lambda x: (
