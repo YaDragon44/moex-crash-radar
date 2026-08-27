@@ -7,6 +7,7 @@ on:
     paths:
       - 'web/**'
       - 'scripts/collect_snapshot.py'
+      - 'scripts/validate_dashboard_snapshot.py'
       - 'src/**'
       - '.github/workflows/pages.yml'
 
@@ -31,12 +32,17 @@ jobs:
         run: pip install -e .
       - name: Collect real MOEX snapshot
         run: python scripts/collect_snapshot.py
+      - name: Validate dashboard contract
+        run: python scripts/validate_dashboard_snapshot.py
       - name: Build static site
         run: |
           mkdir -p _site
           cp web/index.html _site/index.html
           cp artifacts/market_snapshot.json _site/market_snapshot.json
-      - uses: actions/configure-pages@v5
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
