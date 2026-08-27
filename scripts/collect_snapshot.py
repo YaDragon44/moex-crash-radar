@@ -78,9 +78,14 @@ def main() -> None:
     exit_gate = exit_gate_status(evidence)
     score_history = [x.score for x in evidence if x.score is not None]
     momentum = crash_momentum(score_history, 5) if len(score_history) > 5 else None
+    crash_history = [
+        {"day": x.day, "score": x.score, "state": x.state}
+        for x in evidence[-120:]
+        if x.score is not None
+    ]
 
     payload = {
-        "release": "R0.4.2 Approved UI Implementation",
+        "release": "R0.4.3 Analytical UX Completion",
         "as_of": index_candles[-1].begin,
         "source": "MOEX ISS",
         "secid": "IMOEX",
@@ -98,6 +103,7 @@ def main() -> None:
         },
         "exit_gate": exit_gate,
         "crash_momentum": momentum,
+        "crash_history": crash_history,
         "bottom": {
             "score": None,
             "state": "DATA_INSUFFICIENT",
@@ -108,6 +114,8 @@ def main() -> None:
             "false_event_rate": 0.2857,
             "detected_episodes": "4/4",
             "median_lead_days": 28.5,
+            "total_exit_events": 14,
+            "false_exit_events": 4,
             "params": {
                 "score_threshold": CALIBRATED_EXIT_GATE.score_threshold,
                 "confirmations": CALIBRATED_EXIT_GATE.confirmations,
