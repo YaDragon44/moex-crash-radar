@@ -77,6 +77,36 @@ def test_cooldown_suppresses_brief_reentry():
     assert signal_event_indices(evidence, score_threshold=65, confirmations=4, cooldown_rows=3) == [0, 5]
 
 
+def test_rearm_requires_clear_regime_before_new_event():
+    evidence = [
+        row("2026-01-01", 100, 70, 4),
+        row("2026-01-02", 99, 70, 4),
+        row("2026-01-03", 98, 40, 1),
+        row("2026-01-04", 97, 70, 4),
+        row("2026-01-05", 96, 40, 1),
+        row("2026-01-06", 95, 40, 1),
+        row("2026-01-07", 94, 40, 1),
+        row("2026-01-08", 93, 70, 4),
+    ]
+    assert signal_event_indices(
+        evidence,
+        score_threshold=65,
+        confirmations=4,
+        rearm_clear_rows=3,
+    ) == [0, 7]
+
+
+def test_continuous_qualifying_regime_never_rearms():
+    evidence = [row(f"2026-01-{i:02d}", 100 - i, 70, 4) for i in range(1, 11)]
+    assert signal_event_indices(
+        evidence,
+        score_threshold=65,
+        confirmations=4,
+        cooldown_rows=2,
+        rearm_clear_rows=3,
+    ) == [0]
+
+
 def test_false_event_uses_forward_only_window():
     evidence = [row(f"2026-01-{i:02d}", 100 - (i - 1), 60 if i == 1 else 20, 3 if i == 1 else 0) for i in range(1, 22)]
     events = signal_event_indices(evidence, score_threshold=56, confirmations=3)
