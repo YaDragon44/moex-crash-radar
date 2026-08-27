@@ -4,6 +4,15 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '15 7 * * 1-5'
+  push:
+    branches: [r0.3-crash-engine]
+    paths:
+      - 'src/**'
+      - 'scripts/collect_snapshot.py'
+      - 'scripts/validate_dashboard_snapshot.py'
+      - 'tests/test_dashboard_contract.py'
+      - 'web/**'
+      - '.github/workflows/live-snapshot.yml'
 
 permissions:
   contents: read
@@ -20,6 +29,10 @@ jobs:
         run: pip install -e .
       - name: Collect live IMOEX snapshot
         run: python scripts/collect_snapshot.py
+      - name: Validate dashboard contract
+        run: python scripts/validate_dashboard_snapshot.py
+      - name: Dashboard static smoke
+        run: python -m pytest tests/test_dashboard_contract.py -q
       - uses: actions/upload-artifact@v4
         with:
           name: moex-market-snapshot
