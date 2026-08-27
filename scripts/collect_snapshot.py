@@ -6,8 +6,10 @@ from pathlib import Path
 
 from moex_crash_radar.breadth import breadth_signal, calculate_breadth, index_vs_breadth_divergence
 from moex_crash_radar.distribution import calculate_distribution, distribution_signal
-from moex_crash_radar.engine import calculate_crash
+from moex_crash_radar.engine import calculate_crash, crash_momentum
 from moex_crash_radar.features import derive_index_signals
+from moex_crash_radar.history import build_daily_evidence
+from moex_crash_radar.live_gate import CALIBRATED_EXIT_GATE, exit_gate_status
 from moex_crash_radar.moex import fetch_index_candles, fetch_share_candles
 
 
@@ -72,7 +74,13 @@ def main() -> None:
             signals["volume_distribution"] = distribution_signal(distribution)
 
     crash = calculate_crash(signals)
+    evidence = build_daily_evidence(index_candles, universe, min_equity_coverage=0.50, warmup=60)
+    exit_gate = exit_gate_status(evidence)
+    score_history = [x.score for x in evidence if x.score is not None]
+    momentum = crash_momentum(score_history, 5) if len(score_history) > 5 else None
+
     payload = {
+        "release": "R0.4 Dashboard MVP",
         "as_of": index_candles[-1].begin,
         "source": "MOEX ISS",
         "secid": "IMOEX",
@@ -86,9 +94,31 @@ def main() -> None:
             "state": crash.state.value,
             "available_weight": round(crash.available_weight, 4),
             "critical_confirmations": crash.critical_confirmations,
-            "cash_signal": crash.cash_signal,
+            "raw_cash_signal": crash.cash_signal,
         },
-        "note": "MOEX index + breadth + volume/distribution evidence. If coverage is sufficient these five market groups provide 72% of Crash Score weight; macro/news groups remain absent until sourced.",
+        "exit_gate": exit_gate,
+        "crash_momentum": momentum,
+        "bottom": {
+            "score": None,
+            "state": "DATA_INSUFFICIENT",
+            "buy_back_signal": False,
+        },
+        "calibration": {
+            "release": "R0.3.3",
+            "false_event_rate": 0.2857,
+            "detected_episodes": "4/4",
+            "median_lead_days": 28.5,
+            "params": {
+                "score_threshold": CALIBRATED_EXIT_GATE.score_threshold,
+                "confirmations": CALIBRATED_EXIT_GATE.confirmations,
+                "persistence": CALIBRATED_EXIT_GATE.persistence,
+                "max_5d_return_pct": CALIBRATED_EXIT_GATE.max_5d_return_pct,
+                "cooldown_rows": CALIBRATED_EXIT_GATE.cooldown_rows,
+                "rearm_clear_rows": CALIBRATED_EXIT_GATE.rearm_clear_rows,
+            },
+            "warning": "Calibration evidence uses a present-day liquid basket; historical breadth has survivorship/listing-history bias.",
+        },
+        "note": "Live MOEX market layer is active. Macro/news groups and Bottom Engine inputs are intentionally N/A until sourced; missing data is never invented.",
     }
 
     out = Path("artifacts/market_snapshot.json")
