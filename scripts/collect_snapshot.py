@@ -80,7 +80,7 @@ def main() -> None:
     momentum = crash_momentum(score_history, 5) if len(score_history) > 5 else None
 
     payload = {
-        "release": "R0.4 Dashboard MVP",
+        "release": "R0.4.2 Approved UI Implementation",
         "as_of": index_candles[-1].begin,
         "source": "MOEX ISS",
         "secid": "IMOEX",
