@@ -4,6 +4,7 @@ import json
 from dataclasses import asdict
 from pathlib import Path
 
+from moex_crash_radar.calibration import calibrate_cash_gate
 from moex_crash_radar.history import build_daily_evidence, count_false_positive_days, evaluate_episode
 from moex_crash_radar.moex import fetch_index_history, fetch_share_history
 
@@ -56,9 +57,27 @@ def main() -> None:
         except ValueError:
             episodes.append({"name": name, "status": "NO_DATA"})
 
+    # Legacy day-level false-positive metric is retained for transparency, but it is
+    # not the release Gate because one persistent risk regime can generate dozens of
+    # CASH days. Calibration below evaluates independent signal events instead.
     cash_days, false_cash_days = count_false_positive_days(evidence)
+    candidates = calibrate_cash_gate(evidence, EPISODES)
+    calibration = [asdict(x) for x in candidates]
+    preferred = calibration[0] if calibration else None
+
     scored = [x for x in evidence if x.score is not None]
     coverage_values = [x.coverage for x in evidence]
+
+    # R0.3.1 Gate is intentionally conservative: all configured historical episodes
+    # must be detected, event-level false positive rate <= 35%, and median lead >= 5d.
+    gate_pass = bool(
+        preferred
+        and preferred["detected_episodes"] == preferred["total_episodes"]
+        and preferred["false_event_rate"] is not None
+        and preferred["false_event_rate"] <= 0.35
+        and preferred["median_lead_days"] is not None
+        and preferred["median_lead_days"] >= 5
+    )
 
     payload = {
         "source": "MOEX ISS",
@@ -72,8 +91,9 @@ def main() -> None:
             "look_ahead": False,
             "min_breadth_coverage": 0.50,
             "score_data_gate": 0.70,
-            "cash_gate": "Crash Score >=56 and >=3/4 critical market confirmations",
-            "false_positive_definition": "CASH day not followed by <= -8% decline within next 20 evidence rows",
+            "current_cash_gate": "Crash Score >=56 and >=3/4 critical market confirmations",
+            "legacy_false_positive_definition": "CASH day not followed by <= -8% decline within next 20 evidence rows",
+            "calibration_false_positive_definition": "Independent CASH event not followed by <= -8% decline within next 20 evidence rows",
             "warning": "Breadth uses a present-day liquid basket, not historical index constituents. 2020/2022 results therefore have survivorship and listing-history bias and must be treated as calibration evidence, not production-grade unbiased performance.",
         },
         "evidence_rows": len(evidence),
@@ -85,10 +105,19 @@ def main() -> None:
             "last": round(coverage_values[-1], 4),
         },
         "episodes": episodes,
-        "false_positive_days": {
+        "legacy_false_positive_days": {
             "cash_days_with_full_horizon": cash_days,
             "false_cash_days": false_cash_days,
             "rate": round(false_cash_days / cash_days, 4) if cash_days else None,
+            "release_gate_metric": False,
+        },
+        "calibration": {
+            "preferred_candidate": preferred,
+            "top_candidates": calibration[:10],
+            "release_gate": {
+                "pass": gate_pass,
+                "requirements": "detect all configured episodes; false_event_rate <= 35%; median lead >= 5 calendar days",
+            },
         },
         "latest": asdict(evidence[-1]),
     }
