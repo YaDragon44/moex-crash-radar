@@ -3,7 +3,7 @@
 Система раннего предупреждения обвала российского рынка акций и поиска подтверждённого дна для обратного набора позиций.
 
 ## Current release
-R0.3.1 — Historical Evidence + Calibration (IN TEST)
+R0.4.2 — Approved UI Implementation (IN TEST)
 
 ## Architecture
 Static frontend + GitHub Pages + GitHub Actions + public market/macro data sources. No dedicated backend.
@@ -37,6 +37,6 @@ Therefore R0.3.1 is **not accepted yet**. Event-level calibration was added: one
 Breadth currently uses a present-day liquid basket, not historical index constituents. Historical results have survivorship/listing-history bias and are calibration evidence, not unbiased production performance.
 
 ## Dashboard
-R0.4 one-screen dashboard scaffold is already in `web/index.html`, with 9 indicator cards, Crash Score, EXIT/CASH, Bottom Score, Crash Momentum and strict N/A/ERROR behavior. GitHub Pages workflow is prepared but production publication waits for the calibrated R0.3.1 Gate.
+R0.4.2 implements the approved one-screen UI in `web/index.html`: 9 indicator cards, Crash Score, EXIT/CASH, Bottom Score, Crash Momentum, data-status badges, and the three strongest available signal groups behind the current action. The UI preserves strict N/A/ERROR behaviour; it never invents a missing market or macro value.
 
 Missing or stale source data must never be replaced with invented values. The system returns DATA INSUFFICIENT when required evidence is unavailable.
