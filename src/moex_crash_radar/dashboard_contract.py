@@ -16,13 +16,14 @@ OPTIONAL_SIGNALS = (
     "news_geopolitics",
 )
 EXIT_STAGES = {"NORMAL", "EARLY_WARNING", "EXIT_WATCH", "CASH_CONFIRMED", "DATA_INSUFFICIENT"}
+DASHBOARD_RELEASE = "R0.4.3 Analytical UX Completion"
 
 
 def validate_dashboard_snapshot(snapshot: dict[str, Any]) -> list[str]:
     errors: list[str] = []
 
-    if snapshot.get("release") != "R0.4 Dashboard MVP":
-        errors.append("release must be R0.4 Dashboard MVP")
+    if snapshot.get("release") != DASHBOARD_RELEASE:
+        errors.append(f"release must be {DASHBOARD_RELEASE}")
     if snapshot.get("source") != "MOEX ISS":
         errors.append("source must be MOEX ISS")
     if snapshot.get("secid") != "IMOEX":
@@ -44,7 +45,6 @@ def validate_dashboard_snapshot(snapshot: dict[str, Any]) -> list[str]:
         if not item.get("quality"):
             errors.append(f"core signal {key}.quality is required")
 
-    # Optional groups may be absent until a real source exists. They must not be fabricated.
     for key in OPTIONAL_SIGNALS:
         if key in signals:
             item = signals[key]
@@ -61,6 +61,19 @@ def validate_dashboard_snapshot(snapshot: dict[str, Any]) -> list[str]:
     confirms = crash.get("critical_confirmations")
     if not isinstance(confirms, int) or not 0 <= confirms <= 4:
         errors.append("crash.critical_confirmations must be 0..4")
+
+    history = snapshot.get("crash_history")
+    if not isinstance(history, list) or not history:
+        errors.append("crash_history is required for R0.4.3 analytical UX")
+    else:
+        for row in history:
+            if not isinstance(row, dict) or not row.get("day"):
+                errors.append("crash_history rows require day")
+                break
+            hscore = row.get("score")
+            if not isinstance(hscore, (int, float)) or not 0 <= hscore <= 100:
+                errors.append("crash_history score must be 0..100")
+                break
 
     gate = snapshot.get("exit_gate") or {}
     stage = gate.get("stage")
@@ -98,6 +111,10 @@ def validate_dashboard_snapshot(snapshot: dict[str, Any]) -> list[str]:
         errors.append("calibration.false_event_rate must be 0.2857")
     if calibration.get("detected_episodes") != "4/4":
         errors.append("calibration.detected_episodes must be 4/4")
+    if calibration.get("total_exit_events") != 14:
+        errors.append("calibration.total_exit_events must be 14")
+    if calibration.get("false_exit_events") != 4:
+        errors.append("calibration.false_exit_events must be 4")
 
     text = str(snapshot).lower()
     if "synthetic" in text or "mock" in text or "demo data" in text:
