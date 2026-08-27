@@ -1,42 +1,46 @@
 # MOEX Crash Early Warning Radar
 
-Система раннего предупреждения обвала российского рынка акций и поиска подтверждённого дна для обратного набора позиций.
+Система раннего предупреждения изменения риска российского рынка акций: обнаружить переход режима раньше, чем он становится очевиден по цене, снизить риск капитала и затем дождаться подтверждённого re-entry.
 
 ## Current release
-R0.4.2 — Approved UI Implementation (IN TEST)
+R0.4.3 — Analytical UX Completion (IN TEST)
 
-## Architecture
-Static frontend + GitHub Pages + GitHub Actions + public market/macro data sources. No dedicated backend.
+## Core architecture
+DATA → QUALITY GATE → FEATURES → MARKET/CROWD EVIDENCE → RISK → TRANSITION → REGIME → ACTION → DASHBOARD.
 
-## Core engines
-- Crash Score 0–100
-- Crash Momentum
-- Bottom Score 0–100
-- EXIT/CASH state machine
-- BUY-BACK state machine
-- Data Quality: LIVE / DELAYED / STALE / ERROR / N/A
-- Historical backtest and calibration
+Static frontend + GitHub Pages + GitHub Actions + public market sources. Dedicated backend is not required for the current release.
 
-## R0.3.1 first real evidence run
-MOEX ISS range: 2019-09-01 → 2026-08-27. Point-in-time features, no look-ahead.
+## R0.3.3 calibrated EXIT Gate
+Historical MOEX evidence uses point-in-time features without look-ahead.
 
-Detected configured episodes:
-- COVID 2020: CASH 2020-02-25 → trough 2020-03-18, lead 22 calendar days; episode drawdown -32.37%
-- Feb 2022: CASH 2022-01-14 → trough 2022-02-24, lead 41 days; drawdown -44.95%
-- Sep 2022: CASH 2022-08-03 → trough 2022-10-10, lead 68 days; drawdown -12.07%
-- 2024 correction: CASH 2024-05-27 → trough 2024-09-03, lead 99 days; drawdown -26.68%
+Gate parameters:
+- Crash Score threshold: 65
+- critical confirmations: 3
+- persistence: 2
+- 5D return confirmation: <= -3%
+- cooldown: 30 evidence rows
+- rearm clear rows: 3
 
-The broad 2025–2026 window generated an excessively early signal and is not considered a clean standalone crash episode for threshold validation.
+Historical calibration result:
+- detected clean crisis episodes: 4/4
+- false event rate: 28.57%
+- median lead time: 28.5 calendar days
+- calibration exit events: 14, false events: 4
 
-### Important finding
-The legacy **day-level** false-positive metric was 66.12% (162 false CASH days out of 245 evaluable CASH days). This is too high for a production exit signal and also over-counts persistent risk regimes as repeated alerts.
+Important limitation: breadth history uses a present-day liquid basket rather than historical index constituents. Historical results therefore retain survivorship/listing-history bias and are calibration evidence, not unbiased production performance.
 
-Therefore R0.3.1 is **not accepted yet**. Event-level calibration was added: one continuous warning regime = one event, with combinations of score threshold / critical confirmations / persistence. Release Gate: representative crash episodes detected, false-event rate ≤35%, median lead ≥5 calendar days.
+## R0.4.3 dashboard
+The approved Russian-language one-screen dashboard now includes:
+- Crash Score, current EXIT stage, CASH signal and IMOEX;
+- exactly 9 key indicator cards with strict LIVE / DELAYED / STALE / ERROR / N/A handling;
+- real Crash Score history from point-in-time evidence;
+- Historical Gate metrics;
+- separate blocks: Выводы / Гипотезы / Рекомендации;
+- separate Investor Action and Trader Action;
+- WHY: three strongest available factors behind current action;
+- responsive 16:9-first layout.
 
-### Backtest limitation
-Breadth currently uses a present-day liquid basket, not historical index constituents. Historical results have survivorship/listing-history bias and are calibration evidence, not unbiased production performance.
+The analytical UX never fabricates missing market or macro data. Unsourced Rate/OFZ, Oil/RUB, Macro/Earnings, News/Geopolitics and Bottom Engine inputs remain N/A. Strong recommendations are blocked when the Quality Gate is insufficient.
 
-## Dashboard
-R0.4.2 implements the approved one-screen UI in `web/index.html`: 9 indicator cards, Crash Score, EXIT/CASH, Bottom Score, Crash Momentum, data-status badges, and the three strongest available signal groups behind the current action. The UI preserves strict N/A/ERROR behaviour; it never invents a missing market or macro value.
-
-Missing or stale source data must never be replaced with invented values. The system returns DATA INSUFFICIENT when required evidence is unavailable.
+## Next gate
+R0.4.3 requires CI, live MOEX snapshot contract validation and GitHub Pages deployment before GO.
