@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import json
+import time
 from dataclasses import dataclass
 from datetime import date, timedelta
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -53,10 +55,29 @@ def parse_candles(payload: dict) -> list[Candle]:
     return result
 
 
-def _get_json(url: str, timeout: int = 20) -> dict:
-    req = Request(url, headers={"User-Agent": "moex-crash-radar/0.3"})
-    with urlopen(req, timeout=timeout) as response:  # nosec B310: fixed HTTPS MOEX endpoint
-        return json.loads(response.read().decode("utf-8"))
+def _get_json(url: str, timeout: int = 20, attempts: int = 3, backoff_seconds: float = 1.0) -> dict:
+    """Read MOEX ISS with bounded retry for transient transport/5xx failures.
+
+    Missing or malformed data is never fabricated. After the final failed attempt
+    the original error is raised so the caller can mark the source ERROR/STALE.
+    """
+    req = Request(url, headers={"User-Agent": "moex-crash-radar/0.4.3"})
+    last_error: Exception | None = None
+    for attempt in range(attempts):
+        try:
+            with urlopen(req, timeout=timeout) as response:  # nosec B310: fixed HTTPS MOEX endpoint
+                return json.loads(response.read().decode("utf-8"))
+        except HTTPError as exc:
+            last_error = exc
+            # Client errors normally are not transient; 408/429 may recover.
+            if exc.code < 500 and exc.code not in (408, 429):
+                raise
+        except (URLError, TimeoutError, OSError) as exc:
+            last_error = exc
+        if attempt + 1 < attempts:
+            time.sleep(backoff_seconds * (2**attempt))
+    assert last_error is not None
+    raise last_error
 
 
 def _fetch_candles(
