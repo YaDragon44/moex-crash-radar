@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
+from datetime import date, timedelta
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -80,6 +81,48 @@ def _fetch_candles(
     return parse_candles(_get_json(url))
 
 
+def _fetch_candles_range(
+    market: str,
+    secid: str,
+    *,
+    start: str,
+    end: str,
+    interval: int = 24,
+    max_pages: int = 20,
+) -> list[Candle]:
+    """Fetch a long range without assuming a single ISS response is complete.
+
+    Pagination advances by the last returned candle date. Duplicate dates are
+    de-duplicated. The function stops when end is reached or the source returns
+    no new rows.
+    """
+    cursor = date.fromisoformat(start)
+    end_date = date.fromisoformat(end)
+    by_begin: dict[str, Candle] = {}
+
+    for _ in range(max_pages):
+        batch = _fetch_candles(
+            market,
+            secid,
+            start=cursor.isoformat(),
+            end=end,
+            interval=interval,
+        )
+        if not batch:
+            break
+
+        before = len(by_begin)
+        for candle in batch:
+            by_begin[candle.begin] = candle
+
+        last_day = date.fromisoformat(batch[-1].begin[:10])
+        if last_day >= end_date or len(by_begin) == before:
+            break
+        cursor = last_day + timedelta(days=1)
+
+    return sorted(by_begin.values(), key=lambda c: c.begin)
+
+
 def fetch_index_candles(
     secid: str = "IMOEX",
     *,
@@ -98,3 +141,11 @@ def fetch_share_candles(
     interval: int = 24,
 ) -> list[Candle]:
     return _fetch_candles("shares", secid, start=start, end=end, interval=interval)
+
+
+def fetch_index_history(secid: str, *, start: str, end: str) -> list[Candle]:
+    return _fetch_candles_range("index", secid, start=start, end=end, interval=24)
+
+
+def fetch_share_history(secid: str, *, start: str, end: str) -> list[Candle]:
+    return _fetch_candles_range("shares", secid, start=start, end=end, interval=24)
