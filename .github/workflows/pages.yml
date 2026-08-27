@@ -37,7 +37,7 @@ jobs:
       - name: Build static site
         run: |
           mkdir -p _site
-          cp web/index.html _site/index.html
+          cp web/r044.html _site/index.html
           cp artifacts/market_snapshot.json _site/market_snapshot.json
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
