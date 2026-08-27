@@ -85,7 +85,7 @@ def main() -> None:
     ]
 
     payload = {
-        "release": "R0.4.3 Analytical UX Completion",
+        "release": "R0.4.4 Visual & Investment Logic Review",
         "as_of": index_candles[-1].begin,
         "source": "MOEX ISS",
         "secid": "IMOEX",
