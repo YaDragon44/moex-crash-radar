@@ -26,6 +26,11 @@ EPISODES = (
     ("MARKET_2025_2026", "2025-01-01", "2026-08-27"),
 )
 
+# The 2025–2026 window is useful as a regime observation but is too broad to be a
+# clean crash episode: the trough comes hundreds of days after the first warning.
+# It is therefore reported, but not used to tune the production EXIT threshold.
+CALIBRATION_EPISODES = EPISODES[:4]
+
 
 def main() -> None:
     start = "2019-09-01"
@@ -43,7 +48,7 @@ def main() -> None:
                 universe[secid] = candles
             else:
                 failures[secid] = f"only {len(candles)} candles"
-        except Exception as exc:  # source failures are evidence, not imputed data
+        except Exception as exc:
             failures[secid] = f"{type(exc).__name__}: {exc}"
 
     evidence = build_daily_evidence(index, universe, min_equity_coverage=0.50, warmup=60)
@@ -57,19 +62,14 @@ def main() -> None:
         except ValueError:
             episodes.append({"name": name, "status": "NO_DATA"})
 
-    # Legacy day-level false-positive metric is retained for transparency, but it is
-    # not the release Gate because one persistent risk regime can generate dozens of
-    # CASH days. Calibration below evaluates independent signal events instead.
     cash_days, false_cash_days = count_false_positive_days(evidence)
-    candidates = calibrate_cash_gate(evidence, EPISODES)
+    candidates = calibrate_cash_gate(evidence, CALIBRATION_EPISODES)
     calibration = [asdict(x) for x in candidates]
     preferred = calibration[0] if calibration else None
 
     scored = [x for x in evidence if x.score is not None]
     coverage_values = [x.coverage for x in evidence]
 
-    # R0.3.1 Gate is intentionally conservative: all configured historical episodes
-    # must be detected, event-level false positive rate <= 35%, and median lead >= 5d.
     gate_pass = bool(
         preferred
         and preferred["detected_episodes"] == preferred["total_episodes"]
@@ -92,8 +92,11 @@ def main() -> None:
             "min_breadth_coverage": 0.50,
             "score_data_gate": 0.70,
             "current_cash_gate": "Crash Score >=56 and >=3/4 critical market confirmations",
+            "candidate_exit_gate": "Crash Score + critical confirmations + persistence + 5D downside confirmation",
             "legacy_false_positive_definition": "CASH day not followed by <= -8% decline within next 20 evidence rows",
-            "calibration_false_positive_definition": "Independent CASH event not followed by <= -8% decline within next 20 evidence rows",
+            "calibration_false_positive_definition": "Independent EXIT event not followed by <= -8% decline within next 20 evidence rows",
+            "calibration_episodes": [name for name, _, _ in CALIBRATION_EPISODES],
+            "excluded_from_threshold_fit": ["MARKET_2025_2026: broad regime window, not a clean crash episode"],
             "warning": "Breadth uses a present-day liquid basket, not historical index constituents. 2020/2022 results therefore have survivorship and listing-history bias and must be treated as calibration evidence, not production-grade unbiased performance.",
         },
         "evidence_rows": len(evidence),
@@ -113,10 +116,10 @@ def main() -> None:
         },
         "calibration": {
             "preferred_candidate": preferred,
-            "top_candidates": calibration[:10],
+            "top_candidates": calibration[:15],
             "release_gate": {
                 "pass": gate_pass,
-                "requirements": "detect all configured episodes; false_event_rate <= 35%; median lead >= 5 calendar days",
+                "requirements": "detect all four clean calibration episodes; false_event_rate <= 35%; median lead >= 5 calendar days",
             },
         },
         "latest": asdict(evidence[-1]),
