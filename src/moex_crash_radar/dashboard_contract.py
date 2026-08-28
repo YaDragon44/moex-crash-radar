@@ -16,7 +16,8 @@ OPTIONAL_SIGNALS = (
     "news_geopolitics",
 )
 EXIT_STAGES = {"NORMAL", "EARLY_WARNING", "EXIT_WATCH", "CASH_CONFIRMED", "DATA_INSUFFICIENT"}
-DASHBOARD_RELEASE = "R0.4.4 Visual & Investment Logic Review"
+CONTEXT_STATES = {"SUPPORTIVE", "NEUTRAL", "CAUTION", "STRESS", "DATA_INSUFFICIENT"}
+DASHBOARD_RELEASE = "R0.5.0 Context Layer Foundation"
 
 
 def validate_dashboard_snapshot(snapshot: dict[str, Any]) -> list[str]:
@@ -51,6 +52,33 @@ def validate_dashboard_snapshot(snapshot: dict[str, Any]) -> list[str]:
             if item not in (None, {}) and isinstance(item, dict) and item.get("score") is not None:
                 errors.append(f"optional signal {key} must remain N/A until sourced")
 
+    context = snapshot.get("context") or {}
+    if context.get("state") not in CONTEXT_STATES:
+        errors.append("context.state is invalid")
+    if context.get("quality") not in {"LIVE", "DELAYED", "STALE", "ERROR", "N/A"}:
+        errors.append("context.quality is invalid")
+    cscore = context.get("score")
+    if cscore is not None and (not isinstance(cscore, (int, float)) or not 0 <= cscore <= 100):
+        errors.append("context.score must be null or 0..100")
+    coverage = context.get("coverage")
+    if not isinstance(coverage, (int, float)) or not 0 <= coverage <= 1:
+        errors.append("context.coverage must be 0..1")
+    if context.get("total_groups") != 4:
+        errors.append("context.total_groups must equal 4")
+    available_groups = context.get("available_groups")
+    if not isinstance(available_groups, int) or not 0 <= available_groups <= 4:
+        errors.append("context.available_groups must be 0..4")
+    if cscore is None and context.get("state") != "DATA_INSUFFICIENT":
+        errors.append("empty context score requires DATA_INSUFFICIENT state")
+    groups = context.get("groups") or {}
+    for key in OPTIONAL_SIGNALS:
+        item = groups.get(key)
+        if not isinstance(item, dict):
+            errors.append(f"context group {key} is missing")
+            continue
+        if item.get("score") is not None:
+            errors.append(f"context group {key} must remain N/A until live source integration")
+
     crash = snapshot.get("crash") or {}
     score = crash.get("score")
     if score is not None and (not isinstance(score, (int, float)) or not 0 <= score <= 100):
@@ -64,7 +92,7 @@ def validate_dashboard_snapshot(snapshot: dict[str, Any]) -> list[str]:
 
     history = snapshot.get("crash_history")
     if not isinstance(history, list) or not history:
-        errors.append("crash_history is required for R0.4.4 visual review")
+        errors.append("crash_history is required for R0.5.0 dashboard")
     else:
         for row in history:
             if not isinstance(row, dict) or not row.get("day"):
@@ -102,7 +130,7 @@ def validate_dashboard_snapshot(snapshot: dict[str, Any]) -> list[str]:
     if bottom.get("score") is not None:
         errors.append("bottom.score must remain N/A until Bottom Engine data is sourced")
     if bottom.get("state") != "DATA_INSUFFICIENT":
-        errors.append("bottom.state must be DATA_INSUFFICIENT in R0.4")
+        errors.append("bottom.state must be DATA_INSUFFICIENT before Re-entry Engine integration")
 
     calibration = snapshot.get("calibration") or {}
     if calibration.get("release") != "R0.3.3":
