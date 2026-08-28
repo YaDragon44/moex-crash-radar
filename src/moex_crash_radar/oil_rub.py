@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 from urllib.parse import urlencode
@@ -45,31 +46,39 @@ def _interp(x: float, points: tuple[tuple[float, float], ...]) -> float:
 
 
 def brent_return_stress(return_pct: float) -> float:
-    # Falling Brent is a negative external impulse for the Russian equity market.
     return round(_interp(return_pct, ((-25, 100), (-15, 90), (-8, 72), (-4, 55), (0, 30), (8, 12), (20, 0))), 2)
 
 
 def rub_return_stress(cnyrub_return_pct: float) -> float:
-    # CNYRUB rising means RUB weakening. Sharp depreciation is treated as stress.
     return round(_interp(cnyrub_return_pct, ((-20, 0), (-8, 10), (0, 30), (4, 52), (8, 70), (15, 90), (25, 100))), 2)
 
 
+def _contract_month(secid: str) -> tuple[int, int] | None:
+    match = re.fullmatch(r"BR-(\d{1,2})\.(\d{2})", secid)
+    if not match:
+        return None
+    month = int(match.group(1))
+    if not 1 <= month <= 12:
+        return None
+    return 2000 + int(match.group(2)), month
+
+
 def select_nearest_brent_future(payload: dict, *, as_of: date | None = None) -> str | None:
+    """Select the nearest still-tradable regular Brent contract.
+
+    Public RFUD security rows do not reliably expose LASTTRADEDATE/LASTDELDATE.
+    For monthly Brent contracts MOEX uses `BR-M.YY`; during month M-1 the M
+    contract is the front contract. Therefore require contract month strictly
+    after the current calendar month, then choose the nearest one.
+    """
     as_of = as_of or date.today()
-    candidates: list[tuple[date, str]] = []
+    current = (as_of.year, as_of.month)
+    candidates: list[tuple[tuple[int, int], str]] = []
     for row in _table(payload, "securities"):
         secid = str(row.get("SECID") or "")
-        if not secid.startswith("BR-"):
-            continue
-        raw = row.get("LASTTRADEDATE") or row.get("LASTDELDATE")
-        if not raw:
-            continue
-        try:
-            expiry = date.fromisoformat(str(raw)[:10])
-        except ValueError:
-            continue
-        if expiry >= as_of:
-            candidates.append((expiry, secid))
+        ym = _contract_month(secid)
+        if ym is not None and ym > current:
+            candidates.append((ym, secid))
     return min(candidates)[1] if candidates else None
 
 
@@ -77,12 +86,12 @@ def fetch_nearest_brent_secid(*, as_of: date | None = None) -> str:
     params = {
         "iss.meta": "off",
         "iss.only": "securities",
-        "securities.columns": "SECID,LASTTRADEDATE,LASTDELDATE",
+        "securities.columns": "SECID",
     }
     url = f"{ISS_BASE}/engines/futures/markets/forts/boards/RFUD/securities.json?{urlencode(params)}"
     secid = select_nearest_brent_future(_get_json(url), as_of=as_of)
     if secid is None:
-        raise ValueError("MOEX returned no active Brent future")
+        raise ValueError("MOEX returned no active regular Brent future")
     return secid
 
 
@@ -120,55 +129,28 @@ def calculate_oil_rub_signal(*, brent: MarketSeries | None, cnyrub: MarketSeries
     b20 = _pct_return(brent.closes, 20) if brent else None
     r5 = _pct_return(cnyrub.closes, 5) if cnyrub else None
     r20 = _pct_return(cnyrub.closes, 20) if cnyrub else None
-
     components: list[tuple[float, float]] = []
-    if b20 is not None:
-        components.append((0.30, brent_return_stress(b20)))
-    if b5 is not None:
-        components.append((0.20, brent_return_stress(b5)))
-    if r20 is not None:
-        components.append((0.30, rub_return_stress(r20)))
-    if r5 is not None:
-        components.append((0.20, rub_return_stress(r5)))
+    if b20 is not None: components.append((0.30, brent_return_stress(b20)))
+    if b5 is not None: components.append((0.20, brent_return_stress(b5)))
+    if r20 is not None: components.append((0.30, rub_return_stress(r20)))
+    if r5 is not None: components.append((0.20, rub_return_stress(r5)))
     coverage = round(sum(w for w, _ in components), 4)
-
     last_days = [x.last_day for x in (brent, cnyrub) if x is not None and x.last_day is not None]
     latest = min(last_days) if len(last_days) == 2 else None
     fresh = latest is not None and (today - latest).days <= 5
     has_oil = b5 is not None or b20 is not None
     has_rub = r5 is not None or r20 is not None
     if not fresh or not has_oil or not has_rub or coverage < 0.75:
-        return OilRubResult(
-            signal=None,
-            brent_secid=brent.secid if brent else None,
-            brent_return_5d=b5,
-            brent_return_20d=b20,
-            cnyrub_return_5d=r5,
-            cnyrub_return_20d=r20,
-            component_coverage=coverage,
-            latest_day=latest.isoformat() if latest else None,
-            note="DATA_INSUFFICIENT: both Brent and CNYRUB, freshness <=5d and >=75% component coverage are required.",
-        )
-
+        return OilRubResult(None, brent.secid if brent else None, b5, b20, r5, r20, coverage, latest.isoformat() if latest else None, "DATA_INSUFFICIENT: both Brent and CNYRUB, freshness <=5d and >=75% component coverage are required.")
     score = round(sum(w * s for w, s in components) / coverage, 2)
     quality = DataQuality.LIVE if latest is not None and (today - latest).days <= 3 else DataQuality.DELAYED
-    return OilRubResult(
-        signal=Signal(score, quality),
-        brent_secid=brent.secid if brent else None,
-        brent_return_5d=b5,
-        brent_return_20d=b20,
-        cnyrub_return_5d=r5,
-        cnyrub_return_20d=r20,
-        component_coverage=coverage,
-        latest_day=latest.isoformat() if latest else None,
-        note="Relative Oil/RUB external stress composite; not a probability and not Crowd Score.",
-    )
+    return OilRubResult(Signal(score, quality), brent.secid if brent else None, b5, b20, r5, r20, coverage, latest.isoformat() if latest else None, "Relative Oil/RUB external stress composite; not a probability and not Crowd Score.")
 
 
 def collect_oil_rub(*, as_of: date | None = None) -> OilRubResult:
     as_of = as_of or date.today()
-    brent: MarketSeries | None = None
-    cnyrub: MarketSeries | None = None
+    brent = None
+    cnyrub = None
     try:
         secid = fetch_nearest_brent_secid(as_of=as_of)
         brent = fetch_brent_series(secid, as_of=as_of)
