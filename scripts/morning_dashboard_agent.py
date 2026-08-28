@@ -36,6 +36,10 @@ def telegram_send_photo(token: str, chat_id: str, image_path: Path, caption: str
     response.raise_for_status()
 
 
+def parse_chat_ids(raw_chat_ids: str) -> list[str]:
+    return [chat_id.strip() for chat_id in raw_chat_ids.split(",") if chat_id.strip()]
+
+
 def capture_dashboard(page, project_name: str, dashboard_url: str, output_path: Path) -> None:
     page.goto(dashboard_url, wait_until="domcontentloaded", timeout=60_000)
     try:
@@ -53,9 +57,14 @@ def load_registry() -> list[dict]:
 
 def main() -> int:
     token = os.getenv("TELEGRAM_BOT_TOKEN")
-    chat_id = os.getenv("TELEGRAM_CHAT_ID")
-    if not token or not chat_id:
+    raw_chat_ids = os.getenv("TELEGRAM_CHAT_ID")
+    if not token or not raw_chat_ids:
         print("Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID", file=sys.stderr)
+        return 2
+
+    chat_ids = parse_chat_ids(raw_chat_ids)
+    if not chat_ids:
+        print("No valid Telegram chat IDs found", file=sys.stderr)
         return 2
 
     dashboards = [item for item in load_registry() if item.get("enabled") is True]
@@ -84,10 +93,11 @@ def main() -> int:
                     capture_dashboard(page, name, url, output_path)
                     now = datetime.now(TIMEZONE).strftime("%d.%m.%Y %H:%M MSK")
                     caption = f"📊 {name}\n🕒 Обновлено: {now}\n\n🔗 Открыть дашборд: {url}"
-                    telegram_send_photo(token, chat_id, output_path, caption)
+                    for chat_id in chat_ids:
+                        telegram_send_photo(token, chat_id, output_path, caption)
                     success += 1
                     last_error = None
-                    print(f"PASS {name} attempt={attempt}")
+                    print(f"PASS {name} attempt={attempt} recipients={len(chat_ids)}")
                     break
                 except Exception as exc:
                     last_error = exc
@@ -97,10 +107,11 @@ def main() -> int:
 
             if last_error is not None:
                 failed.append(name)
-                try:
-                    telegram_send_message(token, chat_id, f"⚠️ {name}\nDashboard unavailable")
-                except Exception as exc:
-                    print(f"ERROR sending failure notification for {name}: {exc}", file=sys.stderr)
+                for chat_id in chat_ids:
+                    try:
+                        telegram_send_message(token, chat_id, f"⚠️ {name}\nDashboard unavailable")
+                    except Exception as exc:
+                        print(f"ERROR sending failure notification for {name} to {chat_id}: {exc}", file=sys.stderr)
 
         browser.close()
 
@@ -114,7 +125,8 @@ def main() -> int:
         summary.append("")
         summary.extend(f"⚠️ {name}" for name in failed)
 
-    telegram_send_message(token, chat_id, "\n".join(summary))
+    for chat_id in chat_ids:
+        telegram_send_message(token, chat_id, "\n".join(summary))
     return 0 if not failed else 1
 
 
