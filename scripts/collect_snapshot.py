@@ -5,6 +5,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 from moex_crash_radar.breadth import breadth_signal, calculate_breadth, index_vs_breadth_divergence
+from moex_crash_radar.context import calculate_context
 from moex_crash_radar.distribution import calculate_distribution, distribution_signal
 from moex_crash_radar.engine import calculate_crash, crash_momentum
 from moex_crash_radar.features import derive_index_signals
@@ -74,6 +75,7 @@ def main() -> None:
             signals["volume_distribution"] = distribution_signal(distribution)
 
     crash = calculate_crash(signals)
+    context = calculate_context({})
     evidence = build_daily_evidence(index_candles, universe, min_equity_coverage=0.50, warmup=60)
     exit_gate = exit_gate_status(evidence)
     score_history = [x.score for x in evidence if x.score is not None]
@@ -85,7 +87,7 @@ def main() -> None:
     ]
 
     payload = {
-        "release": "R0.4.4 Visual & Investment Logic Review",
+        "release": "R0.5.0 Context Layer Foundation",
         "as_of": index_candles[-1].begin,
         "source": "MOEX ISS",
         "secid": "IMOEX",
@@ -94,6 +96,21 @@ def main() -> None:
         "signals": {k: {"score": v.score, "quality": v.quality.value} for k, v in signals.items()},
         "breadth": breadth_payload,
         "volume_distribution": distribution_payload,
+        "context": {
+            "score": context.score,
+            "state": context.state.value,
+            "quality": context.quality.value,
+            "coverage": context.coverage,
+            "available_groups": context.available_groups,
+            "total_groups": context.total_groups,
+            "groups": {
+                "rate_ofz": {"score": None, "quality": "N/A"},
+                "oil_rub": {"score": None, "quality": "N/A"},
+                "macro_earnings": {"score": None, "quality": "N/A"},
+                "news_geopolitics": {"score": None, "quality": "N/A"},
+            },
+            "note": "Independent external-risk layer. Score is a relative stress composite, not a probability and not Crowd Score.",
+        },
         "crash": {
             "score": crash.score,
             "state": crash.state.value,
@@ -126,7 +143,7 @@ def main() -> None:
             },
             "warning": "Calibration evidence uses a present-day liquid basket; historical breadth has survivorship/listing-history bias.",
         },
-        "note": "Live MOEX market layer is active. Macro/news groups and Bottom Engine inputs are intentionally N/A until sourced; missing data is never invented.",
+        "note": "R0.5.0 establishes an independent Context Layer. External sources remain N/A until R0.5.1+ live integrations pass Quality Gate; missing data is never invented.",
     }
 
     out = Path("artifacts/market_snapshot.json")
