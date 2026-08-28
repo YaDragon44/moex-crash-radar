@@ -13,13 +13,27 @@ def good_snapshot():
         )
     }
     return {
-        "release": "R0.4.4 Visual & Investment Logic Review",
+        "release": "R0.5.0 Context Layer Foundation",
         "as_of": "2026-08-27T17:00:00+03:00",
         "source": "MOEX ISS",
         "secid": "IMOEX",
         "last_close": 2087.96,
         "data_quality": "LIVE",
         "signals": core,
+        "context": {
+            "score": None,
+            "state": "DATA_INSUFFICIENT",
+            "quality": "N/A",
+            "coverage": 0.0,
+            "available_groups": 0,
+            "total_groups": 4,
+            "groups": {
+                "rate_ofz": {"score": None, "quality": "N/A"},
+                "oil_rub": {"score": None, "quality": "N/A"},
+                "macro_earnings": {"score": None, "quality": "N/A"},
+                "news_geopolitics": {"score": None, "quality": "N/A"},
+            },
+        },
         "crash": {"score": 55.94, "available_weight": 0.72, "critical_confirmations": 1},
         "crash_history": [
             {"day": "2026-08-26", "score": 53.0, "state": "DEFENSIVE"},
@@ -64,6 +78,16 @@ def test_missing_core_signal_fails():
 def test_optional_unsourced_signal_cannot_be_fabricated():
     s = good_snapshot(); s["signals"]["rate_ofz"] = {"score": 42, "quality": "LIVE"}
     assert any("rate_ofz" in e for e in validate_dashboard_snapshot(s))
+
+
+def test_context_group_cannot_be_fabricated_before_live_integration():
+    s = good_snapshot(); s["context"]["groups"]["rate_ofz"] = {"score": 42, "quality": "LIVE"}
+    assert any("context group rate_ofz" in e for e in validate_dashboard_snapshot(s))
+
+
+def test_context_without_score_must_be_data_insufficient():
+    s = good_snapshot(); s["context"]["state"] = "NEUTRAL"
+    assert any("DATA_INSUFFICIENT" in e for e in validate_dashboard_snapshot(s))
 
 
 def test_cash_stage_requires_boolean_confirmation():
