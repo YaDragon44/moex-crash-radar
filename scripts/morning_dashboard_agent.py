@@ -83,7 +83,8 @@ def main() -> int:
                 try:
                     capture_dashboard(page, name, url, output_path)
                     now = datetime.now(TIMEZONE).strftime("%d.%m.%Y %H:%M MSK")
-                    telegram_send_photo(token, chat_id, output_path, f"📊 {name}\nОбновлено: {now}")
+                    caption = f"📊 {name}\n🕒 Обновлено: {now}\n\n🔗 Открыть дашборд: {url}"
+                    telegram_send_photo(token, chat_id, output_path, caption)
                     success += 1
                     last_error = None
                     print(f"PASS {name} attempt={attempt}")
