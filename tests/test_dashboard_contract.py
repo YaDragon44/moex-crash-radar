@@ -12,9 +12,10 @@ def good_snapshot():
             "levels_momentum",
         )
     }
+    core["rate_ofz"] = {"score": 52.0, "quality": "LIVE"}
     return {
-        "release": "R0.5.0 Context Layer Foundation",
-        "as_of": "2026-08-27T17:00:00+03:00",
+        "release": "R0.5.1 Rate / OFZ Live Integration",
+        "as_of": "2026-08-28T09:45:00+03:00",
         "source": "MOEX ISS",
         "secid": "IMOEX",
         "last_close": 2087.96,
@@ -24,11 +25,22 @@ def good_snapshot():
             "score": None,
             "state": "DATA_INSUFFICIENT",
             "quality": "N/A",
-            "coverage": 0.0,
-            "available_groups": 0,
+            "coverage": 0.35,
+            "available_groups": 1,
             "total_groups": 4,
             "groups": {
-                "rate_ofz": {"score": None, "quality": "N/A"},
+                "rate_ofz": {
+                    "score": 52.0,
+                    "quality": "LIVE",
+                    "key_rate": 14.0,
+                    "key_rate_day": "2026-08-27",
+                    "median_long_ofz_yield": 14.8,
+                    "ofz_count": 18,
+                    "rgbi_return_5d": -0.5,
+                    "rgbi_return_20d": -1.2,
+                    "component_coverage": 1.0,
+                    "sources": ["Bank of Russia", "MOEX ISS TQOB", "MOEX ISS RGBI"],
+                },
                 "oil_rub": {"score": None, "quality": "N/A"},
                 "macro_earnings": {"score": None, "quality": "N/A"},
                 "news_geopolitics": {"score": None, "quality": "N/A"},
@@ -36,8 +48,8 @@ def good_snapshot():
         },
         "crash": {"score": 55.94, "available_weight": 0.72, "critical_confirmations": 1},
         "crash_history": [
-            {"day": "2026-08-26", "score": 53.0, "state": "DEFENSIVE"},
-            {"day": "2026-08-27", "score": 55.94, "state": "DEFENSIVE"},
+            {"day": "2026-08-27", "score": 53.0, "state": "DEFENSIVE"},
+            {"day": "2026-08-28", "score": 55.94, "state": "DEFENSIVE"},
         ],
         "exit_gate": {
             "stage": "EARLY_WARNING",
@@ -75,14 +87,29 @@ def test_missing_core_signal_fails():
     assert any("breadth" in e for e in validate_dashboard_snapshot(s))
 
 
-def test_optional_unsourced_signal_cannot_be_fabricated():
-    s = good_snapshot(); s["signals"]["rate_ofz"] = {"score": 42, "quality": "LIVE"}
-    assert any("rate_ofz" in e for e in validate_dashboard_snapshot(s))
+def test_sourced_rate_ofz_requires_official_sources():
+    s = good_snapshot(); s["context"]["groups"]["rate_ofz"]["sources"] = ["unknown"]
+    assert any("official CBR and MOEX" in e for e in validate_dashboard_snapshot(s))
 
 
-def test_context_group_cannot_be_fabricated_before_live_integration():
-    s = good_snapshot(); s["context"]["groups"]["rate_ofz"] = {"score": 42, "quality": "LIVE"}
-    assert any("context group rate_ofz" in e for e in validate_dashboard_snapshot(s))
+def test_sourced_rate_ofz_requires_component_coverage():
+    s = good_snapshot(); s["context"]["groups"]["rate_ofz"]["component_coverage"] = 0.4
+    assert any("component_coverage" in e for e in validate_dashboard_snapshot(s))
+
+
+def test_rate_ofz_display_signal_must_match_context_group():
+    s = good_snapshot(); s["signals"]["rate_ofz"]["score"] = 99
+    assert any("must match" in e for e in validate_dashboard_snapshot(s))
+
+
+def test_one_rate_ofz_group_cannot_unlock_aggregate_context():
+    s = good_snapshot(); s["context"]["score"] = 52.0; s["context"]["state"] = "NEUTRAL"
+    assert any("one context group" in e for e in validate_dashboard_snapshot(s))
+
+
+def test_unsourced_context_groups_cannot_be_fabricated():
+    s = good_snapshot(); s["context"]["groups"]["oil_rub"] = {"score": 42, "quality": "LIVE"}
+    assert any("oil_rub" in e for e in validate_dashboard_snapshot(s))
 
 
 def test_context_without_score_must_be_data_insufficient():
