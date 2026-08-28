@@ -36,7 +36,7 @@ def test_crash_history_required():
 
 def test_dashboard_html_has_r052_hooks():
     html=open("web/r044.html",encoding="utf-8").read()
-    for token in ("market_snapshot.json","R0.5.2","MARKET","ТОЛПА","РИСК","РЕЖИМ","ПЕРЕХОД","ДЕЙСТВИЕ","Ставка / ОФЗ","Нефть / RUB","Brent","CNYRUB","contextState","Начало СВО","COVID","data_quality==='LIVE'","DELAYED"):
+    for token in ("market_snapshot.json","R0.5.2","MARKET","ТОЛПА","РИСК","РЕЖИМ","ПЕРЕХОД","ДЕЙСТВИЕ","Ставка / ОФЗ","Нефть / RUB","Brent","CNYRUB","contextState","Начало СВО","COVID","q!=='LIVE'","DELAYED"):
         assert token in html
     assert "@media(max-width:1200px)" in html and "@media(max-width:700px)" in html
 
@@ -44,4 +44,4 @@ def test_dashboard_keeps_crowd_na():
     html=open("web/r044.html",encoding="utf-8").read(); assert "Crowd Engine ещё не подключён" in html and "crowdState').textContent='N/A" in html
 
 def test_context_does_not_override_calibrated_exit():
-    html=open("web/r044.html",encoding="utf-8").read(); assert "не меняет calibrated EXIT Gate" in html and "самостоятельный CASH-сигнал" in html
+    html=open("web/r044.html",encoding="utf-8").read(); assert "не меняет calibrated EXIT Gate" in html and "самостоятельным CASH-сигналом" in html
