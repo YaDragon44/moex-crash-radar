@@ -12,6 +12,7 @@ from moex_crash_radar.features import derive_index_signals
 from moex_crash_radar.history import build_daily_evidence
 from moex_crash_radar.live_gate import CALIBRATED_EXIT_GATE, exit_gate_status
 from moex_crash_radar.moex import fetch_index_candles, fetch_share_candles
+from moex_crash_radar.rate_ofz import collect_rate_ofz
 
 
 BREADTH_UNIVERSE = (
@@ -28,7 +29,7 @@ def main() -> None:
     if not index_candles:
         raise SystemExit("MOEX returned no IMOEX candles")
 
-    signals = derive_index_signals(index_candles)
+    market_signals = derive_index_signals(index_candles)
     universe = {}
     failed = []
     for secid in BREADTH_UNIVERSE:
@@ -60,7 +61,7 @@ def main() -> None:
             "failed_secids": failed,
         }
         if breadth.usable_size >= 12 and breadth_coverage >= 0.50:
-            signals["breadth"] = breadth_signal(breadth)
+            market_signals["breadth"] = breadth_signal(breadth)
 
     distribution = calculate_distribution(universe)
     distribution_payload = None
@@ -72,10 +73,19 @@ def main() -> None:
             "mean_down_up_volume_ratio": distribution.mean_down_up_volume_ratio,
         }
         if distribution.usable_size >= 12 and breadth_coverage >= 0.50:
-            signals["volume_distribution"] = distribution_signal(distribution)
+            market_signals["volume_distribution"] = distribution_signal(distribution)
 
-    crash = calculate_crash(signals)
-    context = calculate_context({})
+    # R0.3.3 EXIT calibration was validated on the market-only feature set.
+    # Context inputs are intentionally NOT injected into calculate_crash/exit_gate
+    # until a separate historical re-validation proves that thresholds remain valid.
+    crash = calculate_crash(market_signals)
+
+    rate_ofz = collect_rate_ofz(as_of=end)
+    context_signals = {}
+    if rate_ofz.signal is not None:
+        context_signals["rate_ofz"] = rate_ofz.signal
+    context = calculate_context(context_signals)
+
     evidence = build_daily_evidence(index_candles, universe, min_equity_coverage=0.50, warmup=60)
     exit_gate = exit_gate_status(evidence)
     score_history = [x.score for x in evidence if x.score is not None]
@@ -86,14 +96,32 @@ def main() -> None:
         if x.score is not None
     ]
 
+    display_signals = dict(market_signals)
+    if rate_ofz.signal is not None:
+        display_signals["rate_ofz"] = rate_ofz.signal
+
+    rate_ofz_group = {
+        "score": rate_ofz.signal.score if rate_ofz.signal else None,
+        "quality": rate_ofz.signal.quality.value if rate_ofz.signal else "N/A",
+        "key_rate": rate_ofz.key_rate,
+        "key_rate_day": rate_ofz.key_rate_day,
+        "median_long_ofz_yield": rate_ofz.median_long_ofz_yield,
+        "ofz_count": rate_ofz.ofz_count,
+        "rgbi_return_5d": rate_ofz.rgbi_return_5d,
+        "rgbi_return_20d": rate_ofz.rgbi_return_20d,
+        "component_coverage": rate_ofz.component_coverage,
+        "note": rate_ofz.note,
+        "sources": ["Bank of Russia", "MOEX ISS TQOB", "MOEX ISS RGBI"],
+    }
+
     payload = {
-        "release": "R0.5.0 Context Layer Foundation",
+        "release": "R0.5.1 Rate / OFZ Live Integration",
         "as_of": index_candles[-1].begin,
         "source": "MOEX ISS",
         "secid": "IMOEX",
         "last_close": index_candles[-1].close,
         "data_quality": crash.quality.value,
-        "signals": {k: {"score": v.score, "quality": v.quality.value} for k, v in signals.items()},
+        "signals": {k: {"score": v.score, "quality": v.quality.value} for k, v in display_signals.items()},
         "breadth": breadth_payload,
         "volume_distribution": distribution_payload,
         "context": {
@@ -104,12 +132,12 @@ def main() -> None:
             "available_groups": context.available_groups,
             "total_groups": context.total_groups,
             "groups": {
-                "rate_ofz": {"score": None, "quality": "N/A"},
+                "rate_ofz": rate_ofz_group,
                 "oil_rub": {"score": None, "quality": "N/A"},
                 "macro_earnings": {"score": None, "quality": "N/A"},
                 "news_geopolitics": {"score": None, "quality": "N/A"},
             },
-            "note": "Independent external-risk layer. Score is a relative stress composite, not a probability and not Crowd Score.",
+            "note": "Independent external-risk layer. Score is a relative stress composite, not a probability and not Crowd Score. One live group alone cannot unlock Context action.",
         },
         "crash": {
             "score": crash.score,
@@ -141,9 +169,9 @@ def main() -> None:
                 "cooldown_rows": CALIBRATED_EXIT_GATE.cooldown_rows,
                 "rearm_clear_rows": CALIBRATED_EXIT_GATE.rearm_clear_rows,
             },
-            "warning": "Calibration evidence uses a present-day liquid basket; historical breadth has survivorship/listing-history bias.",
+            "warning": "Calibration evidence uses a present-day liquid basket; historical breadth has survivorship/listing-history bias. R0.5 context inputs do not alter the calibrated R0.3.3 EXIT gate until re-validation.",
         },
-        "note": "R0.5.0 establishes an independent Context Layer. External sources remain N/A until R0.5.1+ live integrations pass Quality Gate; missing data is never invented.",
+        "note": "R0.5.1 activates Rate/OFZ context from official CBR and MOEX sources. Other context groups and Bottom Engine remain N/A; missing data is never invented.",
     }
 
     out = Path("artifacts/market_snapshot.json")
