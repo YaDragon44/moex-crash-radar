@@ -9,7 +9,7 @@ CORE_SIGNALS = (
     "volatility_liquidity",
     "levels_momentum",
 )
-OPTIONAL_SIGNALS = (
+CONTEXT_SIGNALS = (
     "rate_ofz",
     "oil_rub",
     "macro_earnings",
@@ -17,7 +17,11 @@ OPTIONAL_SIGNALS = (
 )
 EXIT_STAGES = {"NORMAL", "EARLY_WARNING", "EXIT_WATCH", "CASH_CONFIRMED", "DATA_INSUFFICIENT"}
 CONTEXT_STATES = {"SUPPORTIVE", "NEUTRAL", "CAUTION", "STRESS", "DATA_INSUFFICIENT"}
-DASHBOARD_RELEASE = "R0.5.0 Context Layer Foundation"
+DASHBOARD_RELEASE = "R0.5.1 Rate / OFZ Live Integration"
+
+
+def _valid_score(value: Any) -> bool:
+    return isinstance(value, (int, float)) and 0 <= value <= 100
 
 
 def validate_dashboard_snapshot(snapshot: dict[str, Any]) -> list[str]:
@@ -40,17 +44,10 @@ def validate_dashboard_snapshot(snapshot: dict[str, Any]) -> list[str]:
         if not isinstance(item, dict):
             errors.append(f"core signal {key} is missing")
             continue
-        score = item.get("score")
-        if not isinstance(score, (int, float)) or not 0 <= score <= 100:
+        if not _valid_score(item.get("score")):
             errors.append(f"core signal {key}.score must be 0..100")
         if not item.get("quality"):
             errors.append(f"core signal {key}.quality is required")
-
-    for key in OPTIONAL_SIGNALS:
-        if key in signals:
-            item = signals[key]
-            if item not in (None, {}) and isinstance(item, dict) and item.get("score") is not None:
-                errors.append(f"optional signal {key} must remain N/A until sourced")
 
     context = snapshot.get("context") or {}
     if context.get("state") not in CONTEXT_STATES:
@@ -58,7 +55,7 @@ def validate_dashboard_snapshot(snapshot: dict[str, Any]) -> list[str]:
     if context.get("quality") not in {"LIVE", "DELAYED", "STALE", "ERROR", "N/A"}:
         errors.append("context.quality is invalid")
     cscore = context.get("score")
-    if cscore is not None and (not isinstance(cscore, (int, float)) or not 0 <= cscore <= 100):
+    if cscore is not None and not _valid_score(cscore):
         errors.append("context.score must be null or 0..100")
     coverage = context.get("coverage")
     if not isinstance(coverage, (int, float)) or not 0 <= coverage <= 1:
@@ -70,18 +67,53 @@ def validate_dashboard_snapshot(snapshot: dict[str, Any]) -> list[str]:
         errors.append("context.available_groups must be 0..4")
     if cscore is None and context.get("state") != "DATA_INSUFFICIENT":
         errors.append("empty context score requires DATA_INSUFFICIENT state")
+
     groups = context.get("groups") or {}
-    for key in OPTIONAL_SIGNALS:
-        item = groups.get(key)
-        if not isinstance(item, dict):
+    for key in CONTEXT_SIGNALS:
+        if not isinstance(groups.get(key), dict):
             errors.append(f"context group {key} is missing")
-            continue
+
+    rate = groups.get("rate_ofz") or {}
+    rate_score = rate.get("score")
+    if rate_score is not None:
+        if not _valid_score(rate_score):
+            errors.append("context group rate_ofz.score must be 0..100")
+        if rate.get("quality") not in {"LIVE", "DELAYED"}:
+            errors.append("sourced rate_ofz requires LIVE or DELAYED quality")
+        if not isinstance(rate.get("key_rate"), (int, float)):
+            errors.append("sourced rate_ofz requires key_rate")
+        if not rate.get("key_rate_day"):
+            errors.append("sourced rate_ofz requires key_rate_day")
+        comp_cov = rate.get("component_coverage")
+        if not isinstance(comp_cov, (int, float)) or comp_cov < 0.65 or comp_cov > 1:
+            errors.append("sourced rate_ofz component_coverage must be 0.65..1")
+        if not isinstance(rate.get("ofz_count"), int):
+            errors.append("sourced rate_ofz requires ofz_count")
+        sources = rate.get("sources") or []
+        if "Bank of Russia" not in sources or not any("MOEX" in str(x) for x in sources):
+            errors.append("rate_ofz must disclose official CBR and MOEX sources")
+        signal_item = signals.get("rate_ofz") or {}
+        if signal_item.get("score") != rate_score or signal_item.get("quality") != rate.get("quality"):
+            errors.append("signals.rate_ofz must match context.groups.rate_ofz")
+    else:
+        if "rate_ofz" in signals and (signals.get("rate_ofz") or {}).get("score") is not None:
+            errors.append("signals.rate_ofz cannot be populated when context group is N/A")
+
+    for key in ("oil_rub", "macro_earnings", "news_geopolitics"):
+        item = groups.get(key) or {}
         if item.get("score") is not None:
-            errors.append(f"context group {key} must remain N/A until live source integration")
+            errors.append(f"context group {key} must remain N/A until its live integration")
+        if key in signals and (signals.get(key) or {}).get("score") is not None:
+            errors.append(f"signal {key} must remain N/A until its live integration")
+
+    # One live Rate/OFZ group alone must not unlock the aggregate Context action gate.
+    if rate_score is not None and available_groups == 1:
+        if cscore is not None or context.get("state") != "DATA_INSUFFICIENT":
+            errors.append("one context group cannot unlock aggregate Context score/state")
 
     crash = snapshot.get("crash") or {}
     score = crash.get("score")
-    if score is not None and (not isinstance(score, (int, float)) or not 0 <= score <= 100):
+    if score is not None and not _valid_score(score):
         errors.append("crash.score must be null or 0..100")
     weight = crash.get("available_weight")
     if not isinstance(weight, (int, float)) or not 0 <= weight <= 1:
@@ -92,14 +124,13 @@ def validate_dashboard_snapshot(snapshot: dict[str, Any]) -> list[str]:
 
     history = snapshot.get("crash_history")
     if not isinstance(history, list) or not history:
-        errors.append("crash_history is required for R0.5.0 dashboard")
+        errors.append("crash_history is required for R0.5.1 dashboard")
     else:
         for row in history:
             if not isinstance(row, dict) or not row.get("day"):
                 errors.append("crash_history rows require day")
                 break
-            hscore = row.get("score")
-            if not isinstance(hscore, (int, float)) or not 0 <= hscore <= 100:
+            if not _valid_score(row.get("score")):
                 errors.append("crash_history score must be 0..100")
                 break
 
