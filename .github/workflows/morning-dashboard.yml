@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '1 5 * * *' # 08:01 Europe/Moscow (UTC+3)
+  push:
+    paths:
+      - '.github/personal-morning-smoke-test'
 
 permissions:
   contents: read
@@ -23,6 +26,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install playwright requests
           playwright install --with-deps chromium
+
+      - name: Send Personal Morning Dashboard
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scripts/personal_morning_dashboard.py
 
       - name: Run Morning Dashboard Agent
         env:
