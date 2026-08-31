@@ -4,9 +4,9 @@ import json
 from dataclasses import asdict
 from pathlib import Path
 
+from moex_crash_radar.brent_history import fetch_brent_history
 from moex_crash_radar.calibration import calibrate_cash_gate
 from moex_crash_radar.context_validation import (
-    fetch_brent_history,
     fetch_cnyrub_history,
     fetch_key_rate_history,
     fetch_rgbi_history,
@@ -29,6 +29,9 @@ CALIBRATION_EPISODES = (
     ("SEP_2022", "2022-08-01", "2022-11-30"),
     ("CORRECTION_2024", "2024-05-01", "2024-09-30"),
 )
+
+MIN_CONTEXT_SCORED_SHARE = 0.60
+MIN_BRENT_ROWS = 500
 
 
 def main() -> None:
@@ -76,15 +79,32 @@ def main() -> None:
         episodes=CALIBRATION_EPISODES,
     )
 
+    scored_context = [x for x in context if x.score is not None]
+    scored_share = round(len(scored_context) / len(context), 4) if context else 0.0
+    data_gate_pass = bool(
+        len(brent) >= MIN_BRENT_ROWS
+        and len(key_rates) > 0
+        and len(rgbi) > 0
+        and len(cnyrub) > 0
+        and scored_share >= MIN_CONTEXT_SCORED_SHARE
+    )
+
     base_false_rate = preferred.get("false_event_rate")
     usable = [x for x in candidates if x.detected_episodes == len(CALIBRATION_EPISODES) and x.false_event_rate is not None]
     improved = [x for x in usable if base_false_rate is not None and x.false_event_rate < base_false_rate]
     best = min(improved, key=lambda x: (x.false_event_rate, -float(x.median_lead_days or 0))) if improved else None
 
-    scored_context = [x for x in context if x.score is not None]
+    if not data_gate_pass:
+        status = "DATA_GATE_FAIL_NO_DECISION"
+        best = None
+    elif best:
+        status = "GO_FOR_RISK_INTEGRATION_REVIEW"
+    else:
+        status = "NO_GO_KEEP_CONTEXT_INFORMATIONAL"
+
     payload = {
         "release": "R0.5.3 Context Historical Validation",
-        "status": "GO_FOR_RISK_INTEGRATION_REVIEW" if best else "NO_GO_KEEP_CONTEXT_INFORMATIONAL",
+        "status": status,
         "source": "MOEX ISS + CBR",
         "range": {"start": start, "end": end},
         "methodology": {
@@ -93,9 +113,14 @@ def main() -> None:
             "context_changes_existing_exit_events_only": True,
             "live_exit_gate_unchanged": True,
             "historical_rate_ofz_proxy": "CBR key rate + RGBI 5D/20D; historical cross-sectional median OFZ yield unavailable, weights re-normalized",
-            "historical_oil_rub_proxy": "stitched MOEX September Brent futures + CNYRUB_TOM 5D/20D",
+            "historical_oil_rub_proxy": "stitched archived MOEX September Brent futures + CNYRUB_TOM 5D/20D",
             "decision_rule": "Context may proceed to Risk Engine integration review only if a threshold reduces false-event rate while preserving detection of all four calibration episodes.",
             "warning": "Same present-day liquid equity universe limitation as R0.3.3 remains. This is calibration evidence, not unbiased production performance.",
+        },
+        "data_gate": {
+            "pass": data_gate_pass,
+            "min_brent_rows": MIN_BRENT_ROWS,
+            "min_context_scored_share": MIN_CONTEXT_SCORED_SHARE,
         },
         "source_rows": {
             "imoex": len(index),
@@ -107,7 +132,7 @@ def main() -> None:
             "cnyrub": len(cnyrub),
             "context_scored": len(scored_context),
             "context_total": len(context),
-            "context_scored_share": round(len(scored_context) / len(context), 4) if context else 0.0,
+            "context_scored_share": scored_share,
         },
         "baseline_exit_gate": preferred,
         "context_candidates": [asdict(x) for x in candidates],
