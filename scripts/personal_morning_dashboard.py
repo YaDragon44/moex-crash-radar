@@ -10,6 +10,7 @@ import requests
 MSK = ZoneInfo("Europe/Moscow")
 MOSCOW = (55.7558, 37.6176)
 NAKHIMOVSKY = (55.6626, 37.6055)
+GISMETEO_MOSCOW_DAY = "https://www.gismeteo.ru/weather-moscow-4368/"
 
 
 def get_json(url: str, params=None):
@@ -21,7 +22,7 @@ def get_json(url: str, params=None):
 def telegram_send(token: str, chat_id: str, text: str) -> None:
     r = requests.post(
         f"https://api.telegram.org/bot{token}/sendMessage",
-        data={"chat_id": chat_id, "text": text, "disable_web_page_preview": "true"},
+        data={"chat_id": chat_id, "text": text, "disable_web_page_preview": "false"},
         timeout=30,
     )
     r.raise_for_status()
@@ -167,12 +168,19 @@ def finance_block() -> str:
     )
 
 
+def gismeteo_block() -> str:
+    return (
+        "🌦 GISMETEO · МОСКВА · НА ДЕНЬ\n"
+        f"{GISMETEO_MOSCOW_DAY}"
+    )
+
+
 def main() -> int:
     token = os.getenv("TELEGRAM_BOT_TOKEN")
     raw_ids = os.getenv("TELEGRAM_CHAT_ID")
     if not token or not raw_ids:
         raise SystemExit("Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID")
-    text = weather_block() + "\n\n" + finance_block()
+    text = weather_block() + "\n\n" + finance_block() + "\n\n" + gismeteo_block()
     failures = 0
     for chat_id in parse_chat_ids(raw_ids):
         try:
