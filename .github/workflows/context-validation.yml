@@ -1,0 +1,36 @@
+name: Context Historical Validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/moex_crash_radar/context_validation.py'
+      - 'scripts/run_context_historical_validation.py'
+      - 'tests/test_context_validation.py'
+      - '.github/workflows/context-validation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install
+        run: pip install -e . pytest
+      - name: Unit regression
+        run: pytest
+      - name: Run historical context validation
+        run: python scripts/run_context_historical_validation.py
+      - name: Upload validation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: context-historical-validation
+          path: artifacts/context_historical_validation.json
+          retention-days: 14
