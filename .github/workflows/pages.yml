@@ -39,6 +39,8 @@ jobs:
           mkdir -p _site
           cp web/r044.html _site/index.html
           cp artifacts/market_snapshot.json _site/market_snapshot.json
+          mkdir -p _site/idea-radar
+          cp web/idea-radar/index.html _site/idea-radar/index.html
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
         with:
