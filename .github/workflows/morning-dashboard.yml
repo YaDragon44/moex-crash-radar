@@ -2,6 +2,8 @@ name: Morning Dashboard MVP
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '1 5 * * *' # 08:01 Europe/Moscow (UTC+3)
 
 permissions:
   contents: read
