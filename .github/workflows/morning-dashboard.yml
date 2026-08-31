@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '1 5 * * *' # 08:01 Europe/Moscow (UTC+3)
+  push:
+    paths:
+      - '.github/personal-morning-gismeteo-smoke-test'
 
 permissions:
   contents: read
