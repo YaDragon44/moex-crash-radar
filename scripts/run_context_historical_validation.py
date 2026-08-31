@@ -4,7 +4,6 @@ import json
 from dataclasses import asdict
 from pathlib import Path
 
-from moex_crash_radar.brent_history import fetch_brent_history
 from moex_crash_radar.calibration import calibrate_cash_gate
 from moex_crash_radar.context_validation import (
     fetch_cnyrub_history,
@@ -13,6 +12,7 @@ from moex_crash_radar.context_validation import (
     historical_context_points,
     validate_context_gate,
 )
+from moex_crash_radar.historical_oil import fetch_fred_brent_history
 from moex_crash_radar.history import build_daily_evidence
 from moex_crash_radar.moex import fetch_index_history, fetch_share_history
 
@@ -62,7 +62,7 @@ def main() -> None:
 
     key_rates = fetch_key_rate_history(start=start, end=end)
     rgbi = fetch_rgbi_history(start=start, end=end)
-    brent = fetch_brent_history(start=start, end=end)
+    brent = fetch_fred_brent_history(start=start, end=end)
     cnyrub = fetch_cnyrub_history(start=start, end=end)
 
     context = historical_context_points(
@@ -103,9 +103,9 @@ def main() -> None:
         status = "NO_GO_KEEP_CONTEXT_INFORMATIONAL"
 
     payload = {
-        "release": "R0.5.3 Context Historical Validation",
+        "release": "R0.5.3.1 Historical Oil Data Source Hotfix",
         "status": status,
-        "source": "MOEX ISS + CBR",
+        "source": "MOEX ISS + CBR + FRED/EIA",
         "range": {"start": start, "end": end},
         "methodology": {
             "point_in_time": True,
@@ -113,7 +113,8 @@ def main() -> None:
             "context_changes_existing_exit_events_only": True,
             "live_exit_gate_unchanged": True,
             "historical_rate_ofz_proxy": "CBR key rate + RGBI 5D/20D; historical cross-sectional median OFZ yield unavailable, weights re-normalized",
-            "historical_oil_rub_proxy": "stitched archived MOEX September Brent futures + CNYRUB_TOM 5D/20D",
+            "historical_oil_rub_proxy": "FRED DCOILBRENTEU daily Europe Brent spot (underlying EIA series) + MOEX CNYRUB_TOM 5D/20D",
+            "live_oil_source_unchanged": "Live Oil/RUB continues to use MOEX Brent futures; FRED is historical-validation-only.",
             "decision_rule": "Context may proceed to Risk Engine integration review only if a threshold reduces false-event rate while preserving detection of all four calibration episodes.",
             "warning": "Same present-day liquid equity universe limitation as R0.3.3 remains. This is calibration evidence, not unbiased production performance.",
         },
