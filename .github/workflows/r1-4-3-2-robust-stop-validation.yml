@@ -1,0 +1,35 @@
+name: R1.4.3.2 Robust Stop Validation
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/run_r1_4_3_2_robust_stop_validation.py'
+      - '.github/workflows/r1-4-3-2-robust-stop-validation.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run robust stop validation
+        run: python scripts/run_r1_4_3_2_robust_stop_validation.py
+      - name: Contract checks
+        run: |
+          python - <<'PY'
+          import json
+          p='artifacts/r1_4_3_2_robust_stop_validation.json'
+          d=json.load(open(p,encoding='utf-8'))
+          assert d['release']=='R1.4.3.2'
+          assert 'NO_STOP' in d['aggregate']['models']
+          assert 'ATR_1_5' in d['gate']
+          assert d['production_stop'] in ('NO_GO','CANDIDATE_ONLY')
+          print('R1.4.3.2 contract PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1-4-3-2-robust-stop-validation
+          path: artifacts/r1_4_3_2_robust_stop_validation.*
