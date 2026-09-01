@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import json, math
+import io, json, math, zipfile
 from io import StringIO
 from pathlib import Path
 import numpy as np
@@ -8,16 +8,13 @@ import pandas as pd
 import requests
 
 BTC_FGI_URL = "https://raw.githubusercontent.com/MetalGrey/btc-fgi-daily-2020/main/datasets/btc_with_fgi_4h.csv"
-BYBIT_LS_URL = "https://api.bybit.com/v5/market/account-ratio"
-SYMBOL = "BTCUSDT"
-PERIOD = "4h"
+KAGGLE_LS_ZIP = "https://www.kaggle.com/api/v1/datasets/download/jesusgraterol/bitcoin-longshort-ratio-binance-futures"
 OOS_START = pd.Timestamp("2024-01-01")
-LS_START = pd.Timestamp("2020-07-20")
 FEE = 0.001
 
 
 def get(url, params=None):
-    r=requests.get(url,params=params,timeout=60); r.raise_for_status(); return r
+    r=requests.get(url,params=params,timeout=90); r.raise_for_status(); return r
 
 
 def load_btc():
@@ -33,42 +30,43 @@ def load_btc():
     return d
 
 
-def load_bybit_ls(end_ts: pd.Timestamp):
-    rows=[]
-    start=LS_START
-    # 80 days = 480 four-hour observations, below Bybit max limit=500.
-    while start <= end_ts:
-        end=min(start+pd.Timedelta(days=80)-pd.Timedelta(milliseconds=1), end_ts)
-        p={"category":"linear","symbol":SYMBOL,"period":PERIOD,"limit":500,
-           "startTime":int(start.timestamp()*1000),"endTime":int(end.timestamp()*1000)}
-        payload=get(BYBIT_LS_URL,p).json()
-        if payload.get("retCode") != 0:
-            raise RuntimeError(f"Bybit retCode={payload.get('retCode')} retMsg={payload.get('retMsg')}")
-        rows.extend(payload.get("result",{}).get("list",[]))
-        start=end+pd.Timedelta(milliseconds=1)
-    if not rows: return pd.DataFrame()
-    d=pd.DataFrame(rows)
-    d["timestamp"]=pd.to_datetime(pd.to_numeric(d.timestamp),unit="ms")
-    d["buy_ratio"]=pd.to_numeric(d.buyRatio,errors="coerce")
-    d["sell_ratio"]=pd.to_numeric(d.sellRatio,errors="coerce")
-    d["ls_ratio"]=d.buy_ratio/d.sell_ratio.replace(0,np.nan)
-    d=d[["timestamp","buy_ratio","sell_ratio","ls_ratio"]].dropna().drop_duplicates("timestamp").sort_values("timestamp")
-    d["gap_h"]=d.timestamp.diff().dt.total_seconds()/3600
-    d["quality_ok"]=d.gap_h.isna() | (d.gap_h==4)
-    d["ls_delta24"]=d.ls_ratio.pct_change(6)
-    # 30-day rolling positioning distribution on 4H data.
-    window=6*30
-    d["ls_p10"]=d.ls_ratio.rolling(window,min_periods=window//2).quantile(.10)
-    d["ls_p90"]=d.ls_ratio.rolling(window,min_periods=window//2).quantile(.90)
+def load_ls():
+    raw=get(KAGGLE_LS_ZIP).content
+    with zipfile.ZipFile(io.BytesIO(raw)) as z:
+        names=[n for n in z.namelist() if n.lower().endswith('.csv')]
+        if not names: raise RuntimeError('No CSV in Kaggle dataset')
+        target=next((n for n in names if 'long' in n.lower() and 'short' in n.lower()),names[0])
+        with z.open(target) as f: d=pd.read_csv(f)
+    cols={c.lower().strip():c for c in d.columns}
+    tscol=next((cols[k] for k in cols if 'timestamp' in k or k=='time'),d.columns[0])
+    ratio_col=next((cols[k] for k in cols if 'long_short_ratio' in k or 'longshortratio' in k or ('long' in k and 'short' in k and 'ratio' in k)),None)
+    if ratio_col is None: raise RuntimeError(f'Long/short ratio column not found: {list(d.columns)}')
+    ts=pd.to_numeric(d[tscol],errors='coerce')
+    if ts.notna().mean()>.9:
+        unit='ms' if ts.dropna().median()>1e11 else 's'
+        d['timestamp']=pd.to_datetime(ts,unit=unit,errors='coerce')
+    else:
+        d['timestamp']=pd.to_datetime(d[tscol],errors='coerce')
+    d['ls_ratio']=pd.to_numeric(d[ratio_col],errors='coerce')
+    d=d[['timestamp','ls_ratio']].dropna().drop_duplicates('timestamp').sort_values('timestamp')
+    # Normalize to 4H by taking last observation in each closed 4H bucket.
+    d['bucket']=d.timestamp.dt.floor('4h')
+    d=d.groupby('bucket',as_index=False).agg(timestamp=('timestamp','max'),ls_ratio=('ls_ratio','last'))
+    d['timestamp']=d['bucket']; d=d.drop(columns='bucket')
+    d['gap_h']=d.timestamp.diff().dt.total_seconds()/3600
+    d['quality_ok']=d.gap_h.isna() | (d.gap_h==4)
+    d['ls_delta24']=d.ls_ratio.pct_change(6)
+    w=6*30
+    d['ls_p10']=d.ls_ratio.rolling(w,min_periods=w//2).quantile(.10)
+    d['ls_p90']=d.ls_ratio.rolling(w,min_periods=w//2).quantile(.90)
     return d
 
 
 def sig(d,model):
     base=(d.fgi_safe<=25)&d.price_confirm.fillna(False)
-    if model=="M1A": return base
-    # Contrarian crowd stress: unusually short-heavy positioning or fast shift toward shorts.
+    if model=='M1A': return base
     short_extreme=(d.ls_ratio<=d.ls_p10)|(d.ls_delta24<-.08)
-    if model=="M2B": return base & short_extreme.fillna(False)
+    if model=='M2B': return base & short_extreme.fillna(False)
     raise ValueError(model)
 
 
@@ -79,7 +77,7 @@ def run(d,s,weighted=False):
         c=float(r.close)
         if pos and i: eq*=1+pos*(c/float(x.iloc[i-1].close)-1)
         if pos and ((pd.notna(r.swing_low) and c<float(r.swing_low)) or (pd.notna(stop) and c<stop)):
-            eq*=1-FEE*pos; trades.append({"ret":(c/entry-1)*pos-2*FEE*pos,"size":pos}); pos=0
+            eq*=1-FEE*pos; trades.append({'ret':(c/entry-1)*pos-2*FEE*pos,'size':pos}); pos=0
         if not pos and bool(s.iloc[i]) and pd.notna(r.atr14) and pd.notna(r.swing_low):
             st=float(r.swing_low)-.5*float(r.atr14)
             if 0<c-st<=2*float(r.atr14):
@@ -91,31 +89,25 @@ def run(d,s,weighted=False):
                 eq*=1-FEE*size; pos=size; entry=c; stop=st
         curve.append(eq)
     if pos:
-        eq*=1-FEE*pos; trades.append({"ret":(float(x.iloc[-1].close)/entry-1)*pos-2*FEE*pos,"size":pos}); curve[-1]=eq
+        eq*=1-FEE*pos; trades.append({'ret':(float(x.iloc[-1].close)/entry-1)*pos-2*FEE*pos,'size':pos}); curve[-1]=eq
     e=pd.Series(curve); peak=e.cummax(); dd=e/peak-1; rr=e.pct_change().fillna(0)
-    tr=[t["ret"] for t in trades]; wins=sum(v for v in tr if v>0); losses=abs(sum(v for v in tr if v<0))
-    return {"return":float(e.iloc[-1]-1),"maxdd":float(dd.min()),"sharpe":float(rr.mean()/rr.std(ddof=0)*math.sqrt(6*365)) if rr.std(ddof=0)>0 else 0.,"pf":float(wins/losses) if losses else None,"expectancy":float(np.mean(tr)) if tr else 0.,"trades":len(tr),"avg_size":float(np.mean([t['size'] for t in trades])) if trades else 0.}
+    tr=[t['ret'] for t in trades]; wins=sum(v for v in tr if v>0); losses=abs(sum(v for v in tr if v<0))
+    return {'return':float(e.iloc[-1]-1),'maxdd':float(dd.min()),'sharpe':float(rr.mean()/rr.std(ddof=0)*math.sqrt(6*365)) if rr.std(ddof=0)>0 else 0.,'pf':float(wins/losses) if losses else None,'expectancy':float(np.mean(tr)) if tr else 0.,'trades':len(tr),'avg_size':float(np.mean([t['size'] for t in trades])) if trades else 0.}
 
 
 def main():
-    out=Path("artifacts"); out.mkdir(exist_ok=True)
-    btc=load_btc(); end_ts=btc.timestamp.max(); ls=load_bybit_ls(end_ts)
-    audit={"rows":len(ls),"first":str(ls.timestamp.min()) if len(ls) else None,"last":str(ls.timestamp.max()) if len(ls) else None,
-           "quality_coverage_pct":float(ls.quality_ok.mean()*100) if len(ls) else 0.0}
-    d=btc.merge(ls,on="timestamp",how="inner") if len(ls) else pd.DataFrame()
+    out=Path('artifacts'); out.mkdir(exist_ok=True)
+    btc=load_btc(); ls=load_ls()
+    audit={'rows':len(ls),'first':str(ls.timestamp.min()) if len(ls) else None,'last':str(ls.timestamp.max()) if len(ls) else None,'quality_coverage_pct':float(ls.quality_ok.mean()*100) if len(ls) else 0.0}
+    d=btc.merge(ls,on='timestamp',how='inner') if len(ls) else pd.DataFrame()
     if len(d): d=d[(d.timestamp>=OOS_START)&d.quality_ok].copy()
-    report={"release":"R1.3.4","positioning_source":"Bybit /v5/market/account-ratio BTCUSDT 4h","audit":audit,"models":{},"verdict":"INCONCLUSIVE_INSUFFICIENT_POSITIONING_HISTORY","common_bars":len(d)}
+    report={'release':'R1.3.4','positioning_source':'Kaggle CC0 Binance Futures long_short_ratio','audit':audit,'models':{},'verdict':'INCONCLUSIVE_INSUFFICIENT_POSITIONING_HISTORY','common_bars':len(d)}
     if len(d)>=1000:
-        m1=run(d,sig(d,"M1A"))
-        m2b=run(d,sig(d,"M2B"))
-        m2d=run(d,sig(d,"M1A"),weighted=True)
-        report["models"]={"M1A":m1,"M2B_FGI_LS_FILTER":m2b,"M2D_FGI_LS_SIZING":m2d}
-        report["delta_vs_M1A"]={
-            "M2B":{"return":m2b["return"]-m1["return"],"maxdd":m2b["maxdd"]-m1["maxdd"],"sharpe":m2b["sharpe"]-m1["sharpe"],"expectancy":m2b["expectancy"]-m1["expectancy"],"trades":m2b["trades"]-m1["trades"]},
-            "M2D":{"return":m2d["return"]-m1["return"],"maxdd":m2d["maxdd"]-m1["maxdd"],"sharpe":m2d["sharpe"]-m1["sharpe"],"expectancy":m2d["expectancy"]-m1["expectancy"],"trades":m2d["trades"]-m1["trades"]},
-        }
-        report["verdict"]="POSITIONING_TEST_EXECUTED"
-    (out/"btc_positioning_r1_3_4.json").write_text(json.dumps(report,indent=2),encoding="utf-8")
+        m1=run(d,sig(d,'M1A')); m2b=run(d,sig(d,'M2B')); m2d=run(d,sig(d,'M1A'),weighted=True)
+        report['models']={'M1A':m1,'M2B_FGI_LS_FILTER':m2b,'M2D_FGI_LS_SIZING':m2d}
+        report['delta_vs_M1A']={'M2B':{'return':m2b['return']-m1['return'],'maxdd':m2b['maxdd']-m1['maxdd'],'sharpe':m2b['sharpe']-m1['sharpe'],'expectancy':m2b['expectancy']-m1['expectancy'],'trades':m2b['trades']-m1['trades']},'M2D':{'return':m2d['return']-m1['return'],'maxdd':m2d['maxdd']-m1['maxdd'],'sharpe':m2d['sharpe']-m1['sharpe'],'expectancy':m2d['expectancy']-m1['expectancy'],'trades':m2d['trades']-m1['trades']}}
+        report['verdict']='POSITIONING_TEST_EXECUTED'
+    (out/'btc_positioning_r1_3_4.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
     print(json.dumps(report,indent=2))
 
-if __name__=="__main__": main()
+if __name__=='__main__': main()
