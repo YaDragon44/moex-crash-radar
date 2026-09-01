@@ -1,0 +1,82 @@
+name: BTC Entry Radar Live R1.4.3
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [r1.4.0-btc-entry-radar-mvp]
+    paths:
+      - 'scripts/btc_entry_radar_r1_4_0.py'
+      - 'scripts/run_btc_entry_radar_live_snapshot.py'
+      - 'scripts/btc_entry_radar_journal_r1_4_1.py'
+      - 'scripts/btc_entry_radar_performance_r1_4_2.py'
+      - 'web/btc-entry-radar/**'
+      - 'tests/test_btc_entry_radar_r1_4_0.py'
+      - '.github/workflows/btc-entry-radar-live-r1-4-0.yml'
+  schedule:
+    - cron: '10 */4 * * *'
+
+permissions:
+  contents: write
+
+env:
+  PYTHONPATH: .
+
+jobs:
+  live-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: r1.4.0-btc-entry-radar-mvp
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test dependency
+        run: pip install pytest
+      - name: Entry Radar unit tests
+        run: pytest tests/test_btc_entry_radar_r1_4_0.py -q
+      - name: Collect BTC live decision snapshot
+        run: python scripts/run_btc_entry_radar_live_snapshot.py | tee btc_entry_radar_live.log
+      - name: Enforce positive-signal quality gate
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('artifacts/btc_entry_radar_live_snapshot.json'))
+          state=p['output']['state']; coverage=p['quality']['coverage_pct']; core=p['quality']['status']=='DATA READY'
+          if state in {'WATCH','ARMED','LONG_READY','MANAGE'} and not core: raise SystemExit('positive state blocked: core Quality Gate is not DATA READY')
+          if state=='LONG_READY' and coverage < 75: raise SystemExit('LONG_READY blocked: coverage <75%')
+          print('LIVE GATE PASS', state, coverage, p['quality'])
+          PY
+      - name: Append live signal journal and detect transition
+        run: python scripts/btc_entry_radar_journal_r1_4_1.py | tee btc_entry_radar_transition.log
+      - name: Score matured signals MAE MFE forward returns
+        run: python scripts/btc_entry_radar_performance_r1_4_2.py | tee btc_entry_radar_performance.log
+      - name: Publish dashboard data files
+        run: |
+          mkdir -p web/btc-entry-radar/data
+          cp artifacts/btc_entry_radar_live_snapshot.json web/btc-entry-radar/data/current.json
+          cp artifacts/btc_entry_radar_transition.json web/btc-entry-radar/data/transition.json
+          cp artifacts/btc_entry_radar_performance.json web/btc-entry-radar/data/performance.json
+      - name: Persist journal and dashboard data
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A evidence/btc_entry_radar_journal.csv web/btc-entry-radar/data
+          if git diff --cached --quiet; then
+            echo 'No persisted data changes'
+          else
+            git commit -m 'data: persist BTC Entry Radar live state [skip ci]'
+            git push origin HEAD:r1.4.0-btc-entry-radar-mvp
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: btc-entry-radar-live-r1-4-3
+          path: |
+            artifacts/btc_entry_radar_live_snapshot.json
+            artifacts/btc_entry_radar_transition.json
+            artifacts/btc_entry_radar_performance.json
+            evidence/btc_entry_radar_journal.csv
+            web/btc-entry-radar/data/
+            btc_entry_radar_live.log
+            btc_entry_radar_transition.log
+            btc_entry_radar_performance.log
