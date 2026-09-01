@@ -30,9 +30,19 @@ def evaluate(x: EntryRadarInput) -> EntryRadarOutput:
             ["Position already open", "Use structure/stop for exit", "Do not re-enter from crowd score alone"],
             "4H structure failure or protective stop")
 
+    # A fresh crowd veto may safely reject a new long even if lower-priority
+    # market/risk inputs are temporarily unavailable. Missing data can never
+    # promote a setup to WATCH/ARMED/LONG_READY.
+    if x.fgi is not None and x.fgi > 60:
+        why=["Crowd is in Greed zone", "MVP seeks asymmetric fear entries", "New long lacks crowd discount"]
+        if not x.data_ready:
+            why.append("Quality coverage is partial; verdict is veto-only")
+        return EntryRadarOutput("NO_TRADE", "DO NOT CHASE", 0.0, why,
+            "F&G returns to <=35 and full Quality Gate is restored")
+
     if not x.data_ready or x.fgi is None or x.price_confirm_4h is None or x.new_local_low_4h is None:
         return EntryRadarOutput("NO_TRADE", "WAIT", 0.0,
-            ["Quality Gate failed", "Required input is STALE/N/A", "False precision prohibited"], "Data quality restored")
+            ["Quality Gate failed", "Required entry input is STALE/N/A", "Missing data cannot create a positive setup"], "Data quality restored")
 
     if x.stop_atr is None or x.stop_atr <= 0 or x.stop_atr > 2:
         return EntryRadarOutput("NO_TRADE", "WAIT", 0.0,
@@ -41,10 +51,6 @@ def evaluate(x: EntryRadarInput) -> EntryRadarOutput:
     if x.oi_regime == "OVERHEATED":
         return EntryRadarOutput("NO_TRADE", "DO NOT CHASE", 0.0,
             ["Leverage build-up is overheated", "Long squeeze risk elevated", "OI is a risk modifier, not a buy trigger"], "Leverage normalizes")
-
-    if x.fgi > 60:
-        return EntryRadarOutput("NO_TRADE", "DO NOT CHASE", 0.0,
-            ["Crowd is in Greed zone", "MVP seeks asymmetric fear entries", "New long lacks crowd discount"], "F&G returns to <=35 or a later strategy version permits trend entries")
 
     if x.new_local_low_4h:
         return EntryRadarOutput("WATCH" if x.fgi <= 35 else "NO_TRADE", "WAIT", 0.0,
@@ -57,6 +63,7 @@ def evaluate(x: EntryRadarInput) -> EntryRadarOutput:
     if x.fgi <= 35 and x.price_confirm_4h:
         size = 1.0 if x.fgi <= 25 and x.oi_regime == "DELEVERAGING" else 0.75
         if x.oi_regime == "MODERATE_BUILD": size = 0.5
+        if x.oi_regime == "N/A": size = 0.5
         return EntryRadarOutput("LONG_READY", "SELECTIVE LONG", size,
             ["Fear/Crowd Gate passed", "4H price reversal confirmed", f"OI regime: {x.oi_regime}"], "New 4H local low / protective stop")
 
