@@ -1,0 +1,62 @@
+{
+  "input": {
+    "fgi": 69.0,
+    "price_confirm_4h": false,
+    "new_local_low_4h": true,
+    "oi_regime": "OVERHEATED",
+    "stop_atr": 0.30486339536489454,
+    "data_ready": true,
+    "position_open": false
+  },
+  "output": {
+    "state": "NO_TRADE",
+    "action": "DO NOT CHASE",
+    "standard_size": 0.0,
+    "why": [
+      "Crowd is in Greed zone",
+      "MVP seeks asymmetric fear entries",
+      "New long lacks crowd discount"
+    ],
+    "invalidation": "F&G returns to <=35 and full Quality Gate is restored"
+  },
+  "market": {
+    "price": 77314.4,
+    "timestamp": "2026-09-01T16:00:00+00:00",
+    "age_h": 4.5544484875,
+    "fresh": true,
+    "price_confirm_4h": false,
+    "new_local_low_4h": true,
+    "atr14_4h": 951.1285714285696,
+    "swing_low_4h": 77500.0,
+    "stop_price": 77024.43571428572,
+    "stop_atr": 0.30486339536489454
+  },
+  "crowd": {
+    "value": 69.0,
+    "classification": "Greed",
+    "timestamp": "2026-09-01T00:00:00+00:00",
+    "age_h": 20.5544484875,
+    "fresh": true
+  },
+  "open_interest": {
+    "regime": "OVERHEATED",
+    "timestamp": "2026-09-01T20:00:00+00:00",
+    "age_h": 0.5544484875,
+    "fresh": true,
+    "oi_value": 2809920.8700000094,
+    "delta_24h": 0.028060362394458194,
+    "delta_p10": -0.04565234523050956,
+    "delta_p90": 0.023154437068806204,
+    "points": 100
+  },
+  "quality": {
+    "coverage_pct": 100.0,
+    "status": "DATA READY",
+    "crowd": "LIVE",
+    "price_4h": "LIVE",
+    "risk": "LIVE",
+    "oi": "LIVE",
+    "errors": {}
+  },
+  "generated_at_utc": "2026-09-01T20:33:16.014555+00:00"
+}
