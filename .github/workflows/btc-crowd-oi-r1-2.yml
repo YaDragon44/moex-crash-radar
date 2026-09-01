@@ -7,6 +7,7 @@ on:
       - research/btc-crowd-oi-r1.2
     paths:
       - 'research/btc_crowd_oi_r1_2.py'
+      - 'research/btc_r1_3_ablation.py'
       - '.github/workflows/btc-crowd-oi-r1-2.yml'
   workflow_dispatch:
 
@@ -28,6 +29,8 @@ jobs:
           sed -i "s/pd.to_datetime(pd.to_numeric(fu.iloc\[:,0\]),unit='ms',utc=True)/pd.to_datetime(pd.to_numeric(fu.iloc[:,0]),unit='ms',utc=True).astype('datetime64[ns, UTC]')/" research/btc_crowd_oi_r1_2.py
       - name: Run R1.2 backtest
         run: python research/btc_crowd_oi_r1_2.py
+      - name: Run R1.3 ablation
+        run: python research/btc_r1_3_ablation.py
       - name: Upload research results
         uses: actions/upload-artifact@v4
         if: always()
