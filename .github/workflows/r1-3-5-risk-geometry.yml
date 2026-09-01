@@ -1,0 +1,36 @@
+name: R1.3.5 Risk Geometry Redesign
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - r1.3.5-risk-geometry-redesign
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install
+        run: pip install -e . pytest
+      - name: Full unit regression
+        run: pytest -q
+      - name: Historical risk geometry replay
+        run: |
+          python scripts/run_r1_3_5_risk_geometry.py \
+            --start 2024-01-01 \
+            --end 2026-08-31 \
+            --families MX,SI,SR,GZ,LK \
+            --roll-business-days 5 \
+            --slippage-ticks-rt 1.0 \
+            --broker-fee-rub-rt 0.0 > r1_3_5_report.json
+      - name: Upload research report
+        uses: actions/upload-artifact@v4
+        with:
+          name: r1-3-5-risk-geometry-report
+          path: r1_3_5_report.json
