@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import argparse
 import json
+from functools import partial
 
 from moex_crash_radar.contract_costs import fetch_contract_spec
+from moex_crash_radar.futures_data import fetch_futures_history
 from moex_crash_radar.public_baseline import BaselineConfig
 from moex_crash_radar.risk_geometry import GEOMETRIES, compare_geometries
 from moex_crash_radar.risk_sensitivity import chronological_splits
@@ -20,16 +22,19 @@ def main() -> int:
     p.add_argument("--roll-business-days", type=int, default=5)
     p.add_argument("--slippage-ticks-rt", type=float, default=1.0)
     p.add_argument("--broker-fee-rub-rt", type=float, default=0.0)
+    p.add_argument("--chunk-days", type=int, default=30)
     args = p.parse_args()
 
     config = BaselineConfig(max_stop_atr=1.5, min_rr=2.0, fee_bps_round_trip=0.0, slippage_bps_round_trip=0.0)
     families = [x.strip().upper() for x in args.families.split(",") if x.strip()]
+    history_fetcher = partial(fetch_futures_history, chunk_days=max(args.chunk_days, 1))
     output = []
     for family in families:
         try:
             chain = build_roll_chain(
                 family, start=args.start, end=args.end,
                 secid_prefix=PREFIXES[family], roll_business_days=args.roll_business_days,
+                fetcher=history_fetcher,
             )
             specs = {}
             for secid in sorted({r.secid for r in chain.bars}):
@@ -85,7 +90,6 @@ def main() -> int:
                         "gate_mode": reason, "control": control, "redesign": r,
                     })
 
-    # Count distinct family/model pairs, not multiple geometries winning the same pair.
     distinct_pairs = {(x["family"], x["model"]) for x in qualifying}
     research_go = len(distinct_pairs) >= 8
     report = {
@@ -94,6 +98,7 @@ def main() -> int:
         "control": "structural swing stop + nearest 1H obstacle",
         "geometries": list(GEOMETRIES),
         "frozen": {"max_stop_atr": 1.5, "min_rr": 2.0, "regime_trigger_location_rvol": True},
+        "retrieval": {"chunk_days": args.chunk_days},
         "status": "GO" if research_go else "NO-GO",
         "decision_rule": "GO requires >=8 distinct OOS family/model pairs. With nonzero CONTROL: >=2x trades, expectancy deterioration <=0.10R, DD deterioration <=2R. With zero CONTROL: redesigned geometry requires >=5 trades, positive expectancy, DD >=-2R.",
         "qualifying_oos_pairs": len(distinct_pairs),
