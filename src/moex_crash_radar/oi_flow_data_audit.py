@@ -100,11 +100,12 @@ def validate_no_lookahead(row: DatasetAudit) -> None:
 
 
 def baseline_public_audit(instrument: str) -> InstrumentAudit:
-    """Conservative R1.3.1 baseline using only currently verified public semantics.
+    """Conservative R1.3.1 audit from verified MOEX public/documented semantics.
 
-    This function deliberately does not infer historical intraday OI/participant
-    coverage from current web pages. Those datasets remain N/A until a historical
-    export/subscription is supplied and timestamp semantics are verified.
+    MOEX confirms FUTOI history exists from 2020 and updates at five-minute
+    granularity, but access is subscription/API-key based. Until an actual export
+    is obtained and per-instrument coverage/timestamps pass QA, intraday FUTOI is
+    PARTIAL rather than READY and cannot enable M2-M4/FULL.
     """
     rows = (
         DatasetAudit(
@@ -120,22 +121,22 @@ def baseline_public_audit(instrument: str) -> InstrumentAudit:
             notes="MOEX derivatives archive exposes contract OI in daily market results.",
         ),
         DatasetAudit(
-            instrument, "OI_INTRADAY", AuditStatus.N_A, "5m candidate", None, None,
-            "not verified historically",
-            "not verified historically",
-            notes="MOEX advertises 5-minute intraday OI product; historical coverage/access must be supplied and audited before use.",
+            instrument, "OI_INTRADAY", AuditStatus.PARTIAL, "5m", "2020", None,
+            "FUTOI market moment; exact export fields must be verified",
+            "requires verified publication/system timestamp from the subscribed export",
+            notes="Historical 5-minute FUTOI capability is confirmed by MOEX; actual instrument coverage not yet fetched in this environment.",
         ),
         DatasetAudit(
             instrument, "PARTICIPANT_DAILY", AuditStatus.DELAYED, "1D", None, None,
             "aggregated individuals/legal entities across expiries; daily change versus previous trading day",
             "use only from the next trading decision after publication; never backfill into prior intraday bars",
-            notes="Valid as delayed state/context, not as an hourly signal.",
+            notes="Valid as delayed context, not as a replacement for historical intraday FUTOI.",
         ),
         DatasetAudit(
-            instrument, "PARTICIPANT_INTRADAY", AuditStatus.N_A, "5m candidate", None, None,
-            "not verified historically",
-            "not verified historically",
-            notes="Requires subscribed historical intraday participant dataset and explicit available_time.",
+            instrument, "PARTICIPANT_INTRADAY", AuditStatus.PARTIAL, "5m", "2020", None,
+            "FUTOI FIZ/YUR long/short snapshots; exact export schema must be verified",
+            "requires verified publication/system timestamp from the subscribed export",
+            notes="MOEX confirms FUTOI covers individuals/legal entities and history from 2020; access is subscription/API-key based.",
         ),
     )
     for row in rows:
