@@ -54,33 +54,50 @@ def main() -> int:
         except Exception as exc:
             output.append({"family": family, "status": "ERROR", "error": f"{type(exc).__name__}: {exc}"})
 
-    control_oos = []
-    redesign_oos = []
+    qualifying = []
     for family in output:
         if family.get("status") != "READY":
             continue
         rows = family["splits"]["OOS"]
         for model in ("M0", "M1", "M5"):
             control = next(r for r in rows if r["model"] == model and r["geometry"] == "CONTROL")
-            controls = max(control["accepted"], 1)
-            control_oos.append(control)
             for r in rows:
                 if r["model"] != model or r["geometry"] == "CONTROL":
                     continue
-                if r["accepted"] >= 2 * controls and r["expectancy_r"] is not None and control["expectancy_r"] is not None:
-                    if r["expectancy_r"] >= control["expectancy_r"] - 0.10 and (r["max_drawdown_r"] or 0) >= (control["max_drawdown_r"] or 0) - 2.0:
-                        redesign_oos.append(r)
+                if control["accepted"] == 0:
+                    ok = (
+                        r["accepted"] >= 5
+                        and r["expectancy_r"] is not None and r["expectancy_r"] > 0
+                        and (r["max_drawdown_r"] or 0) >= -2.0
+                    )
+                    reason = "ZERO_CONTROL_ABSOLUTE_QUALITY_GATE"
+                else:
+                    ok = (
+                        r["accepted"] >= 2 * control["accepted"]
+                        and r["expectancy_r"] is not None and control["expectancy_r"] is not None
+                        and r["expectancy_r"] >= control["expectancy_r"] - 0.10
+                        and (r["max_drawdown_r"] or 0) >= (control["max_drawdown_r"] or 0) - 2.0
+                    )
+                    reason = "RELATIVE_TO_CONTROL_GATE"
+                if ok:
+                    qualifying.append({
+                        "family": family["family"], "model": model, "geometry": r["geometry"],
+                        "gate_mode": reason, "control": control, "redesign": r,
+                    })
 
-    research_go = len(redesign_oos) >= 8
+    # Count distinct family/model pairs, not multiple geometries winning the same pair.
+    distinct_pairs = {(x["family"], x["model"]) for x in qualifying}
+    research_go = len(distinct_pairs) >= 8
     report = {
-        "gate": "R1.3.5_RISK_GEOMETRY_REDESSIGN_CANDIDATE_PRESERVATION",
+        "gate": "R1.3.5_RISK_GEOMETRY_REDESIGN_CANDIDATE_PRESERVATION",
         "period": [args.start, args.end],
         "control": "structural swing stop + nearest 1H obstacle",
         "geometries": list(GEOMETRIES),
         "frozen": {"max_stop_atr": 1.5, "min_rr": 2.0, "regime_trigger_location_rvol": True},
         "status": "GO" if research_go else "NO-GO",
-        "decision_rule": "GO only if redesigned geometries materially improve OOS candidate preservation across multiple family/model pairs without >0.10R expectancy deterioration or >2R drawdown deterioration versus CONTROL.",
-        "qualifying_oos_pairs": len(redesign_oos),
+        "decision_rule": "GO requires >=8 distinct OOS family/model pairs. With nonzero CONTROL: >=2x trades, expectancy deterioration <=0.10R, DD deterioration <=2R. With zero CONTROL: redesigned geometry requires >=5 trades, positive expectancy, DD >=-2R.",
+        "qualifying_oos_pairs": len(distinct_pairs),
+        "qualifying_details": qualifying,
         "results": output,
     }
     print(json.dumps(report, ensure_ascii=False, indent=2))
