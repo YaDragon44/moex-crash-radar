@@ -11,18 +11,20 @@ def test_universe_and_autorollover():
     assert 'startsWith(p)' in HTML
 
 
-def test_fail_closed_strong_gate():
+def test_fail_closed_futoi_and_simplified_entry_gate():
     assert 'BLOCKED_AUTH' in HTML
-    assert 'oiOK&&po&&rvOK&&rOK&&tOK' in HTML
+    assert "if(dir!=='NONE'&&tOK){st='ENTRY '+dir" in HTML
     assert 'legal_net_delta' in HTML
     assert 'retail_net_delta' in HTML
+    assert "ps=['N/A','BLOCKED_AUTH','n']" in HTML
 
 
-def test_frozen_thresholds():
+def test_soft_confirmation_thresholds_remain_visible():
     assert 'x>=.5' in HTML
     assert 'rv>=1.2' in HTML
     assert 'R>=55&&R<=65&&R>Rp' in HTML
     assert 'R>=35&&R<=45&&R<Rp' in HTML
+    assert 'confirms>=2' in HTML
 
 
 def test_pages_path_is_published():
