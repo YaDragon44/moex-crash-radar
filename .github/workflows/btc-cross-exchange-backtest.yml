@@ -1,0 +1,31 @@
+name: BTC Cross-Exchange Backtest R1.3.2
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install backtest dependencies
+        run: python -m pip install pandas numpy requests
+      - name: Run BTC crowd/OI blind replay
+        run: python scripts/run_btc_cross_exchange_backtest.py | tee artifacts/btc_cross_exchange_backtest_r1_3_2.log
+      - name: Upload backtest evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: btc-cross-exchange-backtest-r1-3-2
+          path: |
+            artifacts/btc_cross_exchange_backtest_r1_3_2.json
+            artifacts/btc_cross_exchange_backtest_r1_3_2.log
+          if-no-files-found: error
