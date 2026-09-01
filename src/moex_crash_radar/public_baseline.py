@@ -1,0 +1,336 @@
+from __future__ import annotations
+
+from dataclasses import dataclass, asdict
+from datetime import datetime
+from statistics import median
+from typing import Iterable, Sequence
+
+from .moex import Candle
+
+
+@dataclass(frozen=True)
+class BaselineConfig:
+    swing_lookback: int = 3
+    atr_period: int = 14
+    rvol_sessions: int = 10
+    rvol_threshold: float = 1.0
+    location_atr_tolerance: float = 0.35
+    stop_atr_buffer: float = 0.20
+    max_stop_atr: float = 1.50
+    min_rr: float = 2.0
+    time_stop_bars: int = 4
+    time_stop_progress_r: float = 0.5
+    fee_bps_round_trip: float = 2.0
+    slippage_bps_round_trip: float = 2.0
+
+
+@dataclass(frozen=True)
+class FeatureRow:
+    index: int
+    timestamp: str
+    open: float
+    high: float
+    low: float
+    close: float
+    volume: float
+    atr: float | None
+    regime: str
+    location_long: bool
+    location_short: bool
+    rvol: float | None
+    long_trigger: bool
+    short_trigger: bool
+
+
+@dataclass(frozen=True)
+class Trade:
+    model: str
+    direction: str
+    signal_time: str
+    entry_time: str
+    exit_time: str
+    entry: float
+    stop: float
+    exit: float
+    gross_r: float
+    net_r: float
+    exit_reason: str
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class BacktestSummary:
+    model: str
+    trades: int
+    wins: int
+    losses: int
+    win_rate_pct: float | None
+    expectancy_r: float | None
+    profit_factor: float | None
+    max_drawdown_r: float | None
+    total_net_r: float
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+
+def _dt(value: str) -> datetime:
+    return datetime.fromisoformat(value)
+
+
+def _true_range(current: Candle, previous_close: float | None) -> float:
+    if previous_close is None:
+        return current.high - current.low
+    return max(
+        current.high - current.low,
+        abs(current.high - previous_close),
+        abs(current.low - previous_close),
+    )
+
+
+def _rolling_atr(candles: Sequence[Candle], period: int) -> list[float | None]:
+    trs: list[float] = []
+    out: list[float | None] = []
+    previous_close: float | None = None
+    for candle in candles:
+        trs.append(_true_range(candle, previous_close))
+        previous_close = candle.close
+        if len(trs) < period:
+            out.append(None)
+        else:
+            out.append(sum(trs[-period:]) / period)
+    return out
+
+
+def _same_hour_rvol(candles: Sequence[Candle], lookback_sessions: int) -> list[float | None]:
+    by_hour: dict[int, list[float]] = {}
+    out: list[float | None] = []
+    for candle in candles:
+        hour = _dt(candle.begin).hour
+        history = by_hour.setdefault(hour, [])
+        if candle.volume is None or len(history) < lookback_sessions:
+            out.append(None)
+        else:
+            base = median(history[-lookback_sessions:])
+            out.append((candle.volume / base) if base > 0 else None)
+        if candle.volume is not None:
+            history.append(float(candle.volume))
+    return out
+
+
+def _regime(candles: Sequence[Candle], i: int, lookback: int) -> str:
+    # Deterministic, non-repainting proxy for 4H HH/HL vs LH/LL using closed bars.
+    # Baseline keeps it intentionally simple: compare two adjacent rolling blocks.
+    if i < 2 * lookback:
+        return "RANGE"
+    older = candles[i - 2 * lookback : i - lookback]
+    recent = candles[i - lookback : i]
+    old_high, old_low = max(c.high for c in older), min(c.low for c in older)
+    new_high, new_low = max(c.high for c in recent), min(c.low for c in recent)
+    if new_high > old_high and new_low > old_low:
+        return "BULL"
+    if new_high < old_high and new_low < old_low:
+        return "BEAR"
+    return "RANGE"
+
+
+def _location(candles: Sequence[Candle], i: int, atr: float | None, lookback: int) -> tuple[bool, bool]:
+    if atr is None or i < lookback + 1:
+        return False, False
+    prev = candles[i - lookback : i]
+    support = min(c.low for c in prev)
+    resistance = max(c.high for c in prev)
+    tolerance = 0.35 * atr
+    close = candles[i].close
+    near_support = close <= support + tolerance
+    near_resistance = close >= resistance - tolerance
+    breakout_long = close > resistance
+    breakout_short = close < support
+    return near_support or breakout_long, near_resistance or breakout_short
+
+
+def build_features(candles: Sequence[Candle], config: BaselineConfig = BaselineConfig()) -> list[FeatureRow]:
+    candles = sorted(candles, key=lambda c: _dt(c.begin))
+    atrs = _rolling_atr(candles, config.atr_period)
+    rvols = _same_hour_rvol(candles, config.rvol_sessions)
+    rows: list[FeatureRow] = []
+    for i, candle in enumerate(candles):
+        atr = atrs[i]
+        long_loc, short_loc = _location(candles, i, atr, config.swing_lookback)
+        long_trigger = False
+        short_trigger = False
+        if i >= 2:
+            # Closed-bar price trigger: previous bar forms local HL/LH and current
+            # closes through the previous bar extreme. No intrabar foresight.
+            long_trigger = candles[i - 1].low > candles[i - 2].low and candle.close > candles[i - 1].high
+            short_trigger = candles[i - 1].high < candles[i - 2].high and candle.close < candles[i - 1].low
+        rows.append(
+            FeatureRow(
+                index=i,
+                timestamp=candle.begin,
+                open=candle.open,
+                high=candle.high,
+                low=candle.low,
+                close=candle.close,
+                volume=float(candle.volume or 0.0),
+                atr=atr,
+                regime=_regime(candles, i, config.swing_lookback * 4),
+                location_long=long_loc,
+                location_short=short_loc,
+                rvol=rvols[i],
+                long_trigger=long_trigger,
+                short_trigger=short_trigger,
+            )
+        )
+    return rows
+
+
+def _cost_r(entry: float, risk_distance: float, config: BaselineConfig) -> float:
+    total_bps = config.fee_bps_round_trip + config.slippage_bps_round_trip
+    return (entry * total_bps / 10000.0) / risk_distance if risk_distance > 0 else 0.0
+
+
+def _simulate_trade(
+    candles: Sequence[Candle],
+    rows: Sequence[FeatureRow],
+    i: int,
+    *,
+    model: str,
+    direction: str,
+    config: BaselineConfig,
+) -> Trade | None:
+    if i + 1 >= len(candles):
+        return None
+    signal = rows[i]
+    entry_bar = candles[i + 1]
+    entry = entry_bar.open
+    atr = signal.atr
+    if atr is None or atr <= 0:
+        return None
+
+    lookback = candles[max(0, i - config.swing_lookback + 1) : i + 1]
+    if direction == "LONG":
+        swing = min(c.low for c in lookback)
+        stop = swing - config.stop_atr_buffer * atr
+        risk = entry - stop
+    else:
+        swing = max(c.high for c in lookback)
+        stop = swing + config.stop_atr_buffer * atr
+        risk = stop - entry
+    if risk <= 0 or risk > config.max_stop_atr * atr:
+        return None
+
+    # Nearest visible obstacle is a pre-entry lookback extreme outside the stop side.
+    obstacle_window = candles[max(0, i - 24) : i + 1]
+    if direction == "LONG":
+        candidates = [c.high for c in obstacle_window if c.high > entry]
+        if candidates and (min(candidates) - entry) / risk < config.min_rr:
+            return None
+    else:
+        candidates = [c.low for c in obstacle_window if c.low < entry]
+        if candidates and (entry - max(candidates)) / risk < config.min_rr:
+            return None
+
+    target = entry + (2.0 * risk if direction == "LONG" else -2.0 * risk)
+    cost_r = _cost_r(entry, risk, config)
+    max_bars = max(config.time_stop_bars, 1)
+    last_index = min(len(candles) - 1, i + max_bars)
+    exit_price = candles[last_index].close
+    reason = "TIME"
+    for j in range(i + 1, last_index + 1):
+        bar = candles[j]
+        if direction == "LONG":
+            stop_hit = bar.low <= stop
+            target_hit = bar.high >= target
+        else:
+            stop_hit = bar.high >= stop
+            target_hit = bar.low <= target
+        # Conservative OHLC ambiguity: if both are touched, stop wins.
+        if stop_hit:
+            exit_price, reason, last_index = stop, "STOP", j
+            break
+        if target_hit:
+            exit_price, reason, last_index = target, "TARGET_2R", j
+            break
+
+    gross_r = (exit_price - entry) / risk if direction == "LONG" else (entry - exit_price) / risk
+    return Trade(
+        model=model,
+        direction=direction,
+        signal_time=signal.timestamp,
+        entry_time=entry_bar.begin,
+        exit_time=candles[last_index].begin,
+        entry=entry,
+        stop=stop,
+        exit=exit_price,
+        gross_r=round(gross_r, 4),
+        net_r=round(gross_r - cost_r, 4),
+        exit_reason=reason,
+    )
+
+
+def run_model(candles: Sequence[Candle], model: str, config: BaselineConfig = BaselineConfig()) -> list[Trade]:
+    if model not in {"M0", "M1", "M5"}:
+        raise ValueError("public baseline supports only M0, M1, M5")
+    candles = sorted(candles, key=lambda c: _dt(c.begin))
+    rows = build_features(candles, config)
+    trades: list[Trade] = []
+    next_free_index = 0
+    for i, row in enumerate(rows):
+        if i < next_free_index or row.atr is None:
+            continue
+        direction = None
+        if row.regime == "BULL" and row.long_trigger:
+            direction = "LONG"
+        elif row.regime == "BEAR" and row.short_trigger:
+            direction = "SHORT"
+        if direction is None:
+            continue
+        if model in {"M1", "M5"}:
+            if direction == "LONG" and not row.location_long:
+                continue
+            if direction == "SHORT" and not row.location_short:
+                continue
+        if model == "M5" and (row.rvol is None or row.rvol < config.rvol_threshold):
+            continue
+        trade = _simulate_trade(candles, rows, i, model=model, direction=direction, config=config)
+        if trade is not None:
+            trades.append(trade)
+            # No overlapping positions in baseline.
+            exit_index = next((k for k, c in enumerate(candles) if c.begin == trade.exit_time), i + 1)
+            next_free_index = exit_index + 1
+    return trades
+
+
+def summarize(model: str, trades: Sequence[Trade]) -> BacktestSummary:
+    if not trades:
+        return BacktestSummary(model, 0, 0, 0, None, None, None, None, 0.0)
+    values = [t.net_r for t in trades]
+    wins = [v for v in values if v > 0]
+    losses = [v for v in values if v <= 0]
+    gross_profit = sum(wins)
+    gross_loss = abs(sum(losses))
+    equity = 0.0
+    peak = 0.0
+    max_dd = 0.0
+    for value in values:
+        equity += value
+        peak = max(peak, equity)
+        max_dd = min(max_dd, equity - peak)
+    return BacktestSummary(
+        model=model,
+        trades=len(values),
+        wins=len(wins),
+        losses=len(losses),
+        win_rate_pct=round(100.0 * len(wins) / len(values), 2),
+        expectancy_r=round(sum(values) / len(values), 4),
+        profit_factor=round(gross_profit / gross_loss, 4) if gross_loss > 0 else None,
+        max_drawdown_r=round(max_dd, 4),
+        total_net_r=round(sum(values), 4),
+    )
+
+
+def run_ablation(candles: Sequence[Candle], config: BaselineConfig = BaselineConfig()) -> dict[str, BacktestSummary]:
+    return {model: summarize(model, run_model(candles, model, config)) for model in ("M0", "M1", "M5")}
