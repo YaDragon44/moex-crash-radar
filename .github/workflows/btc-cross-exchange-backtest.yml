@@ -19,8 +19,12 @@ jobs:
           python-version: '3.11'
       - name: Install backtest dependencies
         run: python -m pip install pandas numpy requests
+      - name: Prepare artifacts directory
+        run: mkdir -p artifacts
       - name: Run BTC crowd/OI blind replay
         run: python scripts/run_btc_cross_exchange_backtest.py | tee artifacts/btc_cross_exchange_backtest_r1_3_2.log
+      - name: Apply evidence sufficiency gate
+        run: python scripts/postprocess_btc_backtest_gate.py | tee -a artifacts/btc_cross_exchange_backtest_r1_3_2.log
       - name: Upload backtest evidence
         uses: actions/upload-artifact@v4
         with:
