@@ -5,67 +5,74 @@ Status: DATA GATE / BASELINE AUDIT
 ## Scope
 Target research basket: IMOEX-family futures, Si, SBER, GAZP, LKOH. The objective is to determine which datasets can be used in a no-look-ahead 1H backtest of MOEX OI Flow v1.0.
 
-## Verified public-source semantics
-1. MOEX Analytical Products states that the intraday open-interest product provides statistics for liquid futures held by individuals and legal entities at five-minute intervals. Access requires subscription.
-2. MOEX public contract pages show long/short positions for individuals/legal entities and explicitly state that the data is aggregated across expiries. They show daily change versus the previous trading day.
-3. MOEX derivatives archive exposes daily contract-level trading results including Open Interest.
-4. Public MOEX delayed market pages expose current contract-level Open Interest and confirm active liquid series such as MIX/MXI/IMOEXF, Si, SBRF, GAZR and LKOH families.
-5. Public ISS concrete-contract candle endpoint is suitable for 1H OHLCV collection, but futures rollover/expiry must be explicit. No synthetic continuous series may be created without a documented roll rule.
+## Verified MOEX semantics
+1. MOEX Analytical Products states that FUTOI/open-interest statistics for liquid futures held by individuals and legal entities are updated at five-minute intervals.
+2. MOEX announced that AlgoPack products other than MegaAlerts have historical data from 2020. FUTOI is explicitly listed as open positions of individuals/legal entities.
+3. FUTOI visual pages show intraday timestamps and separate FIZ/YUR long/short positions, open interest and directed/net positioning by underlying family.
+4. AlgoPack/FUTOI access is subscription/API-key based. Documentation-level historical capability does not by itself prove complete per-instrument coverage for our test window.
+5. MOEX public contract pages show daily long/short data aggregated across expiries; these daily figures must not be injected into earlier 1H bars.
+6. MOEX derivatives archive exposes daily contract-level Open Interest.
+7. Public ISS concrete-contract candle endpoint is suitable for 1H OHLCV collection, but futures rollover/expiry must be explicit.
 
 ## Critical conclusion
-The public data currently verified is NOT sufficient to claim a full historical 1H backtest of Legal/Retail intraday positioning.
+The earlier assumption that historical intraday Legal/Retail positioning was unavailable is corrected.
 
-Daily participant positioning must be treated as DELAYED CONTEXT only. It must never be injected into earlier 1H bars from the same trading day. Historical intraday OI/participant data remains N/A until an export/subscription dataset is supplied with verified event_time and available_time.
+MOEX confirms that FUTOI provides intraday 5-minute FIZ/YUR positioning and historical data from 2020. Therefore M2/M3/M4/FULL are technically feasible. However, they remain disabled in the executable backtest until an actual FUTOI export is obtained and passes per-instrument coverage, pairing and timestamp QA.
+
+This distinction is deliberate:
+- capability documented by MOEX = PARTIAL;
+- dataset actually fetched, timestamped and coverage-tested = READY.
 
 ## Coverage matrix
 
-| Dataset | Public status | Backtest role | Quality |
+| Dataset | Verified status | Backtest role | Quality |
 |---|---|---|---|
-| 1H OHLCV, concrete FORTS contract | available via ISS | M0/M1/M5 | READY |
-| Daily contract OI | derivatives archive/current pages | daily context / validation | READY |
-| Intraday OI history | advertised 5m product; historical export not yet verified | M2 | N/A |
-| Daily Legal/Retail | public aggregate across expiries, daily change | delayed state only | DELAYED |
-| Intraday Legal/Retail history | advertised product but historical export/access not verified | M3/M4/FULL | N/A |
+| 1H OHLCV, concrete FORTS contract | public ISS | M0/M1/M5 | READY |
+| Daily contract OI | derivatives archive/current pages | validation/context | READY |
+| Intraday OI history | FUTOI, 5m, history from 2020; subscription required | M2 | PARTIAL until export audit |
+| Daily Legal/Retail | public aggregate across expiries | delayed context only | DELAYED |
+| Intraday Legal/Retail history | FUTOI FIZ/YUR, 5m, history from 2020; subscription required | M3/M4/FULL | PARTIAL until export audit |
 
-Public-baseline weighted Quality Coverage = 52.0% under the R1.3.1 audit weights. This number is a data-coverage indicator, not a confidence/probability score.
+Documentation-level weighted Quality Coverage = 76.0% under R1.3.1 weights. This is a data-readiness indicator, not model confidence or probability.
 
 ## Instrument audit
 
 ### IMOEX family
-Current liquid families verified publicly include MIX-9.26, MXI-9.26 and perpetual IMOEXF. Use one defined signal family in a test; do not mix contract scales. For expiry contracts, roll must be deterministic and documented.
+Current liquid families verified publicly include MIX/MXI and perpetual IMOEXF. FUTOI exposes MX (IMOEX) positioning. The backtest must use one defined price series/family and document any mapping between price contract and aggregate underlying-family FUTOI.
 
 ### Si
-Current public delayed data confirms liquid Si-9.26 and Si-12.26 with substantial contract OI. Suitable for OHLCV baseline; participant intraday historical coverage remains N/A.
+Current public delayed market data confirms liquid Si expiries. FUTOI exposes Si/USDRUB positioning intraday. This is a prime candidate for the first full FUTOI coverage run.
 
 ### SBER
-Current public delayed data confirms SBRF-9.26 and SBRF-12.26 as active ordinary-share futures. SBPR is a separate preferred-share family and must not be mixed into SBRF history.
+Current market data confirms SBRF ordinary-share futures; SBPR is a separate preferred-share family and must not be mixed. FUTOI exposes SR (Sber ordinary share) positioning.
 
 ### GAZP
-Current public delayed data confirms GAZR-9.26 as an active liquid family. Suitable for price/volume baseline subject to roll audit.
+Current market data confirms GAZR futures. FUTOI exposes GZ (Gazprom) positioning.
 
 ### LKOH
-Current public delayed data confirms LKOH-9.26 and later expiries. Liquidity varies sharply by expiry; front/next roll rule is mandatory.
+Current market data confirms LKOH futures and later expiries. Price history is suitable subject to explicit roll rules. FUTOI per-underlying availability must be confirmed in the subscribed export before M3/M4 are enabled for LKOH.
 
 ## No-look-ahead contract
 Every historical record must have two timestamps:
 - event_time — when the market event belongs;
 - available_time — when the algorithm could actually know it.
 
-A feature at decision time T may use only records where available_time <= T.
+At decision time T the feature builder may use only records where available_time <= T.
 
-For 1H candles, the candle is usable only after close. For daily participant positioning, the value is usable only from the next eligible decision after its publication. Historical rows without reliable available_time are N/A.
+For 1H candles, the candle is usable only after close. For FUTOI, the export's publication/system timestamp must be preserved; a market-moment timestamp alone is insufficient if publication delay exists. Daily public positioning is usable only from the next eligible decision after publication and is not a substitute for FUTOI.
 
-## Allowed ablation after R1.3.1
-With public data alone:
+## R1.3.1 Gate result
 - M0 Price Structure: GO
 - M1 + Location: GO
-- M2 + Intraday OI: NO-GO / N/A pending historical intraday dataset
-- M3 + Legal: NO-GO / N/A for hourly signal
-- M4 + Retail: NO-GO / N/A for hourly signal
+- M2 + Intraday OI: CONDITIONAL GO — historical capability confirmed; export QA required
+- M3 + Legal: CONDITIONAL GO — FUTOI history confirmed; export QA required
+- M4 + Retail: CONDITIONAL GO — FUTOI history confirmed; export QA required
 - M5 + RVOL: GO
-- FULL: NO-GO / N/A
-
-Daily participant positioning may be tested later as a separate delayed context overlay, but must not be presented as M3/M4 hourly positioning until historical intraday availability is proven.
+- FULL: CONDITIONAL GO — blocked until actual FUTOI coverage/timestamp audit passes
 
 ## Required next gate
-R1.3.2 should build the honest public-data baseline M0/M1/M5 with deterministic futures roll handling and commission/slippage assumptions. In parallel, obtain/verify subscribed historical 5-minute OI + participant exports. Only after that dataset passes timestamp/coverage QA should M2-M4 and FULL be enabled.
+R1.3.2 should perform two tracks:
+1. Build and test the public-data baseline M0/M1/M5 with deterministic futures roll handling and commission/slippage assumptions.
+2. Add the subscribed FUTOI loader/auditor and run a real coverage matrix for MX, Si, SR, GZ and LKOH-family availability: first/last timestamp, trading days, missing 5-minute snapshots, FIZ/YUR pairing, duplicate moments, publication lag and alignment to closed 1H bars.
+
+Only after Track 2 passes may M2-M4/FULL be labelled DATA READY and enter OOS/walk-forward testing.
