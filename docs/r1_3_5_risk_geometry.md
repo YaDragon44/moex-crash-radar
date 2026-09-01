@@ -37,12 +37,14 @@ Same historical framework as R1.3.4:
 - contract-specific MINSTEP/STEPPRICE costs where available; otherwise gross result with explicit coverage.
 
 ## Gate
-A redesigned geometry qualifies on an OOS family/model pair only when:
-1. accepted trades are at least 2× CONTROL (CONTROL denominator floored at one for zero-trade cases);
+For a family/model pair where CONTROL has trades, a redesigned geometry qualifies only when:
+1. accepted trades are at least 2× CONTROL;
 2. expectancy is no worse than CONTROL by more than 0.10R;
 3. max drawdown is no worse than CONTROL by more than 2R.
 
-Research GO requires at least 8 qualifying OOS family/model pairs across the 15 possible family/model pairs. This intentionally requires cross-market breadth rather than one attractive example.
+If CONTROL has zero OOS trades, relative expectancy is undefined. Such a pair is handled fail-closed: the redesign must independently produce at least 5 OOS trades, positive expectancy and max drawdown no worse than -2R.
+
+Research GO requires at least 8 **distinct** qualifying OOS family/model pairs across the 15 possible pairs. Multiple winning geometries on the same family/model count once. This intentionally requires cross-market breadth rather than one attractive example.
 
 ## Interpretation
 - If preservation rises but expectancy collapses: reject.
