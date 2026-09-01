@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import json
 from dataclasses import asdict
+from datetime import date
 from pathlib import Path
+from statistics import median
 
-from moex_crash_radar.calibration import calibrate_cash_gate
+from moex_crash_radar.calibration import signal_event_indices
 from moex_crash_radar.context_validation import (
     fetch_cnyrub_history,
     fetch_key_rate_history,
@@ -14,6 +16,7 @@ from moex_crash_radar.context_validation import (
 )
 from moex_crash_radar.historical_oil import fetch_fred_brent_history
 from moex_crash_radar.history import build_daily_evidence
+from moex_crash_radar.live_gate import CALIBRATED_EXIT_GATE
 from moex_crash_radar.moex import fetch_index_history, fetch_share_history
 
 
@@ -32,6 +35,59 @@ CALIBRATION_EPISODES = (
 
 MIN_CONTEXT_SCORED_SHARE = 0.60
 MIN_BRENT_ROWS = 500
+
+
+def _fixed_exit_baseline(evidence) -> dict:
+    """Evaluate the already-approved R0.3.3 EXIT gate without recalibrating it."""
+    params = asdict(CALIBRATED_EXIT_GATE)
+    events = signal_event_indices(
+        evidence,
+        score_threshold=params["score_threshold"],
+        confirmations=params["confirmations"],
+        persistence=params["persistence"],
+        max_5d_return_pct=params["max_5d_return_pct"],
+        cooldown_rows=params["cooldown_rows"],
+        require_breadth_volume=params["require_breadth_volume"],
+        rearm_clear_rows=params["rearm_clear_rows"],
+    )
+
+    false_events = 0
+    for i in events:
+        future = evidence[i : i + 21]
+        if len(future) >= 21:
+            drawdown = (min(x.close for x in future) / evidence[i].close - 1.0) * 100.0
+            if drawdown > -8.0:
+                false_events += 1
+
+    leads: list[int] = []
+    detected = 0
+    for _, start, end in CALIBRATION_EPISODES:
+        in_episode = [i for i in events if start <= evidence[i].day <= end]
+        if not in_episode:
+            continue
+        detected += 1
+        i = in_episode[0]
+        window = [x for x in evidence if evidence[i].day <= x.day <= end]
+        if window:
+            trough = min(window, key=lambda x: x.close)
+            leads.append((date.fromisoformat(trough.day) - date.fromisoformat(evidence[i].day)).days)
+
+    baseline = {
+        "score_threshold": params["score_threshold"],
+        "confirmations": params["confirmations"],
+        "persistence": params["persistence"],
+        "max_5d_return_pct": params["max_5d_return_pct"],
+        "cooldown_rows": params["cooldown_rows"],
+        "require_breadth_volume": params["require_breadth_volume"],
+        "rearm_clear_rows": params["rearm_clear_rows"],
+        "signal_events": len(events),
+        "false_events": false_events,
+        "false_event_rate": round(false_events / len(events), 4) if events else None,
+        "detected_episodes": detected,
+        "total_episodes": len(CALIBRATION_EPISODES),
+        "median_lead_days": round(float(median(leads)), 1) if leads else None,
+    }
+    return baseline
 
 
 def main() -> None:
@@ -55,10 +111,7 @@ def main() -> None:
     if not evidence:
         raise SystemExit("no crash evidence")
 
-    calibration = [asdict(x) for x in calibrate_cash_gate(evidence, CALIBRATION_EPISODES)]
-    if not calibration:
-        raise SystemExit("no calibrated EXIT candidate")
-    preferred = calibration[0]
+    preferred = _fixed_exit_baseline(evidence)
 
     key_rates = fetch_key_rate_history(start=start, end=end)
     rgbi = fetch_rgbi_history(start=start, end=end)
@@ -90,7 +143,14 @@ def main() -> None:
     )
 
     base_false_rate = preferred.get("false_event_rate")
-    usable = [x for x in candidates if x.detected_episodes == len(CALIBRATION_EPISODES) and x.false_event_rate is not None]
+    base_lead = preferred.get("median_lead_days")
+    usable = [
+        x for x in candidates
+        if x.detected_episodes == len(CALIBRATION_EPISODES)
+        and x.false_event_rate is not None
+        and x.median_lead_days is not None
+        and (base_lead is None or x.median_lead_days >= base_lead)
+    ]
     improved = [x for x in usable if base_false_rate is not None and x.false_event_rate < base_false_rate]
     best = min(improved, key=lambda x: (x.false_event_rate, -float(x.median_lead_days or 0))) if improved else None
 
@@ -103,7 +163,7 @@ def main() -> None:
         status = "NO_GO_KEEP_CONTEXT_INFORMATIONAL"
 
     payload = {
-        "release": "R0.5.3.1 Historical Oil Data Source Hotfix",
+        "release": "R0.5.3.2 Fixed EXIT Baseline QA Gate",
         "status": status,
         "source": "MOEX ISS + CBR + FRED/EIA",
         "range": {"start": start, "end": end},
@@ -112,10 +172,11 @@ def main() -> None:
             "look_ahead": False,
             "context_changes_existing_exit_events_only": True,
             "live_exit_gate_unchanged": True,
+            "baseline_source": "CALIBRATED_EXIT_GATE from live_gate.py; no re-calibration inside Context validation",
             "historical_rate_ofz_proxy": "CBR key rate + RGBI 5D/20D; historical cross-sectional median OFZ yield unavailable, weights re-normalized",
             "historical_oil_rub_proxy": "FRED DCOILBRENTEU daily Europe Brent spot (underlying EIA series) + MOEX CNYRUB_TOM 5D/20D",
             "live_oil_source_unchanged": "Live Oil/RUB continues to use MOEX Brent futures; FRED is historical-validation-only.",
-            "decision_rule": "Context may proceed to Risk Engine integration review only if a threshold reduces false-event rate while preserving detection of all four calibration episodes.",
+            "decision_rule": "Context may proceed to Risk Engine integration review only if a threshold reduces false-event rate, preserves all four calibration episodes, and does not reduce baseline median lead time.",
             "warning": "Same present-day liquid equity universe limitation as R0.3.3 remains. This is calibration evidence, not unbiased production performance.",
         },
         "data_gate": {
