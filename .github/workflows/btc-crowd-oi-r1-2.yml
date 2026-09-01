@@ -1,0 +1,29 @@
+name: BTC Crowd OI R1.2 Backtest
+
+on:
+  push:
+    branches:
+      - research/btc-crowd-oi-r1.2
+    paths:
+      - 'research/btc_crowd_oi_r1_2.py'
+      - '.github/workflows/btc-crowd-oi-r1-2.yml'
+  workflow_dispatch:
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas numpy
+      - name: Run R1.2 backtest
+        run: python research/btc_crowd_oi_r1_2.py
+      - name: Upload research results
+        uses: actions/upload-artifact@v4
+        with:
+          name: btc-crowd-oi-r1-2-results
+          path: research/results/
