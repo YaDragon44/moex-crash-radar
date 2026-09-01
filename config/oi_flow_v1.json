@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "status": "BASELINE_FOR_BACKTEST",
+  "timeframes": {"signal": "1H", "regime": "4H"},
+  "quality": {"require_ohlcv_1h": true, "require_ohlcv_4h": true, "require_oi": true, "require_legal_positioning": true, "require_retail_positioning": true},
+  "regime": {"allow_range": false},
+  "oi": {"percentile_threshold": 75, "percentile_grid": [50, 60, 70, 75, 80, 90]},
+  "rvol": {"minimum": 1.0, "breakout_minimum": 1.2},
+  "risk": {"atr_period": 14, "stop_buffer_atr": 0.2, "max_stop_atr": 1.5, "min_rr": 2.0, "max_late_entry_atr": 0.5, "risk_per_trade": 0.005, "risk_grid": [0.0025, 0.005, 0.0075, 0.01]},
+  "exit": {"tp1_r": 1.0, "tp1_fraction": 0.33, "tp2_r": 2.0, "tp2_fraction": 0.33, "runner_fraction": 0.34, "time_stop_bars": 4, "time_stop_grid": [3, 4, 6], "minimum_progress_r": 0.5},
+  "no_trade_reasons": ["DATA_QUALITY", "RANGE", "MID_RANGE", "OI_INSUFFICIENT", "POSITIONING_CONTRADICTION", "RVOL_LOW", "NO_TRIGGER", "STOP_TOO_WIDE", "RR_INSUFFICIENT", "LATE_ENTRY"]
+}
