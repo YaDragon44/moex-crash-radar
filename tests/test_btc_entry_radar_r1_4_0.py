@@ -6,6 +6,11 @@ def test_no_trade_on_bad_quality():
     assert r.state=="NO_TRADE" and r.standard_size==0
 
 
+def test_greed_veto_works_with_partial_data():
+    r=evaluate(EntryRadarInput(69,None,None,"N/A",None,False))
+    assert r.state=="NO_TRADE" and r.action=="DO NOT CHASE"
+
+
 def test_watch_while_new_low():
     r=evaluate(EntryRadarInput(20,False,True,"DELEVERAGING",1.0,True))
     assert r.state=="WATCH"
