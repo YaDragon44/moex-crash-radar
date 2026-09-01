@@ -21,6 +21,7 @@ class BaselineConfig:
     time_stop_bars: int = 4
     fee_bps_round_trip: float = 2.0
     slippage_bps_round_trip: float = 2.0
+    max_cost_r: float = 0.25
 
 
 @dataclass(frozen=True)
@@ -52,6 +53,7 @@ class Trade:
     stop: float
     exit: float
     gross_r: float
+    cost_r: float
     net_r: float
     exit_reason: str
 
@@ -259,6 +261,13 @@ def _simulate_trade(
     if risk <= 0 or risk > config.max_stop_atr * atr:
         return None
 
+    cost_r = _cost_r(entry, risk, config)
+    if cost_r > config.max_cost_r:
+        # A nominally valid stop can be so tight that even conservative proxy
+        # costs dominate the entire trade. Such observations are not comparable
+        # in R-space and must fail closed instead of corrupting expectancy/PF.
+        return None
+
     obstacle_window = candles[max(0, i - 24) : i + 1]
     if direction == "LONG":
         obstacles = [c.high for c in obstacle_window if c.high > entry]
@@ -271,7 +280,6 @@ def _simulate_trade(
             return None
         target = entry - 2.0 * risk
 
-    cost_r = _cost_r(entry, risk, config)
     last_index = min(len(candles) - 1, i + max(config.time_stop_bars, 1))
     exit_price, reason = candles[last_index].close, "TIME"
     for j in range(i + 1, last_index + 1):
@@ -296,6 +304,7 @@ def _simulate_trade(
         stop=stop,
         exit=exit_price,
         gross_r=round(gross_r, 4),
+        cost_r=round(cost_r, 4),
         net_r=round(gross_r - cost_r, 4),
         exit_reason=reason,
     )
