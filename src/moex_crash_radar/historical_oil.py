@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import csv
 import io
+import time
 from datetime import datetime
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -39,24 +41,50 @@ def parse_fred_brent_csv(text: str) -> list[Candle]:
     return sorted(result, key=lambda c: c.begin)
 
 
-def fetch_fred_brent_history(*, start: str, end: str, timeout: int = 30) -> list[Candle]:
+def fetch_fred_brent_history(
+    *,
+    start: str,
+    end: str,
+    timeout: int = 60,
+    attempts: int = 4,
+    backoff_seconds: float = 2.0,
+) -> list[Candle]:
     """Fetch daily Europe Brent spot history via FRED (underlying EIA series).
 
     This source is used only for historical validation when MOEX expired-futures
     candles are unavailable. It is not mixed into the live Oil/RUB signal.
+    Transient network/5xx/429 failures are retried; data are never synthesized.
     """
-    params = {
-        "id": FRED_BRENT_SERIES,
-        "cosd": start,
-        "coed": end,
-    }
-    req = Request(
-        f"{FRED_CSV_URL}?{urlencode(params)}",
-        headers={"User-Agent": "moex-crash-radar/0.5.3.1"},
-    )
-    with urlopen(req, timeout=timeout) as response:  # nosec B310: fixed HTTPS FRED endpoint
-        text = response.read().decode("utf-8", errors="replace")
-    candles = parse_fred_brent_csv(text)
-    if not candles:
-        raise ValueError("FRED Brent series returned no usable observations")
-    return candles
+    params = {"id": FRED_BRENT_SERIES, "cosd": start, "coed": end}
+    url = f"{FRED_CSV_URL}?{urlencode(params)}"
+    last_error: Exception | None = None
+
+    for attempt in range(max(1, attempts)):
+        req = Request(
+            url,
+            headers={
+                "User-Agent": "moex-crash-radar/0.5.3.1",
+                "Accept": "text/csv,*/*;q=0.8",
+                "Connection": "close",
+            },
+        )
+        try:
+            with urlopen(req, timeout=timeout) as response:  # nosec B310: fixed HTTPS FRED endpoint
+                text = response.read().decode("utf-8", errors="replace")
+            candles = parse_fred_brent_csv(text)
+            if not candles:
+                raise ValueError("FRED Brent series returned no usable observations")
+            return candles
+        except HTTPError as exc:
+            last_error = exc
+            if exc.code not in {408, 429, 500, 502, 503, 504}:
+                raise
+        except (URLError, TimeoutError, OSError) as exc:
+            last_error = exc
+
+        if attempt + 1 < max(1, attempts):
+            time.sleep(backoff_seconds * (2**attempt))
+
+    if last_error is not None:
+        raise last_error
+    raise RuntimeError("FRED Brent history fetch failed")
