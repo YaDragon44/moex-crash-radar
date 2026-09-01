@@ -6,6 +6,7 @@ from dataclasses import asdict
 
 from moex_crash_radar.futures_data import fetch_futures_history
 from moex_crash_radar.public_baseline import BaselineConfig, run_ablation
+from moex_crash_radar.public_baseline_diagnostics import diagnose_filters
 
 
 DEFAULT_CONTRACTS = {
@@ -22,9 +23,6 @@ def main() -> int:
     parser.add_argument("--start", required=True)
     parser.add_argument("--end", required=True)
     parser.add_argument("--contracts", default=",".join(f"{k}:{v}" for k, v in DEFAULT_CONTRACTS.items()))
-    # Cost model is intentionally disabled in the empirical baseline until
-    # contract-specific fee/tick/multiplier semantics are added. Using bps of
-    # quoted futures price is not comparable across MX/Si/SR/GZ/LK.
     parser.add_argument("--fee-bps", type=float, default=0.0)
     parser.add_argument("--slippage-bps", type=float, default=0.0)
     parser.add_argument("--min-trades", type=int, default=20)
@@ -39,6 +37,7 @@ def main() -> int:
             candles = fetch_futures_history(secid, start=args.start, end=args.end, interval=60)
             summaries = run_ablation(candles, config)
             models = {name: summary.to_dict() for name, summary in summaries.items()}
+            funnel = diagnose_filters(candles, config).to_dict()
             enough = all(summary.trades >= args.min_trades for summary in summaries.values())
             results.append({
                 "family": family,
@@ -48,6 +47,7 @@ def main() -> int:
                 "last_bar": candles[-1].begin if candles else None,
                 "status": "READY" if candles and enough else ("PARTIAL" if candles else "N/A"),
                 "models": models,
+                "filter_funnel": funnel,
             })
         except Exception as exc:
             results.append({"family": family, "secid": secid, "status": "ERROR", "error": f"{type(exc).__name__}: {exc}"})
@@ -62,7 +62,7 @@ def main() -> int:
         "cost_model_status": "N/A_CONTRACT_SPECIFIC_COSTS_PENDING",
         "status": "READY" if gate_ready else "NO-GO",
         "results": results,
-        "interpretation": "This baseline tests public price/location/RVOL only. NO-GO may mean insufficient sample, not a failed strategy. Metrics are gross of real contract-specific fees/slippage. No OI/FUTOI claim is made.",
+        "interpretation": "Public price/location/RVOL baseline only. Filter funnel identifies whether signal scarcity comes from trigger/location/RVOL or the risk gate. Metrics are gross of real contract-specific costs. No OI/FUTOI claim is made.",
     }
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 1 if any(r.get("status") == "ERROR" for r in results) else 0
