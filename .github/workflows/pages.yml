@@ -44,6 +44,10 @@ jobs:
           mkdir -p _site/simple-entry-radar
           cp web/simple-entry-radar/live.html _site/simple-entry-radar/index.html
           if [ -f web/simple-entry-radar/positions.json ]; then cp web/simple-entry-radar/positions.json _site/simple-entry-radar/positions.json; fi
+          mkdir -p _site/btc-entry-radar
+          cp web/btc-entry-radar/index.html _site/btc-entry-radar/index.html
+          mkdir -p _site/btc-entry-radar/data
+          if [ -f web/btc-entry-radar/data/current.json ]; then cp web/btc-entry-radar/data/current.json _site/btc-entry-radar/data/current.json; fi
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
         with:
