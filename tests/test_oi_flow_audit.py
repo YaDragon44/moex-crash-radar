@@ -1,8 +1,14 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from urllib.error import HTTPError
 
-from moex_crash_radar.oi_flow_audit import _extract_rows, public_safe_end
+import pytest
+
+from moex_crash_radar.oi_flow_audit import (
+    FutoiSubscriptionRequired,
+    _extract_rows,
+    _get_json,
+)
 from moex_crash_radar.futoi import pair_snapshots, parse_futoi_rows, is_point_in_time_safe
 
 
@@ -42,6 +48,16 @@ def test_systime_is_the_availability_gate():
     assert is_point_in_time_safe(pair, "2026-07-01 10:05:11")
 
 
-def test_public_safe_end_respects_15_day_delay():
-    now = datetime(2026, 9, 1, 12, 0, tzinfo=timezone.utc)
-    assert public_safe_end(now) == "2026-08-17"
+def test_subscription_required_is_explicit(monkeypatch):
+    class DummyRequest:
+        def __enter__(self):
+            return self
+        def __exit__(self, *args):
+            return False
+
+    def denied(*args, **kwargs):
+        raise HTTPError("https://iss.moex.com", 403, "Forbidden", {}, None)
+
+    monkeypatch.setattr("moex_crash_radar.oi_flow_audit.urlopen", denied)
+    with pytest.raises(FutoiSubscriptionRequired):
+        _get_json("https://iss.moex.com/iss/analyticalproducts/futoi/securities/si.json")
