@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 from moex_crash_radar.futoi import pair_snapshots, parse_futoi_rows
 from moex_crash_radar.oi_flow_audit import FutoiSubscriptionRequired, fetch_futoi_history
-from moex_crash_radar.oi_flow_coverage_gate import evaluate_coverage_gate, full_model_gate
+from moex_crash_radar.oi_flow_coverage_gate import evaluate_coverage_gate
 
 
 def _hourly_decisions_from_pairs(pairs):
@@ -43,11 +43,7 @@ def main() -> int:
             rows = fetch_futoi_history(ticker, start=args.start, end=args.end)
         except FutoiSubscriptionRequired as exc:
             blocked_auth.append(ticker)
-            results.append({
-                "ticker": ticker,
-                "status": "BLOCKED_AUTH",
-                "reason": str(exc),
-            })
+            results.append({"ticker": ticker, "status": "BLOCKED_AUTH", "reason": str(exc)})
             continue
         except Exception as exc:
             results.append({
@@ -68,12 +64,7 @@ def main() -> int:
         )
         results.append(result.to_dict())
 
-    measured = [r for r in results if r.get("status") in {"READY", "FAIL", "N/A"}]
-    gate = full_model_gate([
-        evaluate_coverage_gate(ticker=r["ticker"], pairs=[], decision_timestamps=[])
-        for r in []
-    ]) if False else None
-    ready = [r["ticker"] for r in measured if r.get("status") == "READY"]
+    ready = [r["ticker"] for r in results if r.get("status") == "READY"]
     blocked = [r["ticker"] for r in results if r.get("status") != "READY"]
     report = {
         "gate": "R1.3.2_FUTOI_COVERAGE_1H_ALIGNMENT",
@@ -84,6 +75,7 @@ def main() -> int:
             "max_median_publication_lag_sec": args.max_median_lag,
         },
         "status": "READY" if results and not blocked else "NO-GO",
+        "quality_coverage_pct": round(100.0 * len(ready) / len(results), 2) if results else 0.0,
         "ready_tickers": ready,
         "blocked_tickers": blocked,
         "blocked_auth_tickers": blocked_auth,
