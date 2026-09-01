@@ -46,9 +46,20 @@ def test_ablation_returns_only_public_models():
 
 
 def test_summary_includes_cost_adjusted_expectancy():
-    trades = run_model(_candles(), "M0", BaselineConfig(rvol_sessions=3, fee_bps_round_trip=5, slippage_bps_round_trip=5))
+    config = BaselineConfig(rvol_sessions=3, fee_bps_round_trip=5, slippage_bps_round_trip=5)
+    trades = run_model(_candles(), "M0", config)
     summary = summarize("M0", trades)
     assert summary.trades == len(trades)
     if trades:
         assert summary.expectancy_r is not None
         assert all(t.net_r <= t.gross_r for t in trades)
+        assert all(t.cost_r <= config.max_cost_r for t in trades)
+
+
+def test_cost_geometry_gate_rejects_cost_dominated_trades():
+    permissive = BaselineConfig(rvol_sessions=3, fee_bps_round_trip=5, slippage_bps_round_trip=5, max_cost_r=10.0)
+    strict = BaselineConfig(rvol_sessions=3, fee_bps_round_trip=5, slippage_bps_round_trip=5, max_cost_r=0.0)
+    permissive_trades = run_model(_candles(), "M0", permissive)
+    strict_trades = run_model(_candles(), "M0", strict)
+    assert len(strict_trades) <= len(permissive_trades)
+    assert strict_trades == []
