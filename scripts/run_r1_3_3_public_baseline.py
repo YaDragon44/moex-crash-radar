@@ -22,8 +22,11 @@ def main() -> int:
     parser.add_argument("--start", required=True)
     parser.add_argument("--end", required=True)
     parser.add_argument("--contracts", default=",".join(f"{k}:{v}" for k, v in DEFAULT_CONTRACTS.items()))
-    parser.add_argument("--fee-bps", type=float, default=2.0)
-    parser.add_argument("--slippage-bps", type=float, default=2.0)
+    # Cost model is intentionally disabled in the empirical baseline until
+    # contract-specific fee/tick/multiplier semantics are added. Using bps of
+    # quoted futures price is not comparable across MX/Si/SR/GZ/LK.
+    parser.add_argument("--fee-bps", type=float, default=0.0)
+    parser.add_argument("--slippage-bps", type=float, default=0.0)
     parser.add_argument("--min-trades", type=int, default=20)
     args = parser.parse_args()
 
@@ -56,12 +59,12 @@ def main() -> int:
         "start": args.start,
         "end": args.end,
         "costs": asdict(config),
+        "cost_model_status": "N/A_CONTRACT_SPECIFIC_COSTS_PENDING",
         "status": "READY" if gate_ready else "NO-GO",
         "results": results,
-        "interpretation": "This baseline tests public price/location/RVOL only. NO-GO may mean insufficient sample, not a failed strategy. No OI/FUTOI claim is made.",
+        "interpretation": "This baseline tests public price/location/RVOL only. NO-GO may mean insufficient sample, not a failed strategy. Metrics are gross of real contract-specific fees/slippage. No OI/FUTOI claim is made.",
     }
     print(json.dumps(report, ensure_ascii=False, indent=2))
-    # A research NO-GO is a valid audit result, not an infrastructure failure.
     return 1 if any(r.get("status") == "ERROR" for r in results) else 0
 
 
