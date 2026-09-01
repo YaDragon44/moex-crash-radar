@@ -1,0 +1,67 @@
+name: BTC Entry Radar Production R1.4.4
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [r1.4.4-btc-entry-radar-prod]
+    paths:
+      - 'scripts/btc_entry_radar_r1_4_0.py'
+      - 'scripts/run_btc_entry_radar_live_snapshot.py'
+      - 'tests/test_btc_entry_radar_r1_4_0.py'
+      - 'web/btc-entry-radar/**'
+      - '.github/workflows/btc-entry-radar-prod.yml'
+  schedule:
+    - cron: '10 */4 * * *'
+
+permissions:
+  contents: write
+
+env:
+  PYTHONPATH: .
+
+jobs:
+  regression-live-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: r1.4.4-btc-entry-radar-prod
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pytest
+      - name: Regression
+        run: pytest tests/test_btc_entry_radar_r1_4_0.py -q
+      - name: Live snapshot
+        run: python scripts/run_btc_entry_radar_live_snapshot.py | tee btc_entry_radar_prod.log
+      - name: Quality gate
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('artifacts/btc_entry_radar_live_snapshot.json'))
+          s=p['output']['state']; q=p['quality']
+          if s in {'WATCH','ARMED','LONG_READY','MANAGE'} and q['status']!='DATA READY':
+              raise SystemExit('positive state blocked: quality gate')
+          if s=='LONG_READY' and q['coverage_pct']<75:
+              raise SystemExit('LONG_READY blocked: coverage <75%')
+          print('PROD GATE PASS',s,q)
+          PY
+      - name: Publish dashboard live JSON
+        run: |
+          mkdir -p web/btc-entry-radar/data
+          cp artifacts/btc_entry_radar_live_snapshot.json web/btc-entry-radar/data/current.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A web/btc-entry-radar/data/current.json
+          if git diff --cached --quiet; then
+            echo 'No live-data change'
+          else
+            git commit -m 'data: update BTC Entry Radar production snapshot [skip ci]'
+            git push origin HEAD:r1.4.4-btc-entry-radar-prod
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: btc-entry-radar-prod-r1-4-4
+          path: |
+            artifacts/btc_entry_radar_live_snapshot.json
+            btc_entry_radar_prod.log
