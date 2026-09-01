@@ -41,6 +41,10 @@ jobs:
           cp artifacts/market_snapshot.json _site/market_snapshot.json
           mkdir -p _site/idea-radar
           cp web/idea-radar/index.html _site/idea-radar/index.html
+          mkdir -p _site/simple-entry-radar
+          cp web/simple-entry-radar/live.html _site/simple-entry-radar/index.html
+          cp web/simple-entry-radar/README.md _site/simple-entry-radar/README.md
+          if [ -f web/simple-entry-radar/positions.json ]; then cp web/simple-entry-radar/positions.json _site/simple-entry-radar/positions.json; fi
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
         with:
