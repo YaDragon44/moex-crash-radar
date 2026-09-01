@@ -1,0 +1,51 @@
+name: BTC Entry Radar Live R1.4.0
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [r1.4.0-btc-entry-radar-mvp]
+    paths:
+      - 'scripts/btc_entry_radar_r1_4_0.py'
+      - 'scripts/run_btc_entry_radar_live_snapshot.py'
+      - 'tests/test_btc_entry_radar_r1_4_0.py'
+      - '.github/workflows/btc-entry-radar-live-r1-4-0.yml'
+  schedule:
+    - cron: '10 */4 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  live-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install test dependency
+        run: pip install pytest
+      - name: Entry Radar unit tests
+        run: pytest tests/test_btc_entry_radar_r1_4_0.py -q
+      - name: Collect BTC live decision snapshot
+        run: python scripts/run_btc_entry_radar_live_snapshot.py | tee btc_entry_radar_live.log
+      - name: Enforce positive-signal quality gate
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('artifacts/btc_entry_radar_live_snapshot.json'))
+          state=p['output']['state']
+          coverage=p['quality']['coverage_pct']
+          core=p['quality']['status']=='DATA READY'
+          if state in {'WATCH','ARMED','LONG_READY'} and not core:
+              raise SystemExit('positive state blocked: core Quality Gate is not DATA READY')
+          if state=='LONG_READY' and coverage < 75:
+              raise SystemExit('LONG_READY blocked: coverage <75%')
+          print('LIVE GATE PASS', state, coverage, p['quality'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: btc-entry-radar-live-r1-4-0
+          path: |
+            artifacts/btc_entry_radar_live_snapshot.json
+            btc_entry_radar_live.log
