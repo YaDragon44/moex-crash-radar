@@ -1,4 +1,4 @@
-name: BTC Entry Radar Live R1.4.1
+name: BTC Entry Radar Live R1.4.2
 
 on:
   workflow_dispatch:
@@ -8,6 +8,7 @@ on:
       - 'scripts/btc_entry_radar_r1_4_0.py'
       - 'scripts/run_btc_entry_radar_live_snapshot.py'
       - 'scripts/btc_entry_radar_journal_r1_4_1.py'
+      - 'scripts/btc_entry_radar_performance_r1_4_2.py'
       - 'tests/test_btc_entry_radar_r1_4_0.py'
       - '.github/workflows/btc-entry-radar-live-r1-4-0.yml'
   schedule:
@@ -40,17 +41,15 @@ jobs:
           python - <<'PY'
           import json
           p=json.load(open('artifacts/btc_entry_radar_live_snapshot.json'))
-          state=p['output']['state']
-          coverage=p['quality']['coverage_pct']
-          core=p['quality']['status']=='DATA READY'
-          if state in {'WATCH','ARMED','LONG_READY','MANAGE'} and not core:
-              raise SystemExit('positive state blocked: core Quality Gate is not DATA READY')
-          if state=='LONG_READY' and coverage < 75:
-              raise SystemExit('LONG_READY blocked: coverage <75%')
+          state=p['output']['state']; coverage=p['quality']['coverage_pct']; core=p['quality']['status']=='DATA READY'
+          if state in {'WATCH','ARMED','LONG_READY','MANAGE'} and not core: raise SystemExit('positive state blocked: core Quality Gate is not DATA READY')
+          if state=='LONG_READY' and coverage < 75: raise SystemExit('LONG_READY blocked: coverage <75%')
           print('LIVE GATE PASS', state, coverage, p['quality'])
           PY
       - name: Append live signal journal and detect transition
         run: python scripts/btc_entry_radar_journal_r1_4_1.py | tee btc_entry_radar_transition.log
+      - name: Score matured signals MAE MFE forward returns
+        run: python scripts/btc_entry_radar_performance_r1_4_2.py | tee btc_entry_radar_performance.log
       - name: Persist journal on radar branch
         run: |
           if git diff --quiet -- evidence/btc_entry_radar_journal.csv; then
@@ -64,10 +63,12 @@ jobs:
           fi
       - uses: actions/upload-artifact@v4
         with:
-          name: btc-entry-radar-live-r1-4-1
+          name: btc-entry-radar-live-r1-4-2
           path: |
             artifacts/btc_entry_radar_live_snapshot.json
             artifacts/btc_entry_radar_transition.json
+            artifacts/btc_entry_radar_performance.json
             evidence/btc_entry_radar_journal.csv
             btc_entry_radar_live.log
             btc_entry_radar_transition.log
+            btc_entry_radar_performance.log
