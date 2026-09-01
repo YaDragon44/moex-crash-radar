@@ -34,6 +34,7 @@ Same historical framework as R1.3.4:
 - deterministic quarterly roll-chain
 - 60% IS / 20% Validation / 20% OOS
 - no cross-contract feature or trade leakage
+- bounded 30-day ISS history retrieval
 - contract-specific MINSTEP/STEPPRICE costs where available; otherwise gross result with explicit coverage.
 
 ## Gate
@@ -46,14 +47,48 @@ If CONTROL has zero OOS trades, relative expectancy is undefined. Such a pair is
 
 Research GO requires at least 8 **distinct** qualifying OOS family/model pairs across the 15 possible pairs. Multiple winning geometries on the same family/model count once. This intentionally requires cross-market breadth rather than one attractive example.
 
-## Interpretation
-- If preservation rises but expectancy collapses: reject.
-- If only IS improves: reject as regime-specific/overfit.
-- If one family improves: do not universalize the geometry.
-- If TIME_INVALIDATION wins broadly, the old obstacle veto is likely structurally over-restrictive.
-- If HTF_LIQUIDITY wins broadly, obstacle resolution rather than stop width is the likely issue.
-- If ATR_INVALIDATION wins broadly, structural stop anchoring is the likely issue.
-- If none qualify, the bottleneck is probably upstream in signal construction rather than just risk geometry.
+## Empirical result
+GitHub Actions run `33531347138` completed successfully on commit `e40c3b6bc7f009aa610ac8cf11300a107ba3ea9f`. Unit regression and the full historical risk-geometry replay both passed. Artifact: `r1-3-5-risk-geometry-report` (`9810060257`).
+
+Measured Gate: **NO-GO**. Only **6 of 15** distinct OOS family/model pairs qualified versus the required 8.
+
+### OOS aggregate behavior
+Across all five futures families and M0/M1/M5:
+
+| Geometry | Accepted trades | Pre-risk candidates | Mean expectancy | Total R | Mean max DD |
+|---|---:|---:|---:|---:|---:|
+| CONTROL | 25 | 2230 | -0.0764R | -4.6997R | -1.2216R |
+| ATR_INVALIDATION | 1042 | 2230 | -0.0096R | +8.5245R | -8.4077R |
+| HTF_LIQUIDITY | 117 | 2230 | -0.0029R | -9.0523R | -2.5887R |
+| TIME_INVALIDATION | 591 | 2230 | -0.0625R | -26.8365R | -8.3071R |
+
+Interpretation of these aggregates must remain conservative because execution-cost coverage is incomplete for historical contracts and the average expectancy is not a portfolio-weighted statistic.
+
+### What improved
+**ATR_INVALIDATION** proves that the old structural-stop/obstacle combination is a major candidate-suppression mechanism. OOS accepted trades rise from 25 CONTROL trades to 1042. However this is not a trading approval: mean OOS expectancy remains slightly negative and drawdown expands materially. Candidate density improved much faster than risk-adjusted quality.
+
+**HTF_LIQUIDITY** is the only redesign that passes the release qualification rule on multiple coherent family/model pairs without the extreme drawdown expansion seen in ATR/TIME variants. All six qualifying pairs are concentrated in **MX and SI**, so cross-market breadth is insufficient. SI is the strongest signal: OOS M0/M1 each produced 8 trades at +0.4129R expectancy and M5 produced 5 trades at +0.3471R, but these samples are still small.
+
+**TIME_INVALIDATION** rejects the hypothesis that simply deleting the obstacle veto is enough. It increases trade count substantially but produces aggregate OOS -26.8365R with much larger drawdowns. The nearest-obstacle rule is over-restrictive, but some forward-path/room-to-move filter is still necessary.
+
+### Stability across chronology
+The broad patterns are not cleanly stable across IS → Validation → OOS:
+- ATR_INVALIDATION: aggregate mean expectancy approximately -0.0060R / +0.0083R / -0.0096R.
+- HTF_LIQUIDITY: -0.0940R / +0.0954R / -0.0029R.
+- TIME_INVALIDATION: -0.0951R / +0.0648R / -0.0625R.
+
+This sign instability is another reason for NO-GO. Validation alone would have looked encouraging and would have produced a false sense of edge.
+
+## Investment logic conclusion
+R1.3.5 changes the diagnosis from R1.3.4:
+
+1. The original nearest-1H-obstacle geometry is indeed structurally too restrictive.
+2. Removing it completely is unsafe.
+3. Replacing the stop with a fixed ATR stop preserves candidates but creates unacceptable drawdown expansion and no robust positive expectancy.
+4. Coarser 4H liquidity/structure is the most promising direction, particularly for MX/SI, but it is not yet broad or statistically mature enough for production trading.
+5. Therefore the next research step should improve **forward-path quality / trade management**, not optimize another stop threshold.
 
 ## Final Gate
-Pending empirical GitHub Actions replay. Do not approve for trading until the measured report is attached and this section is updated.
+**R1.3.5 = IMPLEMENTATION PASS / RESEARCH NO-GO.**
+
+Do not change the production trading rules from this release. The next release should test whether HTF structure plus more realistic trade management can convert the higher preserved candidate set into stable OOS quality without the drawdown explosion observed in ATR_INVALIDATION and TIME_INVALIDATION.
