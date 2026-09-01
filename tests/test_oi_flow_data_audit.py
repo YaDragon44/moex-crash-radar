@@ -15,6 +15,8 @@ def test_public_baseline_is_conservative_for_intraday_positioning():
     assert audit.oi_ready is False
     assert audit.participant_intraday_ready is False
     assert audit.participant_daily_ready is True
+    assert audit.dataset("OI_INTRADAY").status is AuditStatus.PARTIAL
+    assert audit.dataset("PARTICIPANT_INTRADAY").history_from == "2020"
     assert audit.supported_models() == ("M0", "M1", "M5")
 
 
@@ -33,11 +35,11 @@ def test_daily_participant_data_requires_next_use_timing():
         validate_no_lookahead(row)
 
 
-def test_quality_coverage_penalises_n_a_and_delayed():
+def test_quality_coverage_marks_documented_but_unfetched_futoi_partial():
     rows = baseline_public_audit("MIX").datasets
-    assert quality_coverage(rows) == 52.0
+    assert quality_coverage(rows) == 76.0
 
 
-def test_full_model_requires_intraday_oi_and_participants():
+def test_full_model_requires_actual_futoi_coverage_not_documentation_only():
     audit = baseline_public_audit("GAZR")
     assert "FULL" not in audit.supported_models()
