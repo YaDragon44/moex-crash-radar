@@ -2,13 +2,17 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, asdict
-from datetime import datetime, timedelta, timezone
+from urllib.error import HTTPError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-from .futoi import FutoiPair, pair_snapshots, parse_futoi_rows, is_point_in_time_safe
+from .futoi import pair_snapshots, parse_futoi_rows, is_point_in_time_safe
 
 ISS_BASE = "https://iss.moex.com/iss"
+
+
+class FutoiSubscriptionRequired(RuntimeError):
+    pass
 
 
 @dataclass(frozen=True)
@@ -30,14 +34,19 @@ class CoverageResult:
 
 
 def _get_json(url: str, timeout: int = 30) -> dict:
-    req = Request(url, headers={"User-Agent": "moex-crash-radar/1.3.1"})
-    with urlopen(req, timeout=timeout) as response:  # nosec B310: fixed HTTPS MOEX endpoint
-        return json.loads(response.read().decode("utf-8"))
+    req = Request(url, headers={"User-Agent": "moex-crash-radar/1.3.2"})
+    try:
+        with urlopen(req, timeout=timeout) as response:  # nosec B310: fixed HTTPS MOEX endpoint
+            return json.loads(response.read().decode("utf-8"))
+    except HTTPError as exc:
+        if exc.code in {401, 403}:
+            raise FutoiSubscriptionRequired(
+                "MOEX FUTOI access requires an active subscription/authenticated ISS session."
+            ) from exc
+        raise
 
 
 def _extract_rows(payload: dict) -> list[dict]:
-    # Historical FUTOI responses have used different block names over time.
-    # Detect the block by required columns instead of relying on a single name.
     required = {"TICKER", "CLGROUP", "POS", "POS_LONG", "POS_SHORT", "MOMENT", "SYSTIME"}
     for block in payload.values():
         if not isinstance(block, dict):
@@ -54,11 +63,11 @@ def _extract_rows(payload: dict) -> list[dict]:
 
 
 def fetch_futoi_history(ticker: str, *, start: str, end: str, max_pages: int = 100) -> list[dict]:
-    """Fetch delayed/public historical FUTOI without fabricating missing rows.
+    """Fetch subscribed historical FUTOI without fabricating missing rows.
 
-    MOEX limits historical FUTOI responses; pagination is performed with `start`.
-    The endpoint is expected to expose historical data with a publication delay for
-    unauthenticated users. This function is for research/backtest data only.
+    Official MOEX documentation states that viewing/downloading FUTOI requires
+    subscription. Authentication is therefore an explicit prerequisite; this
+    function must not silently downgrade to daily public positioning.
     """
     ticker = ticker.lower()
     rows: list[dict] = []
@@ -86,15 +95,13 @@ def audit_futoi_history(ticker: str, *, start: str, end: str) -> CoverageResult:
 
     violations = 0
     for pair in pairs:
-        # A backtest decision cannot use a snapshot before MOEX published it.
-        # Use each pair's own latest publication time as the earliest safe decision.
         decision = max(pair.retail.systime, pair.legal.systime)
         if not is_point_in_time_safe(pair, decision):
             violations += 1
 
     if not rows:
         status = "N/A"
-        note = "No historical FUTOI rows returned for requested range/ticker."
+        note = "Authenticated request returned no historical FUTOI rows for requested range/ticker."
     elif not pairs:
         status = "FAIL"
         note = "Rows exist but FIZ/YUR snapshots cannot be paired by timestamp."
@@ -103,7 +110,7 @@ def audit_futoi_history(ticker: str, *, start: str, end: str) -> CoverageResult:
         note = "Publication timestamp integrity violation detected."
     else:
         status = "READY"
-        note = "Historical FIZ/YUR pairs available; use SYSTIME as availability timestamp."
+        note = "Historical FIZ/YUR pairs available; SYSTIME is the availability timestamp."
 
     return CoverageResult(
         ticker=ticker.upper(),
@@ -118,9 +125,3 @@ def audit_futoi_history(ticker: str, *, start: str, end: str) -> CoverageResult:
         status=status,
         note=note,
     )
-
-
-def public_safe_end(now: datetime | None = None, delay_days: int = 15) -> str:
-    """Latest date that should be expected from delayed unauthenticated FUTOI."""
-    current = now or datetime.now(timezone.utc)
-    return (current.date() - timedelta(days=delay_days)).isoformat()
