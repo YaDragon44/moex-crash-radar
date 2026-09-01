@@ -6,8 +6,18 @@ on:
     branches: [main]
     paths:
       - 'src/moex_crash_radar/context_validation.py'
+      - 'src/moex_crash_radar/historical_oil.py'
+      - 'src/moex_crash_radar/context.py'
+      - 'src/moex_crash_radar/rate_ofz.py'
+      - 'src/moex_crash_radar/oil_rub.py'
+      - 'src/moex_crash_radar/live_gate.py'
+      - 'src/moex_crash_radar/calibration.py'
+      - 'src/moex_crash_radar/history.py'
+      - 'src/moex_crash_radar/backtest.py'
+      - 'src/moex_crash_radar/moex.py'
       - 'scripts/run_context_historical_validation.py'
       - 'tests/test_context_validation.py'
+      - 'tests/test_historical_oil.py'
       - '.github/workflows/context-validation.yml'
 
 permissions:
@@ -29,8 +39,10 @@ jobs:
       - name: Run historical context validation
         run: python scripts/run_context_historical_validation.py
       - name: Upload validation artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: context-historical-validation
           path: artifacts/context_historical_validation.json
+          if-no-files-found: warn
           retention-days: 14
