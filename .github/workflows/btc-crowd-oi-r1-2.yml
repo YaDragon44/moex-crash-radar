@@ -21,10 +21,17 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: python -m pip install --upgrade pip pandas numpy
+      - name: Normalize pandas 3 timestamp resolution
+        run: |
+          sed -i "s/pd.to_datetime(p\['timestamp'\],utc=True)/pd.to_datetime(p['timestamp'],utc=True).astype('datetime64[ns, UTC]')/" research/btc_crowd_oi_r1_2.py
+          sed -i "s/pd.to_datetime(pd.to_numeric(oi\['timestamp'\]),unit='ms',utc=True)/pd.to_datetime(pd.to_numeric(oi['timestamp']),unit='ms',utc=True).astype('datetime64[ns, UTC]')/" research/btc_crowd_oi_r1_2.py
+          sed -i "s/pd.to_datetime(pd.to_numeric(fu.iloc\[:,0\]),unit='ms',utc=True)/pd.to_datetime(pd.to_numeric(fu.iloc[:,0]),unit='ms',utc=True).astype('datetime64[ns, UTC]')/" research/btc_crowd_oi_r1_2.py
       - name: Run R1.2 backtest
         run: python research/btc_crowd_oi_r1_2.py
       - name: Upload research results
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: btc-crowd-oi-r1-2-results
           path: research/results/
+          if-no-files-found: ignore
