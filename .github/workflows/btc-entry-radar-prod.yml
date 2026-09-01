@@ -1,12 +1,13 @@
-name: BTC Entry Radar Production R1.4.4
+name: BTC Entry Radar Production R1.4.4.1
 
 on:
   workflow_dispatch:
   push:
-    branches: [r1.4.4-btc-entry-radar-prod]
+    branches: [main]
     paths:
       - 'scripts/btc_entry_radar_r1_4_0.py'
       - 'scripts/run_btc_entry_radar_live_snapshot.py'
+      - 'scripts/__init__.py'
       - 'tests/test_btc_entry_radar_r1_4_0.py'
       - 'web/btc-entry-radar/**'
       - '.github/workflows/btc-entry-radar-prod.yml'
@@ -25,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: r1.4.4-btc-entry-radar-prod
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -57,11 +58,11 @@ jobs:
             echo 'No live-data change'
           else
             git commit -m 'data: update BTC Entry Radar production snapshot [skip ci]'
-            git push origin HEAD:r1.4.4-btc-entry-radar-prod
+            git push origin HEAD:main
           fi
       - uses: actions/upload-artifact@v4
         with:
-          name: btc-entry-radar-prod-r1-4-4
+          name: btc-entry-radar-prod-r1-4-4-1
           path: |
             artifacts/btc_entry_radar_live_snapshot.json
             btc_entry_radar_prod.log
