@@ -1,5 +1,6 @@
 name: BTC Crowd OI R1.2 Backtest
 
+# Research-only workflow; production code is untouched.
 on:
   push:
     branches:
