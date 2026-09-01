@@ -14,8 +14,10 @@ on:
   pull_request:
     paths:
       - 'src/moex_crash_radar/public_baseline.py'
+      - 'src/moex_crash_radar/futures_data.py'
       - 'scripts/run_r1_3_3_public_baseline.py'
       - 'tests/test_public_baseline.py'
+      - '.github/workflows/r1-3-3-public-baseline.yml'
 
 jobs:
   baseline:
@@ -28,14 +30,16 @@ jobs:
       - name: Unit regression
         run: python -m pytest tests/test_public_baseline.py -q
       - name: Public MOEX baseline replay
-        if: github.event_name == 'workflow_dispatch'
+        env:
+          START: ${{ github.event_name == 'workflow_dispatch' && inputs.start || '2026-06-01' }}
+          END: ${{ github.event_name == 'workflow_dispatch' && inputs.end || '2026-08-31' }}
         run: |
           PYTHONPATH=src python scripts/run_r1_3_3_public_baseline.py \
-            --start '${{ inputs.start }}' \
-            --end '${{ inputs.end }}' \
+            --start "$START" \
+            --end "$END" \
             | tee r1_3_3_report.json
       - name: Upload report
-        if: always() && github.event_name == 'workflow_dispatch'
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: r1-3-3-public-baseline-report
