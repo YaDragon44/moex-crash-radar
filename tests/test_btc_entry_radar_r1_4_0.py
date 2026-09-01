@@ -1,3 +1,7 @@
+from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.btc_entry_radar_r1_4_0 import EntryRadarInput,evaluate
 
 def test_no_trade_on_bad_quality(): assert evaluate(EntryRadarInput(None,None,None,'N/A',None,False)).state=='NO_TRADE'
