@@ -11,9 +11,20 @@ on:
         description: End date YYYY-MM-DD
         required: true
         default: '2026-08-31'
+  push:
+    branches:
+      - r1.3.3-public-baseline
+    paths:
+      - 'src/moex_crash_radar/public_baseline.py'
+      - 'src/moex_crash_radar/public_baseline_diagnostics.py'
+      - 'src/moex_crash_radar/futures_data.py'
+      - 'scripts/run_r1_3_3_public_baseline.py'
+      - 'tests/test_public_baseline.py'
+      - '.github/workflows/r1-3-3-public-baseline.yml'
   pull_request:
     paths:
       - 'src/moex_crash_radar/public_baseline.py'
+      - 'src/moex_crash_radar/public_baseline_diagnostics.py'
       - 'src/moex_crash_radar/futures_data.py'
       - 'scripts/run_r1_3_3_public_baseline.py'
       - 'tests/test_public_baseline.py'
