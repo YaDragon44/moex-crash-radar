@@ -1,0 +1,26 @@
+name: R1.4.2 Entry Logic Gate
+
+on:
+  push:
+    branches: [r1.4.2-entry-logic-simplification]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'web/simple-entry-radar/**'
+      - 'tests/test_r1_4_2_entry_logic.py'
+      - '.github/workflows/r1-4-2-entry-logic.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install
+        run: pip install -e . pytest
+      - name: Full regression
+        run: pytest -q
+      - name: R1.4.2 contract gate
+        run: pytest -q tests/test_r1_4_2_entry_logic.py
