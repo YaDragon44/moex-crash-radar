@@ -95,14 +95,15 @@ def calculate_bull_strength(inputs: BullInputs, prior_score: float | None = None
 def bull_bubble_regime(bull_score: float | None, bubble_score: float | None) -> str:
     if bull_score is None or bubble_score is None:
         return "DATA_INSUFFICIENT"
-    if bull_score >= 75 and bubble_score < 45:
-        return "HEALTHY_STRONG_BULL"
-    if bull_score >= 70 and bubble_score >= 60:
-        return "BULL_WITH_BUBBLE_BUILD_UP"
-    if bull_score < 60 and bubble_score >= 75:
-        return "FRAGILE_BULL_DISTRIBUTION_WATCH"
+    # Evaluate overlapping states from highest danger to lowest danger.
     if bull_score < 40 and bubble_score >= 60:
         return "BUBBLE_BREAKDOWN_RISK"
+    if bull_score < 60 and bubble_score >= 75:
+        return "FRAGILE_BULL_DISTRIBUTION_WATCH"
+    if bull_score >= 70 and bubble_score >= 60:
+        return "BULL_WITH_BUBBLE_BUILD_UP"
+    if bull_score >= 75 and bubble_score < 45:
+        return "HEALTHY_STRONG_BULL"
     if bull_score >= 55:
         return "RISK_ON"
     return "NEUTRAL_OR_WEAK"
