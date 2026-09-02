@@ -65,12 +65,17 @@ def _action(text: str) -> str | None:
 
 def _asset(text: str) -> str | None:
     low = text.lower()
-    # Specific aliases first so "Озон Фармацевтика" is not reduced to OZON.
-    ordered = sorted(ASSET_ALIASES.items(), key=lambda kv: max(map(len, kv[1])), reverse=True)
-    for key, aliases in ordered:
-        if any(alias in low for alias in aliases):
-            return key
-    return None
+    # Resolve by the longest alias that actually matches this text. This avoids
+    # reducing "Озон Фармацевтика" to the generic OZON alias "озон".
+    matches: list[tuple[int, str]] = []
+    for key, aliases in ASSET_ALIASES.items():
+        for alias in aliases:
+            if alias in low:
+                matches.append((len(alias), key))
+    if not matches:
+        return None
+    matches.sort(key=lambda item: item[0], reverse=True)
+    return matches[0][1]
 
 
 def parse_transcript(segments: Iterable[TranscriptSegment], source_url: str) -> list[PortfolioChange]:
