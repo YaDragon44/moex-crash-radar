@@ -1,0 +1,43 @@
+name: Bubble Historical Validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/moex_crash_radar/bubble.py'
+      - 'src/moex_crash_radar/bubble_history.py'
+      - 'src/moex_crash_radar/bubble_validation.py'
+      - 'src/moex_crash_radar/history.py'
+      - 'src/moex_crash_radar/live_gate.py'
+      - 'src/moex_crash_radar/calibration.py'
+      - 'src/moex_crash_radar/moex.py'
+      - 'scripts/run_bubble_historical_validation.py'
+      - 'tests/test_bubble.py'
+      - 'tests/test_bubble_validation.py'
+      - 'pyproject.toml'
+      - '.github/workflows/bubble-validation.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install
+        run: pip install -e . pytest
+      - name: Unit regression
+        run: pytest -q
+      - name: Historical bubble replay
+        run: python scripts/run_bubble_historical_validation.py
+      - name: Upload validation artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bubble-historical-validation
+          path: artifacts/bubble_historical_validation.json
+          if-no-files-found: warn
+          retention-days: 14
