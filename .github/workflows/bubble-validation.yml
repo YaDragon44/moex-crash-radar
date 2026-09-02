@@ -8,6 +8,9 @@ on:
       - 'src/moex_crash_radar/bubble.py'
       - 'src/moex_crash_radar/bubble_history.py'
       - 'src/moex_crash_radar/bubble_validation.py'
+      - 'src/moex_crash_radar/bull_strength.py'
+      - 'src/moex_crash_radar/bull_history.py'
+      - 'src/moex_crash_radar/bull_bubble_transition.py'
       - 'src/moex_crash_radar/history.py'
       - 'src/moex_crash_radar/live_gate.py'
       - 'src/moex_crash_radar/calibration.py'
@@ -15,6 +18,7 @@ on:
       - 'scripts/run_bubble_historical_validation.py'
       - 'tests/test_bubble.py'
       - 'tests/test_bubble_validation.py'
+      - 'tests/test_bull_strength.py'
       - 'pyproject.toml'
       - '.github/workflows/bubble-validation.yml'
 
@@ -31,7 +35,7 @@ jobs:
         run: pip install -e . pytest
       - name: Unit regression
         run: pytest -q
-      - name: Historical bubble replay
+      - name: Historical Bull x Bubble replay
         run: python scripts/run_bubble_historical_validation.py
       - name: Upload validation artifact
         if: always()
