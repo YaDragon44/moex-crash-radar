@@ -68,6 +68,12 @@ def _check(value: float) -> float:
 
 
 def calculate_bubble(inputs: BubbleInputs, history: Sequence[float] = ()) -> BubbleResult:
+    """Production Dangerous Bubble composite.
+
+    Fail closed unless at least four groups and 60% of structural model weight
+    are available. Partial historical proxies belong in the research layer and
+    must never surface as a production Bubble Score.
+    """
     weighted = 0.0
     available_weight = 0.0
     groups = 0
@@ -82,17 +88,11 @@ def calculate_bubble(inputs: BubbleInputs, history: Sequence[float] = ()) -> Bub
         groups += 1
         contributions.append((key, value))
 
-    # Two gates are deliberately separated:
-    # 1) research/scoring gate: four independent groups and >=45% model weight;
-    # 2) actionable gate: >=60% model weight.
-    # This lets us statistically test honest partial historical proxies without
-    # ever presenting them as production-ready Bubble signals.
-    if groups < 4 or available_weight < 0.45:
+    if groups < 4 or available_weight < 0.60:
         return BubbleResult(None, BubbleState.DATA_INSUFFICIENT, round(available_weight, 4), groups, None, 0, "N/A", (), False)
 
     score = round(weighted / available_weight, 2)
     state = bubble_state(score)
-    actionable = available_weight >= 0.60
     velocity = round(score - history[-1], 2) if history else None
 
     persistence = 1
@@ -128,4 +128,4 @@ def calculate_bubble(inputs: BubbleInputs, history: Sequence[float] = ()) -> Bub
         "volatility_complacency": "volatility complacency",
     }
     reasons = tuple(labels[key] for key, _ in sorted(contributions, key=lambda x: x[1], reverse=True)[:3])
-    return BubbleResult(score, state, round(available_weight, 4), groups, velocity, persistence, transition, reasons, actionable)
+    return BubbleResult(score, state, round(available_weight, 4), groups, velocity, persistence, transition, reasons, True)
