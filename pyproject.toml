@@ -9,6 +9,12 @@ description = "MOEX crash early warning and bottom detection engine"
 requires-python = ">=3.11"
 dependencies = []
 
+[project.optional-dependencies]
+kira-runtime = [
+  "telethon>=1.36,<2",
+  "faster-whisper>=1.0,<2",
+]
+
 [tool.pytest.ini_options]
 pythonpath = ["src", "."]
 testpaths = ["tests"]
