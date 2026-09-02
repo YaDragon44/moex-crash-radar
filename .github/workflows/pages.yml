@@ -37,9 +37,7 @@ jobs:
       - name: Build static site
         run: |
           mkdir -p _site
-          # IDEA RADAR is the primary product dashboard.
-          cp web/idea-radar/index.html _site/index.html
-          # Keep Crowd/Risk MVP and calibrated legacy radar available separately.
+          cp web/aggregator.html _site/index.html
           cp web/mvp.html _site/crowd-risk.html
           cp web/r044.html _site/legacy.html
           cp artifacts/market_snapshot.json _site/market_snapshot.json
