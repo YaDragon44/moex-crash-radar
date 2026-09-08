@@ -41,7 +41,7 @@ ACTION_PATTERNS = {
 # Conservative aliases: one issuer's stock and bond must not share an alias.
 ASSET_ALIASES = {
     "OZON": ("ozon", "озон"),
-    "OZPH": ("озон фармацевтика", "ozon фармацевтика", "ozon pharma"),
+    "OZPH": ("озон фармацевтика", "озон фармацевтику", "ozon фармацевтика", "ozon фармацевтику", "ozon pharma"),
     "SBER": ("сбер", "сбербанк"),
     "HEAD": ("headhunter", "хэдхантер", "хедхантер"),
     "YDEX": ("яндекс", "yandex"),
