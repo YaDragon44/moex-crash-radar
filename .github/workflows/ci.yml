@@ -37,11 +37,14 @@ jobs:
           set -euo pipefail
           FILE=web/investor-radar/r1.8.html
           test -s "$FILE"
-          grep -q "Investor Radar R1.8.2" "$FILE"
+          grep -q "Investor Radar R1.8.3" "$FILE"
           grep -q "recommendation-engine.js" "$FILE"
           grep -q "risk-layer.js" "$FILE"
-          grep -q "MARKET_ONLY\|Market risk" web/investor-radar/risk-layer.js "$FILE"
+          grep -q "VALTODAY,NUMTRADES" "$FILE"
+          grep -q "liquidityVerified" web/investor-radar/risk-layer.js "$FILE"
+          grep -q "issuerVerified" web/investor-radar/risk-layer.js "$FILE"
+          grep -q "regulatoryVerified" web/investor-radar/risk-layer.js "$FILE"
           grep -q "iss.only=marketdata" "$FILE"
           grep -q "candles.json" "$FILE"
           ! grep -q "рынокs\|рынокdata" "$FILE"
-          echo "R1.8 UI contract: PASS"
+          echo "R1.8.3 UI contract: PASS"
