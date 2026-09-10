@@ -1,0 +1,33 @@
+name: R1.4.6.2 LONG Pullback Reclaim
+on:
+  pull_request:
+    paths:
+      - 'scripts/run_r1_4_6_2_long_pullback_reclaim.py'
+      - '.github/workflows/r1-4-6-2-long-pullback-reclaim.yml'
+  workflow_dispatch:
+jobs:
+  backtest:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Run frozen pullback variants
+        run: python scripts/run_r1_4_6_2_long_pullback_reclaim.py
+      - name: Contract checks
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('artifacts/r1_4_6_2_long_pullback_reclaim.json',encoding='utf-8'))
+          assert set(d['variants'])=={'P0_BREAKOUT','P1_TOUCH_RECLAIM','P2_CLOSE_RECLAIM'}
+          for v in d['variants'].values():
+            assert v['OOS']['LONG']['n']>0
+            assert v['OOS']['SHORT']['n']>0
+          print('R1.4.6.2 contract PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1-4-6-2-long-pullback-reclaim
+          path: |
+            artifacts/r1_4_6_2_long_pullback_reclaim.json
+            artifacts/r1_4_6_2_trade_ledger.json
