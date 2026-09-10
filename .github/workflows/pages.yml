@@ -54,6 +54,8 @@ jobs:
           cp web/btc-entry-radar/index.html _site/btc-entry-radar/index.html
           mkdir -p _site/btc-entry-radar/data
           if [ -f web/btc-entry-radar/data/current.json ]; then cp web/btc-entry-radar/data/current.json _site/btc-entry-radar/data/current.json; fi
+          mkdir -p _site/ta-market
+          cp web/ta-market/index.html _site/ta-market/index.html
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
         with:
