@@ -3,6 +3,14 @@ name: Historical MOEX Evidence
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/run_historical_evidence.py'
+      - 'src/moex_crash_radar/history.py'
+      - 'src/moex_crash_radar/live_gate.py'
+      - 'data/imoex_constituents_2019_2026.json'
+      - '.github/workflows/historical-evidence.yml'
   workflow_dispatch:
 
 permissions:
