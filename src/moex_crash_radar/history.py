@@ -58,25 +58,41 @@ def _score(signals, key: str) -> float | None:
     return None if signal is None else round(signal.score, 2)
 
 
+def _active_universe(
+    day: str,
+    equity_candles: Mapping[str, Sequence[Candle]],
+    universe_by_effective_date: Mapping[str, Sequence[str]] | None,
+) -> tuple[str, ...]:
+    if not universe_by_effective_date:
+        return tuple(equity_candles)
+
+    effective_dates = sorted(universe_by_effective_date)
+    pos = bisect_right(effective_dates, day)
+    if pos == 0:
+        return ()
+    return tuple(universe_by_effective_date[effective_dates[pos - 1]])
+
+
 def build_daily_evidence(
     index_candles: Sequence[Candle],
     equity_candles: Mapping[str, Sequence[Candle]],
     *,
     min_equity_coverage: float = 0.70,
     warmup: int = 60,
+    universe_by_effective_date: Mapping[str, Sequence[str]] | None = None,
 ) -> list[DailyEvidence]:
     """Build point-in-time evidence with no look-ahead.
 
     Only trailing data available as of the current index day is passed into
-    breadth/distribution calculations. Critical component scores are persisted so
-    later EXIT calibration can distinguish broad market deterioration from a high
-    aggregate score caused by other components.
+    breadth/distribution calculations. When ``universe_by_effective_date`` is
+    supplied, the breadth denominator and eligible securities are taken from the
+    latest constituent set effective on or before that day. This prevents a
+    present-day basket from being projected backwards into historical replay.
     """
     if not index_candles:
         return []
 
     result: list[DailyEvidence] = []
-    basket_size = max(len(equity_candles), 1)
     equity_days = {ticker: [_day(c) for c in candles] for ticker, candles in equity_candles.items()}
 
     for i in range(warmup, len(index_candles)):
@@ -84,9 +100,14 @@ def build_daily_evidence(
         day = _day(index_history[-1])
         signals = derive_index_signals(index_history)
 
+        active_universe = _active_universe(day, equity_candles, universe_by_effective_date)
+        basket_size = len(active_universe)
         point_histories: dict[str, Sequence[Candle]] = {}
-        for ticker, full in equity_candles.items():
-            days = equity_days[ticker]
+        for ticker in active_universe:
+            full = equity_candles.get(ticker)
+            days = equity_days.get(ticker)
+            if not full or not days:
+                continue
             pos = bisect_right(days, day)
             if pos < 51:
                 continue
@@ -94,8 +115,8 @@ def build_daily_evidence(
                 continue
             point_histories[ticker] = full[max(0, pos - 60) : pos]
 
-        coverage = len(point_histories) / basket_size
-        if coverage >= min_equity_coverage:
+        coverage = (len(point_histories) / basket_size) if basket_size else 0.0
+        if basket_size and coverage >= min_equity_coverage:
             breadth = calculate_breadth(point_histories)
             distribution = calculate_distribution(point_histories)
             if breadth is not None:
