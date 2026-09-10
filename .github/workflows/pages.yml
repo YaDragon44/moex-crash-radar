@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'web/**'
+      - 'crypto-trader/**'
       - 'scripts/collect_snapshot.py'
       - 'scripts/collect_ta_market_snapshot.py'
       - 'scripts/validate_dashboard_snapshot.py'
@@ -80,6 +81,8 @@ jobs:
           mkdir -p _site/ta-market/data
           cp web/ta-market/index.html _site/ta-market/index.html
           cp artifacts/ta_market/current.json _site/ta-market/data/current.json
+          mkdir -p _site/crypto-trader
+          cp crypto-trader/index.html _site/crypto-trader/index.html
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
         with:
