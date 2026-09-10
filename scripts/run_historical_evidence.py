@@ -15,6 +15,13 @@ UNIVERSE = (
     "MOEX", "MTSS", "PHOR", "IRAO", "HYDR", "AFLT", "VKCO", "OZON",
 )
 
+# R0.6 Historical Integrity Gate:
+# historical feature calculations are timestamp-correct, but the equity universe
+# is still a present-day liquid basket rather than historical IMOEX constituents.
+UNIVERSE_POINT_IN_TIME = False
+HISTORICAL_INTEGRITY_STATUS = "PARTIAL"
+OFFICIAL_CONSTITUENTS_SOURCE = "https://www.moex.com/ru/documents/15237"
+
 EPISODES = (
     ("COVID_2020", "2020-01-10", "2020-05-15"),
     ("FEB_2022", "2022-01-10", "2022-05-31"),
@@ -101,7 +108,7 @@ def main() -> None:
     scored = [x for x in evidence if x.score is not None]
     coverage_values = [x.coverage for x in evidence]
 
-    gate_pass = bool(
+    metric_gate_pass = bool(
         preferred
         and preferred["detected_episodes"] == preferred["total_episodes"]
         and preferred["false_event_rate"] is not None
@@ -109,17 +116,33 @@ def main() -> None:
         and preferred["median_lead_days"] is not None
         and preferred["median_lead_days"] >= 5
     )
+    # R0.6 rule: historical performance cannot receive a green release gate until
+    # the constituent universe itself is point-in-time correct.
+    gate_pass = bool(metric_gate_pass and UNIVERSE_POINT_IN_TIME)
 
     payload = {
-        "release": "R0.3.3 Regime Rearm Precision Gate",
+        "release": "R0.6 Historical Integrity Gate",
         "source": "MOEX ISS",
         "range": {"start": start, "end": end},
         "index_rows": len(index),
         "configured_universe": list(UNIVERSE),
         "usable_universe": sorted(universe),
         "failed_universe": failures,
+        "historical_integrity": {
+            "status": HISTORICAL_INTEGRITY_STATUS,
+            "feature_timestamps_point_in_time": True,
+            "universe_point_in_time": UNIVERSE_POINT_IN_TIME,
+            "current_universe_method": "present_day_liquid_basket",
+            "issue": "Historical Breadth is calculated from a present-day liquid basket, so 2020/2022 evidence is exposed to survivorship and listing-history bias.",
+            "required_source": "Official MOEX archive of IMOEX/RTS calculation bases",
+            "source_ref": OFFICIAL_CONSTITUENTS_SOURCE,
+            "release_gate_pass": gate_pass,
+            "metric_gate_pass_before_integrity_gate": metric_gate_pass,
+            "next_step": "Load dated official MOEX constituent bases and rerun the same frozen Crash/EXIT logic without threshold refit.",
+        },
         "methodology": {
-            "point_in_time_features": True,
+            "feature_timestamps_point_in_time": True,
+            "universe_point_in_time": UNIVERSE_POINT_IN_TIME,
             "look_ahead": False,
             "min_breadth_coverage": 0.50,
             "score_data_gate": 0.70,
@@ -128,7 +151,7 @@ def main() -> None:
             "calibration_false_positive_definition": "Independent CASH_CONFIRMED event not followed by <= -8% decline within next 20 evidence rows",
             "calibration_episodes": [x[0] for x in CALIBRATION_EPISODES],
             "excluded_from_threshold_fit": ["MARKET_2025_2026: broad regime window, not a clean crash episode"],
-            "warning": "Breadth uses a present-day liquid basket, not historical index constituents. 2020/2022 results have survivorship/listing-history bias and remain calibration evidence, not unbiased production performance.",
+            "warning": "Breadth uses a present-day liquid basket, not historical index constituents. Historical results remain calibration evidence, not unbiased production performance, until the R0.6 integrity gate is completed.",
         },
         "evidence_rows": len(evidence),
         "scored_rows": len(scored),
@@ -151,7 +174,9 @@ def main() -> None:
             "preferred_event_diagnostics": diagnostics,
             "release_gate": {
                 "pass": gate_pass,
-                "requirements": "detect all four clean calibration episodes; false_event_rate <= 35%; median lead >= 5 calendar days",
+                "metric_gate_pass": metric_gate_pass,
+                "historical_integrity_required": True,
+                "requirements": "point-in-time constituent universe; detect all four clean calibration episodes; false_event_rate <= 35%; median lead >= 5 calendar days",
             },
         },
         "latest": asdict(evidence[-1]),
