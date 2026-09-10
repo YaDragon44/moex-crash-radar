@@ -1,0 +1,34 @@
+name: R1.4.6.1 LONG Entry Redesign
+on:
+  pull_request:
+    paths:
+      - 'scripts/run_r1_4_6_1_long_entry_redesign.py'
+      - '.github/workflows/r1-4-6-1-long-entry-redesign.yml'
+  workflow_dispatch:
+jobs:
+  backtest:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run frozen LONG variants
+        run: python scripts/run_r1_4_6_1_long_entry_redesign.py
+      - name: Contract checks
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('artifacts/r1_4_6_1_long_entry_redesign.json',encoding='utf-8'))
+          assert set(d['variants'])=={'L0_CONTROL','L1_HOLD','L2_RETEST'}
+          for v in d['variants'].values():
+            assert v['OOS']['LONG']['n']>0
+            assert v['OOS']['SHORT']['n']>0
+          print('R1.4.6.1 contract PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1-4-6-1-long-entry-redesign
+          path: |
+            artifacts/r1_4_6_1_long_entry_redesign.json
+            artifacts/r1_4_6_1_trade_ledger.json
