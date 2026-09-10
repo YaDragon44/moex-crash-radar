@@ -1,0 +1,16 @@
+const assert=require('assert');
+const Q=require('./bank-quality-trend.js');
+const sber={2023:{roe:25.3,cet1:11.6,npl:3.4,costOfRisk:0.76},2024:{roe:24.0,cet1:11.8,npl:3.7,costOfRisk:0.98},2025:{roe:22.7,cet1:12.3,npl:4.9,costOfRisk:1.30}};
+const r=Q.assess(sber);
+assert.equal(r.verified,true);
+assert.equal(r.traffic,'YELLOW');
+assert(r.signals.includes('ROE_DOWN'));
+assert(r.signals.includes('CET1_UP'));
+assert(r.signals.includes('NPL_UP'));
+assert(r.signals.includes('COR_UP'));
+assert(Math.abs(r.delta.roe-(-2.6))<1e-9);
+assert(Math.abs(r.delta.cet1-0.7)<1e-9);
+assert(Math.abs(r.delta.npl-1.5)<1e-9);
+assert(Math.abs(r.delta.costOfRisk-0.54)<1e-9);
+assert.equal(Q.assess({2025:sber[2025]}).status,'LOCK');
+console.log('R1.8.16 bank quality trend tests: PASS');
