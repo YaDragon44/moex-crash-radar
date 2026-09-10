@@ -23,7 +23,8 @@ EVENTS = (
     "2026-06-10",
 )
 WINDOW_DAYS = 20
-CHUNK_DAYS = 3
+# Source-availability audit: one request per EXIT window. The previous 3-day
+# chunking created 182 network calls and was operationally unsuitable.
 
 
 def latest_by_day(rows):
@@ -45,19 +46,11 @@ def fetch_window(center_day: str):
     center = date.fromisoformat(center_day)
     start = center - timedelta(days=WINDOW_DAYS)
     end = center + timedelta(days=WINDOW_DAYS)
-    rows = []
-    cursor = start
-    calls = 0
-    errors = []
-    while cursor <= end:
-        till = min(cursor + timedelta(days=CHUNK_DAYS - 1), end)
-        try:
-            rows.extend(fetch_futoi(TICKER, start=cursor.isoformat(), end=till.isoformat()))
-        except Exception as exc:
-            errors.append({"from": cursor.isoformat(), "till": till.isoformat(), "error": f"{type(exc).__name__}: {exc}"})
-        calls += 1
-        cursor = till + timedelta(days=1)
-    return rows, calls, errors
+    try:
+        rows = fetch_futoi(TICKER, start=start.isoformat(), end=end.isoformat())
+        return rows, 1, []
+    except Exception as exc:
+        return [], 1, [{"from": start.isoformat(), "till": end.isoformat(), "error": f"{type(exc).__name__}: {exc}"}]
 
 
 def main() -> None:
@@ -90,7 +83,6 @@ def main() -> None:
         })
 
     event_coverage = events_with_fiz_yur / len(EVENTS)
-    # This audit is a source-availability gate only. It does not assign a weight to positioning.
     status = "GO_FOR_RESEARCH" if event_coverage >= 0.80 else ("PARTIAL" if event_coverage > 0 else "NO_DATA")
 
     payload = {
@@ -101,7 +93,7 @@ def main() -> None:
         "methodology": {
             "event_count": len(EVENTS),
             "window_days_each_side": WINDOW_DAYS,
-            "chunk_days": CHUNK_DAYS,
+            "request_strategy": "one bounded request per EXIT window",
             "intraday_selection": "latest record per day and client group by moment/seqnum",
             "no_threshold_refit": True,
             "no_crash_score_change": True,
