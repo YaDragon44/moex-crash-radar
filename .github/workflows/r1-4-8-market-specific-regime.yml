@@ -1,0 +1,37 @@
+name: R1.4.8 Market-Specific Regime Segmentation
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/run_r1_4_8_market_specific_regime.py'
+      - 'scripts/run_r1_4_7_regime_engine_redesign.py'
+      - 'scripts/run_r1_4_5_complete_backtest.py'
+      - 'docs/r1_4_8_market_specific_regime_segmentation.md'
+      - '.github/workflows/r1-4-8-market-specific-regime.yml'
+jobs:
+  regime-segmentation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run R1.4.8 segmentation
+        working-directory: scripts
+        run: python run_r1_4_8_market_specific_regime.py
+      - name: Contract checks
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('scripts/artifacts/r1_4_8_market_specific_regime.json'))
+          assert p['release']=='R1.4.8'
+          assert set(p['classes'])=={'INDEX','FX','EQUITY','COMMODITY'}
+          assert p['gate']['production']=='NO-GO'
+          assert p['gate']['next'] in ('MARKET_SPECIFIC_VALIDATION','OI_POSITIONING_CONTEXT')
+          print('R1.4.8 contract PASS',p['gate'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1-4-8-market-specific-regime
+          path: scripts/artifacts/r1_4_8_*.json
