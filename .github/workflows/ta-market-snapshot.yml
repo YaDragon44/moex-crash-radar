@@ -1,0 +1,58 @@
+name: TA Market snapshot
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/10 7-15 * * 1-5'
+
+permissions:
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Collect SBERP VKCO OZPH snapshot
+        run: python scripts/collect_ta_market_snapshot.py
+      - name: Validate snapshot
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('artifacts/ta_market/current.json')
+          j=json.loads(p.read_text(encoding='utf-8'))
+          required=('SBERP','VKCO','OZPH')
+          missing=[x for x in required if x not in j.get('securities',{})]
+          if missing:
+              raise SystemExit(f'missing securities: {missing}')
+          for secid in required:
+              z=j['securities'][secid]
+              if not z.get('marketdata'):
+                  raise SystemExit(f'{secid}: marketdata missing')
+              for tf in ('D1','H1','M10'):
+                  if not z.get('raw',{}).get(tf):
+                      raise SystemExit(f'{secid}: {tf} candles missing')
+          if not j.get('imoex'):
+              raise SystemExit('IMOEX history missing')
+          print('TA MARKET SNAPSHOT GATE: PASS')
+          PY
+      - name: Commit fresh snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add artifacts/ta_market/current.json
+          if git diff --cached --quiet; then
+            echo 'No snapshot changes'
+            exit 0
+          fi
+          git commit -m 'data: refresh TA market snapshot'
+          git push origin HEAD:main
