@@ -7,7 +7,9 @@ on:
     paths:
       - 'web/**'
       - 'scripts/collect_snapshot.py'
+      - 'scripts/collect_ta_market_snapshot.py'
       - 'scripts/validate_dashboard_snapshot.py'
+      - 'artifacts/ta_market/current.json'
       - 'src/**'
       - '.github/workflows/pages.yml'
 
@@ -34,6 +36,27 @@ jobs:
         run: python scripts/collect_snapshot.py
       - name: Validate dashboard contract
         run: python scripts/validate_dashboard_snapshot.py
+      - name: Collect TA Market snapshot
+        run: python scripts/collect_ta_market_snapshot.py
+      - name: Validate TA Market snapshot
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('artifacts/ta_market/current.json')
+          j=json.loads(p.read_text(encoding='utf-8'))
+          required=('SBERP','VKCO','OZPH')
+          missing=[x for x in required if x not in j.get('securities',{})]
+          if missing: raise SystemExit(f'missing securities: {missing}')
+          for secid in required:
+              z=j['securities'][secid]
+              if not z.get('marketdata'): raise SystemExit(f'{secid}: marketdata missing')
+              for tf in ('D1','H1','M10'):
+                  if not z.get('raw',{}).get(tf): raise SystemExit(f'{secid}: {tf} candles missing')
+          if not j.get('imoex'): raise SystemExit('IMOEX history missing')
+          print('TA MARKET SNAPSHOT GATE: PASS')
+          PY
       - name: Build static site
         run: |
           mkdir -p _site
@@ -54,8 +77,9 @@ jobs:
           cp web/btc-entry-radar/index.html _site/btc-entry-radar/index.html
           mkdir -p _site/btc-entry-radar/data
           if [ -f web/btc-entry-radar/data/current.json ]; then cp web/btc-entry-radar/data/current.json _site/btc-entry-radar/data/current.json; fi
-          mkdir -p _site/ta-market
+          mkdir -p _site/ta-market/data
           cp web/ta-market/index.html _site/ta-market/index.html
+          cp artifacts/ta_market/current.json _site/ta-market/data/current.json
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
         with:
