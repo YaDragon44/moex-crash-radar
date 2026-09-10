@@ -1,0 +1,39 @@
+name: R1.4.8.1 EQUITY SHORT Robustness Gate
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/run_r1_4_8_1_equity_short_robustness.py'
+      - 'scripts/run_r1_4_7_regime_engine_redesign.py'
+      - 'scripts/run_r1_4_5_complete_backtest.py'
+      - 'docs/r1_4_8_1_equity_short_robustness.md'
+      - '.github/workflows/r1-4-8-1-equity-short-robustness.yml'
+jobs:
+  robustness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run EQUITY SHORT robustness replay
+        working-directory: scripts
+        run: python run_r1_4_8_1_equity_short_robustness.py
+      - name: Contract checks
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('scripts/artifacts/r1_4_8_1_equity_short_robustness.json'))
+          assert p['release']=='R1.4.8.1'
+          assert p['direction']=='SHORT'
+          assert set(p['universe'])=={'SBER','GAZP','ROSN','T'}
+          assert set(p['models'])=={'R0_EMA_CONTROL','R2_EARLY_TREND'}
+          assert p['gate']['production']=='NO-GO'
+          assert p['gate']['next'] in ('INDEPENDENT_MARKET_SPECIFIC_VALIDATION','OI_POSITIONING_CONTEXT')
+          print('R1.4.8.1 contract PASS',p['gate'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1-4-8-1-equity-short-robustness
+          path: scripts/artifacts/r1_4_8_1_*.json
