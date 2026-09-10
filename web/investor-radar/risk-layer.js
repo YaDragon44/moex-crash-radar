@@ -16,7 +16,7 @@ function assess(candles,liquidity,issuer,regulatory){
  const liqScore=liquidityRiskScore(liquidity?.turnoverRub,liquidity?.numTrades),liquidityVerified=liquidity?.verified===true&&finite(liqScore);
  const issuerVerified=issuer?.verified===true,regulatoryVerified=regulatory?.verified===true;
  const verified=marketVerified&&liquidityVerified&&issuerVerified&&regulatoryVerified;
- const score=marketVerified?(liquidityVerified?.7*marketScore+.3*liqScore:marketScore):null;
+ const score=marketVerified?(liquidityVerified?0.7*marketScore+0.3*liqScore:marketScore):null;
  const marketCritical=marketVerified&&(vol>=80||mdd<=-60);
  const issuerCritical=issuer?.critical===true;
  const sanctionsLevel=regulatoryVerified?(regulatory?.level||'UNKNOWN'):'UNKNOWN';
