@@ -38,6 +38,10 @@ jobs:
           node --check web/investor-radar/multiples-registry.js
       - name: Multiples Registry regression
         run: node web/investor-radar/multiples-registry.test.js
+      - name: Multiples Data Factory syntax
+        run: node --check web/investor-radar/multiples-data-factory.js
+      - name: Multiples Data Factory regression
+        run: node web/investor-radar/multiples-data-factory.test.js
       - name: Valuation Engine syntax
         run: node --check web/investor-radar/valuation-engine.js
       - name: Valuation Engine regression
@@ -48,18 +52,20 @@ jobs:
           set -euo pipefail
           FILE=web/investor-radar/r1.8.html
           test -s "$FILE"
-          grep -q "Investor Radar R1.8.8" "$FILE"
+          grep -q "Investor Radar R1.8.9" "$FILE"
+          grep -q "multiples-data-factory.js" "$FILE"
+          grep -q "InvestorRadarMultiplesFactory.historicalPE" "$FILE"
+          grep -q "yearEndCandles" "$FILE"
+          grep -q "till=.*-12-31" "$FILE"
           grep -q "recommendation-engine.js" "$FILE"
           grep -q "risk-layer.js" "$FILE"
           grep -q "issuer-risk-registry.js" "$FILE"
           grep -q "sanctions-regulatory-registry.js" "$FILE"
           grep -q "valuation-engine.js" "$FILE"
           grep -q "multiples-registry.js" "$FILE"
-          grep -q "InvestorRadarMultiples.get" "$FILE"
-          grep -q "InvestorRadarValuation.assess" "$FILE"
           grep -q "VALTODAY,NUMTRADES" "$FILE"
           grep -q "iss.only=marketdata" "$FILE"
           grep -q "candles.json" "$FILE"
           ! grep -q "requiredReturn=19\|modelPE=100/requiredReturn" "$FILE"
           ! grep -q "рынокs\|рынокdata" "$FILE"
-          echo "R1.8.8 verified multiples registry contract: PASS"
+          echo "R1.8.9 multiples data factory contract: PASS"
