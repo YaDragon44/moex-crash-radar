@@ -16,7 +16,7 @@ MSK = timezone(timedelta(hours=3))
 def get_json(path: str, params: dict | None = None, attempts: int = 3, timeout: int = 20) -> dict:
     query = urlencode(params or {})
     url = f"{ISS_BASE}{path}" + (f"?{query}" if query else "")
-    req = Request(url, headers={"User-Agent": "ta-market-monitor/0.6.2"})
+    req = Request(url, headers={"User-Agent": "ta-market-monitor/0.7.0"})
     last: Exception | None = None
     for i in range(attempts):
         try:
@@ -47,9 +47,7 @@ def candles(secid: str, interval: int, days: int) -> list[dict]:
     p = get_json(
         f"/engines/stock/markets/shares/securities/{secid}/candles.json",
         {
-            "iss.meta": "off",
-            "interval": interval,
-            "from": start,
+            "iss.meta": "off", "interval": interval, "from": start,
             "candles.columns": "begin,end,open,close,high,low,value,volume",
         },
     )
@@ -58,14 +56,14 @@ def candles(secid: str, interval: int, days: int) -> list[dict]:
         if x.get("close") is None:
             continue
         out.append({
-            "t": x.get("begin"), "end": x.get("end"),
-            "o": x.get("open"), "h": x.get("high"), "l": x.get("low"), "c": x.get("close"),
+            "t": x.get("begin"), "end": x.get("end"), "o": x.get("open"),
+            "h": x.get("high"), "l": x.get("low"), "c": x.get("close"),
             "v": x.get("volume"), "value": x.get("value"),
         })
     return out
 
 
-def marketdata(secid: str) -> dict | None:
+def stock_marketdata(secid: str) -> dict | None:
     p = get_json(
         f"/engines/stock/markets/shares/securities/{secid}.json",
         {
@@ -94,16 +92,92 @@ def imoex_history(days: int = 220) -> list[dict]:
     return [{"d": x.get("TRADEDATE"), "c": x.get("CLOSE")} for x in table(p, "history") if x.get("CLOSE") is not None]
 
 
+def breadth_tqbr() -> dict:
+    p = get_json(
+        "/engines/stock/markets/shares/boards/TQBR/securities.json",
+        {
+            "iss.meta": "off", "iss.only": "marketdata",
+            "marketdata.columns": "SECID,LAST,LASTTOPREVPRICE,UPDATETIME,SYSTIME",
+        },
+    )
+    rows = [x for x in table(p, "marketdata") if x.get("LAST") is not None and x.get("LASTTOPREVPRICE") is not None]
+    adv = sum(1 for x in rows if float(x["LASTTOPREVPRICE"]) > 0)
+    dec = sum(1 for x in rows if float(x["LASTTOPREVPRICE"]) < 0)
+    flat = len(rows) - adv - dec
+    ratio = adv / (adv + dec) if (adv + dec) else None
+    stamp = next((x.get("SYSTIME") or x.get("UPDATETIME") for x in reversed(rows) if x.get("SYSTIME") or x.get("UPDATETIME")), None)
+    return {"advancers": adv, "decliners": dec, "flat": flat, "total": len(rows), "advance_ratio": ratio, "time": stamp}
+
+
+def cnyrub() -> dict:
+    p = get_json(
+        "/engines/currency/markets/selt/securities/CNYRUB_TOM.json",
+        {
+            "iss.meta": "off", "iss.only": "marketdata",
+            "marketdata.columns": "SECID,BOARDID,LAST,WAPRICE,OPEN,HIGH,LOW,LASTCHANGEPRCNT,UPDATETIME,SYSTIME",
+        },
+    )
+    rows = table(p, "marketdata")
+    row = next((x for x in rows if x.get("LAST") is not None), None) or next((x for x in rows if x.get("WAPRICE") is not None), None)
+    if not row:
+        raise RuntimeError("CNYRUB_TOM marketdata absent")
+    return row
+
+
+def nearest_brent() -> dict:
+    today = datetime.now(MSK).date()
+    p = get_json(
+        "/engines/futures/markets/forts/securities.json",
+        {"iss.meta": "off", "iss.only": "securities", "securities.columns": "SECID,LASTTRADEDATE,SHORTNAME"},
+    )
+    candidates = []
+    for x in table(p, "securities"):
+        secid = str(x.get("SECID") or "")
+        ltd = x.get("LASTTRADEDATE")
+        if not secid.startswith("BR-") or not ltd:
+            continue
+        try:
+            d = datetime.fromisoformat(str(ltd)).date()
+        except ValueError:
+            continue
+        if d >= today:
+            candidates.append((d, secid))
+    if not candidates:
+        raise RuntimeError("active Brent contract not found")
+    _, secid = min(candidates)
+    q = get_json(
+        f"/engines/futures/markets/forts/securities/{secid}.json",
+        {
+            "iss.meta": "off", "iss.only": "marketdata",
+            "marketdata.columns": "SECID,LAST,OPEN,HIGH,LOW,LASTCHANGEPRCNT,NUMTRADES,VOLTODAY,VALTODAY,UPDATETIME,SYSTIME",
+        },
+    )
+    rows = table(q, "marketdata")
+    row = next((x for x in rows if x.get("LAST") is not None), None)
+    if not row:
+        raise RuntimeError(f"{secid} marketdata absent")
+    row["CONTRACT"] = secid
+    return row
+
+
 def main() -> None:
     generated = datetime.now(MSK).isoformat(timespec="seconds")
     payload: dict = {
-        "release": "R0.6.2 Live Data Snapshot",
+        "release": "R0.7.0 Simple Market Context",
         "generated_at": generated,
         "source": "MOEX ISS",
         "quality": "OK",
+        "context_quality": "OK",
         "securities": {},
         "imoex": [],
+        "context": {
+            "breadth": None,
+            "cnyrub": None,
+            "brent": None,
+            "event_risk": {"status": "N/A", "reason": "Reliable macro/corporate event calendar is not integrated"},
+        },
         "errors": {},
+        "context_errors": {},
     }
 
     try:
@@ -111,9 +185,18 @@ def main() -> None:
     except Exception as exc:
         payload["errors"]["IMOEX"] = f"{type(exc).__name__}: {exc}"
 
+    for name, fn in (("BREADTH", breadth_tqbr), ("CNYRUB", cnyrub), ("BRENT", nearest_brent)):
+        try:
+            payload["context"][name.lower()] = fn()
+        except Exception as exc:
+            payload["context_errors"][name] = f"{type(exc).__name__}: {exc}"
+
+    if payload["context_errors"]:
+        payload["context_quality"] = "PARTIAL"
+
     for secid in SECURITIES:
         try:
-            md = marketdata(secid)
+            md = stock_marketdata(secid)
             if not md:
                 raise RuntimeError("marketdata absent")
             payload["securities"][secid] = {
@@ -135,7 +218,13 @@ def main() -> None:
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     print(out)
-    print(json.dumps({"generated_at": generated, "quality": payload["quality"], "errors": payload["errors"]}, ensure_ascii=False))
+    print(json.dumps({
+        "generated_at": generated,
+        "quality": payload["quality"],
+        "context_quality": payload["context_quality"],
+        "errors": payload["errors"],
+        "context_errors": payload["context_errors"],
+    }, ensure_ascii=False))
 
 
 if __name__ == "__main__":
