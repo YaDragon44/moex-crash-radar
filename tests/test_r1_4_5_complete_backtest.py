@@ -1,5 +1,5 @@
 from scripts.run_r1_4_5_complete_backtest import third_thursday,sub_weekdays,split_of,events,metrics
-from datetime import date
+from datetime import date, datetime, timedelta
 
 def test_calendar_helpers():
  assert third_thursday(2026,9)==date(2026,9,17)
@@ -13,9 +13,10 @@ def test_split_boundaries():
 def _bars(n=70,contract='MXU6'):
  out=[]
  p=100.0
+ t=datetime(2026,1,1,10,0,0)
  for i in range(n):
   p+=1
-  out.append({'begin':f'2026-01-{1+i//20:02d} {10+i%10:02d}:00:00','open':p-.2,'high':p+.5,'low':p-.5,'close':p,'secid':contract,'roll_date':'2026-09-10'})
+  out.append({'begin':(t+timedelta(hours=i)).strftime('%Y-%m-%d %H:%M:%S'),'open':p-.2,'high':p+.5,'low':p-.5,'close':p,'secid':contract,'roll_date':'2026-09-10'})
  return out
 
 def test_next_bar_open_and_no_cross_contract_leakage():
@@ -24,6 +25,7 @@ def test_next_bar_open_and_no_cross_contract_leakage():
  assert es
  e=es[0]
  sig_i=next(i for i,r in enumerate(rows) if r['begin']==e['signal_time'])
+ assert e['entry_time']==rows[sig_i+1]['begin']
  assert e['entry']==rows[sig_i+1]['open']
  rows[sig_i+1]['secid']='MXZ6'
  es2=events(rows)
