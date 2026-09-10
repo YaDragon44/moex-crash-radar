@@ -1,0 +1,39 @@
+name: R1.4.5 Complete Historical Backtest v2
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/run_r1_4_5_complete_backtest.py'
+      - 'tests/test_r1_4_5_complete_backtest.py'
+      - 'docs/r1_4_5_complete_historical_backtest_v2.md'
+      - '.github/workflows/r1-4-5-complete-backtest.yml'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit tests
+        run: python -m pytest tests/test_r1_4_5_complete_backtest.py -q
+      - name: Run complete historical backtest
+        run: python scripts/run_r1_4_5_complete_backtest.py
+      - name: Contract checks
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('artifacts/r1_4_5_complete_backtest.json',encoding='utf-8'))
+          assert d['release']=='R1.4.5'
+          assert d['gate']['status'] in ('GO','NO-GO')
+          assert 'OOS' in d['aggregate']
+          assert '5' in d['aggregate']['OOS']
+          assert 'NG' in d['families']
+          print('R1.4.5 contract PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1-4-5-complete-backtest
+          path: artifacts/r1_4_5_*.json
