@@ -17,7 +17,8 @@ from moex_crash_radar.positioning import build_positioning_snapshot, fetch_futoi
 from moex_crash_radar.rate_ofz import collect_rate_ofz
 
 BREADTH_UNIVERSE=("SBER","SBERP","LKOH","GAZP","YDEX","T","X5","GMKN","NVTK","ROSN","TATN","TATNP","PLZL","CHMF","NLMK","ALRS","MOEX","MTSS","PHOR","IRAO","HYDR","AFLT","VKCO","OZON")
-POSITIONING_TICKER="MIX"
+# FUTOI uses the two-character futures contract group code. For MOEX Index this is MX; MIX is the underlying/futures family code.
+POSITIONING_TICKER="MX"
 
 def main()->None:
     end=date.today(); start=end-timedelta(days=500)
@@ -49,9 +50,10 @@ def main()->None:
     context=calculate_context(context_signals)
 
     try:
-        positioning_rows=fetch_futoi(POSITIONING_TICKER,start=(end-timedelta(days=14)).isoformat(),end=end.isoformat())
+        # Anonymous FUTOI is currently delayed, so request enough history to receive the latest free observation.
+        positioning_rows=fetch_futoi(POSITIONING_TICKER,start=(end-timedelta(days=45)).isoformat(),end=end.isoformat())
         positioning=build_positioning_snapshot(POSITIONING_TICKER,positioning_rows,today=end.isoformat()).to_dict()
-        positioning["note"]="R0.7 observational layer. Does not change Crash Score or frozen EXIT Gate."
+        positioning["note"]="R0.7 observational layer. Anonymous MOEX FUTOI can be delayed; stale data never changes Crash Score or frozen EXIT Gate."
     except Exception as exc:
         positioning={"ticker":POSITIONING_TICKER,"as_of":None,"quality":"N/A","individuals":None,"legal_entities":None,"total_open_interest":None,"retail_net":None,"legal_net":None,"directional_divergence":None,"source":"MOEX ISS analyticalproducts/futoi","note":f"Positioning unavailable; fail-closed N/A: {type(exc).__name__}"}
 
@@ -70,7 +72,7 @@ def main()->None:
       "context":{"score":context.score,"state":context.state.value,"quality":context.quality.value,"coverage":context.coverage,"available_groups":context.available_groups,"total_groups":context.total_groups,"groups":{"rate_ofz":rate_group,"oil_rub":oil_group,"macro_earnings":{"score":None,"quality":"N/A"},"news_geopolitics":{"score":None,"quality":"N/A"}},"note":"Independent external-risk layer. Context is not a probability and not Crowd Score."},
       "crash":{"score":crash.score,"state":crash.state.value,"available_weight":round(crash.available_weight,4),"critical_confirmations":crash.critical_confirmations,"raw_cash_signal":crash.cash_signal},"exit_gate":exit_gate,"crash_momentum":momentum,"crash_history":crash_history,"bottom":{"score":None,"state":"DATA_INSUFFICIENT","buy_back_signal":False},
       "calibration":{"release":"R0.6.2","false_event_rate":.2222,"detected_episodes":"4/4","median_lead_days":28.5,"blind_precision":.75,"blind_false_alarm_rate":.25,"params":{"score_threshold":CALIBRATED_EXIT_GATE.score_threshold,"confirmations":CALIBRATED_EXIT_GATE.confirmations,"persistence":CALIBRATED_EXIT_GATE.persistence,"max_5d_return_pct":CALIBRATED_EXIT_GATE.max_5d_return_pct,"cooldown_rows":CALIBRATED_EXIT_GATE.cooldown_rows,"rearm_clear_rows":CALIBRATED_EXIT_GATE.rearm_clear_rows},"warning":"R0.7 positioning is observational and remains outside the validated EXIT gate until incremental-value validation."},
-      "note":"R0.7 adds official MOEX MIX positioning as an observational layer. Missing positioning is N/A; it never weakens the validated Crash/EXIT calculation."}
+      "note":"R0.7 adds official MOEX MX positioning as an observational layer. Missing/stale positioning never weakens or changes the validated Crash/EXIT calculation."}
     out=Path("artifacts/market_snapshot.json"); out.parent.mkdir(parents=True,exist_ok=True); out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8"); print(out)
 
 if __name__=="__main__": main()
