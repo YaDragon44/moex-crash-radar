@@ -1,0 +1,39 @@
+name: R1.4.7.2 R3 Sample Extension
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/run_r1_4_7_2_r3_sample_extension.py'
+      - '.github/workflows/r1-4-7-2-r3-sample-extension.yml'
+  workflow_dispatch:
+
+jobs:
+  sample-extension:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run frozen R3 extended sample
+        run: python scripts/run_r1_4_7_2_r3_sample_extension.py
+      - name: Contract checks
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('artifacts/r1_4_7_2_r3_sample_extension.json',encoding='utf-8'))
+          assert d['release']=='R1.4.7.2'
+          assert d['primary_horizon']==4
+          assert d['cost_bps']==5.0
+          assert set(d['splits'])=={'DEVELOPMENT','VALIDATION','OOS'}
+          assert d['gate']['production']=='NO-GO'
+          assert set(d['diagnostic_horizons'])=={'1','2','4','8'}
+          assert len(d['market_direction'])==11
+          print('R1.4.7.2 contract PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1-4-7-2-r3-sample-extension
+          path: |
+            artifacts/r1_4_7_2_r3_sample_extension.json
+            artifacts/r1_4_7_2_r3_events.json
