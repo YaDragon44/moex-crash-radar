@@ -45,6 +45,8 @@ jobs:
           cp web/idea-radar/index.html _site/idea-radar/index.html
           mkdir -p _site/portfolio-rf
           cp web/portfolio-rf/index.html _site/portfolio-rf/index.html
+          mkdir -p _site/investor-radar
+          cp web/investor-radar/index.html _site/investor-radar/index.html
           mkdir -p _site/simple-entry-radar
           cp web/simple-entry-radar/live.html _site/simple-entry-radar/index.html
           if [ -f web/simple-entry-radar/positions.json ]; then cp web/simple-entry-radar/positions.json _site/simple-entry-radar/positions.json; fi
