@@ -25,7 +25,7 @@ def validate_dashboard_snapshot(snapshot:dict[str,Any])->list[str]:
         if not item.get("quality"): errors.append(f"core signal {key}.quality is required")
 
     positioning=snapshot.get("positioning") or {}
-    if positioning.get("ticker")!="MIX": errors.append("positioning.ticker must be MIX")
+    if positioning.get("ticker")!="MX": errors.append("positioning.ticker must be MX")
     if positioning.get("quality") not in VALID_QUALITY: errors.append("positioning.quality is invalid")
     if "MOEX ISS analyticalproducts/futoi" not in str(positioning.get("source")): errors.append("positioning source must be official MOEX futoi")
     pq=positioning.get("quality")
