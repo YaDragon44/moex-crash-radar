@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, r0.3-crash-engine, r1.8-foundation]
+    branches: [main, r0.3-crash-engine, r1.8-foundation, r1.8.14-sber-valuation]
   pull_request:
     branches: [main]
 
@@ -57,6 +57,22 @@ jobs:
         run: |
           node --check web/investor-radar/valuation-engine.js
           node web/investor-radar/valuation-engine.test.js
+      - name: SBER valuation registry
+        run: |
+          node --check web/investor-radar/sber-valuation-registry.js
+          node web/investor-radar/sber-valuation-registry.test.js
+      - name: Bank valuation gate
+        run: |
+          node --check web/investor-radar/bank-valuation-gate.js
+          node web/investor-radar/bank-valuation-gate.test.js
+      - name: Bank quality trend
+        run: |
+          node --check web/investor-radar/bank-quality-trend.js
+          node web/investor-radar/bank-quality-trend.test.js
+      - name: SBER MOEX runtime
+        run: |
+          node --check web/investor-radar/sber-moex-runtime.js
+          node web/investor-radar/sber-moex-runtime.test.js
       - name: R1.8 UI contract
         shell: bash
         run: |
@@ -85,4 +101,4 @@ jobs:
           grep -q "candles.json" "$FILE"
           ! grep -q "requiredReturn=19\|modelPE=100/requiredReturn" "$FILE"
           ! grep -q "рынокs\|рынокdata" "$FILE"
-          echo "R1.8.12 peer earnings verification + R1.8.11 UI contract: PASS"
+          echo "R1.8.17 SBER runtime + R1.8 UI contract: PASS"
