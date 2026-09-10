@@ -4,8 +4,10 @@ on:
   pull_request:
     paths:
       - 'config/r1_5_0_feature_contract.json'
+      - 'config/r1_5_0_source_registry.json'
       - 'scripts/r1_5_0_quality_gate.py'
       - 'tests/test_r1_5_0_quality_gate.py'
+      - 'tests/test_r1_5_0_source_registry.py'
       - 'docs/r1_5_0_oi_positioning_context_foundation.md'
       - '.github/workflows/r1-5-0-quality-foundation.yml'
 jobs:
@@ -16,18 +18,21 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - run: python -m pip install pytest
-      - name: Quality gate tests
-        run: python -m pytest -q tests/test_r1_5_0_quality_gate.py
+      - name: Quality and source contract tests
+        run: python -m pytest -q tests/test_r1_5_0_quality_gate.py tests/test_r1_5_0_source_registry.py
       - name: Contract checks
         run: |
           python - <<'PY'
           import json
           p=json.load(open('config/r1_5_0_feature_contract.json'))
-          assert p['release']=='R1.5.0'
+          s=json.load(open('config/r1_5_0_source_registry.json'))
+          assert p['release']=='R1.5.0' and s['release']=='R1.5.0'
           assert p['production']=='NO-GO'
           assert p['rules']['no_forward_fill_participant_data'] is True
           assert p['rules']['missing_is_neutral'] is False
           assert p['rules']['fabrication_allowed'] is False
           assert 'BLOCKED_AUTH' in p['quality_status']
-          print('R1.5.0 quality contract PASS')
+          assert s['sources']['MOEX_FUTOI']['unauthenticated_quality']=='BLOCKED_AUTH'
+          assert s['sources']['MOEX_FUTOI']['daily_public_substitution_allowed'] is False
+          print('R1.5.0 quality/source contract PASS')
           PY
