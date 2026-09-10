@@ -41,6 +41,12 @@ jobs:
         run: |
           node --check web/investor-radar/peer-universe-registry.js
           node web/investor-radar/peer-universe-registry.test.js
+      - name: Peer Earnings Registry
+        run: node --check web/investor-radar/peer-earnings-registry.js
+      - name: Peer P/E Data Factory
+        run: |
+          node --check web/investor-radar/peer-pe-data-factory.js
+          node web/investor-radar/peer-pe-data-factory.test.js
       - name: Multiples Data Factory
         run: |
           node --check web/investor-radar/multiples-data-factory.js
@@ -55,7 +61,14 @@ jobs:
           set -euo pipefail
           FILE=web/investor-radar/r1.8.html
           test -s "$FILE"
-          grep -q "Investor Radar R1.8.9" "$FILE"
+          grep -q "Investor Radar R1.8.11" "$FILE"
+          grep -q "peer-universe-registry.js" "$FILE"
+          grep -q "peer-earnings-registry.js" "$FILE"
+          grep -q "peer-pe-data-factory.js" "$FILE"
+          grep -q "InvestorRadarPeerUniverse.validate" "$FILE"
+          grep -q "InvestorRadarPeerPEFactory.build" "$FILE"
+          grep -q "peerQuote" "$FILE"
+          grep -q "Verified peer P/E" "$FILE"
           grep -q "multiples-data-factory.js" "$FILE"
           grep -q "InvestorRadarMultiplesFactory.historicalPE" "$FILE"
           grep -q "yearEndCandles" "$FILE"
@@ -65,10 +78,9 @@ jobs:
           grep -q "issuer-risk-registry.js" "$FILE"
           grep -q "sanctions-regulatory-registry.js" "$FILE"
           grep -q "valuation-engine.js" "$FILE"
-          grep -q "multiples-registry.js" "$FILE"
           grep -q "VALTODAY,NUMTRADES" "$FILE"
           grep -q "iss.only=marketdata" "$FILE"
           grep -q "candles.json" "$FILE"
           ! grep -q "requiredReturn=19\|modelPE=100/requiredReturn" "$FILE"
           ! grep -q "рынокs\|рынокdata" "$FILE"
-          echo "R1.8.10 sector peer universe contract: PASS"
+          echo "R1.8.11 peer P/E data factory contract: PASS"
