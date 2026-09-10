@@ -5,7 +5,8 @@ CORE_SIGNALS=("market_structure","breadth","volume_distribution","volatility_liq
 CONTEXT_SIGNALS=("rate_ofz","oil_rub","macro_earnings","news_geopolitics")
 EXIT_STAGES={"NORMAL","EARLY_WARNING","EXIT_WATCH","CASH_CONFIRMED","DATA_INSUFFICIENT"}
 CONTEXT_STATES={"SUPPORTIVE","NEUTRAL","CAUTION","STRESS","DATA_INSUFFICIENT"}
-DASHBOARD_RELEASE="R0.5.2 Oil / RUB Live Integration"
+DASHBOARD_RELEASE="R0.7 Positioning Data"
+VALID_QUALITY={"LIVE","DELAYED","STALE","ERROR","N/A"}
 
 def _valid_score(value:Any)->bool: return isinstance(value,(int,float)) and 0<=value<=100
 
@@ -23,9 +24,25 @@ def validate_dashboard_snapshot(snapshot:dict[str,Any])->list[str]:
         if not _valid_score(item.get("score")): errors.append(f"core signal {key}.score must be 0..100")
         if not item.get("quality"): errors.append(f"core signal {key}.quality is required")
 
+    positioning=snapshot.get("positioning") or {}
+    if positioning.get("ticker")!="MIX": errors.append("positioning.ticker must be MIX")
+    if positioning.get("quality") not in VALID_QUALITY: errors.append("positioning.quality is invalid")
+    if "MOEX ISS analyticalproducts/futoi" not in str(positioning.get("source")): errors.append("positioning source must be official MOEX futoi")
+    pq=positioning.get("quality")
+    if pq=="N/A":
+        for key in ("total_open_interest","retail_net","legal_net","directional_divergence"):
+            if positioning.get(key) is not None: errors.append(f"positioning.{key} must be null when quality is N/A")
+    else:
+        if not positioning.get("as_of"): errors.append("sourced positioning requires as_of")
+        if not isinstance(positioning.get("individuals"),dict) or not isinstance(positioning.get("legal_entities"),dict): errors.append("sourced positioning requires FIZ and YUR rows")
+        if not isinstance(positioning.get("total_open_interest"),int) or positioning.get("total_open_interest")<0: errors.append("positioning.total_open_interest must be non-negative int")
+        if not isinstance(positioning.get("retail_net"),int): errors.append("positioning.retail_net must be int")
+        if not isinstance(positioning.get("legal_net"),int): errors.append("positioning.legal_net must be int")
+        if not isinstance(positioning.get("directional_divergence"),bool): errors.append("positioning.directional_divergence must be bool")
+
     context=snapshot.get("context") or {}; groups=context.get("groups") or {}
     if context.get("state") not in CONTEXT_STATES: errors.append("context.state is invalid")
-    if context.get("quality") not in {"LIVE","DELAYED","STALE","ERROR","N/A"}: errors.append("context.quality is invalid")
+    if context.get("quality") not in VALID_QUALITY: errors.append("context.quality is invalid")
     cscore=context.get("score"); coverage=context.get("coverage"); available=context.get("available_groups")
     if cscore is not None and not _valid_score(cscore): errors.append("context.score must be null or 0..100")
     if not isinstance(coverage,(int,float)) or not 0<=coverage<=1: errors.append("context.coverage must be 0..1")
@@ -72,7 +89,7 @@ def validate_dashboard_snapshot(snapshot:dict[str,Any])->list[str]:
     if not isinstance(weight,(int,float)) or not 0<=weight<=1: errors.append("crash.available_weight must be 0..1")
     if not isinstance(confirms,int) or not 0<=confirms<=4: errors.append("crash.critical_confirmations must be 0..4")
     history=snapshot.get("crash_history")
-    if not isinstance(history,list) or not history: errors.append("crash_history is required for R0.5.2 dashboard")
+    if not isinstance(history,list) or not history: errors.append("crash_history is required for dashboard")
     else:
         for row in history:
             if not isinstance(row,dict) or not row.get("day") or not _valid_score(row.get("score")): errors.append("crash_history rows require day and score 0..100"); break
@@ -90,10 +107,12 @@ def validate_dashboard_snapshot(snapshot:dict[str,Any])->list[str]:
     if bottom.get("score") is not None: errors.append("bottom.score must remain N/A until Bottom Engine data is sourced")
     if bottom.get("state")!="DATA_INSUFFICIENT": errors.append("bottom.state must be DATA_INSUFFICIENT before Re-entry Engine integration")
     calibration=snapshot.get("calibration") or {}
-    if calibration.get("release")!="R0.3.3": errors.append("calibration.release must be R0.3.3")
-    if calibration.get("false_event_rate")!=.2857: errors.append("calibration.false_event_rate must be 0.2857")
+    if calibration.get("release")!="R0.6.2": errors.append("calibration.release must be R0.6.2")
+    if calibration.get("false_event_rate")!=.2222: errors.append("calibration.false_event_rate must be 0.2222")
     if calibration.get("detected_episodes")!="4/4": errors.append("calibration.detected_episodes must be 4/4")
-    if calibration.get("total_exit_events")!=14 or calibration.get("false_exit_events")!=4: errors.append("calibration event counts are invalid")
+    if calibration.get("blind_precision")!=.75: errors.append("calibration.blind_precision must be 0.75")
+    if calibration.get("blind_false_alarm_rate")!=.25: errors.append("calibration.blind_false_alarm_rate must be 0.25")
+    if "total_exit_events" in calibration or "false_exit_events" in calibration: errors.append("legacy calibration event counts must not be carried into R0.7 snapshot")
     text=str(snapshot).lower()
     if "synthetic" in text or "mock" in text or "demo data" in text: errors.append("live snapshot must not contain synthetic/mock/demo data markers")
     return errors
