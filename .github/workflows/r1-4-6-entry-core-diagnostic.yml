@@ -1,0 +1,35 @@
+name: R1.4.6 Entry Core Diagnostic
+on:
+  pull_request:
+    paths:
+      - 'scripts/run_r1_4_6_entry_core_diagnostic.py'
+      - '.github/workflows/r1-4-6-entry-core-diagnostic.yml'
+  workflow_dispatch:
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild frozen R1.4.5 ledger
+        run: python scripts/run_r1_4_5_complete_backtest.py
+      - name: Run R1.4.6 diagnostic
+        run: python scripts/run_r1_4_6_entry_core_diagnostic.py
+      - name: Contract checks
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('artifacts/r1_4_6_entry_core_diagnostic.json',encoding='utf-8'))
+          assert d['release']=='R1.4.6'
+          assert d['cost_bps']==5
+          assert d['oos']['n']>0
+          assert 'LONG' in d['by_side'] or 'SHORT' in d['by_side']
+          assert len(d['by_family'])>0
+          print('R1.4.6 diagnostic contract PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1-4-6-entry-core-diagnostic
+          path: artifacts/r1_4_6_entry_core_diagnostic.json
