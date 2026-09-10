@@ -1,0 +1,34 @@
+name: R1.4.7 Regime Engine Redesign
+on:
+  pull_request:
+    paths:
+      - 'scripts/run_r1_4_7_regime_engine_redesign.py'
+      - '.github/workflows/r1-4-7-regime-engine-redesign.yml'
+  workflow_dispatch:
+jobs:
+  regime-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Run frozen regime hypotheses
+        run: python scripts/run_r1_4_7_regime_engine_redesign.py
+      - name: Contract checks
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('artifacts/r1_4_7_regime_engine_redesign.json',encoding='utf-8'))
+          assert set(d['models'])=={'R0_EMA_CONTROL','R1_STRUCTURE','R2_EARLY_TREND','R3_STRUCTURE_EARLY'}
+          for m in d['models'].values():
+            assert set(m['VALIDATION'])=={'LONG','SHORT'}
+            assert set(m['OOS'])=={'LONG','SHORT'}
+            assert set(m['OOS']['LONG'])=={'1','2','4','8'}
+          print('R1.4.7 contract PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1-4-7-regime-engine-redesign
+          path: |
+            artifacts/r1_4_7_regime_engine_redesign.json
+            artifacts/r1_4_7_regime_events.json
