@@ -1,0 +1,11 @@
+const assert=require('assert');
+const V=require('./valuation-engine.js');
+assert.equal(V.median([5,7,9]),7);
+assert.equal(V.median([5,7,9,11]),8);
+let a=V.assess({eps:35,epsVerified:true,historicalPE:[5,6,7],peerPE:[6,8],source:'test',asOf:'2026-09-10'});
+assert.equal(a.status,'VERIFIED');assert.equal(a.verified,true);assert(Number.isFinite(a.low));assert(Number.isFinite(a.high));assert(a.low<a.high);
+a=V.assess({eps:35,epsVerified:true,historicalPE:[5,6],peerPE:[6,8],source:'test',asOf:'2026-09-10'});assert.equal(a.status,'LOCK');assert(a.missing.includes('historical_pe_3plus'));
+a=V.assess({eps:35,epsVerified:true,historicalPE:[5,6,7],peerPE:[6],source:'test',asOf:'2026-09-10'});assert.equal(a.status,'LOCK');assert(a.missing.includes('peer_pe_2plus'));
+a=V.assess({eps:35,epsVerified:false,historicalPE:[5,6,7],peerPE:[6,8],source:'test',asOf:'2026-09-10'});assert.equal(a.status,'LOCK');assert(a.missing.includes('verified_eps'));
+a=V.assess({eps:35,epsVerified:true,historicalPE:[5,6,7],peerPE:[6,8]});assert.equal(a.status,'LOCK');assert(a.missing.includes('source_metadata'));
+console.log('R1.8.7 valuation engine tests: PASS');
