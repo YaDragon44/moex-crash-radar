@@ -7,6 +7,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/run_historical_evidence.py'
+      - 'scripts/run_blind_crash_replay.py'
       - 'src/moex_crash_radar/history.py'
       - 'src/moex_crash_radar/live_gate.py'
       - 'data/imoex_constituents_2019_2026.json'
@@ -29,9 +30,13 @@ jobs:
         run: python -m pip install -e .
       - name: Historical MOEX evidence run
         run: python scripts/run_historical_evidence.py
+      - name: Blind crash replay
+        run: python scripts/run_blind_crash_replay.py
       - name: Upload evidence
         uses: actions/upload-artifact@v4
         with:
           name: historical-evidence
-          path: artifacts/historical_evidence.json
+          path: |
+            artifacts/historical_evidence.json
+            artifacts/blind_crash_replay.json
           if-no-files-found: error
