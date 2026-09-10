@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Crypto Trader Cockpit SIMPLE — BTC / GRAM / DOT</title>
+<style>
+:root{--bg:#071018;--card:#0d1924;--card2:#102231;--line:#203646;--text:#eef5fb;--muted:#8fa4b7;--g:#39c985;--r:#ef6675;--y:#e5b84c;--b:#5c9cff;--c:#55cde1}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0,#0e2433 0,#071018 36%,#050b10 100%);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}.wrap{max-width:1680px;margin:auto;padding:18px}.top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}.title{font-size:27px;font-weight:900}.sub{font-size:12px;color:var(--muted);margin-top:4px}.badges{display:flex;gap:8px;flex-wrap:wrap}.badge{border:1px solid var(--line);background:#0a151e;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--y);margin-right:6px}.ok{background:var(--g)}.err{background:var(--r)}
+.hero{display:grid;grid-template-columns:1.05fr .9fr repeat(3,1fr) 1.25fr;gap:10px;margin-top:15px}.plan{display:grid;grid-template-columns:1.15fr 1fr 1.35fr 1.15fr 1fr;gap:10px;margin-top:10px}.card{background:linear-gradient(180deg,var(--card),#0a151e);border:1px solid var(--line);border-radius:15px;padding:14px;min-width:0}.hero .card{min-height:120px;display:flex;flex-direction:column;justify-content:space-between}.lab{font-size:9px;font-weight:900;letter-spacing:.11em;color:var(--muted)}.big{font-size:26px;font-weight:950;line-height:1.05;margin-top:9px}.note{font-size:10px;color:var(--muted);line-height:1.35;margin-top:8px}.val{font-size:15px;font-weight:900;margin-top:7px}.g{color:var(--g)}.r{color:var(--r)}.y{color:var(--y)}.b{color:var(--b)}.c{color:var(--c)}
+.action.ready{border-color:var(--g);background:linear-gradient(180deg,#0d2b21,#0a1c17)}.action.wait{border-color:var(--y);background:linear-gradient(180deg,#2a2412,#18160d)}.action.no{border-color:var(--r);background:linear-gradient(180deg,#2d1519,#1a0d10)}
+.assets{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}.assetHead{display:flex;justify-content:space-between;gap:10px}.ticker{font-size:20px;font-weight:950}.price{font-size:32px;font-weight:950;margin-top:10px}.meta{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}.mini{border-top:1px solid var(--line);padding-top:7px}.mini span{display:block;color:var(--muted);font-size:9px}.mini b{font-size:11px;margin-top:3px;display:block}.footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:10px}.warn{margin-top:10px;padding:10px;border:1px solid #5b4420;border-radius:10px;background:#221b0f;color:#e8cb8b;font-size:11px;display:none}
+@media(max-width:1200px){.hero{grid-template-columns:repeat(3,1fr)}.plan{grid-template-columns:repeat(3,1fr)}}@media(max-width:720px){.wrap{padding:10px}.hero,.plan,.assets{grid-template-columns:1fr 1fr}.big{font-size:21px}.price{font-size:25px}}@media(max-width:470px){.hero,.plan,.assets{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div><div class="title">Crypto Trader Cockpit <span class="c">SIMPLE</span></div><div class="sub">BTC / GRAM / DOT · рынок → кандидат → триггер → действие</div></div><div class="badges"><span class="badge"><i id="liveDot" class="dot"></i><span id="live">CONNECTING</span></span><span class="badge">Updated <b id="updated">—</b></span><span class="badge">Auto 60s</span></div></div>
+  <div id="warn" class="warn"></div>
+
+  <section class="hero">
+    <div class="card"><div><div class="lab">MARKET STATE</div><div id="market" class="big">—</div></div><div id="marketNote" class="note">BTC 4H filter</div></div>
+    <div class="card"><div><div class="lab">BTC FILTER</div><div id="filter" class="big">—</div></div><div id="filterNote" class="note">Разрешение для alt LONG</div></div>
+    <div class="card"><div><div class="lab">BTC</div><div id="btcPrice" class="big">—</div></div><div id="btcState" class="note">—</div></div>
+    <div class="card"><div><div class="lab">GRAM</div><div id="gramPrice" class="big">—</div></div><div id="gramState" class="note">—</div></div>
+    <div class="card"><div><div class="lab">DOT</div><div id="dotPrice" class="big">—</div></div><div id="dotState" class="note">—</div></div>
+    <div id="actionCard" class="card action wait"><div><div class="lab">ДЕЙСТВИЕ СЕЙЧАС</div><div id="action" class="big">WAIT</div></div><div id="actionNote" class="note">Ждём качественный триггер</div></div>
+  </section>
+
+  <section class="plan">
+    <div class="card"><div class="lab">ЛУЧШИЙ КАНДИДАТ</div><div id="leader" class="val">—</div></div>
+    <div class="card"><div class="lab">SETUP</div><div id="setup" class="val">—</div></div>
+    <div class="card"><div class="lab">TRIGGER</div><div id="trigger" class="val">—</div></div>
+    <div class="card"><div class="lab">ENTRY / STOP</div><div id="entry" class="val">После trigger</div></div>
+    <div class="card"><div class="lab">SIMPLE SCORE</div><div id="score" class="val">—</div></div>
+  </section>
+
+  <section class="assets">
+    <div class="card"><div class="assetHead"><div class="ticker">BTC</div><div id="btcTag" class="y">WAIT</div></div><div id="btcP" class="price">—</div><div class="meta"><div class="mini"><span>24H</span><b id="btc24">—</b></div><div class="mini"><span>4H TREND</span><b id="btcTrend">—</b></div><div class="mini"><span>ROLE</span><b>FILTER</b></div></div></div>
+    <div class="card"><div class="assetHead"><div class="ticker">GRAM</div><div id="gramTag" class="y">WAIT</div></div><div id="gramP" class="price">—</div><div class="meta"><div class="mini"><span>24H</span><b id="gram24">—</b></div><div class="mini"><span>4H TREND</span><b id="gramTrend">—</b></div><div class="mini"><span>vs BTC</span><b id="gramRS">—</b></div></div></div>
+    <div class="card"><div class="assetHead"><div class="ticker">DOT</div><div id="dotTag" class="y">WAIT</div></div><div id="dotP" class="price">—</div><div class="meta"><div class="mini"><span>24H</span><b id="dot24">—</b></div><div class="mini"><span>4H TREND</span><b id="dotTrend">—</b></div><div class="mini"><span>vs BTC</span><b id="dotRS">—</b></div></div></div>
+  </section>
+  <div class="footer"><span>Dashboard = смотреть состояние · 4H Monitor = проверять изменения · ChatGPT = разбирать READY</span><span>Источник: Binance public API, fallback CoinGecko</span></div>
+</div>
+<script>
+const A={BTC:{sym:'BTCUSDT',cg:'bitcoin'},GRAM:{sym:'GRAMUSDT',cg:'gram'},DOT:{sym:'DOTUSDT',cg:'polkadot'}};
+let D={BTC:{},GRAM:{},DOT:{}};
+const $=id=>document.getElementById(id),fmt=(x,n=2)=>Number.isFinite(x)?x.toLocaleString('en-US',{minimumFractionDigits:n,maximumFractionDigits:n}):'—';
+function money(x){if(!Number.isFinite(x))return '—';let n=x>=1000?0:x>=10?2:x>=1?3:5;return '$'+fmt(x,n)}
+function pct(x){return Number.isFinite(x)?(x>=0?'+':'')+x.toFixed(2)+'%':'—'}
+function cls(x){return x>0.15?'g':x<-.15?'r':'y'}
+function ema(v,p){if(v.length<p)return null;let k=2/(p+1),e=v[0];for(let i=1;i<v.length;i++)e=v[i]*k+e*(1-k);return e}
+async function j(url){let r=await fetch(url,{cache:'no-store'});if(!r.ok)throw Error(r.status);return r.json()}
+async function loadBinance(a){let z=A[a],t=await j('https://api.binance.com/api/v3/ticker/24hr?symbol='+z.sym);D[a].p=+t.lastPrice;D[a].ch=+t.priceChangePercent;D[a].source='Binance';try{let k=await j('https://api.binance.com/api/v3/klines?symbol='+z.sym+'&interval=4h&limit=80');let c=k.map(x=>+x[4]);D[a].e20=ema(c.slice(-50),20);D[a].e50=ema(c,50);D[a].trend=D[a].e20&&D[a].e50?(D[a].p>D[a].e20&&D[a].e20>D[a].e50?'BULL':D[a].p<D[a].e20&&D[a].e20<D[a].e50?'BEAR':'RANGE'):'DATA'}catch(e){D[a].trend='DATA'}}
+async function loadCG(a){let id=A[a].cg,u='https://api.coingecko.com/api/v3/simple/price?ids='+id+'&vs_currencies=usd&include_24hr_change=true';let x=await j(u),v=x[id];if(!v)throw Error('no data');D[a].p=+v.usd;D[a].ch=+v.usd_24h_change;D[a].source='CoinGecko';if(!D[a].trend)D[a].trend='DATA'}
+async function loadOne(a){try{await loadBinance(a)}catch(e){await loadCG(a)}}
+function score(a,market){let d=D[a],s=0;if(a==='BTC'){s+=d.trend==='BULL'||d.trend==='BEAR'?2:1;s+=Math.abs(d.ch||0)>=1?2:1;s+=Number.isFinite(d.p)?2:0;return s+3}if(market==='BULL')s+=2;else if(market==='RANGE')s+=1;if(d.trend==='BULL')s+=2;else if(d.trend==='RANGE')s+=1;if((d.ch||0)>0)s+=2;if(Number.isFinite(d.p))s+=2;let rel=(d.ch||0)-(D.BTC.ch||0);if(rel>0)s+=2;return s+3}
+function status(a,market){let d=D[a],s=score(a,market);if(a==='BTC')return {s,st:market==='BEAR'?'WAIT':s>=10?'WAIT':'NO TRADE'};if(market==='BEAR'&&d.trend!=='BULL')return {s,st:'NO TRADE'};if(s>=13&&d.trend==='BULL'&&(d.ch||0)>0)return {s,st:'WAIT'};return {s,st:s>=9?'WAIT':'NO TRADE'}}
+function render(){let b=D.BTC,market=b.trend==='BULL'?'BULL':b.trend==='BEAR'?'BEAR':'RANGE';$('market').textContent=market;$('market').className='big '+(market==='BULL'?'g':market==='BEAR'?'r':'y');$('marketNote').textContent='BTC 4H · '+(b.source||'DATA');let f=market==='BULL'?'LONG OK':market==='BEAR'?'LONG BLOCK':'SELECTIVE';$('filter').textContent=f;$('filter').className='big '+(market==='BULL'?'g':market==='BEAR'?'r':'y');$('filterNote').textContent=market==='BULL'?'Можно искать alt-LONG':market==='BEAR'?'Только сильные подтверждения':'Только лучшие сетапы';
+ for(let a of ['BTC','GRAM','DOT']){let d=D[a],lo=a.toLowerCase();$(lo+'Price').textContent=money(d.p);$(lo+'P').textContent=money(d.p);$(lo+'24').textContent=pct(d.ch);$(lo+'24').className=cls(d.ch||0);$(lo+'Trend').textContent=d.trend||'DATA';let q=status(a,market);$(lo+'Tag').textContent=q.st;$(lo+'Tag').className=q.st==='READY'?'g':q.st==='WAIT'?'y':'r';$(lo+'State').textContent=q.st+' · '+q.s+'/19 · '+(d.trend||'DATA')}
+ let gr=(D.GRAM.ch||0)-(b.ch||0),dr=(D.DOT.ch||0)-(b.ch||0);$('gramRS').textContent=pct(gr);$('gramRS').className=cls(gr);$('dotRS').textContent=pct(dr);$('dotRS').className=cls(dr);
+ let candidates=['DOT','GRAM','BTC'].map(a=>({a,q:status(a,market),d:D[a]})).sort((x,y)=>y.q.s-x.q.s);let best=candidates[0];$('leader').textContent=best.a+' · '+best.q.st;$('score').textContent=best.q.s+'/19';$('setup').textContent=best.a==='BTC'?'Market Filter':best.d.trend==='BULL'?'Trend Pullback':'Breakout + Retest';$('trigger').textContent=best.a==='BTC'?'4H structure confirmation':best.d.trend==='BULL'?'Pullback → hold → higher low':'Breakout → retest → hold';$('entry').textContent='Только после trigger';let anyReady=candidates.some(x=>x.q.st==='READY'),anyWait=candidates.some(x=>x.q.st==='WAIT');let act=anyReady?'READY':anyWait?'WAIT':'NO TRADE';$('action').textContent=act;$('actionCard').className='card action '+(act==='READY'?'ready':act==='WAIT'?'wait':'no');$('actionNote').textContent=act==='READY'?'Открыть ChatGPT и проверить Entry / Stop / TP':act==='WAIT'?best.a+' — ждать выполнения trigger':'Качественного сетапа нет';$('updated').textContent=new Date().toLocaleTimeString('ru-RU');$('live').textContent='LIVE';$('liveDot').className='dot ok'}
+async function refresh(){try{await Promise.all(['BTC','GRAM','DOT'].map(loadOne));$('warn').style.display='none';render()}catch(e){$('live').textContent='DATA ERROR';$('liveDot').className='dot err';$('warn').style.display='block';$('warn').textContent='Не удалось обновить часть рыночных данных. Новые торговые решения по этому состоянию не принимать.'}}
+refresh();setInterval(refresh,60000);
+</script>
+</body>
+</html>
