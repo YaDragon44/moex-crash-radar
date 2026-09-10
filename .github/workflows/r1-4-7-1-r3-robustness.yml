@@ -1,0 +1,34 @@
+name: R1.4.7.1 R3 Robustness
+on:
+  pull_request:
+    paths:
+      - 'scripts/run_r1_4_7_1_r3_robustness.py'
+      - '.github/workflows/r1-4-7-1-r3-robustness.yml'
+  workflow_dispatch:
+jobs:
+  robustness:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Run frozen R3 robustness diagnostic
+        run: python scripts/run_r1_4_7_1_r3_robustness.py
+      - name: Contract checks
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('artifacts/r1_4_7_1_r3_robustness.json',encoding='utf-8'))
+          assert set(d['splits'])=={'VALIDATION','OOS'}
+          for sp in ('VALIDATION','OOS'):
+            assert 'events' in d['splits'][sp]
+            assert 'sensitivity' in d['splits'][sp]
+            assert 'by_family' in d['splits'][sp]
+            assert 'by_quarter' in d['splits'][sp]
+          assert d['gate']['production']=='NO-GO'
+          print('R1.4.7.1 contract PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1-4-7-1-r3-robustness
+          path: artifacts/r1_4_7_1_r3_robustness.json
