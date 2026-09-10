@@ -13,9 +13,11 @@ from moex_crash_radar.history import build_daily_evidence
 from moex_crash_radar.live_gate import CALIBRATED_EXIT_GATE, exit_gate_status
 from moex_crash_radar.moex import fetch_index_candles, fetch_share_candles
 from moex_crash_radar.oil_rub import collect_oil_rub
+from moex_crash_radar.positioning import build_positioning_snapshot, fetch_futoi
 from moex_crash_radar.rate_ofz import collect_rate_ofz
 
 BREADTH_UNIVERSE=("SBER","SBERP","LKOH","GAZP","YDEX","T","X5","GMKN","NVTK","ROSN","TATN","TATNP","PLZL","CHMF","NLMK","ALRS","MOEX","MTSS","PHOR","IRAO","HYDR","AFLT","VKCO","OZON")
+POSITIONING_TICKER="MIX"
 
 def main()->None:
     end=date.today(); start=end-timedelta(days=500)
@@ -38,13 +40,20 @@ def main()->None:
         distribution_payload={"usable_size":distribution.usable_size,"pct_down_rvol":distribution.pct_down_rvol,"pct_distribution_5d":distribution.pct_distribution_5d,"mean_down_up_volume_ratio":distribution.mean_down_up_volume_ratio}
         if distribution.usable_size>=12 and breadth_coverage>=.50: market_signals["volume_distribution"]=distribution_signal(distribution)
 
-    # Keep R0.3.3 EXIT gate market-only until a separate context-aware historical revalidation.
+    # Keep the validated EXIT gate market-only. R0.7 positioning is observational until incremental-value validation.
     crash=calculate_crash(market_signals)
     rate_ofz=collect_rate_ofz(as_of=end); oil_rub=collect_oil_rub(as_of=end)
     context_signals={}
     if rate_ofz.signal is not None: context_signals["rate_ofz"]=rate_ofz.signal
     if oil_rub.signal is not None: context_signals["oil_rub"]=oil_rub.signal
     context=calculate_context(context_signals)
+
+    try:
+        positioning_rows=fetch_futoi(POSITIONING_TICKER,start=(end-timedelta(days=14)).isoformat(),end=end.isoformat())
+        positioning=build_positioning_snapshot(POSITIONING_TICKER,positioning_rows,today=end.isoformat()).to_dict()
+        positioning["note"]="R0.7 observational layer. Does not change Crash Score or frozen EXIT Gate."
+    except Exception as exc:
+        positioning={"ticker":POSITIONING_TICKER,"as_of":None,"quality":"N/A","individuals":None,"legal_entities":None,"total_open_interest":None,"retail_net":None,"legal_net":None,"directional_divergence":None,"source":"MOEX ISS analyticalproducts/futoi","note":f"Positioning unavailable; fail-closed N/A: {type(exc).__name__}"}
 
     evidence=build_daily_evidence(index_candles,universe,min_equity_coverage=.50,warmup=60); exit_gate=exit_gate_status(evidence)
     score_history=[x.score for x in evidence if x.score is not None]; momentum=crash_momentum(score_history,5) if len(score_history)>5 else None
@@ -56,11 +65,12 @@ def main()->None:
     rate_group={"score":rate_ofz.signal.score if rate_ofz.signal else None,"quality":rate_ofz.signal.quality.value if rate_ofz.signal else "N/A","key_rate":rate_ofz.key_rate,"key_rate_day":rate_ofz.key_rate_day,"median_long_ofz_yield":rate_ofz.median_long_ofz_yield,"ofz_count":rate_ofz.ofz_count,"rgbi_return_5d":rate_ofz.rgbi_return_5d,"rgbi_return_20d":rate_ofz.rgbi_return_20d,"component_coverage":rate_ofz.component_coverage,"note":rate_ofz.note,"sources":["Bank of Russia","MOEX ISS TQOB","MOEX ISS RGBI"]}
     oil_group={"score":oil_rub.signal.score if oil_rub.signal else None,"quality":oil_rub.signal.quality.value if oil_rub.signal else "N/A","brent_secid":oil_rub.brent_secid,"brent_return_5d":oil_rub.brent_return_5d,"brent_return_20d":oil_rub.brent_return_20d,"cnyrub_return_5d":oil_rub.cnyrub_return_5d,"cnyrub_return_20d":oil_rub.cnyrub_return_20d,"component_coverage":oil_rub.component_coverage,"latest_day":oil_rub.latest_day,"note":oil_rub.note,"sources":["MOEX ISS FORTS Brent","MOEX ISS CNYRUB_TOM"]}
 
-    payload={"release":"R0.5.2 Oil / RUB Live Integration","as_of":index_candles[-1].begin,"source":"MOEX ISS","secid":"IMOEX","last_close":index_candles[-1].close,"data_quality":crash.quality.value,"signals":{k:{"score":v.score,"quality":v.quality.value} for k,v in display_signals.items()},"breadth":breadth_payload,"volume_distribution":distribution_payload,
-      "context":{"score":context.score,"state":context.state.value,"quality":context.quality.value,"coverage":context.coverage,"available_groups":context.available_groups,"total_groups":context.total_groups,"groups":{"rate_ofz":rate_group,"oil_rub":oil_group,"macro_earnings":{"score":None,"quality":"N/A"},"news_geopolitics":{"score":None,"quality":"N/A"}},"note":"Independent external-risk layer. Rate/OFZ + Oil/RUB can unlock Context only through multi-group Quality Gate; Context is not a probability and not Crowd Score."},
+    payload={"release":"R0.7 Positioning Data","as_of":index_candles[-1].begin,"source":"MOEX ISS","secid":"IMOEX","last_close":index_candles[-1].close,"data_quality":crash.quality.value,"signals":{k:{"score":v.score,"quality":v.quality.value} for k,v in display_signals.items()},"breadth":breadth_payload,"volume_distribution":distribution_payload,
+      "positioning":positioning,
+      "context":{"score":context.score,"state":context.state.value,"quality":context.quality.value,"coverage":context.coverage,"available_groups":context.available_groups,"total_groups":context.total_groups,"groups":{"rate_ofz":rate_group,"oil_rub":oil_group,"macro_earnings":{"score":None,"quality":"N/A"},"news_geopolitics":{"score":None,"quality":"N/A"}},"note":"Independent external-risk layer. Context is not a probability and not Crowd Score."},
       "crash":{"score":crash.score,"state":crash.state.value,"available_weight":round(crash.available_weight,4),"critical_confirmations":crash.critical_confirmations,"raw_cash_signal":crash.cash_signal},"exit_gate":exit_gate,"crash_momentum":momentum,"crash_history":crash_history,"bottom":{"score":None,"state":"DATA_INSUFFICIENT","buy_back_signal":False},
-      "calibration":{"release":"R0.3.3","false_event_rate":.2857,"detected_episodes":"4/4","median_lead_days":28.5,"total_exit_events":14,"false_exit_events":4,"params":{"score_threshold":CALIBRATED_EXIT_GATE.score_threshold,"confirmations":CALIBRATED_EXIT_GATE.confirmations,"persistence":CALIBRATED_EXIT_GATE.persistence,"max_5d_return_pct":CALIBRATED_EXIT_GATE.max_5d_return_pct,"cooldown_rows":CALIBRATED_EXIT_GATE.cooldown_rows,"rearm_clear_rows":CALIBRATED_EXIT_GATE.rearm_clear_rows},"warning":"Historical breadth has survivorship/listing-history bias. R0.5 context remains outside calibrated R0.3.3 EXIT gate until re-validation."},
-      "note":"R0.5.2 activates Rate/OFZ and Oil/RUB context from CBR/MOEX public sources. Macro/news and Bottom Engine remain N/A; missing data is never invented."}
+      "calibration":{"release":"R0.6.2","false_event_rate":.2222,"detected_episodes":"4/4","median_lead_days":28.5,"blind_precision":.75,"blind_false_alarm_rate":.25,"params":{"score_threshold":CALIBRATED_EXIT_GATE.score_threshold,"confirmations":CALIBRATED_EXIT_GATE.confirmations,"persistence":CALIBRATED_EXIT_GATE.persistence,"max_5d_return_pct":CALIBRATED_EXIT_GATE.max_5d_return_pct,"cooldown_rows":CALIBRATED_EXIT_GATE.cooldown_rows,"rearm_clear_rows":CALIBRATED_EXIT_GATE.rearm_clear_rows},"warning":"R0.7 positioning is observational and remains outside the validated EXIT gate until incremental-value validation."},
+      "note":"R0.7 adds official MOEX MIX positioning as an observational layer. Missing positioning is N/A; it never weakens the validated Crash/EXIT calculation."}
     out=Path("artifacts/market_snapshot.json"); out.parent.mkdir(parents=True,exist_ok=True); out.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8"); print(out)
 
 if __name__=="__main__": main()
