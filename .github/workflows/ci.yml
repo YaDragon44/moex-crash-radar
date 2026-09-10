@@ -27,16 +27,21 @@ jobs:
         run: node --check web/investor-radar/recommendation-engine.js
       - name: Recommendation Engine regression
         run: node web/investor-radar/recommendation-engine.test.js
+      - name: Risk Layer syntax
+        run: node --check web/investor-radar/risk-layer.js
+      - name: Risk Layer regression
+        run: node web/investor-radar/risk-layer.test.js
       - name: R1.8 UI contract
         shell: bash
         run: |
           set -euo pipefail
           FILE=web/investor-radar/r1.8.html
           test -s "$FILE"
-          grep -q "Investor Radar R1.8.1" "$FILE"
+          grep -q "Investor Radar R1.8.2" "$FILE"
           grep -q "recommendation-engine.js" "$FILE"
-          grep -q "verified:false" "$FILE"
-          grep -q "risk layer" "$FILE"
+          grep -q "risk-layer.js" "$FILE"
+          grep -q "MARKET_ONLY\|Market risk" web/investor-radar/risk-layer.js "$FILE"
           grep -q "iss.only=marketdata" "$FILE"
+          grep -q "candles.json" "$FILE"
           ! grep -q "рынокs\|рынокdata" "$FILE"
           echo "R1.8 UI contract: PASS"
