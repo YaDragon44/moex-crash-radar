@@ -31,20 +31,27 @@ jobs:
         run: node --check web/investor-radar/risk-layer.js
       - name: Risk Layer regression
         run: node web/investor-radar/risk-layer.test.js
+      - name: Registry syntax
+        run: |
+          node --check web/investor-radar/issuer-risk-registry.js
+          node --check web/investor-radar/sanctions-regulatory-registry.js
       - name: R1.8 UI contract
         shell: bash
         run: |
           set -euo pipefail
           FILE=web/investor-radar/r1.8.html
           test -s "$FILE"
-          grep -q "Investor Radar R1.8.3" "$FILE"
+          grep -q "Investor Radar R1.8.6" "$FILE"
           grep -q "recommendation-engine.js" "$FILE"
           grep -q "risk-layer.js" "$FILE"
+          grep -q "issuer-risk-registry.js" "$FILE"
+          grep -q "sanctions-regulatory-registry.js" "$FILE"
+          grep -q "InvestorRadarIssuerRisk.get" "$FILE"
+          grep -q "InvestorRadarSanctions.get" "$FILE"
           grep -q "VALTODAY,NUMTRADES" "$FILE"
-          grep -q "liquidityVerified" web/investor-radar/risk-layer.js "$FILE"
-          grep -q "issuerVerified" web/investor-radar/risk-layer.js "$FILE"
-          grep -q "regulatoryVerified" web/investor-radar/risk-layer.js "$FILE"
+          grep -q "sanctions do not imply thesisBroken" web/investor-radar/risk-layer.js
+          grep -q "PROVISIONAL valuation" "$FILE"
           grep -q "iss.only=marketdata" "$FILE"
           grep -q "candles.json" "$FILE"
           ! grep -q "рынокs\|рынокdata" "$FILE"
-          echo "R1.8.3 UI contract: PASS"
+          echo "R1.8.6 registry integration contract: PASS"
