@@ -9,6 +9,7 @@ on:
       - 'scripts/run_historical_evidence.py'
       - 'scripts/run_blind_crash_replay.py'
       - 'scripts/run_positioning_audit.py'
+      - 'scripts/run_positioning_incremental_value.py'
       - 'src/moex_crash_radar/history.py'
       - 'src/moex_crash_radar/live_gate.py'
       - 'src/moex_crash_radar/positioning.py'
@@ -36,6 +37,8 @@ jobs:
         run: python scripts/run_blind_crash_replay.py
       - name: Historical positioning audit
         run: python scripts/run_positioning_audit.py
+      - name: Positioning incremental value test
+        run: python scripts/run_positioning_incremental_value.py
       - name: Upload evidence
         uses: actions/upload-artifact@v4
         with:
@@ -44,4 +47,5 @@ jobs:
             artifacts/historical_evidence.json
             artifacts/blind_crash_replay.json
             artifacts/positioning_audit.json
+            artifacts/positioning_incremental_value.json
           if-no-files-found: error
