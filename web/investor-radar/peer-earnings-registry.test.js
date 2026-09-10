@@ -1,0 +1,11 @@
+const assert=require('assert');
+const R=require('./peer-earnings-registry.js');
+for(const t of ['VTBR','T','VKCO','OZON','MGNT','LENT']) assert.equal(R.usable(t),false);
+assert.equal(R.get('T').reportedValue,650);
+assert.equal(R.get('T').comparable,false);
+assert.equal(R.get('T').metric,'OPERATING_NET_PROFIT_PER_SHARE_PRO_FORMA_PRE_SPLIT');
+assert.equal(R.get('LENT').metric,'NET_PROFIT_ONLY');
+assert(R.audit('T').missing.includes('comparable_metric'));
+assert(R.audit('LENT').missing.includes('positive_eps'));
+assert.equal(R.audit('UNKNOWN').usable,false);
+console.log('R1.8.12 peer earnings verification tests: PASS');
