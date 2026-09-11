@@ -1,6 +1,6 @@
 {
   "release": "R0.7.1 Simple Market Context",
-  "generated_at": "2026-09-11T16:24:45+03:00",
+  "generated_at": "2026-09-11T16:43:17+03:00",
   "source": "MOEX ISS",
   "quality": "OK",
   "context_quality": "PARTIAL",
@@ -9,15 +9,15 @@
       "marketdata": {
         "SECID": "SBERP",
         "BOARDID": "TQBR",
-        "LAST": 282.57,
+        "LAST": 283.45,
         "OPEN": 284.96,
         "HIGH": 286.24,
         "LOW": 280.71,
-        "LASTTOPREVPRICE": -0.84,
-        "VOLTODAY": 2214513,
-        "VALTODAY": 626645903,
-        "UPDATETIME": "16:10:36",
-        "SYSTIME": "2026-09-11 16:25:36"
+        "LASTTOPREVPRICE": -0.53,
+        "VOLTODAY": 2345690,
+        "VALTODAY": 663823452,
+        "UPDATETIME": "16:29:23",
+        "SYSTIME": "2026-09-11 16:44:23"
       },
       "raw": {
         "D1": [
@@ -4773,13 +4773,13 @@
           },
           {
             "t": "2026-09-11 00:00:00",
-            "end": "2026-09-11 16:25:33",
+            "end": "2026-09-11 16:44:23",
             "o": 284.96,
             "h": 286.24,
             "l": 280.71,
-            "c": 283.44,
-            "v": 2338101,
-            "value": 661672735.2699996
+            "c": 283.13,
+            "v": 2376358,
+            "value": 672506497.0599998
           }
         ],
         "H1": [
@@ -14793,15 +14793,15 @@
       "marketdata": {
         "SECID": "VKCO",
         "BOARDID": "TQBR",
-        "LAST": 117.85,
+        "LAST": 117.9,
         "OPEN": 119,
         "HIGH": 119.85,
         "LOW": 116,
-        "LASTTOPREVPRICE": -1.01,
-        "VOLTODAY": 8914830,
-        "VALTODAY": 1050609986,
-        "UPDATETIME": "16:10:40",
-        "SYSTIME": "2026-09-11 16:25:41"
+        "LASTTOPREVPRICE": -0.97,
+        "VOLTODAY": 9284444,
+        "VALTODAY": 1094258835,
+        "UPDATETIME": "16:29:29",
+        "SYSTIME": "2026-09-11 16:44:30"
       },
       "raw": {
         "D1": [
@@ -19557,13 +19557,13 @@
           },
           {
             "t": "2026-09-11 00:00:00",
-            "end": "2026-09-11 16:25:38",
+            "end": "2026-09-11 16:44:28",
             "o": 119,
             "h": 119.85,
             "l": 116,
-            "c": 117.85,
-            "v": 9264273,
-            "value": 1091880897.4500003
+            "c": 117.8,
+            "v": 9337116,
+            "value": 1100462190.4000006
           }
         ],
         "H1": [
@@ -29582,10 +29582,10 @@
         "HIGH": 44.82,
         "LOW": 44.18,
         "LASTTOPREVPRICE": -0.67,
-        "VOLTODAY": 580440,
-        "VALTODAY": 25839438,
-        "UPDATETIME": "16:10:44",
-        "SYSTIME": "2026-09-11 16:25:45"
+        "VOLTODAY": 602550,
+        "VALTODAY": 26821562,
+        "UPDATETIME": "16:29:13",
+        "SYSTIME": "2026-09-11 16:44:14"
       },
       "raw": {
         "D1": [
@@ -34321,13 +34321,13 @@
           },
           {
             "t": "2026-09-11 00:00:00",
-            "end": "2026-09-11 16:25:43",
+            "end": "2026-09-11 16:44:33",
             "o": 44.73,
             "h": 44.82,
             "l": 44.18,
-            "c": 44.43,
-            "v": 602310,
-            "value": 26810903.30000002
+            "c": 44.36,
+            "v": 608870,
+            "value": 27102020.700000018
           }
         ],
         "H1": [
@@ -44742,24 +44742,24 @@
   ],
   "context": {
     "breadth": {
-      "advancers": 128,
-      "decliners": 284,
+      "advancers": 138,
+      "decliners": 275,
       "flat": 29,
-      "total": 441,
-      "advance_ratio": 0.3106796116504854,
-      "time": "2026-09-11 16:24:46"
+      "total": 442,
+      "advance_ratio": 0.3341404358353511,
+      "time": "2026-09-11 16:36:12"
     },
     "cnyrub": {
       "SECID": "CNYRUB_TOM",
       "BOARDID": "CETS",
-      "LAST": 12.515,
-      "WAPRICE": 12.5503,
+      "LAST": 12.51,
+      "WAPRICE": 12.549,
       "OPEN": 12.533,
       "HIGH": 12.605,
       "LOW": 12.5005,
       "LASTCHANGEPRCNT": 0,
-      "UPDATETIME": "16:09:47",
-      "SYSTIME": "2026-09-11 16:24:47"
+      "UPDATETIME": "16:28:20",
+      "SYSTIME": "2026-09-11 16:43:20"
     },
     "brent": null,
     "event_risk": {
