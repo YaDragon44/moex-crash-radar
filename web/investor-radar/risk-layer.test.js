@@ -1,12 +1,12 @@
 const assert=require('assert');
 const R=require('./risk-layer.js');
 const flat=Array.from({length:130},()=>({close:100}));
-let a=R.assess(flat,{verified:true,turnoverRub:1e9,numTrades:10000},{verified:true,critical:false,thesisBroken:false,items:['issuer ok']},{verified:true,critical:false,level:'LOW',status:'CLEAR',items:['reg ok']});
-assert.equal(a.marketVerified,true);assert.equal(a.liquidityVerified,true);assert.equal(a.issuerVerified,true);assert.equal(a.regulatoryVerified,true);assert.equal(a.verified,true);assert.equal(a.status,'VERIFIED');assert.equal(a.thesisBroken,false);assert.equal(a.sanctions.level,'LOW');assert.equal(a.score,0);
-a=R.assess(flat,{verified:true,turnoverRub:1e9,numTrades:10000},{verified:true,critical:false,thesisBroken:false},{verified:true,critical:true,level:'HIGH',status:'DESIGNATED'});
-assert.equal(a.verified,true);assert.equal(a.sanctions.critical,true);assert.equal(a.sanctions.level,'HIGH');assert.equal(a.thesisBroken,false);assert.equal(a.critical,false);
-a=R.assess(flat,{verified:true,turnoverRub:1e9,numTrades:10000},{verified:true,critical:true,thesisBroken:true},{verified:true,critical:false,level:'LOW'});
+let a=R.assess(flat,{verified:true,turnoverRub:1e9,numTrades:10000},{verified:true,critical:false,thesisBroken:false,items:['issuer ok']},{verified:true,material:false,designated:false,level:'LOW',status:'CLEAR',items:['reg ok']});
+assert.equal(a.marketVerified,true);assert.equal(a.liquidityVerified,true);assert.equal(a.issuerVerified,true);assert.equal(a.regulatoryVerified,true);assert.equal(a.verified,true);assert.equal(a.status,'VERIFIED');assert.equal(a.thesisBroken,false);assert.equal(a.sanctions.level,'LOW');assert.equal(a.sanctions.material,false);assert.equal(a.sanctions.designated,false);assert.equal(a.score,0);
+a=R.assess(flat,{verified:true,turnoverRub:1e9,numTrades:10000},{verified:true,critical:false,thesisBroken:false},{verified:true,material:true,designated:true,level:'HIGH',status:'DESIGNATED'});
+assert.equal(a.verified,true);assert.equal(a.sanctions.material,true);assert.equal(a.sanctions.designated,true);assert.equal(a.sanctions.level,'HIGH');assert.equal(a.thesisBroken,false);assert.equal(a.critical,false);assert.equal(a.sanctions.critical,undefined);
+a=R.assess(flat,{verified:true,turnoverRub:1e9,numTrades:10000},{verified:true,critical:true,thesisBroken:true},{verified:true,material:false,designated:false,level:'LOW'});
 assert.equal(a.thesisBroken,true);assert.equal(a.critical,true);
 const short=Array.from({length:50},()=>({close:100}));a=R.assess(short,{verified:false},{verified:false},{verified:false});assert.equal(a.marketVerified,false);assert.equal(a.status,'LOCK');assert.equal(a.verified,false);
 assert.equal(R.classify(20),'LOW');assert.equal(R.classify(50),'MEDIUM');assert.equal(R.classify(80),'HIGH');assert.equal(R.marketRiskScore(60,-60),100);assert.equal(R.liquidityRiskScore(1e9,10000),0);
-console.log('R1.8.6 integrated risk layer tests: PASS');
+console.log('R1.8.26 integrated risk layer sanctions semantics tests: PASS');
