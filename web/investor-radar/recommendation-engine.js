@@ -1,5 +1,6 @@
-// Investor Radar R1.8.24 — Recommendation Engine Portfolio Context Hardening
+// Investor Radar R1.8.31 — Recommendation Engine Cross-Domain Risk Semantics
 // FACT != ANALYSIS != DECISION. Active portfolio-aware actions require explicit held=true/false.
+// Sanctions material/designated risk is separate from issuer thesisBroken and never creates an automatic SELL.
 (function(global){
   'use strict';
   const ACTIONS=Object.freeze({BUY:'ПОКУПАТЬ',ADD:'ДОБИРАТЬ',HOLD:'ДЕРЖАТЬ',NO_ADD:'НЕ ДОБИРАТЬ',REDUCE:'СОКРАЩАТЬ',SELL:'ПРОДАВАТЬ',WATCH:'НАБЛЮДАТЬ',LOCK:'LOCK'});
@@ -51,11 +52,13 @@
       return {ticker,light:LIGHT.GRAY,action:ACTIONS.WATCH,confidence:'НИЗКАЯ',valuation:'НЕ ОПРЕДЕЛЕНА',why:['Недостаточно данных для обоснованного вывода.',detail],facts:arr(input?.facts),risks:arr(input?.risk?.items),trigger:'Появление недостающих подтверждённых данных.',gate};
     }
     const zone=valuationZone(+input.price,+input.valuation.low,+input.valuation.high),growth=+input.fundamental.growthCagr,riskScore=+input.risk.score;
-    const sanctionsHigh=input?.risk?.sanctions?.verified===true&&input?.risk?.sanctions?.level==='HIGH';
+    const sanctions=input?.risk?.sanctions||{};
+    const sanctionsMaterialHigh=sanctions.verified===true&&sanctions.material===true&&sanctions.level==='HIGH';
+    const sanctionsDesignated=sanctions.verified===true&&sanctions.designated===true;
     let action=ACTIONS.WATCH,light=LIGHT.YELLOW,why=[];
-    if(sanctionsHigh){
+    if(sanctionsMaterialHigh){
       action=held?ACTIONS.NO_ADD:ACTIONS.WATCH; light=LIGHT.YELLOW;
-      why.push('Высокий подтверждённый санкционный/регуляторный риск ограничивает активное увеличение позиции, но сам по себе не является основанием для продажи.');
+      why.push('Высокий подтверждённый материальный санкционный/регуляторный риск ограничивает активное увеличение позиции, но сам по себе не является основанием для продажи.');
     }else if(input?.valuation?.status!=='VERIFIED'){
       action=ACTIONS.WATCH; light=LIGHT.YELLOW; why.push('Оценка PROVISIONAL: активное инвестиционное действие заблокировано до verified valuation.');
     }else if(riskScore>=75){
@@ -69,7 +72,7 @@
     }else if(growth<0&&zone==='EXPENSIVE'){
       action=held?ACTIONS.REDUCE:ACTIONS.WATCH; light=LIGHT.RED; why.push('Отрицательная фундаментальная динамика сочетается с дорогой verified valuation.');
     }else{why.push('Сигналы смешанные; ожидаемая доходность не оправдывает активное действие.');}
-    return {ticker,light,action,confidence:confidence(input,gate),valuation:zone==='ATTRACTIVE'?'ПРИВЛЕКАТЕЛЬНО':zone==='FAIR'?'СПРАВЕДЛИВО':zone==='EXPENSIVE'?'ДОРОГО':'НЕ ОПРЕДЕЛЕНА',why,facts:arr(input.facts),risks:arr(input?.risk?.items),trigger:input?.trigger||'Изменение фундаментального тренда, оценки или ключевого риска.',gate,diagnostics:{zone,growthCagr:growth,riskScore,sanctionsHigh,portfolioKnown:known,held}};
+    return {ticker,light,action,confidence:confidence(input,gate),valuation:zone==='ATTRACTIVE'?'ПРИВЛЕКАТЕЛЬНО':zone==='FAIR'?'СПРАВЕДЛИВО':zone==='EXPENSIVE'?'ДОРОГО':'НЕ ОПРЕДЕЛЕНА',why,facts:arr(input.facts),risks:arr(input?.risk?.items),trigger:input?.trigger||'Изменение фундаментального тренда, оценки или ключевого риска.',gate,diagnostics:{zone,growthCagr:growth,riskScore,sanctionsMaterialHigh,sanctionsDesignated,portfolioKnown:known,held}};
   }
   global.InvestorRadarRecommendation={ACTIONS,LIGHT,dataGate,valuationZone,decide};
   if(typeof module!=='undefined'&&module.exports)module.exports=global.InvestorRadarRecommendation;
