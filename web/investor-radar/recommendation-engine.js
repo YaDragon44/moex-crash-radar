@@ -1,11 +1,12 @@
-// Investor Radar R1.8.23 — Recommendation Engine SBER Completeness Gate
-// FACT != ANALYSIS != DECISION. Sanctions alone never imply SELL. SBER active actions require full bank valuation completeness.
+// Investor Radar R1.8.24 — Recommendation Engine Portfolio Context Hardening
+// FACT != ANALYSIS != DECISION. Active portfolio-aware actions require explicit held=true/false.
 (function(global){
   'use strict';
   const ACTIONS=Object.freeze({BUY:'ПОКУПАТЬ',ADD:'ДОБИРАТЬ',HOLD:'ДЕРЖАТЬ',NO_ADD:'НЕ ДОБИРАТЬ',REDUCE:'СОКРАЩАТЬ',SELL:'ПРОДАВАТЬ',WATCH:'НАБЛЮДАТЬ',LOCK:'LOCK'});
   const LIGHT=Object.freeze({GREEN:'ЗЕЛЁНЫЙ',YELLOW:'ЖЁЛТЫЙ',RED:'КРАСНЫЙ',GRAY:'СЕРЫЙ'});
   const finite=x=>Number.isFinite(Number(x));
   const arr=x=>Array.isArray(x)?x:[];
+  const portfolioKnown=input=>typeof input?.portfolio?.held==='boolean';
 
   function dataGate(input){
     const missing=[];
@@ -17,6 +18,7 @@
     if(!finite(input?.valuation?.low)||!finite(input?.valuation?.high)) missing.push('valuation_band');
     if(input?.risk?.verified!==true) missing.push('verified_risk');
     if(!finite(input?.risk?.score)) missing.push('risk_score');
+    if(!portfolioKnown(input)) missing.push('portfolio_context');
     if(String(input?.ticker||'').toUpperCase()==='SBER'){
       const c=input?.valuationCompleteness;
       if(c?.status!=='VERIFIED'||c?.verified!==true) missing.push('sber_full_valuation_completeness');
@@ -38,13 +40,15 @@
     return n>=3?'ВЫСОКАЯ':'СРЕДНЯЯ';
   }
   function decide(input){
-    const gate=dataGate(input),ticker=input?.ticker||'—',held=input?.portfolio?.held===true;
+    const gate=dataGate(input),ticker=input?.ticker||'—',known=portfolioKnown(input),held=known&&input.portfolio.held===true;
     if(gate.hardStop){
-      return {ticker,light:LIGHT.RED,action:held?ACTIONS.SELL:ACTIONS.WATCH,confidence:'СРЕДНЯЯ',valuation:'НЕ ОПРЕДЕЛЕНА',why:['Подтверждено разрушение инвестиционного тезиса.'],facts:arr(input?.facts),risks:arr(input?.risk?.items),trigger:'Повторная проверка тезиса после изменения критического фундаментального риска.',gate};
+      return {ticker,light:LIGHT.RED,action:known&&held?ACTIONS.SELL:ACTIONS.WATCH,confidence:known?'СРЕДНЯЯ':'НИЗКАЯ',valuation:'НЕ ОПРЕДЕЛЕНА',why:[known?'Подтверждено разрушение инвестиционного тезиса.':'Подтверждено разрушение инвестиционного тезиса, но статус позиции в портфеле не подтверждён.'],facts:arr(input?.facts),risks:arr(input?.risk?.items),trigger:known?'Повторная проверка тезиса после изменения критического фундаментального риска.':'Подтвердить наличие позиции; без portfolio.held=true продажа не рекомендуется.',gate};
     }
     if(!gate.ok){
       const sberBlocked=gate.missing.includes('sber_full_valuation_completeness');
-      return {ticker,light:LIGHT.GRAY,action:ACTIONS.WATCH,confidence:'НИЗКАЯ',valuation:'НЕ ОПРЕДЕЛЕНА',why:['Недостаточно данных для обоснованного вывода.',sberBlocked?'Для SBER не пройден полный bank valuation gate: P/E + P/B + bank quality + common equity/share basis должны быть VERIFIED.':'Не пройдены критические data gates: '+gate.missing.join(', ')+'.'],facts:arr(input?.facts),risks:arr(input?.risk?.items),trigger:'Появление недостающих подтверждённых данных.',gate};
+      const portfolioBlocked=gate.missing.includes('portfolio_context');
+      const detail=sberBlocked?'Для SBER не пройден полный bank valuation gate: P/E + P/B + bank quality + common equity/share basis должны быть VERIFIED.':portfolioBlocked?'Не подтверждён статус позиции: portfolio.held должен быть явно true или false; BUY/ADD/HOLD/REDUCE/SELL без этого заблокированы.':'Не пройдены критические data gates: '+gate.missing.join(', ')+'.';
+      return {ticker,light:LIGHT.GRAY,action:ACTIONS.WATCH,confidence:'НИЗКАЯ',valuation:'НЕ ОПРЕДЕЛЕНА',why:['Недостаточно данных для обоснованного вывода.',detail],facts:arr(input?.facts),risks:arr(input?.risk?.items),trigger:'Появление недостающих подтверждённых данных.',gate};
     }
     const zone=valuationZone(+input.price,+input.valuation.low,+input.valuation.high),growth=+input.fundamental.growthCagr,riskScore=+input.risk.score;
     const sanctionsHigh=input?.risk?.sanctions?.verified===true&&input?.risk?.sanctions?.level==='HIGH';
@@ -65,7 +69,7 @@
     }else if(growth<0&&zone==='EXPENSIVE'){
       action=held?ACTIONS.REDUCE:ACTIONS.WATCH; light=LIGHT.RED; why.push('Отрицательная фундаментальная динамика сочетается с дорогой verified valuation.');
     }else{why.push('Сигналы смешанные; ожидаемая доходность не оправдывает активное действие.');}
-    return {ticker,light,action,confidence:confidence(input,gate),valuation:zone==='ATTRACTIVE'?'ПРИВЛЕКАТЕЛЬНО':zone==='FAIR'?'СПРАВЕДЛИВО':zone==='EXPENSIVE'?'ДОРОГО':'НЕ ОПРЕДЕЛЕНА',why,facts:arr(input.facts),risks:arr(input?.risk?.items),trigger:input?.trigger||'Изменение фундаментального тренда, оценки или ключевого риска.',gate,diagnostics:{zone,growthCagr:growth,riskScore,sanctionsHigh,held}};
+    return {ticker,light,action,confidence:confidence(input,gate),valuation:zone==='ATTRACTIVE'?'ПРИВЛЕКАТЕЛЬНО':zone==='FAIR'?'СПРАВЕДЛИВО':zone==='EXPENSIVE'?'ДОРОГО':'НЕ ОПРЕДЕЛЕНА',why,facts:arr(input.facts),risks:arr(input?.risk?.items),trigger:input?.trigger||'Изменение фундаментального тренда, оценки или ключевого риска.',gate,diagnostics:{zone,growthCagr:growth,riskScore,sanctionsHigh,portfolioKnown:known,held}};
   }
   global.InvestorRadarRecommendation={ACTIONS,LIGHT,dataGate,valuationZone,decide};
   if(typeof module!=='undefined'&&module.exports)module.exports=global.InvestorRadarRecommendation;
