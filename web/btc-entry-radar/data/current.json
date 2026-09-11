@@ -2,9 +2,9 @@
   "input": {
     "fgi": 56.0,
     "price_confirm_4h": false,
-    "new_local_low_4h": true,
+    "new_local_low_4h": false,
     "oi_regime": "OVERHEATED",
-    "stop_atr": 0.3584922997757892,
+    "stop_atr": 1.0653590781453963,
     "data_ready": true,
     "position_open": false
   },
@@ -20,33 +20,33 @@
     "invalidation": "Leverage normalizes"
   },
   "market": {
-    "price": 76570.0,
-    "timestamp": "2026-09-10T20:00:00+00:00",
-    "age_h": 4.492518838888889,
+    "price": 76894.7,
+    "timestamp": "2026-09-11T00:00:00+00:00",
+    "age_h": 4.386923460555556,
     "fresh": true,
     "price_confirm_4h": false,
-    "new_local_low_4h": true,
-    "atr14_4h": 777.3428571428584,
-    "swing_low_4h": 76680.0,
-    "stop_price": 76291.32857142857,
-    "stop_atr": 0.3584922997757892
+    "new_local_low_4h": false,
+    "atr14_4h": 760.5785714285729,
+    "swing_low_4h": 76464.7,
+    "stop_price": 76084.41071428571,
+    "stop_atr": 1.0653590781453963
   },
   "crowd": {
     "value": 56.0,
     "classification": "Greed",
     "timestamp": "2026-09-11T00:00:00+00:00",
-    "age_h": 0.49251883888888887,
+    "age_h": 4.386923460555556,
     "fresh": true
   },
   "open_interest": {
     "regime": "OVERHEATED",
-    "timestamp": "2026-09-11T00:00:00+00:00",
-    "age_h": 0.49251883888888887,
+    "timestamp": "2026-09-11T04:00:00+00:00",
+    "age_h": 0.38692346055555554,
     "fresh": true,
-    "oi_value": 2918631.630000009,
-    "delta_24h": 0.07726841161539144,
+    "oi_value": 2980668.7100000135,
+    "delta_24h": 0.055833801577356734,
     "delta_p10": -0.042360063949656176,
-    "delta_p90": 0.05222157249792663,
+    "delta_p90": 0.05319997671490517,
     "points": 100
   },
   "quality": {
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-09-11T00:29:33.067820+00:00"
+  "generated_at_utc": "2026-09-11T04:23:12.924458+00:00"
 }
