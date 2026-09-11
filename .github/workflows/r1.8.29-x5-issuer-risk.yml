@@ -1,0 +1,38 @@
+name: R1.8.29 X5 Issuer Risk
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+    paths:
+      - 'web/investor-radar/retail-issuer-risk-gate.js'
+      - 'web/investor-radar/retail-issuer-risk-gate.test.js'
+      - 'web/investor-radar/issuer-risk-registry.js'
+      - 'web/investor-radar/issuer-risk-registry.test.js'
+      - '.github/workflows/r1.8.29-x5-issuer-risk.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retail issuer risk gate
+        run: |
+          node --check web/investor-radar/retail-issuer-risk-gate.js
+          node web/investor-radar/retail-issuer-risk-gate.test.js
+      - name: Issuer risk registry regression
+        run: |
+          node --check web/investor-radar/issuer-risk-registry.js
+          node web/investor-radar/issuer-risk-registry.test.js
+      - name: X5 evidence contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'H1 2026 revenue 2,480,513 mn RUB, +10.5% y/y' web/investor-radar/issuer-risk-registry.js
+          grep -q 'Net debt/EBITDA pre-IFRS 16 at 30 Jun 2026: 1.08x' web/investor-radar/issuer-risk-registry.js
+          grep -q 'ACRA rating AAA(RU), stable, confirmed 24 Jun 2026' web/investor-radar/issuer-risk-registry.js
+          grep -q 'Expert RA rating ruAAA, stable, confirmed 29 Jul 2026' web/investor-radar/issuer-risk-registry.js
+          echo 'R1.8.29 X5 issuer risk evidence contract: PASS'
