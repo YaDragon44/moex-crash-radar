@@ -1,0 +1,50 @@
+name: R1.8.33 Sector Gate Coverage
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  sector-gate-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bank issuer risk gate
+        run: |
+          node --check web/investor-radar/bank-issuer-risk-gate.js
+          node web/investor-radar/bank-issuer-risk-gate.test.js
+      - name: Retail issuer risk gate
+        run: |
+          node --check web/investor-radar/retail-issuer-risk-gate.js
+          node web/investor-radar/retail-issuer-risk-gate.test.js
+      - name: Exchange issuer risk gate
+        run: |
+          node --check web/investor-radar/exchange-issuer-risk-gate.js
+          node web/investor-radar/exchange-issuer-risk-gate.test.js
+      - name: Tech issuer risk gate
+        run: |
+          node --check web/investor-radar/tech-issuer-risk-gate.js
+          node web/investor-radar/tech-issuer-risk-gate.test.js
+      - name: Registry provenance audit
+        run: |
+          node --check web/investor-radar/issuer-risk-registry.js
+          node web/investor-radar/issuer-risk-registry.test.js
+      - name: No manual VERIFIED issuer risk
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const R=require('./web/investor-radar/issuer-risk-registry.js');
+          const a=R.auditAll();
+          if(!a.ok) throw new Error(a.errors.join(', '));
+          if(a.coverage!=='4/4') throw new Error(`Expected sector-gated coverage 4/4, got ${a.coverage}`);
+          for(const row of a.rows){
+            if(!row.derivedBy || row.derivedBy!==row.expectedGate) throw new Error(`${row.ticker}: invalid derivedBy`);
+          }
+          console.log('R1.8.33 sector gate coverage 4/4: PASS');
+          NODE
