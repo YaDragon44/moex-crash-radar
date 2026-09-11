@@ -55,16 +55,35 @@ jobs:
               raise SystemExit('Brent SECID missing')
           print('TA MARKET SCHEDULED PRODUCTION GATE: PASS')
           PY
-      - name: Commit fresh snapshot
+      - name: Update signal history
+        run: python scripts/update_ta_signal_history.py
+      - name: Validate signal history
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('artifacts/ta_market/signal_history.json')
+          if not p.exists(): raise SystemExit('signal_history.json missing')
+          j=json.loads(p.read_text(encoding='utf-8'))
+          events=j.get('events') or []
+          if not events: raise SystemExit('signal history empty')
+          for e in events:
+              if e.get('ticker') not in ('SBERP','VKCO','OZPH'): raise SystemExit(f"bad ticker: {e.get('ticker')}")
+              if e.get('tf') not in ('D1','H1','M10'): raise SystemExit(f"bad tf: {e.get('tf')}")
+              if e.get('status') not in ('READY','WAIT','INVALID'): raise SystemExit(f"bad status: {e.get('status')}")
+          print(f'TA SIGNAL HISTORY GATE: PASS · events={len(events)}')
+          PY
+      - name: Commit fresh snapshot and signal history
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add artifacts/ta_market/current.json
+          git add artifacts/ta_market/current.json artifacts/ta_market/signal_history.json
           if git diff --cached --quiet; then
-            echo 'No snapshot changes'
+            echo 'No TA Market changes'
             exit 0
           fi
-          git commit -m 'data: refresh TA market snapshot'
+          git commit -m 'data: refresh TA market snapshot and signal history'
           git push origin HEAD:main
