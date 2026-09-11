@@ -1,0 +1,36 @@
+name: R1.8.35 SBER Preferred Treatment Evidence
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+    paths:
+      - 'web/investor-radar/sber-preferred-treatment-evidence.js'
+      - 'web/investor-radar/sber-preferred-treatment-evidence.test.js'
+      - '.github/workflows/r1.8.35-sber-preferred-treatment.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preferred treatment evidence
+        run: |
+          node --check web/investor-radar/sber-preferred-treatment-evidence.js
+          node web/investor-radar/sber-preferred-treatment-evidence.test.js
+      - name: Evidence contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE=web/investor-radar/sber-preferred-treatment-evidence.js
+          grep -Fq "preferredIsin:'RU0009029557'" "$FILE"
+          grep -Fq 'preferredIssueSize:1000000000' "$FILE"
+          grep -Fq 'preferredFaceValueRub:3' "$FILE"
+          grep -Fq 'commonDividend2025Rub:37.64' "$FILE"
+          grep -Fq 'preferredDividend2025Rub:37.64' "$FILE"
+          grep -Fq 'equityAllocationMethodVerified:false' "$FILE"
+          grep -Fq 'Недостаточно данных для обоснованного вывода' "$FILE"
+          echo 'R1.8.35 preferred treatment evidence contract: PASS'
