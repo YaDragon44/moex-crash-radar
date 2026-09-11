@@ -1,0 +1,41 @@
+name: R1.8.34 SBER CBR Share Equity Evidence
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+    paths:
+      - 'web/investor-radar/sber-cbr-share-equity-evidence.js'
+      - 'web/investor-radar/sber-cbr-share-equity-evidence.test.js'
+      - 'web/investor-radar/sber-equity-attribution-gate.js'
+      - 'web/investor-radar/sber-equity-attribution-gate.test.js'
+      - '.github/workflows/r1.8.34-sber-cbr-share-equity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: CBR share equity evidence
+        run: |
+          node --check web/investor-radar/sber-cbr-share-equity-evidence.js
+          node web/investor-radar/sber-cbr-share-equity-evidence.test.js
+      - name: Equity attribution gate regression
+        run: |
+          node --check web/investor-radar/sber-equity-attribution-gate.js
+          node web/investor-radar/sber-equity-attribution-gate.test.js
+      - name: Primary evidence contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE=web/investor-radar/sber-cbr-share-equity-evidence.js
+          grep -Fq 'Bank of Russia form 0409810, Sberbank, as of 01.01.2026' "$FILE"
+          grep -Fq 'dt=202601&regnum=1481' "$FILE"
+          grep -Fq 'statutoryEquityThousandRub:8115080880' "$FILE"
+          grep -Fq 'treasuryCommonShares:0' "$FILE"
+          grep -Fq 'commonEquityAttributableVerified:false' "$FILE"
+          grep -Fq 'preferredTreatmentVerified:false' "$FILE"
+          echo 'R1.8.34 SBER CBR evidence contract: PASS'
