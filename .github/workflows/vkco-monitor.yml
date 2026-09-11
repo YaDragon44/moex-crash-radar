@@ -1,0 +1,68 @@
+name: VKCO Monitor R1.0
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Run mode
+        required: true
+        default: run
+        type: choice
+        options:
+          - run
+          - test_telegram
+  schedule:
+    - cron: "*/10 6-20 * * 1-5"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vkco-monitor
+  cancel-in-progress: false
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      STATE_FILE: vkco-monitor/state/state.json
+      MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'run' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: vkco-monitor/requirements.txt
+
+      - name: Restore signal state
+        uses: actions/cache/restore@v4
+        with:
+          path: vkco-monitor/state
+          key: vkco-state-${{ github.run_id }}
+          restore-keys: |
+            vkco-state-
+
+      - name: Install dependencies
+        run: pip install -r vkco-monitor/requirements.txt pytest
+
+      - name: Regression tests
+        working-directory: vkco-monitor
+        run: pytest -q
+
+      - name: Run VKCO monitor
+        run: python vkco-monitor/monitor.py
+
+      - name: Save signal state
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: vkco-monitor/state
+          key: vkco-state-${{ github.run_id }}
