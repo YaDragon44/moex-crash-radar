@@ -1,6 +1,6 @@
 {
   "release": "R0.7.1 Simple Market Context",
-  "generated_at": "2026-09-11T14:49:09+03:00",
+  "generated_at": "2026-09-11T15:03:23+03:00",
   "source": "MOEX ISS",
   "quality": "OK",
   "context_quality": "PARTIAL",
@@ -9,15 +9,15 @@
       "marketdata": {
         "SECID": "SBERP",
         "BOARDID": "TQBR",
-        "LAST": 282.36,
+        "LAST": 281.48,
         "OPEN": 284.96,
         "HIGH": 286.24,
         "LOW": 280.86,
-        "LASTTOPREVPRICE": -0.91,
-        "VOLTODAY": 1821795,
-        "VALTODAY": 516022299,
-        "UPDATETIME": "14:34:56",
-        "SYSTIME": "2026-09-11 14:49:56"
+        "LASTTOPREVPRICE": -1.22,
+        "VOLTODAY": 1887523,
+        "VALTODAY": 534540836,
+        "UPDATETIME": "14:49:17",
+        "SYSTIME": "2026-09-11 15:04:17"
       },
       "raw": {
         "D1": [
@@ -4773,13 +4773,13 @@
           },
           {
             "t": "2026-09-11 00:00:00",
-            "end": "2026-09-11 14:49:53",
+            "end": "2026-09-11 15:04:13",
             "o": 284.96,
             "h": 286.24,
             "l": 280.86,
-            "c": 281.56,
-            "v": 1888518,
-            "value": 534820924.6699997
+            "c": 281.81,
+            "v": 1929870,
+            "value": 546471218.3799998
           }
         ],
         "H1": [
@@ -14798,10 +14798,10 @@
         "HIGH": 119.85,
         "LOW": 116,
         "LASTTOPREVPRICE": -1.47,
-        "VOLTODAY": 5483707,
-        "VALTODAY": 646931438,
-        "UPDATETIME": "14:35:00",
-        "SYSTIME": "2026-09-11 14:50:01"
+        "VOLTODAY": 6557163,
+        "VALTODAY": 773569113,
+        "UPDATETIME": "14:49:22",
+        "SYSTIME": "2026-09-11 15:04:22"
       },
       "raw": {
         "D1": [
@@ -19557,13 +19557,13 @@
           },
           {
             "t": "2026-09-11 00:00:00",
-            "end": "2026-09-11 14:49:58",
+            "end": "2026-09-11 15:04:23",
             "o": 119,
             "h": 119.85,
             "l": 116,
-            "c": 117.35,
-            "v": 6557168,
-            "value": 773569700.0500001
+            "c": 118.05,
+            "v": 7156427,
+            "value": 844264600.2500001
           }
         ],
         "H1": [
@@ -29577,15 +29577,15 @@
       "marketdata": {
         "SECID": "OZPH",
         "BOARDID": "TQBR",
-        "LAST": 44.54,
+        "LAST": 44.45,
         "OPEN": 44.73,
         "HIGH": 44.82,
         "LOW": 44.31,
-        "LASTTOPREVPRICE": -0.42,
-        "VOLTODAY": 442380,
-        "VALTODAY": 19717209,
-        "UPDATETIME": "14:35:00",
-        "SYSTIME": "2026-09-11 14:50:01"
+        "LASTTOPREVPRICE": -0.63,
+        "VOLTODAY": 460520,
+        "VALTODAY": 20524325,
+        "UPDATETIME": "14:49:10",
+        "SYSTIME": "2026-09-11 15:04:11"
       },
       "raw": {
         "D1": [
@@ -34321,13 +34321,13 @@
           },
           {
             "t": "2026-09-11 00:00:00",
-            "end": "2026-09-11 14:50:03",
+            "end": "2026-09-11 15:04:23",
             "o": 44.73,
             "h": 44.82,
             "l": 44.31,
-            "c": 44.45,
-            "v": 460520,
-            "value": 20524324.60000001
+            "c": 44.48,
+            "v": 465850,
+            "value": 20761324.300000012
           }
         ],
         "H1": [
@@ -44742,24 +44742,24 @@
   ],
   "context": {
     "breadth": {
-      "advancers": 139,
-      "decliners": 267,
-      "flat": 29,
-      "total": 435,
-      "advance_ratio": 0.34236453201970446,
-      "time": "2026-09-11 14:49:01"
+      "advancers": 131,
+      "decliners": 272,
+      "flat": 33,
+      "total": 436,
+      "advance_ratio": 0.3250620347394541,
+      "time": "2026-09-11 15:03:24"
     },
     "cnyrub": {
       "SECID": "CNYRUB_TOM",
       "BOARDID": "CETS",
-      "LAST": 12.548,
-      "WAPRICE": 12.5545,
+      "LAST": 12.531,
+      "WAPRICE": 12.554,
       "OPEN": 12.533,
       "HIGH": 12.605,
       "LOW": 12.5005,
       "LASTCHANGEPRCNT": 0,
-      "UPDATETIME": "14:34:11",
-      "SYSTIME": "2026-09-11 14:49:11"
+      "UPDATETIME": "14:48:25",
+      "SYSTIME": "2026-09-11 15:03:25"
     },
     "brent": null,
     "event_risk": {
