@@ -98,6 +98,10 @@ jobs:
         run: |
           node --check web/investor-radar/sber-final-valuation-pipeline.js
           node web/investor-radar/sber-final-valuation-pipeline.test.js
+      - name: SBER unified recommendation pipeline
+        run: |
+          node --check web/investor-radar/sber-unified-recommendation-pipeline.js
+          node web/investor-radar/sber-unified-recommendation-pipeline.test.js
       - name: R1.8 UI contract
         shell: bash
         run: |
