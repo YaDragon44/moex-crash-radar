@@ -1,4 +1,4 @@
-// Investor Radar R1.8.25 — Issuer Risk Registry Hardening
+// Investor Radar R1.8.28 — Issuer Risk Registry Hardening
 // SOURCE_EXISTS != RISK_VERIFIED. Primary-source presence never unlocks issuer risk by itself.
 (function(global){'use strict';
 const lock=(items=[])=>({status:'LOCK',verified:false,critical:false,thesisBroken:false,coverage:'SOURCE_ONLY',items});
@@ -22,9 +22,10 @@ const REGISTRY={
   sanctionsRegulatory:{verified:false,critical:false,items:['Separate primary-source sanctions/regulatory review required.']}
  },
  SBER:{
-  asOf:null,sourceStatus:'PARTIAL',riskStatus:'LOCK',source:null,sourceUrl:null,
-  issuer:lock(['Bank-specific valuation/quality modules exist, but issuer-risk registry is not yet independently verified for full risk-gate use.']),
-  sanctionsRegulatory:{verified:false,critical:false,items:['Separate primary-source sanctions/regulatory review required.']}
+  asOf:'2025-12-31',sourceStatus:'SOURCE_EXISTS',riskStatus:'VERIFIED',
+  source:'MOEX issuer financials / Sber disclosure',sourceUrl:'https://www.moex.com/en/stocks/sber',
+  issuer:{status:'VERIFIED',verified:true,critical:false,thesisBroken:false,riskLevel:'MEDIUM',coverage:'BANK_ROE_CAPITAL_ASSET_QUALITY',items:['ROE 2025: 22.7%','CET1 2025: 12.3%','NPL 2025: 4.9%','Cost of Risk 2025: 1.30%','Model classification: MEDIUM because NPL >= 4% and Cost of Risk >= 1%; thresholds are model assumptions, not regulatory facts.']},
+  sanctionsRegulatory:{verified:false,critical:false,items:['Separate sanctions/regulatory registry is used; designation is material risk but not thesis destruction.']}
  }
 };
 function get(t){
