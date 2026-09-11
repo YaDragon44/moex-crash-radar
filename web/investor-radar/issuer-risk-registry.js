@@ -1,4 +1,4 @@
-// Investor Radar R1.8.31 — Issuer Risk Registry Cross-Domain Semantics Hardening
+// Investor Radar R1.8.32 — Issuer Risk Registry Cross-Domain + Sector Gate Binding
 // SOURCE_EXISTS != RISK_VERIFIED. Issuer critical/thesisBroken belongs only to issuer fundamentals.
 // Sanctions/regulatory semantics are delegated to sanctions-regulatory-registry.js and never use legacy `critical` here.
 (function(global){'use strict';
@@ -8,7 +8,7 @@ const REGISTRY={
  YDEX:{
   asOf:'2025-12-31',sourceStatus:'SOURCE_EXISTS',riskStatus:'VERIFIED',
   source:'Yandex IR FY2025',sourceUrl:'https://ir.yandex.ru/financial-releases?report=q4&year=2025',
-  issuer:{status:'VERIFIED',verified:true,critical:false,thesisBroken:false,coverage:'DEBT_LIQUIDITY_PROFITABILITY',items:['FY2025 revenue 1,441.1 bn RUB','Adjusted EBITDA 280.8 bn RUB','Cash + equivalents + short-term deposits 250.2 bn RUB','Adjusted net debt / adjusted EBITDA 0.2x']},
+  issuer:{status:'VERIFIED',verified:true,critical:false,thesisBroken:false,riskLevel:'LOW',derivedBy:'TECH_ISSUER_RISK_GATE_R1.8.32',coverage:'TECH_GROWTH_MARGIN_LEVERAGE_LIQUIDITY_PROFITABILITY',items:['FY2025 revenue 1,441.1 bn RUB; growth about +31.7% y/y','Adjusted EBITDA 280.8 bn RUB; margin about 19.5%','Cash + equivalents + short-term deposits 250.2 bn RUB','Adjusted net debt / adjusted EBITDA 0.2x','Adjusted net profit 141.4 bn RUB; growth about +40.1% y/y','Model classification: LOW under R1.8.32 tech issuer-risk assumptions; sanctions/regulatory risk remains separate.']},
   sanctionsRegulatory:delegatedSanctions(['Separate primary-source sanctions/regulatory review required.'])
  },
  X5:{
@@ -39,15 +39,17 @@ function audit(t){
  const sourceExists=r.sourceStatus==='SOURCE_EXISTS'&&!!r.source&&!!r.sourceUrl;
  const riskVerified=r.riskStatus==='VERIFIED'&&i.status==='VERIFIED'&&i.verified===true;
  const crossDomainOk=s.critical===undefined&&s.status==='DELEGATED';
- return {ticker:String(t||'').toUpperCase(),sourceExists,riskVerified,crossDomainOk,status:r.riskStatus||'LOCK',reason:!crossDomainOk?'legacy_sanctions_semantics':riskVerified?'issuer_risk_verified':sourceExists?'source_exists_risk_not_verified':'source_or_risk_missing'};
+ const sectorGateOk=String(t||'').toUpperCase()!=='YDEX'||i.derivedBy==='TECH_ISSUER_RISK_GATE_R1.8.32';
+ return {ticker:String(t||'').toUpperCase(),sourceExists,riskVerified,crossDomainOk,sectorGateOk,status:r.riskStatus||'LOCK',reason:!crossDomainOk?'legacy_sanctions_semantics':!sectorGateOk?'sector_gate_binding_missing':riskVerified?'issuer_risk_verified':sourceExists?'source_exists_risk_not_verified':'source_or_risk_missing'};
 }
 function auditAll(){
  const errors=[];
  for(const ticker of Object.keys(REGISTRY)){
   const a=audit(ticker);
   if(!a.crossDomainOk) errors.push(ticker+':legacy_sanctions_semantics');
+  if(!a.sectorGateOk) errors.push(ticker+':sector_gate_binding_missing');
  }
- return {ok:errors.length===0,errors,rule:'issuer critical/thesisBroken and sanctions material/designated are separate domains'};
+ return {ok:errors.length===0,errors,rule:'issuer financial risk must be source-verified, sector-gated where required, and separate from sanctions material/designated semantics'};
 }
 global.InvestorRadarIssuerRisk={REGISTRY,get,audit,auditAll};if(typeof module!=='undefined'&&module.exports)module.exports=global.InvestorRadarIssuerRisk;
 })(typeof window!=='undefined'?window:globalThis);
