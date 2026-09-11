@@ -10,5 +10,12 @@ x=base();x.risk.thesisBroken=true;r=E.decide(x);assert.equal(r.action,'ПРОД�
 x=base();x.portfolio.held=false;x.risk.thesisBroken=true;r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.light,'КРАСНЫЙ');
 x=base();delete x.valuation.low;r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert(r.gate.missing.includes('valuation_band'));
 x=base();x.risk={thesisBroken:false};r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert(r.gate.missing.includes('verified_risk'));assert(r.gate.missing.includes('risk_score'));
+
+// R1.8.23: SBER must not receive active recommendation until full bank valuation completeness is VERIFIED.
+x=base();x.ticker='SBER';r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.light,'СЕРЫЙ');assert.equal(r.confidence,'НИЗКАЯ');assert(r.gate.missing.includes('sber_full_valuation_completeness'));assert.equal(r.valuation,'НЕ ОПРЕДЕЛЕНА');
+x=base();x.ticker='SBER';x.valuationCompleteness={status:'PARTIAL',verified:false};r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert(r.gate.missing.includes('sber_full_valuation_completeness'));
+x=base();x.ticker='SBER';x.valuationCompleteness={status:'VERIFIED',verified:true};r=E.decide(x);assert.equal(r.action,'ДОБИРАТЬ');assert.equal(r.light,'ЗЕЛЁНЫЙ');assert(!r.gate.missing.includes('sber_full_valuation_completeness'));
+x=base();x.ticker='SBER';x.portfolio.held=false;x.valuationCompleteness={status:'VERIFIED',verified:true};r=E.decide(x);assert.equal(r.action,'ПОКУПАТЬ');
+
 assert.equal(E.valuationZone(99,100,120),'ATTRACTIVE');assert.equal(E.valuationZone(110,100,120),'FAIR');assert.equal(E.valuationZone(121,100,120),'EXPENSIVE');
-console.log('R1.8.5.1 recommendation safety tests: PASS');
+console.log('R1.8.23 recommendation safety + SBER completeness tests: PASS');
