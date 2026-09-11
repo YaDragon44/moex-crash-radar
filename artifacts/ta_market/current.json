@@ -1,6 +1,6 @@
 {
   "release": "R0.7.1 Simple Market Context",
-  "generated_at": "2026-09-11T16:43:17+03:00",
+  "generated_at": "2026-09-11T16:58:24+03:00",
   "source": "MOEX ISS",
   "quality": "OK",
   "context_quality": "PARTIAL",
@@ -9,15 +9,15 @@
       "marketdata": {
         "SECID": "SBERP",
         "BOARDID": "TQBR",
-        "LAST": 283.45,
+        "LAST": 283.13,
         "OPEN": 284.96,
         "HIGH": 286.24,
         "LOW": 280.71,
-        "LASTTOPREVPRICE": -0.53,
-        "VOLTODAY": 2345690,
-        "VALTODAY": 663823452,
-        "UPDATETIME": "16:29:23",
-        "SYSTIME": "2026-09-11 16:44:23"
+        "LASTTOPREVPRICE": -0.64,
+        "VOLTODAY": 2376188,
+        "VALTODAY": 672458365,
+        "UPDATETIME": "16:44:12",
+        "SYSTIME": "2026-09-11 16:59:12"
       },
       "raw": {
         "D1": [
@@ -4773,13 +4773,13 @@
           },
           {
             "t": "2026-09-11 00:00:00",
-            "end": "2026-09-11 16:44:23",
+            "end": "2026-09-11 16:59:04",
             "o": 284.96,
             "h": 286.24,
             "l": 280.71,
-            "c": 283.13,
-            "v": 2376358,
-            "value": 672506497.0599998
+            "c": 283.65,
+            "v": 2395316,
+            "value": 677882177.6299998
           }
         ],
         "H1": [
@@ -14793,15 +14793,15 @@
       "marketdata": {
         "SECID": "VKCO",
         "BOARDID": "TQBR",
-        "LAST": 117.9,
+        "LAST": 117.8,
         "OPEN": 119,
         "HIGH": 119.85,
         "LOW": 116,
-        "LASTTOPREVPRICE": -0.97,
-        "VOLTODAY": 9284444,
-        "VALTODAY": 1094258835,
-        "UPDATETIME": "16:29:29",
-        "SYSTIME": "2026-09-11 16:44:30"
+        "LASTTOPREVPRICE": -1.05,
+        "VOLTODAY": 9337116,
+        "VALTODAY": 1100462190,
+        "UPDATETIME": "16:44:16",
+        "SYSTIME": "2026-09-11 16:59:16"
       },
       "raw": {
         "D1": [
@@ -19557,13 +19557,13 @@
           },
           {
             "t": "2026-09-11 00:00:00",
-            "end": "2026-09-11 16:44:28",
+            "end": "2026-09-11 16:59:14",
             "o": 119,
             "h": 119.85,
             "l": 116,
-            "c": 117.8,
-            "v": 9337116,
-            "value": 1100462190.4000006
+            "c": 118,
+            "v": 9454766,
+            "value": 1114346135.6500008
           }
         ],
         "H1": [
@@ -29577,15 +29577,15 @@
       "marketdata": {
         "SECID": "OZPH",
         "BOARDID": "TQBR",
-        "LAST": 44.43,
+        "LAST": 44.36,
         "OPEN": 44.73,
         "HIGH": 44.82,
         "LOW": 44.18,
-        "LASTTOPREVPRICE": -0.67,
-        "VOLTODAY": 602550,
-        "VALTODAY": 26821562,
-        "UPDATETIME": "16:29:13",
-        "SYSTIME": "2026-09-11 16:44:14"
+        "LASTTOPREVPRICE": -0.83,
+        "VOLTODAY": 608710,
+        "VALTODAY": 27094923,
+        "UPDATETIME": "16:44:14",
+        "SYSTIME": "2026-09-11 16:59:14"
       },
       "raw": {
         "D1": [
@@ -34321,13 +34321,13 @@
           },
           {
             "t": "2026-09-11 00:00:00",
-            "end": "2026-09-11 16:44:33",
+            "end": "2026-09-11 16:59:23",
             "o": 44.73,
             "h": 44.82,
             "l": 44.18,
-            "c": 44.36,
-            "v": 608870,
-            "value": 27102020.700000018
+            "c": 44.43,
+            "v": 623570,
+            "value": 27754628.100000016
           }
         ],
         "H1": [
@@ -44742,24 +44742,24 @@
   ],
   "context": {
     "breadth": {
-      "advancers": 138,
-      "decliners": 275,
-      "flat": 29,
-      "total": 442,
-      "advance_ratio": 0.3341404358353511,
-      "time": "2026-09-11 16:36:12"
+      "advancers": 127,
+      "decliners": 285,
+      "flat": 31,
+      "total": 443,
+      "advance_ratio": 0.308252427184466,
+      "time": "2026-09-11 16:58:23"
     },
     "cnyrub": {
       "SECID": "CNYRUB_TOM",
       "BOARDID": "CETS",
-      "LAST": 12.51,
-      "WAPRICE": 12.549,
+      "LAST": 12.4805,
+      "WAPRICE": 12.5459,
       "OPEN": 12.533,
       "HIGH": 12.605,
-      "LOW": 12.5005,
+      "LOW": 12.477,
       "LASTCHANGEPRCNT": 0,
-      "UPDATETIME": "16:28:20",
-      "SYSTIME": "2026-09-11 16:43:20"
+      "UPDATETIME": "16:43:26",
+      "SYSTIME": "2026-09-11 16:58:26"
     },
     "brent": null,
     "event_risk": {
