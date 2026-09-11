@@ -1,0 +1,23 @@
+name: R1.8.32 Tech Issuer Risk Gate
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+    paths:
+      - 'web/investor-radar/tech-issuer-risk-gate.js'
+      - 'web/investor-radar/tech-issuer-risk-gate.test.js'
+      - '.github/workflows/r1.8.32-tech-issuer-risk.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax
+        run: node --check web/investor-radar/tech-issuer-risk-gate.js
+      - name: Regression
+        run: node web/investor-radar/tech-issuer-risk-gate.test.js
