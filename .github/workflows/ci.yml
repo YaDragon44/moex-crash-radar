@@ -144,3 +144,40 @@ jobs:
           ! grep -q "requiredReturn=19\|modelPE=100/requiredReturn" "$FILE"
           ! grep -q "рынокs\|рынокdata" "$FILE"
           echo "R1.8.24 SBER valuation UI contract: PASS"
+      - name: R1.8.25 Live MOEX probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://iss.moex.com/iss/engines/stock/markets/shares/securities/SBER.json?iss.meta=off&iss.only=marketdata&marketdata.columns=SECID,LAST,LCURRENTPRICE,UPDATETIME'
+          curl --fail --silent --show-error --retry 2 --connect-timeout 10 --max-time 30 "$URL" -o /tmp/sber.json
+          python - <<'PY'
+          import json, math
+          d=json.load(open('/tmp/sber.json',encoding='utf-8'))
+          b=d.get('marketdata') or {}
+          cols=b.get('columns') or []
+          rows=b.get('data') or []
+          assert rows, 'MOEX marketdata empty'
+          idx={c:i for i,c in enumerate(cols)}
+          row=next((r for r in rows if r[idx['SECID']]=='SBER'), rows[0])
+          vals=[]
+          for k in ('LAST','LCURRENTPRICE'):
+              if k in idx:
+                  try: vals.append(float(row[idx[k]]))
+                  except (TypeError,ValueError): pass
+          assert any(math.isfinite(x) and x>0 for x in vals), 'MOEX SBER positive price missing'
+          print('R1.8.25 live MOEX probe: PASS')
+          PY
+      - name: R1.8.25 Install browser
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: R1.8.25 Browser smoke and MOEX fail-closed
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 8765 --directory web/investor-radar >/tmp/radar-http.log 2>&1 &
+          PID=$!
+          trap 'kill $PID || true' EXIT
+          sleep 2
+          node web/investor-radar/r1.8.25-smoke.mjs
+          echo "R1.8.25 browser smoke + live MOEX validation: PASS"
