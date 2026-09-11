@@ -126,3 +126,21 @@ jobs:
           ! grep -q "requiredReturn=19\|modelPE=100/requiredReturn" "$FILE"
           ! grep -q "рынокs\|рынокdata" "$FILE"
           echo "R1.8.23 SBER final valuation pipeline + R1.8 UI contract: PASS"
+      - name: R1.8.24 SBER UI contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE=web/investor-radar/r1.8.24.html
+          test -s "$FILE"
+          grep -q "Investor Radar R1.8.24" "$FILE"
+          grep -q "sber-final-valuation-pipeline.js" "$FILE"
+          grep -q "sber-valuation-completeness-gate.js" "$FILE"
+          grep -q "sber-equity-attribution-gate.js" "$FILE"
+          grep -q "sber-moex-runtime.js" "$FILE"
+          grep -q "Блокирующие данные" "$FILE"
+          grep -q "Недостаточно данных для обоснованного вывода" "$FILE"
+          grep -q "InvestorRadarSberFinalValuationPipeline.build" "$FILE"
+          grep -q "InvestorRadarSberEquityAttribution.unresolved" "$FILE"
+          ! grep -q "requiredReturn=19\|modelPE=100/requiredReturn" "$FILE"
+          ! grep -q "рынокs\|рынокdata" "$FILE"
+          echo "R1.8.24 SBER valuation UI contract: PASS"
