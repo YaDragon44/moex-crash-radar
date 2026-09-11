@@ -3,14 +3,15 @@ from moex_crash_radar.dashboard_contract import validate_dashboard_snapshot
 def good_snapshot():
     signals={k:{"score":50.0,"quality":"LIVE"} for k in ("market_structure","breadth","volume_distribution","volatility_liquidity","levels_momentum")}
     signals["rate_ofz"]={"score":52.0,"quality":"LIVE"}; signals["oil_rub"]={"score":61.0,"quality":"LIVE"}
-    return {"release":"R0.5.2 Oil / RUB Live Integration","as_of":"2026-08-28T09:45:00+03:00","source":"MOEX ISS","secid":"IMOEX","last_close":2087.96,"data_quality":"LIVE","signals":signals,
+    return {"release":"R0.7 Positioning Data","as_of":"2026-08-28T09:45:00+03:00","source":"MOEX ISS","secid":"IMOEX","last_close":2087.96,"data_quality":"LIVE","signals":signals,
+      "positioning":{"ticker":"MX","quality":"N/A","source":"MOEX ISS analyticalproducts/futoi","as_of":None,"individuals":None,"legal_entities":None,"total_open_interest":None,"retail_net":None,"legal_net":None,"directional_divergence":None},
       "context":{"score":55.75,"state":"CAUTION","quality":"LIVE","coverage":.60,"available_groups":2,"total_groups":4,"groups":{
         "rate_ofz":{"score":52.0,"quality":"LIVE","key_rate":14.0,"key_rate_day":"2026-08-27","median_long_ofz_yield":14.8,"ofz_count":18,"rgbi_return_5d":-.5,"rgbi_return_20d":-1.2,"component_coverage":1.0,"sources":["Bank of Russia","MOEX ISS TQOB","MOEX ISS RGBI"]},
         "oil_rub":{"score":61.0,"quality":"LIVE","brent_secid":"BR-9.26","brent_return_5d":-3.2,"brent_return_20d":-8.1,"cnyrub_return_5d":2.1,"cnyrub_return_20d":6.4,"component_coverage":1.0,"latest_day":"2026-08-28","sources":["MOEX ISS FORTS Brent","MOEX ISS CNYRUB_TOM"]},
         "macro_earnings":{"score":None,"quality":"N/A"},"news_geopolitics":{"score":None,"quality":"N/A"}}},
       "crash":{"score":55.94,"available_weight":.72,"critical_confirmations":1},"crash_history":[{"day":"2026-08-27","score":53.0,"state":"DEFENSIVE"},{"day":"2026-08-28","score":55.94,"state":"DEFENSIVE"}],
       "exit_gate":{"stage":"EARLY_WARNING","cash_confirmed":False,"params":{"score_threshold":65.0,"early_warning_threshold":56.0,"confirmations":3,"persistence":2,"max_5d_return_pct":-3.0,"cooldown_rows":30,"require_breadth_volume":False,"rearm_clear_rows":3}},
-      "bottom":{"score":None,"state":"DATA_INSUFFICIENT","buy_back_signal":False},"calibration":{"release":"R0.3.3","false_event_rate":.2857,"detected_episodes":"4/4","median_lead_days":28.5,"total_exit_events":14,"false_exit_events":4},"note":"Live MOEX market layer is active."}
+      "bottom":{"score":None,"state":"DATA_INSUFFICIENT","buy_back_signal":False},"calibration":{"release":"R0.6.2","false_event_rate":.2222,"detected_episodes":"4/4","blind_precision":.75,"blind_false_alarm_rate":.25,"median_lead_days":28.5},"note":"Live MOEX market layer is active."}
 
 def test_valid_dashboard_contract_passes(): assert validate_dashboard_snapshot(good_snapshot())==[]
 def test_missing_core_signal_fails():
