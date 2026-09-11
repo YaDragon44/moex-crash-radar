@@ -1,0 +1,43 @@
+name: R1.8.27 Security Gate
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+    paths:
+      - 'web/investor-radar/**'
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Security scanner unit tests
+        run: |
+          node --check web/investor-radar/security-gate.mjs
+          node web/investor-radar/security-gate.test.mjs
+      - name: Production security scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          node web/investor-radar/security-gate.mjs | tee /tmp/r1.8.27-security.json
+          node - <<'NODE'
+          const fs=require('fs');
+          const r=JSON.parse(fs.readFileSync('/tmp/r1.8.27-security.json','utf8'));
+          if(r.status!=='PASS'||r.counts.CRITICAL!==0||r.counts.HIGH!==0) process.exit(1);
+          console.log(`R1.8.27 SECURITY GATE: PASS · Critical=${r.counts.CRITICAL} High=${r.counts.HIGH} Medium=${r.counts.MEDIUM}`);
+          NODE
+      - name: Security scope contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "private_key" web/investor-radar/security-gate.mjs
+          grep -q "telegram_bot_token" web/investor-radar/security-gate.mjs
+          grep -q "t_invest_token" web/investor-radar/security-gate.mjs
+          grep -q "dangerous_eval" web/investor-radar/security-gate.mjs
+          grep -q "url_input_to_html_sink_surface" web/investor-radar/security-gate.mjs
+          echo 'R1.8.27 security scope contract: PASS'
