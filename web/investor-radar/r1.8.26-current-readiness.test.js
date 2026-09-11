@@ -3,7 +3,7 @@ const Gate=require('./production-readiness-gate.js');
 const IssuerRisk=require('./issuer-risk-registry.js');
 const Preferred=require('./sber-preferred-treatment-evidence.js');
 
-// R1.8.35 evidence state. Fail-closed: only independently verified gates may PASS.
+// R1.8.36 evidence state. Fail-closed: only independently verified gates may PASS.
 const issuerAudit=IssuerRisk.auditAll();
 for(const t of ['YDEX','SBER','X5','MOEX']){
   const a=IssuerRisk.audit(t);
@@ -13,6 +13,7 @@ for(const t of ['YDEX','SBER','X5','MOEX']){
   assert.equal(a.sectorGateOk,true,`${t} sector gate binding must be valid`);
 }
 assert.equal(issuerAudit.ok,true,'issuer-risk coverage cannot PASS with registry audit errors');
+assert.equal(issuerAudit.coverage,'4/4');
 const preferred=Preferred.assess();
 assert.equal(preferred.status,'PARTIAL');
 assert.equal(preferred.dividendEqualityVerified,true);
@@ -22,18 +23,26 @@ const current=Gate.assess({
   regression:{status:'PASS',verified:true,evidence:'R1.8 regression suite'},
   liveMoex:{status:'PASS',verified:true,evidence:'GitHub runner TQBR live probe'},
   browserSmoke:{status:'PASS',verified:true,evidence:'Chromium smoke + MOEX fail-closed'},
-  sberValuation:{status:'PARTIAL',verified:false,evidence:'R1.8.34 resolves treasury/outstanding common-share basis from CBR 0409810. R1.8.35 verifies SBERP security terms and 2025 dividend parity, but current charter liquidation/equity priority and a defensible equity-allocation method remain unverified. Attributable common equity also remains unresolved; common BVPS/P-B stays blocked.'},
-  issuerRiskCoverage:{status:'PASS',verified:true,evidence:'Registry audit: YDEX, SBER, X5 and MOEX issuer-risk verified with sector provenance and cross-domain semantics clean'},
+  sberValuation:{status:'PARTIAL',verified:false,evidence:'Treasury/outstanding common-share basis is verified from CBR 0409810; SBERP security terms and 2025 dividend parity are verified. Current preferred liquidation/equity priority, defensible equity-allocation method and attributable common equity remain unresolved, so common BVPS/P-B stays blocked.'},
+  issuerRiskCoverage:{status:'PASS',verified:true,evidence:'Registry audit: YDEX, SBER, X5 and MOEX issuer-risk verified'},
+  issuerRiskProvenance:{status:'PASS',verified:true,evidence:'R1.8.33/34 exact sector-gate provenance audit; manual VERIFIED issuer risk forbidden'},
+  decisionIntegrity:{status:'PASS',verified:true,evidence:'R1.8.35 end-to-end decision integrity workflow; forged intermediate risk objects fail closed'},
   portfolioContextSafety:{status:'PASS',verified:true,evidence:'Recommendation safety + explicit portfolio-context regression'},
-  security:{status:'PASS',verified:true,evidence:'R1.8.27 security scan: 0 Critical / 0 High; 3 Medium HTML-sink review items'}
+  security:{status:'PASS',verified:true,evidence:'R1.8.27 security scan: 0 Critical / 0 High; documented Medium review items remain'},
+  architectureSimplicity:{status:'PASS',verified:true,evidence:'R1.8.36 architecture simplicity audit: static browser UI, pure local decision/risk modules, no new backend or runtime framework dependency'}
 });
 
 assert.equal(current.status,'HOLD');
 assert.equal(current.verified,false);
 assert.equal(current.decision,'DO_NOT_RELEASE');
 assert.deepEqual(current.blockers,['sberValuation']);
-console.log('R1.8.35 CURRENT STATUS: HOLD');
-console.log('Issuer-risk coverage: PASS (4/4)');
-console.log('SBER share basis: treasury/outstanding VERIFIED from CBR 0409810');
-console.log('SBERP: issue terms + 2025 dividend parity VERIFIED; capital-allocation treatment remains PARTIAL');
-console.log('Remaining SBER valuation evidence: attributable common equity + current preferred liquidation/equity priority + allocation method');
+assert.equal(current.passCount,9);
+assert.equal(current.totalChecks,10);
+assert.equal(current.completionPct,90);
+console.log('R1.8.36 CURRENT STATUS: HOLD');
+console.log('Production readiness: 9/10 blocking gates PASS (90%)');
+console.log('Issuer-risk coverage/provenance: PASS (4/4)');
+console.log('Decision integrity: PASS');
+console.log('Architecture simplicity: PASS');
+console.log('Only blocker: SBER valuation completeness');
+console.log('Remaining evidence: attributable common equity + current preferred liquidation/equity priority + defensible allocation method');
