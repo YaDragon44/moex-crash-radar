@@ -17,12 +17,19 @@ class CrowdTransition:
     distribution_watch: bool
 
 
+def _row_value(row: object, primary: str, fallback: str):
+    if hasattr(row, primary):
+        return getattr(row, primary)
+    return getattr(row, fallback)
+
+
 def stable_states(rows: Sequence[object], *, persistence: int = 3, hysteresis: float = 5.0) -> list[CrowdTransition]:
     """Research-only Crowd transition filter.
 
     A raw state must persist before becoming stable. Hysteresis prevents a stable
     state from flipping merely because score crosses a boundary by a few points.
-    No Crash/EXIT inputs or thresholds are modified here.
+    Supports both generic research rows (state/score) and DailyCrowdEvidence
+    (crowd_state/crowd_score). No Crash/EXIT inputs or thresholds are modified.
     """
     if persistence < 2:
         raise ValueError("persistence must be >= 2")
@@ -33,13 +40,12 @@ def stable_states(rows: Sequence[object], *, persistence: int = 3, hysteresis: f
     scores: list[float | None] = []
 
     for row in rows:
-        raw = str(getattr(row, "state"))
-        score = getattr(row, "score")
+        raw = str(_row_value(row, "state", "crowd_state"))
+        score = _row_value(row, "score", "crowd_score")
         scores.append(score)
 
         desired = raw
         if stable not in (CrowdState.DATA_INSUFFICIENT.value, raw) and score is not None:
-            # Hold the current state inside a small boundary buffer.
             bounds = {
                 CrowdState.PANIC.value: (None, 20.0 + hysteresis),
                 CrowdState.FEAR.value: (20.0 - hysteresis, 40.0 + hysteresis),
@@ -69,9 +75,6 @@ def stable_states(rows: Sequence[object], *, persistence: int = 3, hysteresis: f
             delta5 = round(score - scores[-6], 2)
         falling_fast = bool(delta5 is not None and delta5 <= -15.0)
 
-        # Distribution watch is intentionally conservative: price is not used
-        # here because this layer only establishes a stable Crowd transition.
-        # Cross-engine price/breadth divergence is validated in the replay.
         out.append(CrowdTransition(
             day=str(getattr(row, "day")), raw_state=raw, stable_state=stable,
             score=score, delta_5=delta5, falling_fast=falling_fast,
