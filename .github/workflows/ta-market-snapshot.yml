@@ -74,16 +74,37 @@ jobs:
               if e.get('status') not in ('READY','WAIT','INVALID'): raise SystemExit(f"bad status: {e.get('status')}")
           print(f'TA SIGNAL HISTORY GATE: PASS · events={len(events)}')
           PY
-      - name: Commit fresh snapshot and signal history
+      - name: Prepare READY Telegram alert
+        run: python scripts/prepare_ta_ready_alert.py
+      - name: Send new READY to Telegram
+        if: ${{ hashFiles('artifacts/ta_market/ready_alert.txt') != '' }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python scripts/telegram_notify.py --file artifacts/ta_market/ready_alert.txt
+      - name: Validate Telegram state
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('artifacts/ta_market/telegram_state.json')
+          if not p.exists(): raise SystemExit('telegram_state.json missing')
+          j=json.loads(p.read_text(encoding='utf-8'))
+          if not j.get('baseline_time'): raise SystemExit('Telegram baseline_time missing')
+          if not isinstance(j.get('sent_event_keys'), list): raise SystemExit('sent_event_keys must be list')
+          print(f"TA TELEGRAM STATE GATE: PASS · sent={len(j.get('sent_event_keys') or [])}")
+          PY
+      - name: Commit fresh TA Market state
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add artifacts/ta_market/current.json artifacts/ta_market/signal_history.json
+          git add artifacts/ta_market/current.json artifacts/ta_market/signal_history.json artifacts/ta_market/telegram_state.json
           if git diff --cached --quiet; then
             echo 'No TA Market changes'
             exit 0
           fi
-          git commit -m 'data: refresh TA market snapshot and signal history'
+          git commit -m 'data: refresh TA market snapshot, signal history and alert state'
           git push origin HEAD:main
