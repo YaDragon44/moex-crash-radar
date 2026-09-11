@@ -42,6 +42,9 @@ jobs:
           cache: pip
           cache-dependency-path: vkco-monitor/requirements.txt
 
+      - name: Prepare state directory
+        run: mkdir -p vkco-monitor/state
+
       - name: Restore signal state
         uses: actions/cache/restore@v4
         with:
