@@ -1,5 +1,5 @@
-// Investor Radar R1.8.5.1 — Recommendation Engine Safety Hotfix
-// FACT != ANALYSIS != DECISION. Sanctions alone never imply SELL.
+// Investor Radar R1.8.23 — Recommendation Engine SBER Completeness Gate
+// FACT != ANALYSIS != DECISION. Sanctions alone never imply SELL. SBER active actions require full bank valuation completeness.
 (function(global){
   'use strict';
   const ACTIONS=Object.freeze({BUY:'ПОКУПАТЬ',ADD:'ДОБИРАТЬ',HOLD:'ДЕРЖАТЬ',NO_ADD:'НЕ ДОБИРАТЬ',REDUCE:'СОКРАЩАТЬ',SELL:'ПРОДАВАТЬ',WATCH:'НАБЛЮДАТЬ',LOCK:'LOCK'});
@@ -17,6 +17,10 @@
     if(!finite(input?.valuation?.low)||!finite(input?.valuation?.high)) missing.push('valuation_band');
     if(input?.risk?.verified!==true) missing.push('verified_risk');
     if(!finite(input?.risk?.score)) missing.push('risk_score');
+    if(String(input?.ticker||'').toUpperCase()==='SBER'){
+      const c=input?.valuationCompleteness;
+      if(c?.status!=='VERIFIED'||c?.verified!==true) missing.push('sber_full_valuation_completeness');
+    }
     const thesisBroken=input?.risk?.thesisBroken===true;
     return {ok:missing.length===0&&!thesisBroken,hardStop:thesisBroken,missing,reason:thesisBroken?'thesis_broken':missing.length?'insufficient_data':'ok'};
   }
@@ -39,7 +43,8 @@
       return {ticker,light:LIGHT.RED,action:held?ACTIONS.SELL:ACTIONS.WATCH,confidence:'СРЕДНЯЯ',valuation:'НЕ ОПРЕДЕЛЕНА',why:['Подтверждено разрушение инвестиционного тезиса.'],facts:arr(input?.facts),risks:arr(input?.risk?.items),trigger:'Повторная проверка тезиса после изменения критического фундаментального риска.',gate};
     }
     if(!gate.ok){
-      return {ticker,light:LIGHT.GRAY,action:ACTIONS.WATCH,confidence:'НИЗКАЯ',valuation:'НЕ ОПРЕДЕЛЕНА',why:['Недостаточно данных для обоснованного вывода.','Не пройдены критические data gates: '+gate.missing.join(', ')+'.'],facts:arr(input?.facts),risks:arr(input?.risk?.items),trigger:'Появление недостающих подтверждённых данных.',gate};
+      const sberBlocked=gate.missing.includes('sber_full_valuation_completeness');
+      return {ticker,light:LIGHT.GRAY,action:ACTIONS.WATCH,confidence:'НИЗКАЯ',valuation:'НЕ ОПРЕДЕЛЕНА',why:['Недостаточно данных для обоснованного вывода.',sberBlocked?'Для SBER не пройден полный bank valuation gate: P/E + P/B + bank quality + common equity/share basis должны быть VERIFIED.':'Не пройдены критические data gates: '+gate.missing.join(', ')+'.'],facts:arr(input?.facts),risks:arr(input?.risk?.items),trigger:'Появление недостающих подтверждённых данных.',gate};
     }
     const zone=valuationZone(+input.price,+input.valuation.low,+input.valuation.high),growth=+input.fundamental.growthCagr,riskScore=+input.risk.score;
     const sanctionsHigh=input?.risk?.sanctions?.verified===true&&input?.risk?.sanctions?.level==='HIGH';
