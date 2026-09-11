@@ -1,4 +1,4 @@
-// Investor Radar R1.8.25 — SBER Unified Recommendation Pipeline
+// Investor Radar R1.8.26 — SBER Unified Recommendation Pipeline
 // DATA -> FACTS -> RISK -> VALUATION COMPLETENESS -> PORTFOLIO CONTEXT -> DECISION
 // Fail-closed: unresolved bank valuation or missing portfolio context can only produce WATCH.
 (function(global){
