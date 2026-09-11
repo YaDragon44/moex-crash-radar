@@ -4,6 +4,14 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '*/10 7-15 * * 1-5'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/collect_ta_market_snapshot.py'
+      - 'scripts/update_ta_signal_history.py'
+      - 'scripts/prepare_ta_ready_alert.py'
+      - 'scripts/telegram_notify.py'
+      - '.github/workflows/ta-market-snapshot.yml'
 
 permissions:
   contents: write
