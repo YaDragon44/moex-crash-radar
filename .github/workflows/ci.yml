@@ -34,6 +34,7 @@ jobs:
       - name: Registries
         run: |
           node --check web/investor-radar/issuer-risk-registry.js
+          node web/investor-radar/issuer-risk-registry.test.js
           node --check web/investor-radar/sanctions-regulatory-registry.js
           node --check web/investor-radar/multiples-registry.js
           node web/investor-radar/multiples-registry.test.js
@@ -181,4 +182,4 @@ jobs:
           trap 'kill $PID || true' EXIT
           sleep 2
           node web/investor-radar/r1.8.25-smoke.mjs
-          echo "R1.8.25 browser smoke + live MOEX validation: PASS"
+          echo "R1.8.25 issuer risk semantics + browser smoke + live MOEX validation: PASS"
