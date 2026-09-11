@@ -1,0 +1,38 @@
+name: R1.8.26 Production Readiness
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+    paths:
+      - 'web/investor-radar/production-readiness-gate.js'
+      - 'web/investor-radar/production-readiness-gate.test.js'
+      - 'web/investor-radar/r1.8.26-current-readiness.test.js'
+      - 'web/investor-radar/R1.8.26_PRODUCTION_READINESS_REPORT.md'
+      - '.github/workflows/r1.8.26-readiness.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Production readiness gate unit tests
+        run: |
+          node --check web/investor-radar/production-readiness-gate.js
+          node web/investor-radar/production-readiness-gate.test.js
+      - name: Evaluate current R1.8 readiness
+        run: node web/investor-radar/r1.8.26-current-readiness.test.js
+      - name: Release report contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE=web/investor-radar/R1.8.26_PRODUCTION_READINESS_REPORT.md
+          test -s "$FILE"
+          grep -q 'HOLD / DO NOT RELEASE' "$FILE"
+          grep -q 'SBER valuation completeness' "$FILE"
+          grep -q 'Issuer-risk coverage' "$FILE"
+          grep -q 'Production security gate' "$FILE"
+          echo 'R1.8.26 production readiness: HOLD verified'
