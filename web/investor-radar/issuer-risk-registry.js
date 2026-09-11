@@ -1,4 +1,4 @@
-// Investor Radar R1.8.28 — Issuer Risk Registry Hardening
+// Investor Radar R1.8.29 — Issuer Risk Registry Hardening
 // SOURCE_EXISTS != RISK_VERIFIED. Primary-source presence never unlocks issuer risk by itself.
 (function(global){'use strict';
 const lock=(items=[])=>({status:'LOCK',verified:false,critical:false,thesisBroken:false,coverage:'SOURCE_ONLY',items});
@@ -10,9 +10,9 @@ const REGISTRY={
   sanctionsRegulatory:{verified:false,critical:false,items:['Separate primary-source sanctions/regulatory review required.']}
  },
  X5:{
-  asOf:'2026-06-30',sourceStatus:'SOURCE_EXISTS',riskStatus:'LOCK',
-  source:'X5 official financial statements/results',sourceUrl:'https://www.x5.ru/ru/investors/financial-statements/',
-  issuer:lock(['Official FY2025 audited IFRS statements published 20 Mar 2026','Official H1 2026 IFRS statements published 13 Aug 2026','Source availability is confirmed, but issuer-risk metrics and thresholds are not yet fully verified.']),
+  asOf:'2026-06-30',sourceStatus:'SOURCE_EXISTS',riskStatus:'VERIFIED',
+  source:'X5 H1 2026 IFRS financial results',sourceUrl:'https://www.x5.ru/ru/news/x5-obyavlyaet-o-roste-vyruchki-na-99-vo-2-kv-2026-g-rentabelnost-skorr-ebitda-do-primeneniya-msfo-ifrs-16-sostavila-60/',
+  issuer:{status:'VERIFIED',verified:true,critical:false,thesisBroken:false,riskLevel:'MEDIUM',coverage:'RETAIL_GROWTH_MARGIN_LEVERAGE_PROFIT_RATING',items:['H1 2026 revenue 2,480,513 mn RUB, +10.5% y/y','H1 2026 adjusted EBITDA margin pre-IFRS 16: 5.7%','Net debt/EBITDA pre-IFRS 16 at 30 Jun 2026: 1.08x','H1 2026 net profit 34,482 mn RUB, -28.4% y/y','ACRA rating AAA(RU), stable, confirmed 24 Jun 2026','Expert RA rating ruAAA, stable, confirmed 29 Jul 2026','Model classification: MEDIUM because net profit declined y/y; thresholds are model assumptions, not rating-agency facts.'],ratingSources:['https://acra-ratings.ru/press-releases/7029/','https://raexpert.ru/releases/2026/jul29d']},
   sanctionsRegulatory:{verified:false,critical:false,items:['Separate primary-source sanctions/regulatory review required.']}
  },
  MOEX:{
