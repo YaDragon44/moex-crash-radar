@@ -11,12 +11,14 @@ on:
       - 'scripts/run_positioning_audit.py'
       - 'scripts/run_positioning_incremental_value.py'
       - 'scripts/run_crowd_replay.py'
+      - 'scripts/run_crowd_stability_replay.py'
       - 'src/moex_crash_radar/history.py'
       - 'src/moex_crash_radar/live_gate.py'
       - 'src/moex_crash_radar/positioning.py'
       - 'src/moex_crash_radar/crowd.py'
       - 'src/moex_crash_radar/crowd_features.py'
       - 'src/moex_crash_radar/crowd_history.py'
+      - 'src/moex_crash_radar/crowd_transition.py'
       - 'data/imoex_constituents_2019_2026.json'
       - '.github/workflows/historical-evidence.yml'
   workflow_dispatch:
@@ -27,7 +29,7 @@ permissions:
 jobs:
   evidence:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -45,6 +47,8 @@ jobs:
         run: python scripts/run_positioning_incremental_value.py
       - name: Historical crowd replay
         run: python scripts/run_crowd_replay.py
+      - name: Crowd transition stability replay
+        run: python scripts/run_crowd_stability_replay.py
       - name: Upload evidence
         uses: actions/upload-artifact@v4
         with:
@@ -55,4 +59,5 @@ jobs:
             artifacts/positioning_audit.json
             artifacts/positioning_incremental_value.json
             artifacts/crowd_replay.json
+            artifacts/crowd_stability_replay.json
           if-no-files-found: error
