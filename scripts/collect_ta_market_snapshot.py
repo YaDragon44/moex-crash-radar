@@ -16,7 +16,7 @@ MSK = timezone(timedelta(hours=3))
 def get_json(path: str, params: dict | None = None, attempts: int = 3, timeout: int = 20) -> dict:
     query = urlencode(params or {})
     url = f"{ISS_BASE}{path}" + (f"?{query}" if query else "")
-    req = Request(url, headers={"User-Agent": "ta-market-monitor/0.7.1"})
+    req = Request(url, headers={"User-Agent": "ta-market-monitor/0.7.2"})
     last: Exception | None = None
     for i in range(attempts):
         try:
@@ -113,54 +113,61 @@ def cnyrub() -> dict:
     return row
 
 
+def brent_contract_codes(months: int = 18) -> list[str]:
+    now = datetime.now(MSK)
+    base = now.year * 12 + (now.month - 1)
+    out = []
+    for offset in range(months):
+        idx = base + offset
+        year, month0 = divmod(idx, 12)
+        month = month0 + 1
+        out.append(f"BR-{month}.{str(year)[-2:]}")
+    return out
+
+
 def nearest_brent() -> dict:
     today = datetime.now(MSK).date()
-    candidates: list[tuple[object, str]] = []
-    # FORTS contains thousands of futures/options. Scan pages because BR futures
-    # are not guaranteed to be present in the first ISS page.
-    for start in range(0, 5000, 100):
-        p = get_json(
-            "/engines/futures/markets/forts/securities.json",
-            {"iss.meta": "off", "iss.only": "securities", "start": start,
-             "securities.columns": "SECID,LASTTRADEDATE,SHORTNAME"},
-        )
-        rows = table(p, "securities")
-        if not rows:
-            break
-        for x in rows:
-            secid = str(x.get("SECID") or "")
-            ltd = x.get("LASTTRADEDATE")
-            if not secid.startswith("BR-") or not ltd:
-                continue
-            try:
-                d = datetime.fromisoformat(str(ltd)).date()
-            except ValueError:
-                continue
-            if d >= today:
-                candidates.append((d, secid))
-        # Once active BR futures are found on a page, no need to crawl the full option universe.
-        if candidates:
-            break
+    candidates: list[tuple[object, dict]] = []
+    # Probe deterministic monthly BR codes directly. This avoids relying on the
+    # huge FORTS securities collection, whose ISS pagination/order may omit BR
+    # contracts from early pages even while the direct contract endpoint works.
+    for secid in brent_contract_codes():
+        try:
+            p = get_json(
+                f"/engines/futures/markets/forts/securities/{secid}.json",
+                {"iss.meta": "off", "iss.only": "securities,marketdata",
+                 "securities.columns": "SECID,LASTTRADEDATE,SHORTNAME",
+                 "marketdata.columns": "SECID,LAST,OPEN,HIGH,LOW,LASTCHANGEPRCNT,NUMTRADES,VOLTODAY,VALTODAY,UPDATETIME,SYSTIME"},
+                attempts=2,
+            )
+        except Exception:
+            continue
+        sec_rows = table(p, "securities")
+        md_rows = table(p, "marketdata")
+        sec = next((x for x in sec_rows if x.get("SECID") == secid), None)
+        md = next((x for x in md_rows if x.get("SECID") == secid and x.get("LAST") is not None), None)
+        if not sec or not md or not sec.get("LASTTRADEDATE"):
+            continue
+        try:
+            last_trade = datetime.fromisoformat(str(sec["LASTTRADEDATE"])).date()
+        except ValueError:
+            continue
+        if last_trade < today:
+            continue
+        md["CONTRACT"] = secid
+        md["LASTTRADEDATE"] = str(last_trade)
+        candidates.append((last_trade, md))
+        # Codes are generated chronologically; first valid live contract is nearest.
+        break
     if not candidates:
-        raise RuntimeError("active Brent contract not found after FORTS pagination")
-    _, secid = min(candidates)
-    q = get_json(
-        f"/engines/futures/markets/forts/securities/{secid}.json",
-        {"iss.meta": "off", "iss.only": "marketdata",
-         "marketdata.columns": "SECID,LAST,OPEN,HIGH,LOW,LASTCHANGEPRCNT,NUMTRADES,VOLTODAY,VALTODAY,UPDATETIME,SYSTIME"},
-    )
-    rows = table(q, "marketdata")
-    row = next((x for x in rows if x.get("LAST") is not None), None)
-    if not row:
-        raise RuntimeError(f"{secid} marketdata absent")
-    row["CONTRACT"] = secid
-    return row
+        raise RuntimeError("active Brent contract not found by direct monthly probing")
+    return min(candidates, key=lambda x: x[0])[1]
 
 
 def main() -> None:
     generated = datetime.now(MSK).isoformat(timespec="seconds")
     payload: dict = {
-        "release": "R0.7.1 Simple Market Context",
+        "release": "R0.7.2 Simple Market Context",
         "generated_at": generated, "source": "MOEX ISS", "quality": "OK", "context_quality": "OK",
         "securities": {}, "imoex": [],
         "context": {"breadth": None, "cnyrub": None, "brent": None,
