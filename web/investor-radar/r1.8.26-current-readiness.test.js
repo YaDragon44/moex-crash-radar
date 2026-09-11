@@ -1,13 +1,13 @@
 const assert=require('assert');
 const Gate=require('./production-readiness-gate.js');
 
-// Evidence state after R1.8.27. This remains deliberately fail-closed.
+// Evidence state after R1.8.29. This remains deliberately fail-closed.
 const current=Gate.assess({
   regression:{status:'PASS',verified:true,evidence:'R1.8.25 CI regression suite'},
   liveMoex:{status:'PASS',verified:true,evidence:'R1.8.25 GitHub runner TQBR live probe'},
   browserSmoke:{status:'PASS',verified:true,evidence:'R1.8.25 Chromium smoke + MOEX fail-closed'},
   sberValuation:{status:'PARTIAL',verified:false,evidence:'Common-equity/share basis and P/B remain unresolved'},
-  issuerRiskCoverage:{status:'PARTIAL',verified:false,evidence:'YDEX verified; X5, MOEX and SBER issuer-risk registries remain LOCK'},
+  issuerRiskCoverage:{status:'PARTIAL',verified:false,evidence:'YDEX, SBER and X5 verified; MOEX issuer-risk registry remains LOCK'},
   portfolioContextSafety:{status:'PASS',verified:true,evidence:'Recommendation safety + explicit portfolio-context regression'},
   security:{status:'PASS',verified:true,evidence:'R1.8.27 security scan: 0 Critical / 0 High; 3 Medium HTML-sink review items'}
 });
