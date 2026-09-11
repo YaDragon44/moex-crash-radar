@@ -1,0 +1,39 @@
+name: R1.8.30 MOEX Issuer Risk
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+    paths:
+      - 'web/investor-radar/exchange-issuer-risk-gate.js'
+      - 'web/investor-radar/exchange-issuer-risk-gate.test.js'
+      - 'web/investor-radar/issuer-risk-registry.js'
+      - 'web/investor-radar/issuer-risk-registry.test.js'
+      - '.github/workflows/r1.8.30-moex-issuer-risk.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exchange issuer risk gate
+        run: |
+          node --check web/investor-radar/exchange-issuer-risk-gate.js
+          node web/investor-radar/exchange-issuer-risk-gate.test.js
+      - name: Issuer risk registry regression
+        run: |
+          node --check web/investor-radar/issuer-risk-registry.js
+          node web/investor-radar/issuer-risk-registry.test.js
+      - name: MOEX evidence contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'Q2 2026 fee and commission income 22,271.7 mn RUB, +24.8% y/y' web/investor-radar/issuer-risk-registry.js
+          grep -q 'Q2 2026 net profit 15,766.2 mn RUB, +4.7% y/y' web/investor-radar/issuer-risk-registry.js
+          grep -q 'Cash position at 30 Jun 2026: 194 bn RUB' web/investor-radar/issuer-risk-registry.js
+          grep -q 'Debt at 30 Jun 2026: 0' web/investor-radar/issuer-risk-registry.js
+          grep -q 'sanctions/regulatory risk is assessed separately and remains material' web/investor-radar/issuer-risk-registry.js
+          echo 'R1.8.30 MOEX issuer risk evidence contract: PASS'
