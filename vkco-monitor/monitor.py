@@ -39,19 +39,43 @@ def _dt(value: str) -> datetime:
 
 
 def fetch_candles(days: int = 7) -> list[Candle]:
-    start = (datetime.now(MOSCOW) - timedelta(days=days)).date().isoformat()
-    r = requests.get(
-        MOEX_URL,
-        params={"interval": INTERVAL, "from": start, "iss.meta": "off"},
-        timeout=20,
-    )
-    r.raise_for_status()
-    payload = r.json()["candles"]
-    cols = payload["columns"]
+    date_from = (datetime.now(MOSCOW) - timedelta(days=days)).date().isoformat()
+    rows: list[list[Any]] = []
+    columns: list[str] | None = None
+    offset = 0
+
+    # MOEX ISS ограничивает размер страницы. Забираем все страницы,
+    # иначе 7 дней 10m-свечей могут обрезаться на середине периода.
+    while True:
+        r = requests.get(
+            MOEX_URL,
+            params={
+                "interval": INTERVAL,
+                "from": date_from,
+                "start": offset,
+                "iss.meta": "off",
+            },
+            timeout=20,
+        )
+        r.raise_for_status()
+        payload = r.json()["candles"]
+        if columns is None:
+            columns = payload["columns"]
+        batch = payload["data"]
+        rows.extend(batch)
+        if not batch or len(batch) < 500:
+            break
+        offset += len(batch)
+        if offset > 5000:
+            raise RuntimeError("Слишком много страниц MOEX candles; safety limit reached")
+
+    if columns is None:
+        raise RuntimeError("MOEX не вернул структуру candles")
+
     out: list[Candle] = []
     now = datetime.now(MOSCOW)
-    for row in payload["data"]:
-        item = dict(zip(cols, row))
+    for row in rows:
+        item = dict(zip(columns, row))
         c = Candle(
             begin=_dt(item["begin"]),
             end=_dt(item["end"]),
@@ -63,6 +87,7 @@ def fetch_candles(days: int = 7) -> list[Candle]:
         )
         if c.end <= now:
             out.append(c)
+
     if len(out) < 25:
         raise RuntimeError(f"Недостаточно завершенных свечей MOEX: {len(out)}")
     return out
