@@ -1,0 +1,45 @@
+name: R1.8.34 Recommendation Provenance Gate
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  provenance-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Issuer registry provenance
+        run: |
+          node --check web/investor-radar/issuer-risk-registry.js
+          node web/investor-radar/issuer-risk-registry.test.js
+      - name: Integrated risk provenance
+        run: |
+          node --check web/investor-radar/risk-layer.js
+          node web/investor-radar/risk-layer.test.js
+      - name: Recommendation provenance
+        run: |
+          node --check web/investor-radar/recommendation-engine.js
+          node web/investor-radar/recommendation-engine.test.js
+      - name: Exact sector bindings
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE=web/investor-radar/issuer-risk-registry.js
+          grep -q "SBER:'BANK_ISSUER_RISK_GATE_R1.8.28'" "$FILE"
+          grep -q "X5:'RETAIL_ISSUER_RISK_GATE_R1.8.29'" "$FILE"
+          grep -q "MOEX:'EXCHANGE_ISSUER_RISK_GATE_R1.8.30'" "$FILE"
+          grep -q "YDEX:'TECH_ISSUER_RISK_GATE_R1.8.32'" "$FILE"
+          echo "R1.8.34 exact sector provenance bindings: PASS"
+      - name: Manual risk bypass forbidden
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "issuer_risk_provenance_missing" web/investor-radar/recommendation-engine.js
+          grep -q "issuer_sector_gate_mismatch" web/investor-radar/recommendation-engine.js
+          grep -q "issuer_risk_provenance" web/investor-radar/risk-layer.js
+          echo "R1.8.34 manual risk bypass: BLOCKED"
