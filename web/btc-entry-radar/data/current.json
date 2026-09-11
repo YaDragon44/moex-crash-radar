@@ -3,50 +3,50 @@
     "fgi": 56.0,
     "price_confirm_4h": false,
     "new_local_low_4h": false,
-    "oi_regime": "OVERHEATED",
-    "stop_atr": 1.0653590781453963,
+    "oi_regime": "MODERATE_BUILD",
+    "stop_atr": 1.478635562335023,
     "data_ready": true,
     "position_open": false
   },
   "output": {
     "state": "NO_TRADE",
-    "action": "DO NOT CHASE",
+    "action": "WAIT",
     "standard_size": 0.0,
     "why": [
-      "Leverage build-up is overheated",
-      "Long squeeze risk elevated",
-      "OI is a risk modifier, not a buy trigger"
+      "No validated MVP setup",
+      "Crowd/price combination is insufficient",
+      "Capital preservation has priority"
     ],
-    "invalidation": "Leverage normalizes"
+    "invalidation": "Wait for next setup"
   },
   "market": {
-    "price": 76894.7,
-    "timestamp": "2026-09-11T00:00:00+00:00",
-    "age_h": 4.386923460555556,
+    "price": 77230.0,
+    "timestamp": "2026-09-11T04:00:00+00:00",
+    "age_h": 4.402975120277778,
     "fresh": true,
     "price_confirm_4h": false,
     "new_local_low_4h": false,
-    "atr14_4h": 760.5785714285729,
+    "atr14_4h": 782.0071428571454,
     "swing_low_4h": 76464.7,
-    "stop_price": 76084.41071428571,
-    "stop_atr": 1.0653590781453963
+    "stop_price": 76073.69642857142,
+    "stop_atr": 1.478635562335023
   },
   "crowd": {
     "value": 56.0,
     "classification": "Greed",
     "timestamp": "2026-09-11T00:00:00+00:00",
-    "age_h": 4.386923460555556,
+    "age_h": 8.402975120277778,
     "fresh": true
   },
   "open_interest": {
-    "regime": "OVERHEATED",
-    "timestamp": "2026-09-11T04:00:00+00:00",
-    "age_h": 0.38692346055555554,
+    "regime": "MODERATE_BUILD",
+    "timestamp": "2026-09-11T08:00:00+00:00",
+    "age_h": 0.40297512027777777,
     "fresh": true,
-    "oi_value": 2980668.7100000135,
-    "delta_24h": 0.055833801577356734,
+    "oi_value": 2920860.8000000105,
+    "delta_24h": 0.030631463412122084,
     "delta_p10": -0.042360063949656176,
-    "delta_p90": 0.05319997671490517,
+    "delta_p90": 0.05222157249792663,
     "points": 100
   },
   "quality": {
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-09-11T04:23:12.924458+00:00"
+  "generated_at_utc": "2026-09-11T08:24:10.710433+00:00"
 }
