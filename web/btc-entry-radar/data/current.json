@@ -1,10 +1,10 @@
 {
   "input": {
     "fgi": 56.0,
-    "price_confirm_4h": false,
-    "new_local_low_4h": false,
+    "price_confirm_4h": true,
+    "new_local_low_4h": true,
     "oi_regime": "DELEVERAGING",
-    "stop_atr": 1.2110461645385744,
+    "stop_atr": 1.7308174479910292,
     "data_ready": true,
     "position_open": false
   },
@@ -13,38 +13,38 @@
     "action": "WAIT",
     "standard_size": 0.0,
     "why": [
-      "No validated MVP setup",
-      "Crowd/price combination is insufficient",
-      "Capital preservation has priority"
+      "Crowd gate is weak",
+      "BTC still makes a local low",
+      "Price reversal is not confirmed"
     ],
-    "invalidation": "Wait for next setup"
+    "invalidation": "BTC stops making local lows"
   },
   "market": {
-    "price": 77034.7,
-    "timestamp": "2026-09-11T08:00:00+00:00",
-    "age_h": 7.9824344975,
+    "price": 77727.0,
+    "timestamp": "2026-09-11T12:00:00+00:00",
+    "age_h": 4.0674889425,
     "fresh": true,
-    "price_confirm_4h": false,
-    "new_local_low_4h": false,
-    "atr14_4h": 801.635714285717,
+    "price_confirm_4h": true,
+    "new_local_low_4h": true,
+    "atr14_4h": 1025.578571428574,
     "swing_low_4h": 76464.7,
-    "stop_price": 76063.88214285714,
-    "stop_atr": 1.2110461645385744
+    "stop_price": 75951.91071428571,
+    "stop_atr": 1.7308174479910292
   },
   "crowd": {
     "value": 56.0,
     "classification": "Greed",
     "timestamp": "2026-09-11T00:00:00+00:00",
-    "age_h": 15.9824344975,
+    "age_h": 16.0674889425,
     "fresh": true
   },
   "open_interest": {
     "regime": "DELEVERAGING",
     "timestamp": "2026-09-11T12:00:00+00:00",
-    "age_h": 3.9824344975,
+    "age_h": 4.0674889425,
     "fresh": true,
-    "oi_value": 2737576.0200000103,
-    "delta_24h": -0.060862847021482036,
+    "oi_value": 2765204.6100000115,
+    "delta_24h": -0.05138474114831193,
     "delta_p10": -0.044809752397430555,
     "delta_p90": 0.05222157249792663,
     "points": 100
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-09-11T15:58:56.764191+00:00"
+  "generated_at_utc": "2026-09-11T16:04:02.960193+00:00"
 }
