@@ -15,6 +15,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   snapshot:
@@ -104,6 +105,7 @@ jobs:
           print(f"TA TELEGRAM STATE GATE: PASS · sent={len(j.get('sent_event_keys') or [])}")
           PY
       - name: Commit fresh TA Market state
+        id: persist
         shell: bash
         run: |
           set -euo pipefail
@@ -112,7 +114,14 @@ jobs:
           git add artifacts/ta_market/current.json artifacts/ta_market/signal_history.json artifacts/ta_market/telegram_state.json
           if git diff --cached --quiet; then
             echo 'No TA Market changes'
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git commit -m 'data: refresh TA market snapshot, signal history and alert state'
           git push origin HEAD:main
+          echo 'changed=true' >> "$GITHUB_OUTPUT"
+      - name: Dispatch Pages publish
+        if: steps.persist.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref main
