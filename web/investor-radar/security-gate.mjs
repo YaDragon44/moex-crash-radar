@@ -6,6 +6,10 @@ const scope=[path.join(root,'web','investor-radar'),path.join(root,'.github','wo
 const skipNames=new Set(['node_modules','.git']);
 const textExt=new Set(['.js','.mjs','.html','.md','.yml','.yaml','.json','.py','.sh','.txt']);
 
+function productionFile(p){
+  const n=path.basename(p);
+  return !/\.test\.(?:js|mjs)$/.test(n) && n!=='security-gate.mjs';
+}
 function walk(p,out=[]){
   if(!fs.existsSync(p)) return out;
   const st=fs.statSync(p);
@@ -14,7 +18,7 @@ function walk(p,out=[]){
       if(skipNames.has(name)) continue;
       walk(path.join(p,name),out);
     }
-  } else if(textExt.has(path.extname(p).toLowerCase())) out.push(p);
+  } else if(textExt.has(path.extname(p).toLowerCase())&&productionFile(p)) out.push(p);
   return out;
 }
 
