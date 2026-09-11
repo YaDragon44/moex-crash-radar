@@ -1,6 +1,11 @@
 name: VKCO Monitor R1.0
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "vkco-monitor/**"
+      - ".github/workflows/vkco-monitor.yml"
   pull_request:
     paths:
       - "vkco-monitor/**"
