@@ -81,6 +81,10 @@ jobs:
         run: |
           node --check web/investor-radar/sber-book-value-gate.js
           node web/investor-radar/sber-book-value-gate.test.js
+      - name: SBER share basis registry
+        run: |
+          node --check web/investor-radar/sber-share-basis-registry.js
+          node web/investor-radar/sber-share-basis-registry.test.js
       - name: R1.8 UI contract
         shell: bash
         run: |
@@ -109,4 +113,4 @@ jobs:
           grep -q "candles.json" "$FILE"
           ! grep -q "requiredReturn=19\|modelPE=100/requiredReturn" "$FILE"
           ! grep -q "рынокs\|рынокdata" "$FILE"
-          echo "R1.8.19 SBER book value gate + R1.8 UI contract: PASS"
+          echo "R1.8.20 SBER share basis + R1.8 UI contract: PASS"
