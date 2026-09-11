@@ -1,0 +1,39 @@
+name: R1.8.35 Decision Integrity Gate
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  decision-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax
+        run: |
+          node --check web/investor-radar/issuer-risk-registry.js
+          node --check web/investor-radar/risk-layer.js
+          node --check web/investor-radar/recommendation-engine.js
+          node --check web/investor-radar/decision-integrity-gate.test.js
+      - name: End-to-end decision integrity
+        run: node web/investor-radar/decision-integrity-gate.test.js
+      - name: Exact sector provenance remains mandatory
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "BANK_ISSUER_RISK_GATE_R1.8.28" web/investor-radar/issuer-risk-registry.js
+          grep -q "RETAIL_ISSUER_RISK_GATE_R1.8.29" web/investor-radar/issuer-risk-registry.js
+          grep -q "EXCHANGE_ISSUER_RISK_GATE_R1.8.30" web/investor-radar/issuer-risk-registry.js
+          grep -q "TECH_ISSUER_RISK_GATE_R1.8.32" web/investor-radar/issuer-risk-registry.js
+          grep -q "issuer_sector_gate_mismatch" web/investor-radar/recommendation-engine.js
+          grep -q "issuer_risk_provenance_missing" web/investor-radar/recommendation-engine.js
+      - name: Forged thesis destruction cannot auto-sell
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q "thesisBrokenTrusted=pg.ok" web/investor-radar/recommendation-engine.js
+          echo "R1.8.35 decision integrity static contract: PASS"
