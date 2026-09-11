@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
+from typing import Mapping
 
 from .context import ContextResult
 from .engine import CrashResult, DataQuality
@@ -26,13 +27,6 @@ class FragilityState(str, Enum):
 
 @dataclass(frozen=True)
 class FragilityInput:
-    """Slow structural vulnerability inputs.
-
-    All values are relative 0..100 stress scores. They are deliberately kept
-    outside the calibrated Crash/EXIT score. Missing inputs are allowed; the
-    layer fails closed unless at least two independent groups are available.
-    """
-
     valuation: float | None = None
     concentration: float | None = None
     leverage: float | None = None
@@ -58,11 +52,46 @@ class MarketRiskResult:
     reasons: tuple[str, ...]
 
 
+@dataclass(frozen=True)
+class IndependentMarketRiskInputs:
+    """R0.9 market-only risk inputs.
+
+    These are direct market stress groups. Crowd, Context, Positioning and the
+    frozen Crash/EXIT result are deliberately excluded from this path.
+    """
+
+    market_structure: float | None = None
+    breadth: float | None = None
+    volatility_liquidity: float | None = None
+    volume_distribution: float | None = None
+
+
+@dataclass(frozen=True)
+class IndependentMarketRiskResult:
+    score: float | None
+    state: MarketRisk
+    coverage: float
+    available_groups: int
+    velocity: float | None
+    direction: str
+    reasons: tuple[str, ...]
+
+
 FRAGILITY_WEIGHTS = {
     "valuation": 0.30,
     "concentration": 0.30,
     "leverage": 0.25,
     "macro_credit": 0.15,
+}
+
+# R0.9 candidate research weights. They intentionally differ from CRASH_WEIGHTS
+# and use market-only evidence. Historical validation is required before any
+# production/action use.
+INDEPENDENT_RISK_WEIGHTS: Mapping[str, float] = {
+    "market_structure": 0.30,
+    "breadth": 0.30,
+    "volatility_liquidity": 0.25,
+    "volume_distribution": 0.15,
 }
 
 
@@ -111,19 +140,82 @@ def market_risk_state(score: float) -> MarketRisk:
     return MarketRisk.CRITICAL
 
 
+def calculate_independent_market_risk(
+    inputs: IndependentMarketRiskInputs,
+    *,
+    prior_score: float | None = None,
+) -> IndependentMarketRiskResult:
+    values = {
+        "market_structure": inputs.market_structure,
+        "breadth": inputs.breadth,
+        "volatility_liquidity": inputs.volatility_liquidity,
+        "volume_distribution": inputs.volume_distribution,
+    }
+    for value in values.values():
+        if value is not None:
+            _bounded(value)
+
+    available = {k: v for k, v in values.items() if v is not None}
+    available_weight = sum(INDEPENDENT_RISK_WEIGHTS[k] for k in available)
+    groups = len(available)
+    if groups < 3 or available_weight < 0.70:
+        return IndependentMarketRiskResult(
+            None,
+            MarketRisk.DATA_INSUFFICIENT,
+            round(available_weight, 4),
+            groups,
+            None,
+            "N/A",
+            (),
+        )
+
+    score = round(
+        sum(float(available[k]) * INDEPENDENT_RISK_WEIGHTS[k] for k in available) / available_weight,
+        2,
+    )
+    velocity = None if prior_score is None else round(score - prior_score, 2)
+    if velocity is None:
+        direction = "N/A"
+    elif velocity >= 5:
+        direction = "RISING_FAST"
+    elif velocity >= 1.5:
+        direction = "RISING"
+    elif velocity <= -5:
+        direction = "FALLING_FAST"
+    elif velocity <= -1.5:
+        direction = "FALLING"
+    else:
+        direction = "STABLE"
+
+    labels = {
+        "market_structure": "market structure stress",
+        "breadth": "breadth deterioration",
+        "volatility_liquidity": "volatility/liquidity stress",
+        "volume_distribution": "distribution pressure",
+    }
+    ranked = sorted(available.items(), key=lambda item: item[1], reverse=True)
+    reasons = tuple(labels[key] for key, value in ranked[:3] if value >= 50)
+
+    return IndependentMarketRiskResult(
+        score=score,
+        state=market_risk_state(score),
+        coverage=round(available_weight, 4),
+        available_groups=groups,
+        velocity=velocity,
+        direction=direction,
+        reasons=reasons,
+    )
+
+
 def calculate_market_risk(
     crash: CrashResult,
     context: ContextResult,
     fragility: FragilityResult,
 ) -> MarketRiskResult:
-    """Independent Market Risk composite for capital decisions.
+    """Legacy research composite retained for backward compatibility.
 
-    Crash/market deterioration is the fast component. Context is an external
-    confirmation layer. Fragility is slow structural vulnerability. This
-    function does not mutate or re-calibrate Crash Score or the EXIT Gate.
-
-    Until historical R0.5.4 validation is complete the weights are candidate
-    research weights, not production-calibrated probabilities or thresholds.
+    R0.9 historical validation uses ``calculate_independent_market_risk`` and
+    does not consume this legacy Crash-dependent composite.
     """
     if crash.score is None or crash.quality not in {DataQuality.LIVE, DataQuality.DELAYED}:
         return MarketRiskResult(None, MarketRisk.DATA_INSUFFICIENT, DataQuality.NA, None, None, None, ("Crash/market data unavailable",))
@@ -135,21 +227,12 @@ def calculate_market_risk(
         components.append(("fragility", fragility.score, 0.15))
 
     available_weight = sum(weight for _, _, weight in components)
-    # Risk may be shown with market-only evidence, but is actionable only after
-    # downstream Quality/Action Gate confirms sufficient independent coverage.
     score = round(sum(value * weight for _, value, weight in components) / available_weight, 2)
     state = market_risk_state(score)
 
-    reasons: list[str] = []
-    reasons.append(f"Market deterioration {crash.score:.1f}/100")
-    if context.score is not None:
-        reasons.append(f"External context stress {context.score:.1f}/100")
-    else:
-        reasons.append("Context N/A")
-    if fragility.score is not None:
-        reasons.append(f"Structural fragility {fragility.score:.1f}/100")
-    else:
-        reasons.append("Fragility N/A")
+    reasons: list[str] = [f"Market deterioration {crash.score:.1f}/100"]
+    reasons.append(f"External context stress {context.score:.1f}/100" if context.score is not None else "Context N/A")
+    reasons.append(f"Structural fragility {fragility.score:.1f}/100" if fragility.score is not None else "Fragility N/A")
 
     quality = DataQuality.DELAYED if (
         crash.quality == DataQuality.DELAYED or context.quality == DataQuality.DELAYED
