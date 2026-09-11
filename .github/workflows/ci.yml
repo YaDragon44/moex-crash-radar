@@ -137,6 +137,7 @@ jobs:
           grep -q "sber-valuation-completeness-gate.js" "$FILE"
           grep -q "sber-equity-attribution-gate.js" "$FILE"
           grep -q "sber-moex-runtime.js" "$FILE"
+          grep -q "boards/TQBR/securities/SBER.json" "$FILE"
           grep -q "Блокирующие данные" "$FILE"
           grep -q "Недостаточно данных для обоснованного вывода" "$FILE"
           grep -q "InvestorRadarSberFinalValuationPipeline.build" "$FILE"
@@ -148,7 +149,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          URL='https://iss.moex.com/iss/engines/stock/markets/shares/securities/SBER.json?iss.meta=off&iss.only=marketdata&marketdata.columns=SECID,LAST,LCURRENTPRICE,UPDATETIME'
+          URL='https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities/SBER.json?iss.meta=off&iss.only=marketdata&marketdata.columns=SECID,LAST,LCURRENTPRICE,UPDATETIME'
           curl --fail --silent --show-error --retry 2 --connect-timeout 10 --max-time 30 "$URL" -o /tmp/sber.json
           python - <<'PY'
           import json, math
