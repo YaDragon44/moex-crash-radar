@@ -1,7 +1,7 @@
 const assert=require('assert');
 const R=require('./issuer-risk-registry.js');
 
-for(const t of ['YDEX','SBER']){
+for(const t of ['YDEX','SBER','X5']){
   const a=R.audit(t);
   assert.equal(a.sourceExists,true,`${t} source must exist`);
   assert.equal(a.riskVerified,true,`${t} issuer risk must be verified`);
@@ -11,15 +11,17 @@ for(const t of ['YDEX','SBER']){
 assert.equal(R.get('SBER').issuer.coverage,'BANK_ROE_CAPITAL_ASSET_QUALITY');
 assert.equal(R.get('SBER').issuer.riskLevel,'MEDIUM');
 assert.equal(R.get('SBER').issuer.thesisBroken,false);
+assert.equal(R.get('X5').issuer.coverage,'RETAIL_GROWTH_MARGIN_LEVERAGE_PROFIT_RATING');
+assert.equal(R.get('X5').issuer.riskLevel,'MEDIUM');
+assert.equal(R.get('X5').issuer.thesisBroken,false);
+assert.equal(R.get('X5').issuer.ratingSources.length,2);
 
-for(const t of ['X5','MOEX']){
-  const r=R.audit(t);
-  assert.equal(r.sourceExists,true,`${t} source must exist`);
-  assert.equal(r.riskVerified,false,`${t} source presence must not imply risk verification`);
-  assert.equal(r.status,'LOCK');
-  assert.equal(R.get(t).issuer.verified,false);
-  assert.equal(R.get(t).issuer.status,'LOCK');
-}
+const moex=R.audit('MOEX');
+assert.equal(moex.sourceExists,true,'MOEX source must exist');
+assert.equal(moex.riskVerified,false,'MOEX source presence must not imply risk verification');
+assert.equal(moex.status,'LOCK');
+assert.equal(R.get('MOEX').issuer.verified,false);
+assert.equal(R.get('MOEX').issuer.status,'LOCK');
 
 let a=R.audit('UNKNOWN');
 assert.equal(a.sourceExists,false);
@@ -27,4 +29,4 @@ assert.equal(a.riskVerified,false);
 assert.equal(a.status,'LOCK');
 assert.equal(R.get('UNKNOWN').sourceStatus,'MISSING');
 
-console.log('R1.8.28 issuer risk registry coverage: PASS');
+console.log('R1.8.29 issuer risk registry coverage: PASS');
