@@ -17,5 +17,11 @@ x=base();x.ticker='SBER';x.valuationCompleteness={status:'PARTIAL',verified:fals
 x=base();x.ticker='SBER';x.valuationCompleteness={status:'VERIFIED',verified:true};r=E.decide(x);assert.equal(r.action,'ДОБИРАТЬ');assert.equal(r.light,'ЗЕЛЁНЫЙ');assert(!r.gate.missing.includes('sber_full_valuation_completeness'));
 x=base();x.ticker='SBER';x.portfolio.held=false;x.valuationCompleteness={status:'VERIFIED',verified:true};r=E.decide(x);assert.equal(r.action,'ПОКУПАТЬ');
 
+// R1.8.24: portfolio context must be explicit. Missing/invalid held must never be treated as held=false.
+x=base();delete x.portfolio;r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.light,'СЕРЫЙ');assert.equal(r.confidence,'НИЗКАЯ');assert(r.gate.missing.includes('portfolio_context'));assert.equal(r.diagnostics,undefined);
+x=base();x.portfolio={};r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert(r.gate.missing.includes('portfolio_context'));
+x=base();x.portfolio={held:'false'};r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert(r.gate.missing.includes('portfolio_context'));
+x=base();delete x.portfolio;x.risk.thesisBroken=true;r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.light,'КРАСНЫЙ');assert.equal(r.confidence,'НИЗКАЯ');assert.notEqual(r.action,'ПРОДАВАТЬ');assert(r.gate.missing.includes('portfolio_context'));
+
 assert.equal(E.valuationZone(99,100,120),'ATTRACTIVE');assert.equal(E.valuationZone(110,100,120),'FAIR');assert.equal(E.valuationZone(121,100,120),'EXPENSIVE');
-console.log('R1.8.23 recommendation safety + SBER completeness tests: PASS');
+console.log('R1.8.24 recommendation safety + portfolio context tests: PASS');
