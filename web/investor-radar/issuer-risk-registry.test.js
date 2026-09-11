@@ -6,11 +6,16 @@ for(const t of ['YDEX','SBER','X5','MOEX']){
   assert.equal(a.sourceExists,true,`${t} source must exist`);
   assert.equal(a.riskVerified,true,`${t} issuer risk must be verified`);
   assert.equal(a.crossDomainOk,true,`${t} sanctions semantics must stay delegated`);
+  assert.equal(a.sectorGateOk,true,`${t} sector gate binding must be valid`);
   assert.equal(a.status,'VERIFIED');
   assert.equal(R.get(t).issuer.verified,true);
   assert.equal(R.get(t).sanctionsRegulatory.status,'DELEGATED');
   assert.equal(R.get(t).sanctionsRegulatory.critical,undefined);
 }
+assert.equal(R.get('YDEX').issuer.coverage,'TECH_GROWTH_MARGIN_LEVERAGE_LIQUIDITY_PROFITABILITY');
+assert.equal(R.get('YDEX').issuer.riskLevel,'LOW');
+assert.equal(R.get('YDEX').issuer.derivedBy,'TECH_ISSUER_RISK_GATE_R1.8.32');
+assert.equal(R.get('YDEX').issuer.thesisBroken,false);
 assert.equal(R.get('SBER').issuer.coverage,'BANK_ROE_CAPITAL_ASSET_QUALITY');
 assert.equal(R.get('SBER').issuer.riskLevel,'MEDIUM');
 assert.equal(R.get('SBER').issuer.thesisBroken,false);
@@ -32,8 +37,9 @@ let a=R.audit('UNKNOWN');
 assert.equal(a.sourceExists,false);
 assert.equal(a.riskVerified,false);
 assert.equal(a.crossDomainOk,true);
+assert.equal(a.sectorGateOk,true);
 assert.equal(a.status,'LOCK');
 assert.equal(R.get('UNKNOWN').sourceStatus,'MISSING');
 assert.equal(R.get('UNKNOWN').sanctionsRegulatory.critical,undefined);
 
-console.log('R1.8.31 issuer/sanctions cross-domain semantics: PASS');
+console.log('R1.8.32 issuer registry sector-gate binding + cross-domain semantics: PASS');
