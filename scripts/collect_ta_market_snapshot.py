@@ -11,12 +11,13 @@ from urllib.request import Request, urlopen
 ISS_BASE = "https://iss.moex.com/iss"
 SECURITIES = ("SBERP", "VKCO", "OZPH")
 MSK = timezone(timedelta(hours=3))
+MONTH_CODES = {1: "F", 2: "G", 3: "H", 4: "J", 5: "K", 6: "M", 7: "N", 8: "Q", 9: "U", 10: "V", 11: "X", 12: "Z"}
 
 
 def get_json(path: str, params: dict | None = None, attempts: int = 3, timeout: int = 20) -> dict:
     query = urlencode(params or {})
     url = f"{ISS_BASE}{path}" + (f"?{query}" if query else "")
-    req = Request(url, headers={"User-Agent": "ta-market-monitor/0.7.2"})
+    req = Request(url, headers={"User-Agent": "ta-market-monitor/0.7.3"})
     last: Exception | None = None
     for i in range(attempts):
         try:
@@ -113,25 +114,24 @@ def cnyrub() -> dict:
     return row
 
 
-def brent_contract_codes(months: int = 18) -> list[str]:
+def brent_secids(months: int = 18) -> list[tuple[str, str]]:
     now = datetime.now(MSK)
     base = now.year * 12 + (now.month - 1)
-    out = []
+    out: list[tuple[str, str]] = []
     for offset in range(months):
         idx = base + offset
         year, month0 = divmod(idx, 12)
         month = month0 + 1
-        out.append(f"BR-{month}.{str(year)[-2:]}")
+        # MOEX display name BR-10.26 corresponds to FORTS SECID BRV6.
+        secid = f"BR{MONTH_CODES[month]}{str(year)[-1]}"
+        display = f"BR-{month}.{str(year)[-2:]}"
+        out.append((secid, display))
     return out
 
 
 def nearest_brent() -> dict:
     today = datetime.now(MSK).date()
-    candidates: list[tuple[object, dict]] = []
-    # Probe deterministic monthly BR codes directly. This avoids relying on the
-    # huge FORTS securities collection, whose ISS pagination/order may omit BR
-    # contracts from early pages even while the direct contract endpoint works.
-    for secid in brent_contract_codes():
+    for secid, display in brent_secids():
         try:
             p = get_json(
                 f"/engines/futures/markets/forts/securities/{secid}.json",
@@ -154,20 +154,17 @@ def nearest_brent() -> dict:
             continue
         if last_trade < today:
             continue
-        md["CONTRACT"] = secid
+        md["CONTRACT"] = display
+        md["SECID"] = secid
         md["LASTTRADEDATE"] = str(last_trade)
-        candidates.append((last_trade, md))
-        # Codes are generated chronologically; first valid live contract is nearest.
-        break
-    if not candidates:
-        raise RuntimeError("active Brent contract not found by direct monthly probing")
-    return min(candidates, key=lambda x: x[0])[1]
+        return md
+    raise RuntimeError("active Brent contract not found by FORTS SECID probing")
 
 
 def main() -> None:
     generated = datetime.now(MSK).isoformat(timespec="seconds")
     payload: dict = {
-        "release": "R0.7.2 Simple Market Context",
+        "release": "R0.7.3 Simple Market Context",
         "generated_at": generated, "source": "MOEX ISS", "quality": "OK", "context_quality": "OK",
         "securities": {}, "imoex": [],
         "context": {"breadth": None, "cnyrub": None, "brent": None,
@@ -204,7 +201,8 @@ def main() -> None:
     print(json.dumps({"generated_at": generated, "quality": payload["quality"],
                       "context_quality": payload["context_quality"], "errors": payload["errors"],
                       "context_errors": payload["context_errors"],
-                      "brent_contract": (payload["context"].get("brent") or {}).get("CONTRACT")}, ensure_ascii=False))
+                      "brent_contract": (payload["context"].get("brent") or {}).get("CONTRACT"),
+                      "brent_secid": (payload["context"].get("brent") or {}).get("SECID")}, ensure_ascii=False))
 
 
 if __name__ == "__main__":
