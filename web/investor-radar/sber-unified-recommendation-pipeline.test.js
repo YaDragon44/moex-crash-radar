@@ -11,7 +11,7 @@ function base(){return {
  valuationLabel:'FAIR',price:100,
  fundamental:{verified:true,growthCagr:10},
  valuation:{status:'VERIFIED',low:110,high:130},
- risk:{verified:true,score:40,thesisBroken:false,items:['risk'],sanctions:{verified:false,level:'UNKNOWN'}},
+ risk:{verified:true,score:40,thesisBroken:false,items:['risk'],issuerProvenance:{verified:true,derivedBy:'BANK_ISSUER_RISK_GATE_R1.8.28'},sanctions:{verified:false,level:'UNKNOWN'}},
  portfolio:{held:true},facts:['fact1','fact2']
 };}
 let x=base(),r=P.build(x);
@@ -38,6 +38,11 @@ assert.equal(r.status,'PARTIAL');
 assert.equal(r.decision.action,'ПРОДАВАТЬ');
 assert.equal(r.decision.light,'КРАСНЫЙ');
 
+x=base();x.risk.issuerProvenance={verified:false};r=P.build(x);
+assert.equal(r.status,'PARTIAL');
+assert.equal(r.decision.action,'НАБЛЮДАТЬ');
+assert(r.missing.includes('issuer_risk_provenance_missing'));
+
 x=base();delete x.recommendationEngine;r=P.build(x);
 assert.equal(r.status,'LOCK');assert.equal(r.decision,null);assert(r.missing.includes('recommendation_engine'));
-console.log('R1.8.26 SBER unified recommendation pipeline tests: PASS');
+console.log('R1.8.34 SBER unified recommendation pipeline tests: PASS');
