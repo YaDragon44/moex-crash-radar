@@ -1,0 +1,37 @@
+name: R1.8.37 SBER Final Equity Evidence
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+    paths:
+      - 'web/investor-radar/sber-final-equity-evidence-gate.js'
+      - 'web/investor-radar/sber-final-equity-evidence-gate.test.js'
+      - '.github/workflows/r1.8.37-sber-final-equity-evidence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Final equity evidence gate
+        run: |
+          node --check web/investor-radar/sber-final-equity-evidence-gate.js
+          node web/investor-radar/sber-final-equity-evidence-gate.test.js
+      - name: Primary-source fail-closed contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE=web/investor-radar/sber-final-equity-evidence-gate.js
+          grep -Fq "cbrCharterRevisionApproved:'2025-07-25'" "$FILE"
+          grep -Fq "cbrCharterRegistered:'2025-07-28'" "$FILE"
+          grep -Fq 'commonSharesOutstanding:21586948000' "$FILE"
+          grep -Fq 'statutoryCapitalIsCommonEquity:false' "$FILE"
+          grep -Fq 'moexTotalEquityIsCommonEquity:false' "$FILE"
+          grep -Fq 'current_charter_preferred_rights' "$FILE"
+          grep -Fq 'attributable_common_equity' "$FILE"
+          grep -Fq 'Недостаточно данных для обоснованного вывода' "$FILE"
+          echo 'R1.8.37 SBER final equity evidence contract: PASS'
