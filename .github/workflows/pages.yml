@@ -39,7 +39,7 @@ jobs:
         run: python scripts/validate_dashboard_snapshot.py
       - name: Collect TA Market snapshot
         run: python scripts/collect_ta_market_snapshot.py
-      - name: Validate TA Market snapshot
+      - name: Validate TA Market production snapshot
         shell: bash
         run: |
           python - <<'PY'
@@ -50,13 +50,20 @@ jobs:
           required=('SBERP','VKCO','OZPH')
           missing=[x for x in required if x not in j.get('securities',{})]
           if missing: raise SystemExit(f'missing securities: {missing}')
+          if j.get('quality') != 'OK': raise SystemExit(f"quality must be OK, got {j.get('quality')}")
           for secid in required:
               z=j['securities'][secid]
               if not z.get('marketdata'): raise SystemExit(f'{secid}: marketdata missing')
               for tf in ('D1','H1','M10'):
                   if not z.get('raw',{}).get(tf): raise SystemExit(f'{secid}: {tf} candles missing')
           if not j.get('imoex'): raise SystemExit('IMOEX history missing')
-          print('TA MARKET SNAPSHOT GATE: PASS')
+          if j.get('context_quality') != 'OK': raise SystemExit(f"context_quality must be OK, got {j.get('context_quality')}")
+          if j.get('context_errors'): raise SystemExit(f"context_errors must be empty: {j.get('context_errors')}")
+          ctx=j.get('context') or {}
+          for key in ('breadth','cnyrub','brent'):
+              if not ctx.get(key): raise SystemExit(f'context {key} missing')
+          if not (ctx.get('brent') or {}).get('SECID'): raise SystemExit('Brent SECID missing')
+          print('TA MARKET PRODUCTION SNAPSHOT GATE: PASS')
           PY
       - name: Build static site
         run: |
@@ -118,19 +125,45 @@ jobs:
             echo "Attempt $attempt: HTTP $code"
             if [ "$code" = "200" ] && python - <<'PY'
           import json
-          p='/tmp/ta-market.json'
-          j=json.load(open(p,encoding='utf-8'))
-          ok=(j.get('quality') != 'ERROR' and all(x in j.get('securities',{}) for x in ('SBERP','VKCO','OZPH')) and bool(j.get('imoex')))
+          j=json.load(open('/tmp/ta-market.json',encoding='utf-8'))
+          ctx=j.get('context') or {}
+          ok=(
+              j.get('quality') == 'OK'
+              and j.get('context_quality') == 'OK'
+              and not j.get('context_errors')
+              and all(x in j.get('securities',{}) for x in ('SBERP','VKCO','OZPH'))
+              and bool(j.get('imoex'))
+              and all(bool(ctx.get(x)) for x in ('breadth','cnyrub','brent'))
+              and bool((ctx.get('brent') or {}).get('SECID'))
+          )
           raise SystemExit(0 if ok else 1)
           PY
             then
-              echo "TA MARKET PUBLIC HTTP GATE: PASS"
+              echo "TA MARKET PUBLIC PRODUCTION JSON GATE: PASS"
               exit 0
             fi
             sleep 10
           done
-          echo "TA MARKET PUBLIC HTTP GATE: FAIL"
+          echo "TA MARKET PUBLIC PRODUCTION JSON GATE: FAIL"
           head -c 1000 /tmp/ta-market.json || true
+          exit 1
+      - name: Verify TA Market public HTML
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://yadragon44.github.io/moex-crash-radar/ta-market/"
+          echo "Checking $URL"
+          for attempt in {1..12}; do
+            code=$(curl -L -sS -o /tmp/ta-market.html -w "%{http_code}" --connect-timeout 10 --max-time 20 "$URL" || true)
+            echo "Attempt $attempt: HTTP $code"
+            if [ "$code" = "200" ] && grep -q "TA Market Monitor" /tmp/ta-market.html && grep -q "SIMPLE MARKET CONTEXT" /tmp/ta-market.html; then
+              echo "TA MARKET PUBLIC HTML GATE: PASS"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "TA MARKET PUBLIC HTML GATE: FAIL"
+          head -c 1000 /tmp/ta-market.html || true
           exit 1
       - name: Verify Investor Radar public URL
         shell: bash
