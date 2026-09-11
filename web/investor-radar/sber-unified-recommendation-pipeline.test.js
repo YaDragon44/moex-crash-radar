@@ -40,4 +40,4 @@ assert.equal(r.decision.light,'КРАСНЫЙ');
 
 x=base();delete x.recommendationEngine;r=P.build(x);
 assert.equal(r.status,'LOCK');assert.equal(r.decision,null);assert(r.missing.includes('recommendation_engine'));
-console.log('R1.8.25 SBER unified recommendation pipeline tests: PASS');
+console.log('R1.8.26 SBER unified recommendation pipeline tests: PASS');
