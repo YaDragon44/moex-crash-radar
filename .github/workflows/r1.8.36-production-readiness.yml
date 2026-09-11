@@ -1,0 +1,36 @@
+name: R1.8.36 Production Readiness Re-Audit
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax
+        run: |
+          node --check web/investor-radar/production-readiness-gate.js
+          node --check web/investor-radar/issuer-risk-registry.js
+          node --check web/investor-radar/sber-preferred-treatment-evidence.js
+      - name: Architecture simplicity
+        run: node web/investor-radar/architecture-simplicity-gate.test.js
+      - name: Production gate regression
+        run: node web/investor-radar/production-readiness-gate.test.js
+      - name: Current readiness state
+        run: node web/investor-radar/r1.8.26-current-readiness.test.js
+      - name: Report contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE=web/investor-radar/R1.8.26_PRODUCTION_READINESS_REPORT.md
+          grep -q '9 of 10 blocking production gates PASS = 90%' "$FILE"
+          grep -q 'SBER valuation completeness — PARTIAL' "$FILE"
+          grep -q 'not eligible for RC/production release' "$FILE"
+          grep -q 'Do not add another abstraction layer before release' "$FILE"
+          echo 'R1.8.36 production readiness report contract: PASS'
