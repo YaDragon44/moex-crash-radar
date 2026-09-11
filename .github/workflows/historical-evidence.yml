@@ -10,9 +10,13 @@ on:
       - 'scripts/run_blind_crash_replay.py'
       - 'scripts/run_positioning_audit.py'
       - 'scripts/run_positioning_incremental_value.py'
+      - 'scripts/run_crowd_replay.py'
       - 'src/moex_crash_radar/history.py'
       - 'src/moex_crash_radar/live_gate.py'
       - 'src/moex_crash_radar/positioning.py'
+      - 'src/moex_crash_radar/crowd.py'
+      - 'src/moex_crash_radar/crowd_features.py'
+      - 'src/moex_crash_radar/crowd_history.py'
       - 'data/imoex_constituents_2019_2026.json'
       - '.github/workflows/historical-evidence.yml'
   workflow_dispatch:
@@ -23,7 +27,7 @@ permissions:
 jobs:
   evidence:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -39,6 +43,8 @@ jobs:
         run: python scripts/run_positioning_audit.py
       - name: Positioning incremental value test
         run: python scripts/run_positioning_incremental_value.py
+      - name: Historical crowd replay
+        run: python scripts/run_crowd_replay.py
       - name: Upload evidence
         uses: actions/upload-artifact@v4
         with:
@@ -48,4 +54,5 @@ jobs:
             artifacts/blind_crash_replay.json
             artifacts/positioning_audit.json
             artifacts/positioning_incremental_value.json
+            artifacts/crowd_replay.json
           if-no-files-found: error
