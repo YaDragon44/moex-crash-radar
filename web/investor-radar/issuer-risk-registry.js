@@ -35,7 +35,7 @@ function audit(t){
  const r=get(t),i=r.issuer||{};
  const sourceExists=r.sourceStatus==='SOURCE_EXISTS'&&!!r.source&&!!r.sourceUrl;
  const riskVerified=r.riskStatus==='VERIFIED'&&i.status==='VERIFIED'&&i.verified===true;
- return {ticker:String(t||'').toUpperCase(),sourceExists,riskVerified,status:riskStatus||'LOCK',reason:riskVerified?'issuer_risk_verified':sourceExists?'source_exists_risk_not_verified':'source_or_risk_missing'};
+ return {ticker:String(t||'').toUpperCase(),sourceExists,riskVerified,status:r.riskStatus||'LOCK',reason:riskVerified?'issuer_risk_verified':sourceExists?'source_exists_risk_not_verified':'source_or_risk_missing'};
 }
 global.InvestorRadarIssuerRisk={REGISTRY,get,audit};if(typeof module!=='undefined'&&module.exports)module.exports=global.InvestorRadarIssuerRisk;
 })(typeof window!=='undefined'?window:globalThis);
