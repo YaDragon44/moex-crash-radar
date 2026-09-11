@@ -31,9 +31,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          grep -q 'Q2 2026 fee and commission income 22,271.7 mn RUB, +24.8% y/y' web/investor-radar/issuer-risk-registry.js
-          grep -q 'Q2 2026 net profit 15,766.2 mn RUB, +4.7% y/y' web/investor-radar/issuer-risk-registry.js
-          grep -q 'Cash position at 30 Jun 2026: 194 bn RUB' web/investor-radar/issuer-risk-registry.js
-          grep -q 'Debt at 30 Jun 2026: 0' web/investor-radar/issuer-risk-registry.js
-          grep -q 'sanctions/regulatory risk is assessed separately and remains material' web/investor-radar/issuer-risk-registry.js
+          grep -Fq 'Q2 2026 fee and commission income 22,271.7 mn RUB, +24.8% y/y' web/investor-radar/issuer-risk-registry.js
+          grep -Fq 'Q2 2026 net profit 15,766.2 mn RUB, +4.7% y/y' web/investor-radar/issuer-risk-registry.js
+          grep -Fq 'Cash position at 30 Jun 2026: 194 bn RUB' web/investor-radar/issuer-risk-registry.js
+          grep -Fq 'Debt at 30 Jun 2026: 0' web/investor-radar/issuer-risk-registry.js
+          grep -Fq 'Sanctions/regulatory risk is assessed separately and remains material' web/investor-radar/issuer-risk-registry.js
+          grep -Fq "MOEX:'EXCHANGE_ISSUER_RISK_GATE_R1.8.30'" web/investor-radar/issuer-risk-registry.js
           echo 'R1.8.30 MOEX issuer risk evidence contract: PASS'
