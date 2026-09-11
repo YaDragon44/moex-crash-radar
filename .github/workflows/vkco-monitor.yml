@@ -1,6 +1,10 @@
 name: VKCO Monitor R1.0
 
 on:
+  pull_request:
+    paths:
+      - "vkco-monitor/**"
+      - ".github/workflows/vkco-monitor.yml"
   workflow_dispatch:
     inputs:
       mode:
@@ -18,7 +22,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: vkco-monitor
+  group: vkco-monitor-${{ github.event_name }}
   cancel-in-progress: false
 
 jobs:
@@ -46,6 +50,7 @@ jobs:
         run: mkdir -p vkco-monitor/state
 
       - name: Restore signal state
+        if: github.event_name != 'pull_request'
         uses: actions/cache/restore@v4
         with:
           path: vkco-monitor/state
@@ -61,10 +66,11 @@ jobs:
         run: pytest -q
 
       - name: Run VKCO monitor
+        if: github.event_name != 'pull_request'
         run: python vkco-monitor/monitor.py
 
       - name: Save signal state
-        if: always()
+        if: always() && github.event_name != 'pull_request'
         uses: actions/cache/save@v4
         with:
           path: vkco-monitor/state
