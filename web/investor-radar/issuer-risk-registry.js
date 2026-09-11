@@ -1,4 +1,4 @@
-// Investor Radar R1.8.29 — Issuer Risk Registry Hardening
+// Investor Radar R1.8.30 — Issuer Risk Registry Hardening
 // SOURCE_EXISTS != RISK_VERIFIED. Primary-source presence never unlocks issuer risk by itself.
 (function(global){'use strict';
 const lock=(items=[])=>({status:'LOCK',verified:false,critical:false,thesisBroken:false,coverage:'SOURCE_ONLY',items});
@@ -16,10 +16,10 @@ const REGISTRY={
   sanctionsRegulatory:{verified:false,critical:false,items:['Separate primary-source sanctions/regulatory review required.']}
  },
  MOEX:{
-  asOf:'2026-06-30',sourceStatus:'SOURCE_EXISTS',riskStatus:'LOCK',
-  source:'Moscow Exchange official IFRS/Annual Report',sourceUrl:'https://www.moex.com/s1355',
-  issuer:lock(['FY2025 IFRS statements published 5 Mar 2026','H1 2026 interim IFRS statements published 26 Aug 2026','Source availability is confirmed, but sector-specific issuer-risk metrics are not yet fully verified.']),
-  sanctionsRegulatory:{verified:false,critical:false,items:['Separate primary-source sanctions/regulatory review required.']}
+  asOf:'2026-06-30',sourceStatus:'SOURCE_EXISTS',riskStatus:'VERIFIED',
+  source:'Moscow Exchange Q2 2026 IFRS results',sourceUrl:'https://www.moex.com/n103659',
+  issuer:{status:'VERIFIED',verified:true,critical:false,thesisBroken:false,riskLevel:'LOW',coverage:'EXCHANGE_FEES_PROFIT_MARGIN_COSTS_LIQUIDITY_RATING',items:['Q2 2026 fee and commission income 22,271.7 mn RUB, +24.8% y/y','Q2 2026 net profit 15,766.2 mn RUB, +4.7% y/y','Q2 2026 adjusted EBITDA margin 67.6%','Q2 2026 total OPEX +10.4% y/y','Cash position at 30 Jun 2026: 194 bn RUB','Debt at 30 Jun 2026: 0','Expert RA reaffirmed ruAAA with stable outlook, disclosed in MOEX Q2 2026 results','Model classification: LOW financial issuer risk; thresholds are model assumptions. Sanctions/regulatory risk is assessed separately and remains material.']},
+  sanctionsRegulatory:{verified:false,critical:true,items:['MOEX is subject to separate sanctions/regulatory review. Financial issuer-risk verification does not neutralize designation risk.']}
  },
  SBER:{
   asOf:'2025-12-31',sourceStatus:'SOURCE_EXISTS',riskStatus:'VERIFIED',
