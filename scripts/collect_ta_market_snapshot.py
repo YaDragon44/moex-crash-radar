@@ -17,7 +17,7 @@ MONTH_CODES = {1: "F", 2: "G", 3: "H", 4: "J", 5: "K", 6: "M", 7: "N", 8: "Q", 9
 def get_json(path: str, params: dict | None = None, attempts: int = 3, timeout: int = 20) -> dict:
     query = urlencode(params or {})
     url = f"{ISS_BASE}{path}" + (f"?{query}" if query else "")
-    req = Request(url, headers={"User-Agent": "ta-market-monitor/0.7.3"})
+    req = Request(url, headers={"User-Agent": "ta-market-monitor/0.8.5"})
     last: Exception | None = None
     for i in range(attempts):
         try:
@@ -60,14 +60,22 @@ def candles(secid: str, interval: int, days: int) -> list[dict]:
     return out
 
 
-def stock_marketdata(secid: str) -> dict | None:
+def stock_snapshot(secid: str) -> dict | None:
     p = get_json(
         f"/engines/stock/markets/shares/securities/{secid}.json",
-        {"iss.meta": "off", "iss.only": "marketdata",
+        {"iss.meta": "off", "iss.only": "securities,marketdata",
+         "securities.columns": "SECID,BOARDID,SHORTNAME,LOTSIZE,MINSTEP,DECIMALS",
          "marketdata.columns": "SECID,BOARDID,LAST,OPEN,HIGH,LOW,LASTTOPREVPRICE,VOLTODAY,VALTODAY,UPDATETIME,SYSTIME"},
     )
-    rows = table(p, "marketdata")
-    return next((x for x in rows if x.get("SECID") == secid and x.get("LAST") is not None), None) or next((x for x in rows if x.get("SECID") == secid), None)
+    md_rows = table(p, "marketdata")
+    sec_rows = table(p, "securities")
+    md = next((x for x in md_rows if x.get("SECID") == secid and x.get("LAST") is not None), None) or next((x for x in md_rows if x.get("SECID") == secid), None)
+    if not md:
+        return None
+    sec = next((x for x in sec_rows if x.get("SECID") == secid and x.get("BOARDID") == md.get("BOARDID")), None) or next((x for x in sec_rows if x.get("SECID") == secid), None) or {}
+    for key in ("SHORTNAME", "LOTSIZE", "MINSTEP", "DECIMALS"):
+        md[key] = sec.get(key)
+    return md
 
 
 def dividends(secid: str) -> list[dict]:
@@ -122,7 +130,6 @@ def brent_secids(months: int = 18) -> list[tuple[str, str]]:
         idx = base + offset
         year, month0 = divmod(idx, 12)
         month = month0 + 1
-        # MOEX display name BR-10.26 corresponds to FORTS SECID BRV6.
         secid = f"BR{MONTH_CODES[month]}{str(year)[-1]}"
         display = f"BR-{month}.{str(year)[-2:]}"
         out.append((secid, display))
@@ -164,7 +171,7 @@ def nearest_brent() -> dict:
 def main() -> None:
     generated = datetime.now(MSK).isoformat(timespec="seconds")
     payload: dict = {
-        "release": "R0.7.3 Simple Market Context",
+        "release": "R0.8.5 Execution Risk",
         "generated_at": generated, "source": "MOEX ISS", "quality": "OK", "context_quality": "OK",
         "securities": {}, "imoex": [],
         "context": {"breadth": None, "cnyrub": None, "brent": None,
@@ -184,7 +191,7 @@ def main() -> None:
         payload["context_quality"] = "PARTIAL"
     for secid in SECURITIES:
         try:
-            md = stock_marketdata(secid)
+            md = stock_snapshot(secid)
             if not md:
                 raise RuntimeError("marketdata absent")
             payload["securities"][secid] = {"marketdata": md,
@@ -201,6 +208,7 @@ def main() -> None:
     print(json.dumps({"generated_at": generated, "quality": payload["quality"],
                       "context_quality": payload["context_quality"], "errors": payload["errors"],
                       "context_errors": payload["context_errors"],
+                      "lots": {s: (payload["securities"].get(s, {}).get("marketdata") or {}).get("LOTSIZE") for s in SECURITIES},
                       "brent_contract": (payload["context"].get("brent") or {}).get("CONTRACT"),
                       "brent_secid": (payload["context"].get("brent") or {}).get("SECID")}, ensure_ascii=False))
 
