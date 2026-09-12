@@ -13,6 +13,7 @@ from trade_journal import load_records, stats
 OUTPUT = Path(os.getenv("PUBLIC_STATUS_FILE", "vkco-monitor/state/public_status.json"))
 JOURNAL_JSONL = Path(os.getenv("JOURNAL_JSONL", "vkco-monitor/state/trade_journal.jsonl"))
 ACTIVE = {"OPEN", "TP1", "TP2", "TRAILING"}
+PUBLIC_CANDLES_LIMIT = 72
 
 
 def _safe_position(state: dict[str, Any]) -> dict[str, Any] | None:
@@ -27,6 +28,22 @@ def _safe_position(state: dict[str, Any]) -> dict[str, Any] | None:
     return {k: p.get(k) for k in keys if k in p}
 
 
+def _public_candles(candles: list[monitor.Candle], limit: int = PUBLIC_CANDLES_LIMIT) -> list[dict[str, Any]]:
+    """Return a small, secret-free browser contract for the VKCO M10 chart."""
+    return [
+        {
+            "t": c.begin.isoformat(),
+            "end": c.end.isoformat(),
+            "o": c.open,
+            "h": c.high,
+            "l": c.low,
+            "c": c.close,
+            "v": c.volume,
+        }
+        for c in candles[-limit:]
+    ]
+
+
 def build_status() -> dict[str, Any]:
     now = datetime.now(monitor.MOSCOW)
     state = load_state_file(monitor.STATE_FILE)
@@ -34,8 +51,9 @@ def build_status() -> dict[str, Any]:
     journal = stats(records)
 
     payload: dict[str, Any] = {
-        "schema_version": 1,
+        "schema_version": 2,
         "release": "R1.8",
+        "dashboard_release": "R0.6.2",
         "generated_at": now.isoformat(),
         "ticker": monitor.TICKER,
         "mode": os.getenv("MODE", "run"),
@@ -53,6 +71,7 @@ def build_status() -> dict[str, Any]:
     )
 
     candles = monitor.fetch_candles()
+    payload["candles"] = _public_candles(candles)
     latest = candles[-1]
     age_min = int((now - latest.end).total_seconds() // 60)
     fresh = latest.end.date() == now.date() and now - latest.end <= monitor.timedelta(minutes=45)
@@ -142,12 +161,14 @@ def export_status(path: Path = OUTPUT) -> dict[str, Any]:
     except Exception as exc:
         now = datetime.now(monitor.MOSCOW)
         payload = {
-            "schema_version": 1,
+            "schema_version": 2,
             "release": "R1.8",
+            "dashboard_release": "R0.6.2",
             "generated_at": now.isoformat(),
             "ticker": monitor.TICKER,
             "health": "DEGRADED",
             "trade": {"status": "WAIT", "reason": "STATUS_EXPORT_ERROR"},
+            "candles": [],
             "error": type(exc).__name__,
         }
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -159,5 +180,5 @@ if __name__ == "__main__":
     result = export_status()
     print(
         f"public_status={result.get('health')} trade_status={result.get('trade', {}).get('status')} "
-        f"reason={result.get('trade', {}).get('reason')}"
+        f"reason={result.get('trade', {}).get('reason')} candles={len(result.get('candles') or [])}"
     )
