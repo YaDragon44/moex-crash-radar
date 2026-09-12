@@ -10,6 +10,7 @@ on:
       - 'scripts/collect_crypto_radar_snapshot.py'
       - 'scripts/enrich_crypto_risk.py'
       - 'scripts/update_crypto_observation_history.py'
+      - 'scripts/evaluate_crypto_regime_outcomes.py'
       - '.github/workflows/crypto-radar-snapshot.yml'
 
 permissions:
@@ -35,13 +36,16 @@ jobs:
         run: python scripts/enrich_crypto_risk.py /tmp/crypto-radar-prev.json
       - name: Update observation history
         run: python scripts/update_crypto_observation_history.py
-      - name: Validate snapshot and history
+      - name: Evaluate regime outcomes
+        run: python scripts/evaluate_crypto_regime_outcomes.py
+      - name: Validate snapshot history and outcomes
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
           s=json.loads(Path('data/crypto-radar/snapshot.json').read_text(encoding='utf-8'))
           h=json.loads(Path('data/crypto-radar/history.json').read_text(encoding='utf-8'))
+          o=json.loads(Path('data/crypto-radar/outcomes.json').read_text(encoding='utf-8'))
           assert s['version']=='1.5'
           assert 'generated_at' in s
           assert set(s['source_status'])=={'coingecko_global','coingecko_stablecoins','gate_ticker','gate_contract_stats'}
@@ -67,16 +71,25 @@ jobs:
           assert 1 <= h['record_count'] <= h['retention_records']
           assert h['last_generated_at']==s['generated_at']
           assert h['records'][-1]['generated_at']==s['generated_at']
-          print('CRYPTO RADAR R1.6 SNAPSHOT + HISTORY GATE: PASS')
+          assert o['version']=='1.6.2'
+          assert o['sample_quality'] in {'WARMUP','PRELIMINARY','USABLE'}
+          assert set(o['summary'])=={'1h','4h','24h'}
+          assert o['event_count']==len(o['events'])
+          for e in o['events']:
+              assert e['from_regime'] != e['to_regime']
+              assert set(e['outcomes'])=={'1h','4h','24h'}
+              for z in e['outcomes'].values():
+                  assert z['status'] in {'OPEN','CLOSED'}
+          print('CRYPTO RADAR R1.6.2 SNAPSHOT + HISTORY + OUTCOME GATE: PASS')
           PY
-      - name: Commit snapshot and history if changed
+      - name: Commit crypto radar data if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/crypto-radar/snapshot.json data/crypto-radar/history.json
+          git add data/crypto-radar/snapshot.json data/crypto-radar/history.json data/crypto-radar/outcomes.json
           if git diff --cached --quiet; then
             echo "No crypto radar changes"
           else
-            git commit -m "data: update crypto radar observation"
+            git commit -m "data: update crypto radar observation and outcomes"
             git push
           fi
