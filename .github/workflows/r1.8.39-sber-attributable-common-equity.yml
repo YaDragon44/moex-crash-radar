@@ -1,0 +1,30 @@
+name: R1.8.39 SBER Attributable Common Equity
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+    paths:
+      - 'web/investor-radar/sber-attributable-common-equity-acquisition.js'
+      - 'web/investor-radar/sber-attributable-common-equity-acquisition.test.js'
+      - '.github/workflows/r1.8.39-sber-attributable-common-equity.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax
+        run: node --check web/investor-radar/sber-attributable-common-equity-acquisition.js
+      - name: Acquisition gate regression
+        run: node web/investor-radar/sber-attributable-common-equity-acquisition.test.js
+      - name: Fail-closed evidence contract
+        run: |
+          node - <<'NODE'
+          const G=require('./web/investor-radar/sber-attributable-common-equity-acquisition.js');
+          const r=G.unresolved();
+          if(r.verified || r.status!=='PARTIAL' || r.bvps!==null) throw new Error('Unverified evidence must not unlock common BVPS');
+          const required=['primary_source','attributable_common_equity','treasury_common_shares','common_shares_outstanding','preferred_treatment'];
+          for(const x of required) if(!r.missing.includes(x)) throw new Error('Missing blocker: '+x);
+          console.log('R1.8.39 fail-closed contract: PASS');
+          NODE
