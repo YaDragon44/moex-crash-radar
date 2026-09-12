@@ -1,4 +1,4 @@
-// TA Market R0.8.5 production safety + execution risk patch.
+// TA Market R0.9.1 production safety + execution risk + observation patch.
 (function(){
   const originalAnalyze = window.analyze;
   if (typeof originalAnalyze === 'function') {
@@ -40,6 +40,9 @@
   const saveCfg=c=>localStorage.setItem(LS,JSON.stringify(c));
   const money=x=>Number.isFinite(+x)?(+x).toLocaleString('ru-RU',{maximumFractionDigits:0})+' ₽':'N/A';
   const num=(x,d=2)=>Number.isFinite(+x)?(+x).toLocaleString('ru-RU',{minimumFractionDigits:d,maximumFractionDigits:d}):'N/A';
+  const pct=x=>Number.isFinite(+x)?num(+x,1)+'%':'N/A';
+  const rval=x=>Number.isFinite(+x)?num(+x,2)+'R':'N/A';
+  let PERF=null;
 
   function riskCalc(a){
     const c=loadCfg(), md=J?.securities?.[sel]?.marketdata||{};
@@ -77,16 +80,57 @@
     document.getElementById('risknote').textContent=r.valid?(r.lots>0?'Без плеча · комиссия и проскальзывание учтены на входе и выходе.':'При заданном риске корректный стоп/издержки не позволяют открыть даже 1 лот.'):'Введите капитал и риск % — без них размер позиции не рассчитывается.';
   }
 
+  function ensurePerfBox(){
+    if(document.getElementById('perfbox')) return;
+    const aside=document.querySelector('aside.panel'); if(!aside) return;
+    const box=document.createElement('div'); box.id='perfbox';
+    box.innerHTML='<div class="section">Production Observation</div><div class="trade" id="perfsummary"></div><div class="gate" id="perfnote">Загрузка статистики модели…</div><div id="perfdetail" style="font-size:11px;line-height:1.5;margin-top:8px"></div>';
+    aside.appendChild(box);
+  }
+
+  function compactStats(obj){
+    if(!obj) return 'нет данных';
+    const closed=+obj.closed||0, signals=+obj.signals||0;
+    return `${signals} сигналов · ${closed} закрыто · WR ${pct(obj.win_rate)} · Exp ${rval(obj.expectancy_r)}`;
+  }
+
+  function drawPerf(){
+    ensurePerfBox();
+    const sum=document.getElementById('perfsummary'), note=document.getElementById('perfnote'), detail=document.getElementById('perfdetail');
+    if(!sum||!note||!detail)return;
+    if(!PERF){
+      sum.innerHTML=[['READY signals','N/A'],['Closed','N/A'],['Win Rate','N/A'],['Expectancy','N/A'],['Profit Factor','N/A']].map(([k,v])=>`<div class="kv"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+      note.textContent='Статистика модели недоступна; торговые сигналы продолжают работать.';
+      detail.innerHTML=''; return;
+    }
+    const s=PERF.summary||{};
+    sum.innerHTML=[['READY signals',s.signals??0],['Closed',s.closed??0],['Win Rate',pct(s.win_rate)],['Expectancy',rval(s.expectancy_r)],['Profit Factor',Number.isFinite(+s.profit_factor)?num(s.profit_factor,2):'N/A']].map(([k,v])=>`<div class="kv"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+    note.textContent=(+s.signals||0)===0?'READY-сигналов пока нет — статистика качества еще не сформирована.':(+s.closed||0)===0?'Есть READY, но завершенных модельных исходов пока нет.':'Метрики — качество модели, не фактический P/L счета.';
+    const tickers=['SBERP','VKCO','OZPH'].map(k=>`<div><b>${k}</b> — ${compactStats(PERF.by_ticker?.[k])}</div>`).join('');
+    const tfs=['D1','H1','M10'].map(k=>`<div><b>${k}</b> — ${compactStats(PERF.by_tf?.[k])}</div>`).join('');
+    detail.innerHTML='<div style="margin-bottom:5px;color:var(--mut)">По бумагам</div>'+tickers+'<div style="margin:8px 0 5px;color:var(--mut)">По TF</div>'+tfs;
+  }
+
+  async function loadPerf(){
+    try{
+      const r=await fetch('data/signal_performance.json?ts='+Date.now(),{cache:'no-store'});
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const j=await r.json();
+      PERF=j?.release==='R0.9.0 Production Observation'?j:null;
+    }catch(e){PERF=null;}
+    drawPerf();
+  }
+
   const oldRender=window.render;
   if(typeof oldRender==='function'){
-    window.render=function(){oldRender();setTimeout(drawRisk,0)};
+    window.render=function(){oldRender();setTimeout(()=>{drawRisk();drawPerf();},0)};
     render=window.render;
   }
 
-  document.title = 'TA Market Monitor · R0.8.5';
+  document.title = 'TA Market Monitor · R0.9.1';
   const badge = document.querySelector('.top h1 .ok');
-  if (badge) badge.textContent = 'R0.8.5';
+  if (badge) badge.textContent = 'R0.9.1';
   const footer = document.querySelector('.footer');
-  if (footer) footer.innerHTML += '<br>R0.8.5: snapshot age ≤25m is a hard READY gate; Confluence Score is conservative; position sizing uses MOEX lot size plus user-entered capital/risk/fees/slippage.';
-  setTimeout(function(){ if (window.J) { render(); drawRisk(); } }, 500);
+  if (footer) footer.innerHTML += '<br>R0.9.1: production observation tracks model READY outcomes (TP2 vs Stop), Win Rate, Expectancy and Profit Factor. Metrics are model quality, not actual account P/L.';
+  setTimeout(function(){ if (window.J) { render(); drawRisk(); } ensurePerfBox(); loadPerf(); }, 500);
 })();
