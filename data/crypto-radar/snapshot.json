@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-12T17:24:33.098699+00:00",
+  "generated_at": "2026-09-12T17:37:43.084966+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,40 +14,40 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2662909885005.648,
-    "total_change_24h_pct": -3.3863865776889592,
-    "btc_dominance_pct": 58.20608631345375,
-    "btc_cap": 1549975626115.8794,
-    "alt_cap": 1112934258889.7686
+    "total_market_cap": 2660258564505.3574,
+    "total_change_24h_pct": -3.4810420770808315,
+    "btc_dominance_pct": 58.200640224740674,
+    "btc_cap": 1548287516175.6138,
+    "alt_cap": 1111971048329.7437
   },
   "derivatives": {
-    "btc_price": 77242.1,
-    "price_change_24h_pct": -0.74,
+    "btc_price": 77221.0,
+    "price_change_24h_pct": -0.54,
     "oi_usd": 4953540909.856808,
     "oi_change_24h_pct": -0.6641923851598452,
-    "funding_pct": 0.0098,
+    "funding_pct": 0.01,
     "long_short_ratio": 1.6129247724805877
   },
   "context": {
-    "stablecoin_market_cap": 306750730093.0,
-    "stablecoin_market_cap_change_24h_pct": 0.10230388547176616,
+    "stablecoin_market_cap": 306777394959.0,
+    "stablecoin_market_cap_change_24h_pct": 0.03966372477046676,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
     "model": "v2-provisional",
     "factors": {
       "oi_price": 50,
-      "funding": 50,
+      "funding": 75,
       "long_short": 85,
       "liquidation_risk": null,
       "news": null,
-      "flows": 65
+      "flows": 50
     },
     "coverage_pct": 70,
     "derivative_factor_count": 3,
     "external_context_present": true,
     "quality_passed": true,
-    "score": 61,
+    "score": 65,
     "state": "GREED",
     "action": "REDUCE"
   },
@@ -55,12 +55,12 @@
     "model": "risk-v1-provisional",
     "provisional": true,
     "coverage_pct": 100,
-    "score": 49,
+    "score": 53,
     "status": "ELEVATED",
     "components": {
       "market_stress": 55,
       "leverage": 45,
-      "funding_extreme": 20,
+      "funding_extreme": 45,
       "positioning_extreme": 85,
       "liquidity_context": 35
     },
@@ -71,7 +71,7 @@
     "provisional": true,
     "status": "DISTRIBUTION",
     "candidate": "DISTRIBUTION",
-    "candidate_count": 6,
+    "candidate_count": 7,
     "confirmed": true,
     "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
