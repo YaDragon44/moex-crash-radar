@@ -1,0 +1,21 @@
+{
+  "release": "R0.9.0 Production Observation",
+  "generated_at": "2026-09-12T16:03:03+03:00",
+  "definition": "Model signal quality: WIN if TP2 is reached before Stop after READY; LOSS if Stop first; AMBIGUOUS if both occur in one candle and order is unknown. This is not actual account P/L.",
+  "summary": {
+    "signals": 0,
+    "closed": 0,
+    "wins": 0,
+    "losses": 0,
+    "open": 0,
+    "ambiguous": 0,
+    "win_rate": null,
+    "avg_win_r": null,
+    "avg_loss_r": null,
+    "expectancy_r": null,
+    "profit_factor": null
+  },
+  "by_ticker": {},
+  "by_tf": {},
+  "signals": []
+}
