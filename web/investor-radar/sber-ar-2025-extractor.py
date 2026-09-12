@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-import json, os, re, subprocess, sys, urllib.request
+import json, os, re, ssl, subprocess, sys, urllib.request
 from pathlib import Path
+from urllib.parse import urlparse
 
 URL = os.environ.get('SBER_AR_URL','https://www.sberbank.com/common/img/uploaded/_new_site/com/gosa2026/sber-ar-2025-ru.pdf')
 OUT = Path(os.environ.get('OUT_DIR','artifacts/r1.8.43'))
@@ -9,17 +10,44 @@ pdf = OUT/'sber-ar-2025-ru.pdf'
 txt = OUT/'sber-ar-2025-ru.txt'
 result_path = OUT/'sber-ar-2025-extraction.json'
 
+ALLOWED_HOST='www.sberbank.com'
+parsed=urlparse(URL)
+if parsed.scheme!='https' or parsed.hostname!=ALLOWED_HOST:
+    raise SystemExit('Refusing non-official Sber annual-report URL')
+
 req=urllib.request.Request(URL,headers={'User-Agent':'Mozilla/5.0 InvestorRadar/1.8.43'})
+transport='TLS_VERIFIED'
+transport_error=None
 try:
     with urllib.request.urlopen(req,timeout=60) as r:
+        final=urlparse(r.geturl())
+        if final.hostname!=ALLOWED_HOST: raise RuntimeError('redirect outside official Sber host')
         body=r.read()
 except Exception as e:
-    result={'status':'DOWNLOAD_FAILED','sourceUrl':URL,'error':str(e),'commonBvpsEligible':False,'valuationStatus':'PARTIAL'}
-    result_path.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
-    print(json.dumps(result,ensure_ascii=False))
-    sys.exit(2)
+    transport_error=str(e)
+    if 'CERTIFICATE_VERIFY_FAILED' not in transport_error:
+        result={'status':'DOWNLOAD_FAILED','sourceUrl':URL,'error':transport_error,'commonBvpsEligible':False,'valuationStatus':'PARTIAL'}
+        result_path.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
+        print(json.dumps(result,ensure_ascii=False))
+        sys.exit(2)
+    # Russian PKI may not be trusted by the GitHub-hosted runner. We only use
+    # this path for document location/extraction, never to promote valuation
+    # evidence to VERIFIED. Host is pinned and redirects outside it are blocked.
+    transport='TLS_UNVERIFIED_PINNED_OFFICIAL_HOST'
+    ctx=ssl._create_unverified_context()
+    try:
+        with urllib.request.urlopen(req,timeout=60,context=ctx) as r:
+            final=urlparse(r.geturl())
+            if final.hostname!=ALLOWED_HOST: raise RuntimeError('redirect outside official Sber host')
+            body=r.read()
+    except Exception as e2:
+        result={'status':'DOWNLOAD_FAILED','sourceUrl':URL,'error':str(e2),'verifiedTlsError':transport_error,'transportTrust':transport,'commonBvpsEligible':False,'valuationStatus':'PARTIAL'}
+        result_path.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
+        print(json.dumps(result,ensure_ascii=False))
+        sys.exit(2)
+
 if not body.startswith(b'%PDF'):
-    result={'status':'NOT_PDF','sourceUrl':URL,'bytes':len(body),'commonBvpsEligible':False,'valuationStatus':'PARTIAL'}
+    result={'status':'NOT_PDF','sourceUrl':URL,'bytes':len(body),'transportTrust':transport,'commonBvpsEligible':False,'valuationStatus':'PARTIAL'}
     result_path.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps(result,ensure_ascii=False))
     sys.exit(3)
@@ -28,7 +56,7 @@ pdf.write_bytes(body)
 try:
     subprocess.run(['pdftotext','-layout',str(pdf),str(txt)],check=True,timeout=120)
 except Exception as e:
-    result={'status':'TEXT_EXTRACTION_FAILED','sourceUrl':URL,'error':str(e),'commonBvpsEligible':False,'valuationStatus':'PARTIAL'}
+    result={'status':'TEXT_EXTRACTION_FAILED','sourceUrl':URL,'error':str(e),'transportTrust':transport,'commonBvpsEligible':False,'valuationStatus':'PARTIAL'}
     result_path.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
     print(json.dumps(result,ensure_ascii=False))
     sys.exit(4)
@@ -57,13 +85,15 @@ found={k:bool(v) for k,v in hits.items()}
 result={
  'status':'EXTRACTED_PRIMARY_DOCUMENT',
  'sourceUrl':URL,
+ 'transportTrust':transport,
+ 'verifiedTlsError':transport_error,
  'documentBytes':len(body),
  'textLines':len(lines),
  'targetsFound':found,
  'hits':hits,
  'commonBvpsEligible':False,
  'valuationStatus':'PARTIAL',
- 'rule':'Keyword/context extraction is locator evidence only. No value is promoted to VERIFIED without exact accounting meaning, share-class basis, unit and period validation.'
+ 'rule':'Keyword/context extraction is locator evidence only. If transportTrust is TLS_UNVERIFIED_PINNED_OFFICIAL_HOST, content must be independently corroborated before any field becomes VERIFIED. No value is promoted to VERIFIED without exact accounting meaning, share-class basis, unit and period validation.'
 }
 result_path.write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
-print(json.dumps({'status':result['status'],'targetsFound':found,'textLines':len(lines)},ensure_ascii=False))
+print(json.dumps({'status':result['status'],'transportTrust':transport,'targetsFound':found,'textLines':len(lines)},ensure_ascii=False))
