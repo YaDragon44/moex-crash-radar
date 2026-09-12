@@ -1,19 +1,22 @@
-// Investor Radar R1.8.13 — Exact EPS Extraction
-// Exact peer EPS may come from MOEX issuer financials when the exchange identifies issuer reports/IFRS as the source.
-// Positive verified EPS is usable for peer P/E; zero/negative EPS is VERIFIED_EXCLUDED.
+// Investor Radar R1.8.46 — Exact EPS + Corporate Action Basis
+// Peer EPS must be on the same per-share basis as the market price used for P/E.
 (function(global){
 'use strict';
 const REGISTRY={
  VTBR:{status:'VERIFIED',eps:79.4,verified:true,metric:'EPS',comparable:true,source:'MOEX issuer financials / VTB disclosure',sourceUrl:'https://www.moex.com/en/stocks/VTBR',asOf:'2025-12-31',evidence:['MOEX financials show 2025 Earnings Per Share (EPS) = 79.4 RUB.','MOEX states company data sources include issuer reports and IFRS financial statements.'],note:'Exact positive EPS verified; eligible for peer P/E subject to a valid MOEX price.'},
- T:{status:'VERIFIED',eps:688.72,verified:true,metric:'EPS',comparable:true,source:'MOEX issuer financials / T disclosure',sourceUrl:'https://www.moex.com/en/stocks/t',asOf:'2025-12-31',evidence:['MOEX financials show 2025 Earnings Per Share (EPS) = 688.72 RUB.','MOEX states company data sources include issuer reports and IFRS financial statements.'],note:'Exact positive EPS verified. This supersedes the earlier non-comparable 650 RUB operating-profit-per-share proxy; eligible for peer P/E subject to valid MOEX price.'},
+ T:{status:'VERIFIED',rawEps:688.72,eps:68.872,verified:true,metric:'EPS_SPLIT_ADJUSTED',comparable:true,source:'MOEX issuer financials / T disclosure + MOEX corporate-action notice',sourceUrl:'https://www.moex.com/n99355?nt=0',asOf:'2026-04-17',corporateAction:{type:'STOCK_SPLIT',ratioOld:1,ratioNew:10,effectiveDate:'2026-04-17',verified:true,source:'Moscow Exchange',sourceUrl:'https://www.moex.com/n99355?nt=0'},evidence:['MOEX financials show FY2025 EPS = 688.72 RUB on the pre-split share basis.','MOEX states that from 17 Apr 2026 T shares trade after a 1:10 split.','Comparable post-split EPS = 688.72 / 10 = 68.872 RUB per current share.'],note:'Current MOEX price is post-split. FY2025 EPS is mechanically adjusted by the verified 1:10 split so P/E uses a consistent per-share basis.'},
  VKCO:{status:'VERIFIED_EXCLUDED',eps:-63,verified:true,metric:'EPS',comparable:true,source:'MOEX issuer financials / VK disclosure',sourceUrl:'https://www.moex.com/en/stocks/vkco',asOf:'2025-12-31',evidence:['MOEX financials show 2025 EPS = -63 RUB.'],note:'Exact EPS verified but negative; P/E is not economically meaningful and the peer is excluded.'},
  OZON:{status:'VERIFIED_EXCLUDED',eps:-36.1,verified:true,metric:'EPS',comparable:true,source:'MOEX issuer financials / Ozon disclosure',sourceUrl:'https://www.moex.com/en/stocks/ozon',asOf:'2024-12-31',evidence:['MOEX financials show 2024 EPS = -36.1 RUB.'],note:'Latest exact EPS verified in this pass is negative; the peer is excluded from P/E.'},
  MGNT:{status:'VERIFIED_EXCLUDED',eps:-455.28,verified:true,metric:'IFRS_BASIC_LOSS_PER_SHARE',comparable:true,source:'PJSC Magnit FY2025 IFRS Audited Financial Statements, Note 31',sourceUrl:'https://www.magnit.com/upload/iblock/6d7/479nkl2oc0ozalg4krkm0saadlrfdrmf/FY%202025%20IFRS%20Audited%20Financial%20Statements.pdf',asOf:'2025-12-31',evidence:['Loss attributable to shareholders: RUB 30,889.711 million.','Weighted average shares: 67.847 million.','Basic loss per share: RUB -455.28; diluted loss per share: RUB -455.28.'],note:'Exact IFRS EPS is verified, but it is negative. MGNT is automatically excluded from peer P/E.'},
  LENT:{status:'VERIFIED',eps:0.303,verified:true,metric:'EPS',comparable:true,source:'MOEX issuer financials / Lenta disclosure',sourceUrl:'https://www.moex.com/en/stocks/lent',asOf:'2025-12-31',evidence:['MOEX financials show 2025 Earnings Per Share (EPS) = 0.303 RUB.','MOEX states company data are sourced from issuer reports and IFRS financial statements.'],note:'Exact positive EPS verified; eligible for peer P/E subject to a valid MOEX price and comparability review.'}
 };
 function get(t){return REGISTRY[t]||{status:'LOCK',eps:null,verified:false,metric:null,comparable:false,source:null,sourceUrl:null,asOf:null,evidence:[],note:'Peer EPS отсутствует в registry.'};}
-function usable(t){const x=get(t);return x.verified===true&&x.comparable===true&&Number.isFinite(Number(x.eps))&&Number(x.eps)>0&&!!x.source&&!!x.asOf;}
-function audit(t){const x=get(t),missing=[];if(x.verified!==true)missing.push('verified_eps');if(x.comparable!==true)missing.push('comparable_metric');if(!(Number.isFinite(Number(x.eps))&&Number(x.eps)>0))missing.push(Number.isFinite(Number(x.eps))?'positive_eps':'eps');if(!x.source||!x.asOf)missing.push('source_metadata');return {ticker:t,status:x.status,usable:usable(t),missing,note:x.note};}
-global.InvestorRadarPeerEarnings={REGISTRY,get,usable,audit};
+function basisOk(x){
+ if(!x?.corporateAction) return true;
+ return x.corporateAction.verified===true&&Number(x.corporateAction.ratioOld)>0&&Number(x.corporateAction.ratioNew)>0&&!!x.corporateAction.effectiveDate&&!!x.corporateAction.sourceUrl;
+}
+function usable(t){const x=get(t);return x.verified===true&&x.comparable===true&&basisOk(x)&&Number.isFinite(Number(x.eps))&&Number(x.eps)>0&&!!x.source&&!!x.asOf;}
+function audit(t){const x=get(t),missing=[];if(x.verified!==true)missing.push('verified_eps');if(x.comparable!==true)missing.push('comparable_metric');if(!basisOk(x))missing.push('corporate_action_basis');if(!(Number.isFinite(Number(x.eps))&&Number(x.eps)>0))missing.push(Number.isFinite(Number(x.eps))?'positive_eps':'eps');if(!x.source||!x.asOf)missing.push('source_metadata');return {ticker:t,status:x.status,usable:usable(t),missing,note:x.note};}
+global.InvestorRadarPeerEarnings={REGISTRY,get,usable,audit,basisOk};
 if(typeof module!=='undefined'&&module.exports)module.exports=global.InvestorRadarPeerEarnings;
 })(typeof window!=='undefined'?window:globalThis);
