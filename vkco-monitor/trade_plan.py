@@ -4,6 +4,8 @@ import math
 import os
 from typing import Any
 
+DEFAULT_RISK_PCT = 0.5
+
 
 def _env_float(name: str) -> float | None:
     raw = os.getenv(name, "").strip()
@@ -21,7 +23,7 @@ def build_trade_plan(signal: dict[str, Any], lot_size: int = 1) -> dict[str, Any
 
     unit_risk = entry - stop
     capital = _env_float("TRADING_CAPITAL_RUB")
-    risk_pct = _env_float("RISK_PCT")
+    risk_pct = _env_float("RISK_PCT") or DEFAULT_RISK_PCT
 
     plan: dict[str, Any] = {
         "unit_risk": round(unit_risk, 2),
@@ -35,7 +37,7 @@ def build_trade_plan(signal: dict[str, Any], lot_size: int = 1) -> dict[str, Any
         "sizing_ready": False,
     }
 
-    if capital is None or risk_pct is None:
+    if capital is None:
         return plan
 
     allowed_risk = capital * risk_pct / 100.0
@@ -59,9 +61,9 @@ def format_trade_plan(signal: dict[str, Any]) -> str:
     p = build_trade_plan(signal)
     if not p["sizing_ready"]:
         return (
+            f"Риск на сделку: {p['risk_pct']:.2f}% (default)\n"
             f"Риск на 1 акцию: {p['unit_risk']:.2f} ₽\n"
-            "Размер позиции: не рассчитан — задайте GitHub Variables "
-            "TRADING_CAPITAL_RUB и RISK_PCT."
+            "Размер позиции: не рассчитан — задайте GitHub Variable TRADING_CAPITAL_RUB."
         )
 
     return (
