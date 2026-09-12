@@ -1,0 +1,59 @@
+{
+  "release": "R1.7.2 Historical Market Context Recovery",
+  "generated_at": "2026-09-12T15:50:53.247107+00:00",
+  "features": {
+    "stablecoin_market_cap_history": {
+      "source": "DefiLlama",
+      "endpoint": "https://stablecoins.llama.fi/stablecoincharts/all",
+      "status": "AVAILABLE",
+      "rows": 3210,
+      "valid_rows": 3210,
+      "coverage_pct": 100.0,
+      "first_ts": 1511913600,
+      "last_ts": 1789171200,
+      "error": null,
+      "semantic": "historical aggregate stablecoin market cap; suitable as liquidity-context history, not literal net inflow"
+    },
+    "total_crypto_market_cap_history": {
+      "status": "AUTH_REQUIRED",
+      "preferred_source": "CoinGecko",
+      "endpoint": "/global/market_cap_chart",
+      "plan_note": "CoinGecko documentation marks global market-cap history as paid-plan only.",
+      "fallbacks": [
+        {
+          "source": "CoinMarketCap",
+          "endpoint": "/v1/global-metrics/quotes/historical",
+          "access": "Hobbyist plan or higher"
+        },
+        {
+          "source": "Coinranking",
+          "endpoint": "/v2/stats/global-market-caps",
+          "access": "Professional plan or higher"
+        }
+      ],
+      "policy": "Do not synthesize exact TOTAL from a partial coin basket."
+    },
+    "btc_dominance_history": {
+      "status": "AUTH_REQUIRED",
+      "preferred_method": "BTC market cap / historical TOTAL from the same or quality-compatible source",
+      "reason": "Exact BTC.D requires historical total market cap. Current free live /global feed is not a historical series.",
+      "policy": "Do not scrape undocumented web payloads or substitute an approximate dominance series for exact-model validation."
+    }
+  },
+  "gate": {
+    "stablecoin_context_recovery": "GO",
+    "exact_full_context_recovery": "NO-GO",
+    "full_model_historical_replay": "BLOCKED_EXTERNAL_DATA",
+    "decision": "PARTIAL",
+    "reason": "Stablecoin history is recoverable free via DefiLlama. Exact TOTAL and BTC.D remain blocked by authenticated historical-global-metrics access."
+  },
+  "recommended_path": {
+    "simple": "Keep current live collection accumulating TOTAL/BTC.D while using DefiLlama for stablecoin history. Do not calibrate full model yet.",
+    "fastest_full_replay": "Connect one paid historical global-metrics source (prefer CoinGecko to stay closest to current live semantics), then rerun exact full-model replay.",
+    "prohibited": [
+      "approximate TOTAL from top-N coins",
+      "undocumented scraping as canonical source",
+      "threshold tuning on partial derivatives replay"
+    ]
+  }
+}
