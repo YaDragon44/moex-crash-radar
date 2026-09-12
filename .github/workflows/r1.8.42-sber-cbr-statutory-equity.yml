@@ -1,0 +1,31 @@
+name: R1.8.42 SBER CBR Statutory Equity Bridge
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+    paths:
+      - 'web/investor-radar/sber-cbr-statutory-equity-bridge.js'
+      - 'web/investor-radar/sber-cbr-statutory-equity-bridge.test.js'
+      - '.github/workflows/r1.8.42-sber-cbr-statutory-equity.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax
+        run: node --check web/investor-radar/sber-cbr-statutory-equity-bridge.js
+      - name: Bridge regression
+        run: node web/investor-radar/sber-cbr-statutory-equity-bridge.test.js
+      - name: Evidence boundary contract
+        run: |
+          node - <<'NODE'
+          const g=require('./web/investor-radar/sber-cbr-statutory-equity-bridge.js');
+          const r=g.current();
+          if(r.status!=='VERIFIED_EVIDENCE') throw new Error('CBR primary evidence must verify');
+          if(r.commonBvpsEligible!==false||r.valuationStatus!=='PARTIAL') throw new Error('CBR statutory evidence must not unlock BVPS/PB');
+          const x=g.assess({evidence:g.EVIDENCE,treasuryCommonSharesAssumption:0,useStatutoryCapitalAsCommonEquity:true});
+          if(!x.forbiddenUnlockDetected||x.commonBvpsEligible!==false) throw new Error('forbidden substitution guard failed');
+          console.log('R1.8.42 evidence boundary: PASS');
+          NODE
