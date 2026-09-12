@@ -1,5 +1,5 @@
-// Investor Radar R1.8.23 — SBER Final Valuation Pipeline
-// Fail-closed orchestration: market price -> P/E -> P/B -> bank quality -> completeness -> recommendation eligibility.
+// Investor Radar R1.8.46 — SBER Final Valuation Pipeline
+// Fail-closed orchestration: market price -> P/E -> P/B -> bank quality -> denominator evidence -> completeness -> recommendation eligibility.
 (function(global){
 'use strict';
 function statusOf(x){return x?.status||'MISSING';}
@@ -11,6 +11,7 @@ function build(input={}){
   bankValuation:input.bankValuation,
   bankQuality:input.bankQuality,
   equityAttribution:input.equityAttribution,
+  reportedBvps:input.reportedBvps,
   valuationLabel:input.valuationLabel
  });
  const price=Number(input.price);
@@ -30,9 +31,10 @@ function build(input={}){
   valuation:verified?c.valuationLabel:'INSUFFICIENT_DATA',
   recommendationEligible:verified,
   blockers:[...new Set(blockers)],
-  components:{price:priceVerified?'VERIFIED':'LOCK',pe:statusOf(input.peRuntime),pb:statusOf(input.bankValuation),quality:statusOf(input.bankQuality),equityBasis:statusOf(input.equityAttribution)},
+  denominatorSource:c.denominatorSource||'MISSING',
+  components:{price:priceVerified?'VERIFIED':'LOCK',pe:statusOf(input.peRuntime),pb:statusOf(input.bankValuation),quality:statusOf(input.bankQuality),equityBasis:statusOf(input.equityAttribution),reportedBvps:statusOf(input.reportedBvps)},
   message:verified?'SBER final valuation pipeline passed all evidence gates.':'Недостаточно данных для обоснованного вывода',
-  rule:'No active SBER valuation recommendation unless current price and every independent valuation evidence gate are VERIFIED.'
+  rule:'No active SBER valuation recommendation unless current price, P/E, P/B, bank quality and an independently verified common-share denominator are VERIFIED.'
  };
 }
 global.InvestorRadarSberFinalValuationPipeline={build};
