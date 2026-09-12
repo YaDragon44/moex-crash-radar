@@ -121,7 +121,21 @@ jobs:
             exit 0
           fi
           git commit -m 'data: refresh TA market snapshot, signal history and alert state'
-          git push origin HEAD:main
+          pushed=false
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then
+              pushed=true
+              break
+            fi
+            echo "Push race on attempt $attempt; retrying"
+            sleep $((attempt * 2))
+          done
+          if [ "$pushed" != true ]; then
+            echo 'Unable to persist TA Market state after 3 attempts'
+            exit 1
+          fi
           echo 'changed=true' >> "$GITHUB_OUTPUT"
       - name: Dispatch Pages publish
         if: steps.persist.outputs.changed == 'true'
