@@ -22,7 +22,28 @@ jobs:
       - name: Install PDF tools
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y poppler-utils
+          sudo apt-get install -y poppler-utils ca-certificates openssl
+      - name: Install Russian Trusted CA from Gosuslugi publication storage
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT_URL='https://gu-st.ru/content/lending/russian_trusted_root_ca_pem.crt'
+          SUB_URL='https://gu-st.ru/content/lending/russian_trusted_sub_ca_pem.crt'
+          curl --fail --location --silent --show-error "$ROOT_URL" -o /tmp/russian_trusted_root_ca.crt
+          curl --fail --location --silent --show-error "$SUB_URL" -o /tmp/russian_trusted_sub_ca.crt
+          openssl x509 -in /tmp/russian_trusted_root_ca.crt -noout -subject -issuer -dates
+          openssl x509 -in /tmp/russian_trusted_sub_ca.crt -noout -subject -issuer -dates
+          ROOT_SUBJECT="$(openssl x509 -in /tmp/russian_trusted_root_ca.crt -noout -subject)"
+          SUB_SUBJECT="$(openssl x509 -in /tmp/russian_trusted_sub_ca.crt -noout -subject)"
+          ROOT_ISSUER="$(openssl x509 -in /tmp/russian_trusted_root_ca.crt -noout -issuer)"
+          SUB_ISSUER="$(openssl x509 -in /tmp/russian_trusted_sub_ca.crt -noout -issuer)"
+          echo "$ROOT_SUBJECT" | grep -Fq 'Russian Trusted Root CA'
+          echo "$ROOT_ISSUER" | grep -Fq 'Russian Trusted Root CA'
+          echo "$SUB_SUBJECT" | grep -Fq 'Russian Trusted Sub CA'
+          echo "$SUB_ISSUER" | grep -Fq 'Russian Trusted Root CA'
+          sudo cp /tmp/russian_trusted_root_ca.crt /usr/local/share/ca-certificates/russian_trusted_root_ca.crt
+          sudo cp /tmp/russian_trusted_sub_ca.crt /usr/local/share/ca-certificates/russian_trusted_sub_ca.crt
+          sudo update-ca-certificates
       - name: Download official Sber 2025 Annual Report
         id: download
         shell: bash
@@ -33,13 +54,13 @@ jobs:
           rc=$?
           if [ $rc -ne 0 ] || [ ! -s /tmp/sber-ar-2025-ru.pdf ]; then
             echo 'downloaded=false' >> "$GITHUB_OUTPUT"
-            echo "R1.8.42: official PDF download unavailable in this runner; valuation remains PARTIAL"
+            echo "R1.8.43: official PDF download unavailable after trusted-CA bootstrap; valuation remains PARTIAL"
             exit 0
           fi
           file /tmp/sber-ar-2025-ru.pdf
           if ! head -c 5 /tmp/sber-ar-2025-ru.pdf | grep -q '%PDF-'; then
             echo 'downloaded=false' >> "$GITHUB_OUTPUT"
-            echo 'R1.8.42: response is not a PDF; valuation remains PARTIAL'
+            echo 'R1.8.43: response is not a PDF; valuation remains PARTIAL'
             exit 0
           fi
           echo 'downloaded=true' >> "$GITHUB_OUTPUT"
