@@ -1,4 +1,4 @@
-name: BTC Entry Radar Production R1.4.4.3
+name: BTC Entry Radar Production R1.4.5
 
 on:
   workflow_dispatch:
@@ -7,6 +7,8 @@ on:
     paths:
       - 'scripts/btc_entry_radar_r1_4_0.py'
       - 'scripts/run_btc_entry_radar_live_snapshot.py'
+      - 'scripts/btc_entry_radar_journal_r1_4_5.py'
+      - 'scripts/btc_entry_radar_performance_r1_4_5.py'
       - 'scripts/__init__.py'
       - 'tests/test_btc_entry_radar_r1_4_0.py'
       - 'web/btc-entry-radar/**'
@@ -25,8 +27,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -47,47 +47,31 @@ jobs:
               raise SystemExit('LONG_READY blocked: coverage <75%')
           print('PROD GATE PASS',s,q)
           PY
-      - name: Build transition contract
-        run: |
-          python - <<'PY'
-          import json
-          from datetime import datetime, timezone
-          from pathlib import Path
-          cur=Path('web/btc-entry-radar/data/current.json')
-          old=json.loads(cur.read_text()) if cur.exists() else None
-          new=json.load(open('artifacts/btc_entry_radar_live_snapshot.json'))
-          prev=((old or {}).get('output') or {}).get('state')
-          now=((new or {}).get('output') or {}).get('state')
-          q=(new or {}).get('quality') or {}
-          payload={
-            'generated_at_utc':datetime.now(timezone.utc).isoformat(),
-            'previous_state':prev,
-            'current_state':now,
-            'transition':bool(prev and now and prev!=now),
-            'positive_transition':bool(prev and prev!=now and now in {'WATCH','ARMED','LONG_READY','MANAGE'}),
-            'quality_status':q.get('status'),
-            'quality_coverage_pct':q.get('coverage_pct')
-          }
-          Path('web/btc-entry-radar/data/transition.json').write_text(json.dumps(payload,indent=2),encoding='utf-8')
-          PY
-      - name: Publish dashboard live JSON
+      - name: Append production signal journal
+        run: python scripts/btc_entry_radar_journal_r1_4_5.py | tee btc_entry_radar_journal.log
+      - name: Score matured signals
+        run: python scripts/btc_entry_radar_performance_r1_4_5.py | tee btc_entry_radar_performance.log
+      - name: Publish production evidence
         run: |
           mkdir -p web/btc-entry-radar/data
           cp artifacts/btc_entry_radar_live_snapshot.json web/btc-entry-radar/data/current.json
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A web/btc-entry-radar/data/current.json web/btc-entry-radar/data/transition.json web/btc-entry-radar/data/performance.json
+          git add -A evidence/btc_entry_radar_production_journal.csv web/btc-entry-radar/data/current.json web/btc-entry-radar/data/transition.json web/btc-entry-radar/data/performance.json
           if git diff --cached --quiet; then
-            echo 'No dashboard-data change'
+            echo 'No production evidence change'
           else
-            git commit -m 'data: update BTC Entry Radar production state [skip ci]'
+            git commit -m 'data: append BTC Entry Radar production evidence [skip ci]'
             git push origin HEAD:main
           fi
       - uses: actions/upload-artifact@v4
         with:
-          name: btc-entry-radar-prod-r1-4-4-3
+          name: btc-entry-radar-prod-r1-4-5
           path: |
             artifacts/btc_entry_radar_live_snapshot.json
+            evidence/btc_entry_radar_production_journal.csv
             web/btc-entry-radar/data/transition.json
             web/btc-entry-radar/data/performance.json
             btc_entry_radar_prod.log
+            btc_entry_radar_journal.log
+            btc_entry_radar_performance.log
