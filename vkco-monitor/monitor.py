@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import html
 import json
 import os
+import re
 import sys
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -17,6 +19,16 @@ BOARD = "TQBR"
 INTERVAL = 10
 MOSCOW = ZoneInfo("Europe/Moscow")
 STATE_FILE = Path(os.getenv("STATE_FILE", "vkco-monitor/state/state.json"))
+VK_IR_NEWS_URL = "https://vk.company.ru/ru/investors/info/"
+RU_MONTHS = (
+    "января", "февраля", "марта", "апреля", "мая", "июня",
+    "июля", "августа", "сентября", "октября", "ноября", "декабря",
+)
+EVENT_KEYWORDS = (
+    "результат", "отчет", "отчёт", "дивиденд", "облигац", "долг",
+    "санкц", "ограничительн", "совет директоров", "размещ", "сделк",
+    "выкуп", "эмисс", "конвертац", "реорганизац",
+)
 
 
 @dataclass(frozen=True)
@@ -108,8 +120,6 @@ def detect_signal(candles: list[Candle]) -> dict[str, Any] | None:
     rvol_b = b.volume / avg_volume
     rvol_c = c.volume / avg_volume
 
-    # Adaptive breakout: пробой максимума предыдущих 20 свечей,
-    # два закрытия выше уровня + объем на пробойной свече.
     if a.close <= resistance and b.close > resistance and c.close > resistance and rvol_b >= 1.20:
         stop = resistance - max(avg_range * 0.60, 0.30)
         risk = max(c.close - stop, 0.01)
@@ -120,8 +130,6 @@ def detect_signal(candles: list[Candle]) -> dict[str, Any] | None:
             support=support, resistance=resistance,
         )
 
-    # Adaptive spring: прокол минимума предыдущих 20 свечей, возврат выше уровня,
-    # подтверждение следующей свечой + повышенный объем на spring-свече.
     if b.low < support and b.close > support and c.low >= support and c.close >= b.close and rvol_b >= 1.30:
         stop = b.low - max(avg_range * 0.25, 0.20)
         risk = max(c.close - stop, 0.01)
@@ -159,6 +167,55 @@ def apply_market_filter(signal: dict[str, Any], market: dict[str, Any]) -> dict[
     signal["market"] = market
     signal["score"] += market["score"]
     return signal
+
+
+def _strip_html(raw: str) -> str:
+    text = re.sub(r"<script.*?</script>|<style.*?</style>", " ", raw, flags=re.I | re.S)
+    text = re.sub(r"<[^>]+>", " ", text)
+    return re.sub(r"\s+", " ", html.unescape(text)).strip()
+
+
+def evaluate_event_risk_html(raw_html: str, now: datetime, window_days: int = 3) -> dict[str, Any]:
+    items: list[dict[str, str]] = []
+    lower_html = raw_html.lower()
+    for i in range(window_days + 1):
+        d = (now - timedelta(days=i)).date()
+        date_label = f"{d.day} {RU_MONTHS[d.month - 1]} {d.year}"
+        start = 0
+        while True:
+            pos = lower_html.find(date_label.lower(), start)
+            if pos < 0:
+                break
+            snippet = _strip_html(raw_html[pos:pos + 1400])
+            snippet_l = snippet.lower()
+            if any(k in snippet_l for k in EVENT_KEYWORDS):
+                items.append({"date": date_label, "text": snippet[:280]})
+            start = pos + len(date_label)
+
+    unique: list[dict[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    for item in items:
+        key = (item["date"], item["text"][:120])
+        if key not in seen:
+            seen.add(key)
+            unique.append(item)
+    return {
+        "ok": len(unique) == 0,
+        "items": unique[:3],
+        "window_days": window_days,
+        "source": VK_IR_NEWS_URL,
+    }
+
+
+def fetch_event_risk(now: datetime | None = None, window_days: int = 3) -> dict[str, Any]:
+    now = now or datetime.now(MOSCOW)
+    r = requests.get(
+        VK_IR_NEWS_URL,
+        headers={"User-Agent": "VKCO-Monitor/1.3"},
+        timeout=20,
+    )
+    r.raise_for_status()
+    return evaluate_event_risk_html(r.text, now=now, window_days=window_days)
 
 
 def _signal(kind: str, setup: str, c: Candle, rvol: float, stop: float,
@@ -216,16 +273,28 @@ def format_signal(s: dict[str, Any]) -> str:
         f"RVOL: {s['rvol']}x\nIMOEX: {m['close']:.2f}; 1ч {m['return_1h_pct']:+.2f}%\n\n"
         f"Entry: ~{s['entry']:.2f} ₽\nStop: {s['stop']:.2f} ₽\n"
         f"TP1: {s['tp1']:.2f} ₽\nTP2: {s['tp2']:.2f} ₽\nTP3: {s['tp3']:.2f} ₽\n"
-        f"R/R до TP2: {s['rr_tp2']}\nConfluence: {s['score']}/19\n\n"
-        "Статус: READY\n"
-        "⚠️ Event Risk проверяй отдельно перед сделкой."
+        f"R/R до TP2: {s['rr_tp2']}\nConfluence: {s['score']}/19\n"
+        "Event Risk: ✅ официальный VK IR проверен\n\n"
+        "Статус: READY"
+    )
+
+
+def format_event_risk(signal: dict[str, Any], risk: dict[str, Any]) -> str:
+    first = risk["items"][0]
+    return (
+        f"⚠️ {TICKER} — WAIT / EVENT RISK\n\n"
+        f"Технический setup: {signal['setup']}\n"
+        f"Цена: {signal['price']:.2f} ₽\n"
+        f"Событие: {first['date']} — {first['text'][:180]}\n\n"
+        "READY заблокирован до повторной проверки события.\n"
+        f"Источник: {risk['source']}"
     )
 
 
 def run() -> int:
     mode = os.getenv("MODE", "run")
     if mode == "test_telegram":
-        send_telegram("✅ VKCO R1.2 Production: Telegram test OK")
+        send_telegram("✅ VKCO R1.3 Production: Telegram test OK")
         print("telegram_test=OK")
         return 0
 
@@ -237,7 +306,7 @@ def run() -> int:
     if mode == "heartbeat":
         age_min = int((now - latest.end).total_seconds() // 60)
         send_telegram(
-            f"💚 VKCO Monitor R1.2 — HEARTBEAT OK\n"
+            f"💚 VKCO Monitor R1.3 — HEARTBEAT OK\n"
             f"MOEX latest: {latest.end.isoformat()} MSK\n"
             f"VKCO: {latest.close:.2f} ₽\nData age: {age_min} min"
         )
@@ -265,6 +334,28 @@ def run() -> int:
 
     signal = apply_market_filter(signal, market)
     state = load_state()
+
+    try:
+        event_risk = fetch_event_risk(now=now, window_days=3)
+    except Exception as exc:
+        blocked_id = f"{signal['signal_id']}:EVENT_DATA_UNAVAILABLE:{now.date().isoformat()}"
+        print(f"status=WAIT reason=EVENT_DATA_UNAVAILABLE error={exc}")
+        if state.get("last_signal_id") != blocked_id:
+            send_telegram(
+                f"⚠️ {TICKER} — WAIT / EVENT DATA UNAVAILABLE\n"
+                "Технический setup есть, но официальный VK IR сейчас недоступен. READY заблокирован."
+            )
+            save_state(blocked_id)
+        return 0
+
+    if not event_risk["ok"]:
+        blocked_id = f"{signal['signal_id']}:EVENT_RISK:{event_risk['items'][0]['date']}"
+        print(f"status=WAIT reason=EVENT_RISK items={len(event_risk['items'])}")
+        if state.get("last_signal_id") != blocked_id:
+            send_telegram(format_event_risk(signal, event_risk))
+            save_state(blocked_id)
+        return 0
+
     if state.get("last_signal_id") == signal["signal_id"]:
         print(f"status=WAIT reason=DUPLICATE signal_id={signal['signal_id']}")
         return 0
