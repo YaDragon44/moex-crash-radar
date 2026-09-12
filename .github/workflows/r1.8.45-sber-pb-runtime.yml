@@ -1,0 +1,30 @@
+name: R1.8.45 SBER P-B Runtime Integration
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax
+        run: |
+          node --check web/investor-radar/sber-pb-runtime-integration.js
+          node --check web/investor-radar/sber-pb-runtime-integration.test.js
+      - name: Regression
+        run: node web/investor-radar/sber-pb-runtime-integration.test.js
+      - name: Live MOEX SBER TQBR P-B
+        run: |
+          node <<'NODE'
+          require('./web/investor-radar/sber-reported-bvps-registry.js');
+          require('./web/investor-radar/sber-moex-runtime.js');
+          require('./web/investor-radar/bank-valuation-gate.js');
+          require('./web/investor-radar/sber-valuation-registry.js');
+          const x=require('./web/investor-radar/sber-pb-runtime-integration.js');
+          (async()=>{
+            const r=await x.collect();
+            console.log(JSON.stringify(r,null,2));
+            if(!r.verified||!(r.price>0)||r.bookValuePerShare!==390.02||!(r.pb>0)) process.exit(1);
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
