@@ -1,4 +1,4 @@
-name: VKCO Monitor R1.6
+name: VKCO Monitor R1.8
 
 on:
   push:
@@ -22,7 +22,7 @@ on:
           - test_telegram
           - heartbeat
   schedule:
-    - cron: "*/10 6-20 * * 1-5"
+    - cron: "3,13,23,33,43,53 6-20 * * 1-5"
     - cron: "0 7 * * 1-5"
 
 permissions:
@@ -78,7 +78,7 @@ jobs:
 
       - name: Run VKCO monitor
         if: github.event_name != 'pull_request'
-        run: python vkco-monitor/run_r16.py
+        run: python vkco-monitor/run_r18.py
 
       - name: Notify Telegram on failure
         if: failure() && github.event_name != 'pull_request'
@@ -87,7 +87,7 @@ jobs:
           import json, os, urllib.request
           token=os.environ['TELEGRAM_BOT_TOKEN']
           chat=os.environ['TELEGRAM_CHAT_ID']
-          text='🔴 VKCO Monitor R1.6 — ERROR\nGitHub Actions run failed. Проверь workflow/logs.'
+          text='🔴 VKCO Monitor R1.8 — ERROR\nGitHub Actions run failed. Проверь workflow/logs.'
           data=json.dumps({'chat_id':chat,'text':text}).encode()
           req=urllib.request.Request(f'https://api.telegram.org/bot{token}/sendMessage', data=data, headers={'Content-Type':'application/json'})
           urllib.request.urlopen(req, timeout=20).read()
