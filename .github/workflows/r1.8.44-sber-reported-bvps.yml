@@ -1,0 +1,30 @@
+name: R1.8.44 SBER Reported BVPS Evidence
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+    paths:
+      - 'web/investor-radar/sber-reported-bvps-registry.js'
+      - 'web/investor-radar/sber-reported-bvps-registry.test.js'
+      - '.github/workflows/r1.8.44-sber-reported-bvps.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax
+        run: node --check web/investor-radar/sber-reported-bvps-registry.js
+      - name: Evidence regression
+        run: node web/investor-radar/sber-reported-bvps-registry.test.js
+      - name: Primary evidence contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE=web/investor-radar/sber-reported-bvps-registry.js
+          grep -Fq "valueRub:390.02" "$FILE"
+          grep -Fq "page:132:line:49" "$FILE"
+          grep -Fq "4550c786daa88e7e9de0ab5bbb650c27273b3e9d12fa67693d5768702358a6cd" "$FILE"
+          grep -Fq "valueRubBn2025:8351.6" "$FILE"
+          echo 'R1.8.44 SBER issuer-reported common BVPS evidence: PASS'
