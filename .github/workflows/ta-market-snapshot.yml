@@ -9,6 +9,7 @@ on:
     paths:
       - 'scripts/collect_ta_market_snapshot.py'
       - 'scripts/update_ta_signal_history.py'
+      - 'scripts/evaluate_ta_signal_performance.py'
       - 'scripts/prepare_ta_ready_alert.py'
       - 'scripts/telegram_notify.py'
       - '.github/workflows/ta-market-snapshot.yml'
@@ -39,32 +40,23 @@ jobs:
           j=json.loads(p.read_text(encoding='utf-8'))
           required=('SBERP','VKCO','OZPH')
           missing=[x for x in required if x not in j.get('securities',{})]
-          if missing:
-              raise SystemExit(f'missing securities: {missing}')
-          if j.get('quality') != 'OK':
-              raise SystemExit(f"quality must be OK, got {j.get('quality')}")
+          if missing: raise SystemExit(f'missing securities: {missing}')
+          if j.get('quality') != 'OK': raise SystemExit(f"quality must be OK, got {j.get('quality')}")
           for secid in required:
               z=j['securities'][secid]
               md=z.get('marketdata') or {}
-              if not md:
-                  raise SystemExit(f'{secid}: marketdata missing')
+              if not md: raise SystemExit(f'{secid}: marketdata missing')
               if not isinstance(md.get('LOTSIZE'), (int,float)) or md.get('LOTSIZE') <= 0:
                   raise SystemExit(f'{secid}: LOTSIZE missing/invalid: {md.get("LOTSIZE")}')
               for tf in ('D1','H1','M10'):
-                  if not z.get('raw',{}).get(tf):
-                      raise SystemExit(f'{secid}: {tf} candles missing')
-          if not j.get('imoex'):
-              raise SystemExit('IMOEX history missing')
-          if j.get('context_quality') != 'OK':
-              raise SystemExit(f"context_quality must be OK, got {j.get('context_quality')}")
-          if j.get('context_errors'):
-              raise SystemExit(f"context_errors must be empty: {j.get('context_errors')}")
+                  if not z.get('raw',{}).get(tf): raise SystemExit(f'{secid}: {tf} candles missing')
+          if not j.get('imoex'): raise SystemExit('IMOEX history missing')
+          if j.get('context_quality') != 'OK': raise SystemExit(f"context_quality must be OK, got {j.get('context_quality')}")
+          if j.get('context_errors'): raise SystemExit(f"context_errors must be empty: {j.get('context_errors')}")
           ctx=j.get('context') or {}
           for key in ('breadth','cnyrub','brent'):
-              if not ctx.get(key):
-                  raise SystemExit(f'context {key} missing')
-          if not (ctx.get('brent') or {}).get('SECID'):
-              raise SystemExit('Brent SECID missing')
+              if not ctx.get(key): raise SystemExit(f'context {key} missing')
+          if not (ctx.get('brent') or {}).get('SECID'): raise SystemExit('Brent SECID missing')
           print('TA MARKET SCHEDULED PRODUCTION + LOTSIZE GATE: PASS')
           PY
       - name: Update signal history
@@ -85,6 +77,25 @@ jobs:
               if e.get('tf') not in ('D1','H1','M10'): raise SystemExit(f"bad tf: {e.get('tf')}")
               if e.get('status') not in ('READY','WAIT','INVALID'): raise SystemExit(f"bad status: {e.get('status')}")
           print(f'TA SIGNAL HISTORY GATE: PASS · events={len(events)}')
+          PY
+      - name: Evaluate model signal performance
+        run: python scripts/evaluate_ta_signal_performance.py
+      - name: Validate signal performance
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('artifacts/ta_market/signal_performance.json')
+          if not p.exists(): raise SystemExit('signal_performance.json missing')
+          j=json.loads(p.read_text(encoding='utf-8'))
+          s=j.get('summary') or {}
+          if j.get('release') != 'R0.9.0 Production Observation': raise SystemExit('bad performance release')
+          for k in ('signals','closed','wins','losses','open','ambiguous'):
+              if not isinstance(s.get(k), int) or s.get(k) < 0: raise SystemExit(f'bad metric {k}: {s.get(k)}')
+          for x in j.get('signals',[]):
+              if x.get('result') not in ('WIN','LOSS','OPEN','AMBIGUOUS'): raise SystemExit(f"bad result: {x.get('result')}")
+          print(f"TA SIGNAL PERFORMANCE GATE: PASS · signals={s.get('signals')} · closed={s.get('closed')}")
           PY
       - name: Prepare READY Telegram alert
         run: python scripts/prepare_ta_ready_alert.py
@@ -114,13 +125,13 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add artifacts/ta_market/current.json artifacts/ta_market/signal_history.json artifacts/ta_market/telegram_state.json
+          git add artifacts/ta_market/current.json artifacts/ta_market/signal_history.json artifacts/ta_market/signal_performance.json artifacts/ta_market/telegram_state.json
           if git diff --cached --quiet; then
             echo 'No TA Market changes'
             echo 'changed=false' >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          git commit -m 'data: refresh TA market snapshot, signal history and alert state'
+          git commit -m 'data: refresh TA market snapshot, signal history, performance and alert state'
           pushed=false
           for attempt in 1 2 3; do
             git fetch origin main
