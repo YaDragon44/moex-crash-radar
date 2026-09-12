@@ -1,0 +1,69 @@
+name: R1.8.42 SBER Equity Evidence Extraction
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+    paths:
+      - 'scripts/extract_sber_2025_equity.py'
+      - 'scripts/test_extract_sber_2025_equity.py'
+      - '.github/workflows/r1.8.42-sber-equity-extraction.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Boundary tests
+        run: python scripts/test_extract_sber_2025_equity.py
+      - name: Install PDF tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y poppler-utils
+      - name: Download official Sber 2025 Annual Report
+        id: download
+        shell: bash
+        run: |
+          set +e
+          URL='https://www.sberbank.com/common/img/uploaded/_new_site/com/gosa2026/sber-ar-2025-ru.pdf'
+          curl --fail --location --silent --show-error --retry 3 --connect-timeout 20 --max-time 180 "$URL" -o /tmp/sber-ar-2025-ru.pdf
+          rc=$?
+          if [ $rc -ne 0 ] || [ ! -s /tmp/sber-ar-2025-ru.pdf ]; then
+            echo 'downloaded=false' >> "$GITHUB_OUTPUT"
+            echo "R1.8.42: official PDF download unavailable in this runner; valuation remains PARTIAL"
+            exit 0
+          fi
+          file /tmp/sber-ar-2025-ru.pdf
+          if ! head -c 5 /tmp/sber-ar-2025-ru.pdf | grep -q '%PDF-'; then
+            echo 'downloaded=false' >> "$GITHUB_OUTPUT"
+            echo 'R1.8.42: response is not a PDF; valuation remains PARTIAL'
+            exit 0
+          fi
+          echo 'downloaded=true' >> "$GITHUB_OUTPUT"
+      - name: Extract candidate evidence
+        if: steps.download.outputs.downloaded == 'true'
+        run: |
+          python scripts/extract_sber_2025_equity.py /tmp/sber-ar-2025-ru.pdf --output /tmp/sber-2025-equity-candidates.json
+          python - <<'PY'
+          import json
+          p='/tmp/sber-2025-equity-candidates.json'
+          d=json.load(open(p,encoding='utf-8'))
+          print('--- Candidate evidence summary ---')
+          print(json.dumps(d['candidate_counts'],ensure_ascii=False,indent=2))
+          print('--- First 3 candidates by category ---')
+          seen={}
+          for m in d['matches']:
+              n=seen.get(m['category'],0)
+              if n<3:
+                  print(json.dumps(m,ensure_ascii=False))
+                  seen[m['category']]=n+1
+          if d['semantic_verification'] is not False or d['valuation_gate']!='PARTIAL':
+              raise SystemExit('Extractor must not auto-verify SBER valuation')
+          PY
+      - name: Fail-closed network outcome
+        if: steps.download.outputs.downloaded != 'true'
+        run: |
+          echo 'No primary document content extracted. SBER common BVPS/P/B remains PARTIAL.'
