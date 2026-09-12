@@ -1,0 +1,53 @@
+name: Crypto Historical Context Recovery
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/recover_crypto_historical_context.py'
+      - '.github/workflows/crypto-historical-context-recovery.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  recovery:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run historical context recovery audit
+        run: python scripts/recover_crypto_historical_context.py
+      - name: Validate recovery contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('data/crypto-radar/historical_context_recovery.json')
+          j=json.loads(p.read_text(encoding='utf-8'))
+          assert j['release']=='R1.7.2 Historical Market Context Recovery'
+          f=j['features']; g=j['gate']
+          s=f['stablecoin_market_cap_history']
+          assert s['status'] in {'AVAILABLE','UNAVAILABLE'}
+          if s['status']=='AVAILABLE':
+              assert s['coverage_pct'] >= 95
+              assert s['valid_rows'] > 0
+          assert f['total_crypto_market_cap_history']['status']=='AUTH_REQUIRED'
+          assert f['btc_dominance_history']['status']=='AUTH_REQUIRED'
+          assert g['full_model_historical_replay']=='BLOCKED_EXTERNAL_DATA'
+          print('CRYPTO R1.7.2 HISTORICAL CONTEXT RECOVERY GATE: PASS')
+          PY
+      - name: Commit recovery report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/crypto-radar/historical_context_recovery.json
+          if git diff --cached --quiet; then
+            echo "No recovery report changes"
+          else
+            git commit -m "data: update crypto historical context recovery"
+            git push
+          fi
