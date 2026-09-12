@@ -1,0 +1,42 @@
+{
+  "version": "1.6.2",
+  "method": "confirmed regime transitions; forward BTC observation at 1h/4h/24h; no lookahead",
+  "max_observation_lag_minutes": 30,
+  "event_count": 0,
+  "sample_quality": "WARMUP",
+  "summary": {
+    "1h": {
+      "closed": 0,
+      "open": 0,
+      "avg_btc_return_pct": null,
+      "positive_rate_pct": null,
+      "negative_rate_pct": null,
+      "directional_cases": 0,
+      "alignment_rate_pct": null
+    },
+    "4h": {
+      "closed": 0,
+      "open": 0,
+      "avg_btc_return_pct": null,
+      "positive_rate_pct": null,
+      "negative_rate_pct": null,
+      "directional_cases": 0,
+      "alignment_rate_pct": null
+    },
+    "24h": {
+      "closed": 0,
+      "open": 0,
+      "avg_btc_return_pct": null,
+      "positive_rate_pct": null,
+      "negative_rate_pct": null,
+      "directional_cases": 0,
+      "alignment_rate_pct": null
+    }
+  },
+  "events": [],
+  "notes": [
+    "Outcome validation measures post-transition BTC behavior; it is not a crash probability model.",
+    "First confirmed regime is baseline and is never counted as a transition.",
+    "Directional alignment is informational and does not change Risk/Regime thresholds automatically."
+  ]
+}
