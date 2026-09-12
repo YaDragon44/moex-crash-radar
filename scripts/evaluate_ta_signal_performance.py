@@ -32,6 +32,29 @@ def parse_dt(value):
     return dt.astimezone(MSK)
 
 
+def sample_quality(closed):
+    if closed < 10:
+        return {
+            "status": "INSUFFICIENT",
+            "min_closed_for_review": 10,
+            "min_closed_for_usable": 30,
+            "message": "Недостаточно закрытых READY для изменения фильтров. Наблюдаем дальше.",
+        }
+    if closed < 30:
+        return {
+            "status": "PRELIMINARY",
+            "min_closed_for_review": 10,
+            "min_closed_for_usable": 30,
+            "message": "Выборка предварительная. Допустим только диагностический разбор, без агрессивной оптимизации.",
+        }
+    return {
+        "status": "USABLE",
+        "min_closed_for_review": 10,
+        "min_closed_for_usable": 30,
+        "message": "Выборка достаточна для предметного сравнения фильтров и сегментов модели.",
+    }
+
+
 def candle_rows(snapshot, ticker, tf):
     raw = (((snapshot.get("securities") or {}).get(ticker) or {}).get("raw") or {}).get(tf) or []
     out = []
@@ -150,18 +173,20 @@ def main():
         if subset:
             by_tf[tf] = summarize(subset)
 
+    summary = summarize(evaluated)
     doc = {
-        "release": "R0.9.0 Production Observation",
+        "release": "R0.9.2 Production Observation",
         "generated_at": snapshot.get("generated_at") or datetime.now(MSK).isoformat(timespec="seconds"),
         "definition": "Model signal quality: WIN if TP2 is reached before Stop after READY; LOSS if Stop first; AMBIGUOUS if both occur in one candle and order is unknown. This is not actual account P/L.",
-        "summary": summarize(evaluated),
+        "sample_quality": sample_quality(summary["closed"]),
+        "summary": summary,
         "by_ticker": by_ticker,
         "by_tf": by_tf,
         "signals": evaluated[-200:],
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps({"ready_signals": len(evaluated), **doc["summary"]}, ensure_ascii=False))
+    print(json.dumps({"ready_signals": len(evaluated), "sample_quality": doc["sample_quality"]["status"], **doc["summary"]}, ensure_ascii=False))
 
 
 if __name__ == "__main__":
