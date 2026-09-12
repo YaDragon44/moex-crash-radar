@@ -237,10 +237,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          URL="https://yadragon44.github.io/moex-crash-radar/ta-market/"
+          BASE="https://yadragon44.github.io/moex-crash-radar/ta-market"
           for attempt in {1..12}; do
-            code=$(curl -L -sS -o /tmp/ta-market.html -w "%{http_code}" --connect-timeout 10 --max-time 20 "$URL" || true)
-            js_code=$(curl -L -sS -o /tmp/ta-market-patch.js -w "%{http_code}" --connect-timeout 10 --max-time 20 "https://yadragon44.github.io/moex-crash-radar/ta-market/production_patch.js" || true)
+            bust="$(date +%s)-${attempt}"
+            code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/ta-market.html -w "%{http_code}" --connect-timeout 10 --max-time 20 "${BASE}/?v=${bust}" || true)
+            js_code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/ta-market-patch.js -w "%{http_code}" --connect-timeout 10 --max-time 20 "${BASE}/production_patch.js?v=${bust}" || true)
             if [ "$code" = "200" ] && [ "$js_code" = "200" ] && grep -q "TA Market Monitor" /tmp/ta-market.html && grep -q "production_patch.js" /tmp/ta-market.html && grep -q "snapshot age ≤25m" /tmp/ta-market-patch.js && grep -q "ta_market_risk_v085" /tmp/ta-market-patch.js && grep -q "Production Observation" /tmp/ta-market-patch.js && grep -q "Sample Quality" /tmp/ta-market-patch.js && grep -q "signal_performance.json" /tmp/ta-market-patch.js; then
               echo "TA MARKET PUBLIC HTML + SAFETY + RISK + OBSERVATION + SAMPLE QUALITY GATE: PASS"; exit 0
             fi
