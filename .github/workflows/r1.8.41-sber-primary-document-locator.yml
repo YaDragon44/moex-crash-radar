@@ -1,0 +1,30 @@
+name: R1.8.41 SBER Primary Document Locator
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+    paths:
+      - 'web/investor-radar/sber-primary-document-locator.js'
+      - 'web/investor-radar/sber-primary-document-locator.test.js'
+      - '.github/workflows/r1.8.41-sber-primary-document-locator.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax
+        run: node --check web/investor-radar/sber-primary-document-locator.js
+      - name: Locator gate regression
+        run: node web/investor-radar/sber-primary-document-locator.test.js
+      - name: Current evidence remains fail-closed
+        run: |
+          node - <<'NODE'
+          const g=require('./web/investor-radar/sber-primary-document-locator.js');
+          const r=g.current();
+          if(r.status!=='PARTIAL'||r.verified!==false) throw new Error('Current real evidence must remain PARTIAL');
+          if(!r.documents.annualReport2025.url.includes('sber-ar-2025-ru.pdf')) throw new Error('Official annual report URL missing');
+          if(!r.missing.includes('document_content_extraction')) throw new Error('Extraction blocker missing');
+          console.log('R1.8.41 current evidence: PARTIAL (expected)');
+          NODE
