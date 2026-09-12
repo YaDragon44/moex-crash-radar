@@ -45,8 +45,11 @@ jobs:
               raise SystemExit(f"quality must be OK, got {j.get('quality')}")
           for secid in required:
               z=j['securities'][secid]
-              if not z.get('marketdata'):
+              md=z.get('marketdata') or {}
+              if not md:
                   raise SystemExit(f'{secid}: marketdata missing')
+              if not isinstance(md.get('LOTSIZE'), (int,float)) or md.get('LOTSIZE') <= 0:
+                  raise SystemExit(f'{secid}: LOTSIZE missing/invalid: {md.get("LOTSIZE")}')
               for tf in ('D1','H1','M10'):
                   if not z.get('raw',{}).get(tf):
                       raise SystemExit(f'{secid}: {tf} candles missing')
@@ -62,7 +65,7 @@ jobs:
                   raise SystemExit(f'context {key} missing')
           if not (ctx.get('brent') or {}).get('SECID'):
               raise SystemExit('Brent SECID missing')
-          print('TA MARKET SCHEDULED PRODUCTION GATE: PASS')
+          print('TA MARKET SCHEDULED PRODUCTION + LOTSIZE GATE: PASS')
           PY
       - name: Update signal history
         run: python scripts/update_ta_signal_history.py
