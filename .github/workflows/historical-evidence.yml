@@ -15,6 +15,7 @@ on:
       - 'scripts/run_crowd_incremental_value.py'
       - 'scripts/run_market_risk_replay.py'
       - 'scripts/run_market_risk_duplication_gate.py'
+      - 'scripts/run_vulnerability_data_audit.py'
       - 'src/moex_crash_radar/history.py'
       - 'src/moex_crash_radar/live_gate.py'
       - 'src/moex_crash_radar/positioning.py'
@@ -23,6 +24,9 @@ on:
       - 'src/moex_crash_radar/crowd_history.py'
       - 'src/moex_crash_radar/crowd_transition.py'
       - 'src/moex_crash_radar/market_risk.py'
+      - 'src/moex_crash_radar/vulnerability.py'
+      - 'src/moex_crash_radar/brent_history.py'
+      - 'src/moex_crash_radar/context_validation.py'
       - 'data/imoex_constituents_2019_2026.json'
       - '.github/workflows/historical-evidence.yml'
   workflow_dispatch:
@@ -33,7 +37,7 @@ permissions:
 jobs:
   evidence:
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -59,6 +63,8 @@ jobs:
         run: python scripts/run_market_risk_replay.py
       - name: Market risk duplication gate
         run: python scripts/run_market_risk_duplication_gate.py
+      - name: Vulnerability PIT data audit
+        run: python scripts/run_vulnerability_data_audit.py
       - name: Upload evidence
         uses: actions/upload-artifact@v4
         with:
@@ -73,4 +79,5 @@ jobs:
             artifacts/crowd_incremental_value.json
             artifacts/market_risk_replay.json
             artifacts/market_risk_duplication_gate.json
+            artifacts/vulnerability_data_audit.json
           if-no-files-found: error
