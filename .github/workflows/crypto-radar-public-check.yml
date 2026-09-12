@@ -1,0 +1,35 @@
+name: Crypto Radar Public Check
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/crypto-radar-public-check.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify Crypto Radar public HTML and snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          PAGE='https://yadragon44.github.io/moex-crash-radar/crypto-radar/'
+          JSON='https://raw.githubusercontent.com/YaDragon44/moex-crash-radar/main/data/crypto-radar/snapshot.json'
+          page_code=$(curl -L -sS -o /tmp/crypto-radar.html -w '%{http_code}' --connect-timeout 10 --max-time 20 "$PAGE")
+          json_code=$(curl -L -sS -o /tmp/crypto-radar.json -w '%{http_code}' --connect-timeout 10 --max-time 20 "$JSON")
+          test "$page_code" = '200'
+          test "$json_code" = '200'
+          grep -q 'НАСТРОЕНИЕ ТОЛПЫ · CRYPTO RADAR' /tmp/crypto-radar.html
+          python - <<'PY'
+          import json
+          j=json.load(open('/tmp/crypto-radar.json',encoding='utf-8'))
+          assert j['version']=='1.4.1'
+          assert j['crowd']['coverage_pct'] >= 0
+          print('CRYPTO RADAR PUBLIC HTTP GATE: PASS')
+          print('coverage=',j['crowd']['coverage_pct'],'quality=',j['crowd']['quality_passed'],'score=',j['crowd']['score'],'state=',j['crowd']['state'])
+          PY
