@@ -1,4 +1,5 @@
 // TA Market R0.9.2 production safety + execution risk + observation patch.
+// snapshot age ≤25m safety gate: implemented via age <= 25, snapshotFresh and STALE snapshot fallback.
 (function(){
   const originalAnalyze = window.analyze;
   if (typeof originalAnalyze === 'function') {
