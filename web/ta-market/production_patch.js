@@ -1,4 +1,4 @@
-// TA Market R0.9.1 production safety + execution risk + observation patch.
+// TA Market R0.9.2 production safety + execution risk + observation patch.
 (function(){
   const originalAnalyze = window.analyze;
   if (typeof originalAnalyze === 'function') {
@@ -84,7 +84,7 @@
     if(document.getElementById('perfbox')) return;
     const aside=document.querySelector('aside.panel'); if(!aside) return;
     const box=document.createElement('div'); box.id='perfbox';
-    box.innerHTML='<div class="section">Production Observation</div><div class="trade" id="perfsummary"></div><div class="gate" id="perfnote">Загрузка статистики модели…</div><div id="perfdetail" style="font-size:11px;line-height:1.5;margin-top:8px"></div>';
+    box.innerHTML='<div class="section">Production Observation</div><div class="trade" id="perfsummary"></div><div class="gate" id="samplequality">Sample Quality: N/A</div><div class="gate" id="perfnote">Загрузка статистики модели…</div><div id="perfdetail" style="font-size:11px;line-height:1.5;margin-top:8px"></div>';
     aside.appendChild(box);
   }
 
@@ -96,16 +96,18 @@
 
   function drawPerf(){
     ensurePerfBox();
-    const sum=document.getElementById('perfsummary'), note=document.getElementById('perfnote'), detail=document.getElementById('perfdetail');
-    if(!sum||!note||!detail)return;
+    const sum=document.getElementById('perfsummary'), quality=document.getElementById('samplequality'), note=document.getElementById('perfnote'), detail=document.getElementById('perfdetail');
+    if(!sum||!quality||!note||!detail)return;
     if(!PERF){
       sum.innerHTML=[['READY signals','N/A'],['Closed','N/A'],['Win Rate','N/A'],['Expectancy','N/A'],['Profit Factor','N/A']].map(([k,v])=>`<div class="kv"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+      quality.textContent='Sample Quality: N/A';
       note.textContent='Статистика модели недоступна; торговые сигналы продолжают работать.';
       detail.innerHTML=''; return;
     }
-    const s=PERF.summary||{};
+    const s=PERF.summary||{}, q=PERF.sample_quality||{};
     sum.innerHTML=[['READY signals',s.signals??0],['Closed',s.closed??0],['Win Rate',pct(s.win_rate)],['Expectancy',rval(s.expectancy_r)],['Profit Factor',Number.isFinite(+s.profit_factor)?num(s.profit_factor,2):'N/A']].map(([k,v])=>`<div class="kv"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
-    note.textContent=(+s.signals||0)===0?'READY-сигналов пока нет — статистика качества еще не сформирована.':(+s.closed||0)===0?'Есть READY, но завершенных модельных исходов пока нет.':'Метрики — качество модели, не фактический P/L счета.';
+    quality.textContent=`Sample Quality: ${q.status||'N/A'} · ${s.closed??0}/10 для первого review · ${s.closed??0}/30 для usable`;
+    note.textContent=q.message||((+s.signals||0)===0?'READY-сигналов пока нет — статистика качества еще не сформирована.':'Метрики — качество модели, не фактический P/L счета.');
     const tickers=['SBERP','VKCO','OZPH'].map(k=>`<div><b>${k}</b> — ${compactStats(PERF.by_ticker?.[k])}</div>`).join('');
     const tfs=['D1','H1','M10'].map(k=>`<div><b>${k}</b> — ${compactStats(PERF.by_tf?.[k])}</div>`).join('');
     detail.innerHTML='<div style="margin-bottom:5px;color:var(--mut)">По бумагам</div>'+tickers+'<div style="margin:8px 0 5px;color:var(--mut)">По TF</div>'+tfs;
@@ -116,7 +118,7 @@
       const r=await fetch('data/signal_performance.json?ts='+Date.now(),{cache:'no-store'});
       if(!r.ok) throw new Error('HTTP '+r.status);
       const j=await r.json();
-      PERF=j?.release==='R0.9.0 Production Observation'?j:null;
+      PERF=['R0.9.0 Production Observation','R0.9.2 Production Observation'].includes(j?.release)?j:null;
     }catch(e){PERF=null;}
     drawPerf();
   }
@@ -127,10 +129,10 @@
     render=window.render;
   }
 
-  document.title = 'TA Market Monitor · R0.9.1';
+  document.title = 'TA Market Monitor · R0.9.2';
   const badge = document.querySelector('.top h1 .ok');
-  if (badge) badge.textContent = 'R0.9.1';
+  if (badge) badge.textContent = 'R0.9.2';
   const footer = document.querySelector('.footer');
-  if (footer) footer.innerHTML += '<br>R0.9.1: production observation tracks model READY outcomes (TP2 vs Stop), Win Rate, Expectancy and Profit Factor. Metrics are model quality, not actual account P/L.';
+  if (footer) footer.innerHTML += '<br>R0.9.2: Sample Quality Gate prevents tuning on noise: <10 closed = INSUFFICIENT, 10–29 = PRELIMINARY, ≥30 = USABLE. Metrics are model quality, not actual account P/L.';
   setTimeout(function(){ if (window.J) { render(); drawRisk(); } ensurePerfBox(); loadPerf(); }, 500);
 })();
