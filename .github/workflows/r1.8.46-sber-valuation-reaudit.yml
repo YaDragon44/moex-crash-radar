@@ -1,0 +1,45 @@
+name: R1.8.46 SBER Valuation Blocker Re-Audit
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Static regression
+        run: |
+          node web/investor-radar/peer-earnings-registry.test.js
+          node web/investor-radar/peer-pe-data-factory.test.js
+          node web/investor-radar/sber-valuation-completeness-gate.test.js
+          node web/investor-radar/sber-final-valuation-pipeline.test.js
+          node web/investor-radar/sber-valuation-blocker-reaudit.test.js
+      - name: Live MOEX valuation re-audit
+        run: |
+          node <<'NODE'
+          const Reg=require('./web/investor-radar/sber-valuation-registry.js');
+          const Moex=require('./web/investor-radar/sber-moex-runtime.js');
+          const MF=require('./web/investor-radar/multiples-data-factory.js');
+          const U=require('./web/investor-radar/peer-universe-registry.js');
+          const E=require('./web/investor-radar/peer-earnings-registry.js');
+          const P=require('./web/investor-radar/peer-pe-data-factory.js');
+          const PE=require('./web/investor-radar/sber-valuation-runtime-integration.js');
+          const BV=require('./web/investor-radar/sber-reported-bvps-registry.js');
+          const PB=require('./web/investor-radar/sber-pb-runtime-integration.js');
+          const Q=require('./web/investor-radar/bank-quality-trend.js');
+          const A=require('./web/investor-radar/sber-valuation-blocker-reaudit.js');
+          (async()=>{
+            const market=await Moex.collect();
+            const pe=PE.build({registry:Reg,runtime:market,multiplesFactory:MF,peerUniverse:U,peerEarnings:E,peerPEFactory:P});
+            const pb=await PB.collect();
+            const quality=Q.assess(Reg.SBER.bankMetrics);
+            const bv=BV.assess();
+            const r=A.audit({peRuntime:pe,pbRuntime:pb,bankQuality:quality,reportedBvps:bv,currentPrice:pb.price,priceVerified:pb.verified===true});
+            console.log(JSON.stringify({marketStatus:market.status,pe,pb,quality,bvps:{status:bv.status,bookValuePerShare:bv.bookValuePerShare},reaudit:r},null,2));
+            if(!r.verified) process.exit(1);
+            if(r.peerCount<2||r.historicalPeCount<3||!(r.pb>0)) process.exit(1);
+            const t=E.get('T');
+            if(t.eps!==68.872||t.corporateAction?.ratioNew!==10) process.exit(1);
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
