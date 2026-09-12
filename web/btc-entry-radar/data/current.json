@@ -4,7 +4,7 @@
     "price_confirm_4h": false,
     "new_local_low_4h": false,
     "oi_regime": "STABLE",
-    "stop_atr": 2.082236622352859,
+    "stop_atr": 2.171205705563259,
     "data_ready": true,
     "position_open": false
   },
@@ -20,31 +20,31 @@
     "invalidation": "F&G returns to <=35 and full Quality Gate is restored"
   },
   "market": {
-    "price": 77354.4,
-    "timestamp": "2026-09-12T08:00:00+00:00",
-    "age_h": 7.989973161666667,
+    "price": 77385.2,
+    "timestamp": "2026-09-12T12:00:00+00:00",
+    "age_h": 4.354624316111111,
     "fresh": true,
     "price_confirm_4h": false,
     "new_local_low_4h": false,
-    "atr14_4h": 855.3714285714294,
+    "atr14_4h": 828.2642857142865,
     "swing_low_4h": 76001.0,
-    "stop_price": 75573.31428571428,
-    "stop_atr": 2.082236622352859
+    "stop_price": 75586.86785714286,
+    "stop_atr": 2.171205705563259
   },
   "crowd": {
     "value": 63.0,
     "classification": "Greed",
     "timestamp": "2026-09-12T00:00:00+00:00",
-    "age_h": 15.989973161666665,
+    "age_h": 16.35462431611111,
     "fresh": true
   },
   "open_interest": {
     "regime": "STABLE",
-    "timestamp": "2026-09-12T12:00:00+00:00",
-    "age_h": 3.9899731616666667,
+    "timestamp": "2026-09-12T16:00:00+00:00",
+    "age_h": 0.3546243161111111,
     "fresh": true,
-    "oi_value": 2746343.380000014,
-    "delta_24h": 0.0038847712888310237,
+    "oi_value": 2743325.4600000135,
+    "delta_24h": -0.0009079442034923835,
     "delta_p10": -0.06140386115802635,
     "delta_p90": 0.05222157249792663,
     "points": 100
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-09-12T15:59:23.903382+00:00"
+  "generated_at_utc": "2026-09-12T16:21:16.647538+00:00"
 }
