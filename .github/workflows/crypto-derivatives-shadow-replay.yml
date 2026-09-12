@@ -1,0 +1,54 @@
+name: Crypto Derivatives Shadow Replay
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/replay_crypto_derivatives_shadow.py'
+      - '.github/workflows/crypto-derivatives-shadow-replay.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: crypto-derivatives-shadow-replay
+  cancel-in-progress: true
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run derivatives shadow replay
+        run: python scripts/replay_crypto_derivatives_shadow.py
+      - name: Validate replay contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('data/crypto-radar/derivatives_shadow_replay.json')
+          j=json.loads(p.read_text(encoding='utf-8'))
+          assert j['release']=='R1.7.1 Derivatives Shadow Replay'
+          assert j['status']=='SHADOW_ONLY'
+          assert j['window_days']==30
+          assert 0 <= j['coverage_pct'] <= 100
+          assert j['gate']['threshold_calibration']=='PROHIBITED'
+          assert j['gate']['full_model_validation']=='NO-GO'
+          assert j['rows'] > 0
+          print('R1.7.1 DERIVATIVES SHADOW REPLAY CONTRACT: PASS')
+          PY
+      - name: Commit replay report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/crypto-radar/derivatives_shadow_replay.json
+          if git diff --cached --quiet; then
+            echo "No replay changes"
+          else
+            git commit -m "data: update crypto derivatives shadow replay"
+            git push
+          fi
