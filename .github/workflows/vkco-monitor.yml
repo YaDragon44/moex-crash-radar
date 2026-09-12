@@ -1,4 +1,4 @@
-name: VKCO Monitor R1.0
+name: VKCO Monitor R1.1
 
 on:
   push:
@@ -20,14 +20,16 @@ on:
         options:
           - run
           - test_telegram
+          - heartbeat
   schedule:
     - cron: "*/10 6-20 * * 1-5"
+    - cron: "0 7 * * 1-5"
 
 permissions:
   contents: read
 
 concurrency:
-  group: vkco-monitor-${{ github.event_name }}
+  group: vkco-monitor-${{ github.event_name }}-${{ github.event.schedule || 'manual' }}
   cancel-in-progress: false
 
 jobs:
@@ -38,7 +40,7 @@ jobs:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       STATE_FILE: vkco-monitor/state/state.json
-      MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'run' }}
+      MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || github.event.schedule == '0 7 * * 1-5' && 'heartbeat' || 'run' }}
 
     steps:
       - name: Checkout
@@ -73,6 +75,19 @@ jobs:
       - name: Run VKCO monitor
         if: github.event_name != 'pull_request'
         run: python vkco-monitor/monitor.py
+
+      - name: Notify Telegram on failure
+        if: failure() && github.event_name != 'pull_request'
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request
+          token=os.environ['TELEGRAM_BOT_TOKEN']
+          chat=os.environ['TELEGRAM_CHAT_ID']
+          text='🔴 VKCO Monitor R1.1 — ERROR\nGitHub Actions run failed. Проверь workflow/logs.'
+          data=json.dumps({'chat_id':chat,'text':text}).encode()
+          req=urllib.request.Request(f'https://api.telegram.org/bot{token}/sendMessage', data=data, headers={'Content-Type':'application/json'})
+          urllib.request.urlopen(req, timeout=20).read()
+          PY
 
       - name: Save signal state
         if: always() && github.event_name != 'pull_request'
