@@ -1,0 +1,36 @@
+name: VKCO R1.3 Event Risk Smoke
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/vkco-event-risk-smoke.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r vkco-monitor/requirements.txt
+      - name: Check official VK IR source
+        working-directory: vkco-monitor
+        run: |
+          python - <<'PY'
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          from monitor import fetch_event_risk
+          risk = fetch_event_risk(datetime.now(ZoneInfo('Europe/Moscow')), 3)
+          print('event_source_ok=True')
+          print('event_risk_ok=', risk['ok'])
+          print('event_items=', len(risk['items']))
+          if risk['items']:
+              print('first_event_date=', risk['items'][0]['date'])
+              print('first_event=', risk['items'][0]['text'][:220])
+          PY
