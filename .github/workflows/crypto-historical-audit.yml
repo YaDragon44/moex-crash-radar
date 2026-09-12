@@ -1,0 +1,54 @@
+name: Crypto Historical Audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/audit_crypto_historical_data.py'
+      - '.github/workflows/crypto-historical-audit.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: crypto-historical-audit
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run historical data audit
+        run: python scripts/audit_crypto_historical_data.py
+      - name: Validate audit contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('data/crypto-radar/historical_audit.json')
+          j=json.loads(p.read_text(encoding='utf-8'))
+          assert j['release']=='R1.7.0 Historical Data Audit'
+          assert j['window_days']==30
+          assert j['gate']['decision'] in {'GO','PARTIAL','NO-GO'}
+          assert j['gate']['exact_full_model_replay'] in {'GO','NO-GO'}
+          assert j['gate']['derivatives_shadow_replay'] in {'GO','NO-GO'}
+          for k in ('btc_price_1h','open_interest_and_long_short_1h','funding_history'):
+              assert j['features'][k]['status'] in {'AVAILABLE','UNAVAILABLE'}
+          print('R1.7.0 HISTORICAL DATA AUDIT CONTRACT: PASS')
+          PY
+      - name: Commit audit report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/crypto-radar/historical_audit.json
+          if git diff --cached --quiet; then
+            echo "No audit changes"
+          else
+            git commit -m "data: update crypto historical audit"
+            git push
+          fi
