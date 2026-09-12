@@ -1,0 +1,58 @@
+name: Crypto Radar Snapshot
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/collect_crypto_radar_snapshot.py'
+      - '.github/workflows/crypto-radar-snapshot.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: crypto-radar-snapshot
+  cancel-in-progress: true
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Collect crypto snapshot
+        run: python scripts/collect_crypto_radar_snapshot.py
+      - name: Validate snapshot
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('data/crypto-radar/snapshot.json')
+          j=json.loads(p.read_text(encoding='utf-8'))
+          assert j['version']=='1.4.1'
+          assert 'generated_at' in j
+          assert set(j['source_status'])=={'coingecko_global','coingecko_stablecoins','gate_ticker','gate_contract_stats'}
+          assert 0 <= j['crowd']['coverage_pct'] <= 100
+          if j['crowd']['quality_passed']:
+              assert j['crowd']['coverage_pct'] >= 70
+              assert j['crowd']['score'] is not None
+          else:
+              assert j['crowd']['score'] is None
+          print('CRYPTO RADAR SNAPSHOT GATE: PASS')
+          PY
+      - name: Commit snapshot if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/crypto-radar/snapshot.json
+          if git diff --cached --quiet; then
+            echo "No snapshot changes"
+          else
+            git commit -m "data: update crypto radar snapshot"
+            git push
+          fi
