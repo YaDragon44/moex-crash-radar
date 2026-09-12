@@ -1,13 +1,23 @@
 {
-  "generated_at_utc": null,
-  "tracked_states": ["WATCH", "ARMED", "LONG_READY"],
+  "generated_at_utc": "2026-09-12T15:59:24.989903+00:00",
+  "tracked_states": [
+    "ARMED",
+    "LONG_READY",
+    "WATCH"
+  ],
   "signal_count": 0,
   "scored_count": 0,
   "summary": {
-    "WATCH": {"signals": 0},
-    "ARMED": {"signals": 0},
-    "LONG_READY": {"signals": 0}
+    "ARMED": {
+      "signals": 0
+    },
+    "LONG_READY": {
+      "signals": 0
+    },
+    "WATCH": {
+      "signals": 0
+    }
   },
   "signals": [],
-  "interpretation": "Shadow statistics not yet accumulated in production. N/A is preferred to fabricated precision."
+  "interpretation": "Descriptive shadow statistics only; not calibrated probabilities or proof of edge."
 }
