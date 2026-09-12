@@ -43,6 +43,8 @@ def open_position(signal: dict[str, Any], plan: dict[str, Any]) -> dict[str, Any
         "shares": plan.get("shares"),
         "lots": plan.get("lots"),
         "initial_risk_rub": plan.get("actual_risk"),
+        "setup": signal.get("setup"),
+        "score": signal.get("score"),
         "last_event": "OPEN",
         "last_price": float(signal["price"]),
     }
