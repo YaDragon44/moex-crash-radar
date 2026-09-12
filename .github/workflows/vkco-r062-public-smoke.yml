@@ -10,18 +10,49 @@ jobs:
   smoke:
     runs-on: ubuntu-latest
     steps:
-      - name: Verify public dashboard and live candles
+      - name: Fetch public endpoints
         shell: bash
         run: |
           set -euo pipefail
+          bust="${GITHUB_RUN_ID}"
           DASH='https://yadragon44.github.io/moex-crash-radar/vkco-dashboard/'
           LIVE='https://raw.githubusercontent.com/YaDragon44/moex-crash-radar/vkco-live/status.json'
-          ok=0
-          for attempt in {1..18}; do
-            bust="${GITHUB_RUN_ID}-${attempt}"
-            dcode=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/vkco.html -w '%{http_code}' --connect-timeout 10 --max-time 20 "${DASH}?v=${bust}" || true)
-            lcode=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/vkco-live.json -w '%{http_code}' --connect-timeout 10 --max-time 20 "${LIVE}?v=${bust}" || true)
-            if [ "$dcode" = '200' ] && [ "$lcode" = '200' ] && grep -q 'R0.6.2 / ENGINE R1.8' /tmp/vkco.html && grep -Fq 'LS?.candles' /tmp/vkco.html && python - <<'PY'
+          dcode=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/vkco.html -w '%{http_code}' --connect-timeout 10 --max-time 30 "${DASH}?v=${bust}" || true)
+          lcode=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/vkco-live.json -w '%{http_code}' --connect-timeout 10 --max-time 30 "${LIVE}?v=${bust}" || true)
+          echo "dashboard_http=${dcode}"
+          echo "live_http=${lcode}"
+          echo "dashboard_version=$(grep -o 'R0\.[0-9.]\+ / ENGINE R1\.8' /tmp/vkco.html | head -1 || true)"
+          echo "dashboard_live_candles_ref=$(grep -Foc 'LS?.candles' /tmp/vkco.html || true)"
+          if [ -s /tmp/vkco-live.json ]; then
+            python - <<'PY'
+          import json
+          try:
+              j=json.load(open('/tmp/vkco-live.json',encoding='utf-8'))
+              print('live_schema=',j.get('schema_version'))
+              print('live_dashboard_release=',j.get('dashboard_release'))
+              print('live_health=',j.get('health'))
+              print('live_candles=',len(j.get('candles') or []))
+          except Exception as exc:
+              print('live_json_error=',type(exc).__name__,exc)
+          PY
+          fi
+          test "$dcode" = '200'
+          test "$lcode" = '200'
+
+      - name: Verify dashboard contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'R0.6.2 / ENGINE R1.8' /tmp/vkco.html
+          grep -Fq 'LS?.candles' /tmp/vkco.html
+          ! grep -Fq "../ta-market/data/current.json" /tmp/vkco.html
+          echo 'VKCO DASHBOARD R0.6.2 HTML GATE: PASS'
+
+      - name: Verify live candles contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
           import json, math
           j=json.load(open('/tmp/vkco-live.json',encoding='utf-8'))
           candles=j.get('candles') or []
@@ -35,8 +66,6 @@ jobs:
                   assert isinstance(c[k], (int,float)) and math.isfinite(c[k])
           print('VKCO LIVE CANDLES CONTRACT: PASS')
           PY
-            then ok=1; break; fi
-            sleep 10
-          done
-          test "$ok" = '1'
-          echo 'VKCO R0.6.2 PUBLIC CHART DATA GATE: PASS'
+
+      - name: Final gate
+        run: echo 'VKCO R0.6.2 PUBLIC CHART DATA GATE: PASS'
