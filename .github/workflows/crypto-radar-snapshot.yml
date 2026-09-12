@@ -9,6 +9,7 @@ on:
     paths:
       - 'scripts/collect_crypto_radar_snapshot.py'
       - 'scripts/enrich_crypto_risk.py'
+      - 'scripts/update_crypto_observation_history.py'
       - '.github/workflows/crypto-radar-snapshot.yml'
 
 permissions:
@@ -32,43 +33,50 @@ jobs:
         run: python scripts/collect_crypto_radar_snapshot.py
       - name: Enrich Risk / Regime / Transition / Action
         run: python scripts/enrich_crypto_risk.py /tmp/crypto-radar-prev.json
-      - name: Validate snapshot
+      - name: Update observation history
+        run: python scripts/update_crypto_observation_history.py
+      - name: Validate snapshot and history
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          p=Path('data/crypto-radar/snapshot.json')
-          j=json.loads(p.read_text(encoding='utf-8'))
-          assert j['version']=='1.5'
-          assert 'generated_at' in j
-          assert set(j['source_status'])=={'coingecko_global','coingecko_stablecoins','gate_ticker','gate_contract_stats'}
-          assert 0 <= j['crowd']['coverage_pct'] <= 100
-          assert j['risk']['model']=='risk-v1-provisional'
-          assert j['regime']['model']=='regime-v1-provisional'
-          assert j['regime']['confirmation_rule']=='2 consecutive observations'
-          assert set(j['action_engine']) >= {'investor','trader','why','provisional'}
-          if j['crowd']['quality_passed']:
-              assert j['crowd']['coverage_pct'] >= 70
-              assert j['crowd']['score'] is not None
-              assert j['risk']['coverage_pct'] >= 80
-              assert j['risk']['score'] is not None
-              assert j['risk']['status'] in {'LOW','MODERATE','ELEVATED','HIGH','CRITICAL'}
-              assert j['regime']['status'] in {'RISK-ON','RISK-ON / OVERHEATED','NEUTRAL','DISTRIBUTION','RISK-OFF','PANIC'}
+          s=json.loads(Path('data/crypto-radar/snapshot.json').read_text(encoding='utf-8'))
+          h=json.loads(Path('data/crypto-radar/history.json').read_text(encoding='utf-8'))
+          assert s['version']=='1.5'
+          assert 'generated_at' in s
+          assert set(s['source_status'])=={'coingecko_global','coingecko_stablecoins','gate_ticker','gate_contract_stats'}
+          assert 0 <= s['crowd']['coverage_pct'] <= 100
+          assert s['risk']['model']=='risk-v1-provisional'
+          assert s['regime']['model']=='regime-v1-provisional'
+          assert s['regime']['confirmation_rule']=='2 consecutive observations'
+          assert set(s['action_engine']) >= {'investor','trader','why','provisional'}
+          if s['crowd']['quality_passed']:
+              assert s['crowd']['coverage_pct'] >= 70
+              assert s['crowd']['score'] is not None
+              assert s['risk']['coverage_pct'] >= 80
+              assert s['risk']['score'] is not None
+              assert s['risk']['status'] in {'LOW','MODERATE','ELEVATED','HIGH','CRITICAL'}
+              assert s['regime']['status'] in {'RISK-ON','RISK-ON / OVERHEATED','NEUTRAL','DISTRIBUTION','RISK-OFF','PANIC'}
           else:
-              assert j['crowd']['score'] is None
-              assert j['risk']['score'] is None
-              assert j['action_engine']['investor']=='WAIT'
-              assert j['action_engine']['trader']=='WAIT'
-          print('CRYPTO RADAR R1.5 SNAPSHOT + RISK/REGIME GATE: PASS')
+              assert s['crowd']['score'] is None
+              assert s['risk']['score'] is None
+              assert s['action_engine']['investor']=='WAIT'
+              assert s['action_engine']['trader']=='WAIT'
+          assert h['version']=='1.6'
+          assert h['cadence_minutes']==15
+          assert 1 <= h['record_count'] <= h['retention_records']
+          assert h['last_generated_at']==s['generated_at']
+          assert h['records'][-1]['generated_at']==s['generated_at']
+          print('CRYPTO RADAR R1.6 SNAPSHOT + HISTORY GATE: PASS')
           PY
-      - name: Commit snapshot if changed
+      - name: Commit snapshot and history if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/crypto-radar/snapshot.json
+          git add data/crypto-radar/snapshot.json data/crypto-radar/history.json
           if git diff --cached --quiet; then
-            echo "No snapshot changes"
+            echo "No crypto radar changes"
           else
-            git commit -m "data: update crypto radar snapshot"
+            git commit -m "data: update crypto radar observation"
             git push
           fi
