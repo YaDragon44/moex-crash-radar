@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-12T19:09:31.409381+00:00",
+  "generated_at": "2026-09-12T19:24:23.883975+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2656793994384.412,
-    "total_change_24h_pct": -2.5477197077990494,
-    "btc_dominance_pct": 58.210688184325285,
-    "btc_cap": 1546538067770.9907,
-    "alt_cap": 1110255926613.4214
+    "total_market_cap": 2657539288351.512,
+    "total_change_24h_pct": -2.5391361498323732,
+    "btc_dominance_pct": 58.209461524277536,
+    "btc_cap": 1546939309545.5325,
+    "alt_cap": 1110599978805.9797
   },
   "derivatives": {
-    "btc_price": 77111.8,
-    "price_change_24h_pct": -0.04,
+    "btc_price": 77111.4,
+    "price_change_24h_pct": -0.16,
     "oi_usd": 4913698808.87772,
     "oi_change_24h_pct": -1.5987541919661785,
     "funding_pct": 0.01,
     "long_short_ratio": 1.6324793527726278
   },
   "context": {
-    "stablecoin_market_cap": 306773055448.0,
-    "stablecoin_market_cap_change_24h_pct": 0.015929715319606963,
+    "stablecoin_market_cap": 306785873140.0,
+    "stablecoin_market_cap_change_24h_pct": 0.025814522851597133,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -69,11 +69,11 @@
   "regime": {
     "model": "regime-v1-provisional",
     "provisional": true,
-    "status": "DISTRIBUTION",
+    "status": "RISK-OFF",
     "candidate": "RISK-OFF",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH DISTRIBUTION -> RISK-OFF · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> RISK-OFF",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,8 +82,8 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH DISTRIBUTION -> RISK-OFF · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> RISK-OFF",
+    "confirmed": true
   },
   "action_engine": {
     "investor": "REDUCE RISK",
