@@ -1,6 +1,4 @@
-import os
-
-from trade_plan import build_trade_plan, format_trade_plan
+from trade_plan import DEFAULT_RISK_PCT, build_trade_plan, format_trade_plan
 
 
 def signal(entry=120.0, stop=116.0):
@@ -18,10 +16,21 @@ def test_trade_plan_calculates_position_size(monkeypatch):
     assert p["sizing_ready"] is True
 
 
+def test_default_risk_pct_is_used_when_missing(monkeypatch):
+    monkeypatch.setenv("TRADING_CAPITAL_RUB", "1000000")
+    monkeypatch.delenv("RISK_PCT", raising=False)
+    p = build_trade_plan(signal())
+    assert p["risk_pct"] == DEFAULT_RISK_PCT == 0.5
+    assert p["allowed_risk"] == 5000.0
+    assert p["shares"] == 1250
+    assert p["sizing_ready"] is True
+
+
 def test_trade_plan_without_capital_is_safe(monkeypatch):
     monkeypatch.delenv("TRADING_CAPITAL_RUB", raising=False)
     monkeypatch.delenv("RISK_PCT", raising=False)
     p = build_trade_plan(signal())
+    assert p["risk_pct"] == 0.5
     assert p["sizing_ready"] is False
     assert p["shares"] is None
 
@@ -42,3 +51,12 @@ def test_format_contains_actionable_risk(monkeypatch):
     text = format_trade_plan(signal())
     assert "Размер позиции" in text
     assert "Фактический риск" in text
+
+
+def test_format_without_capital_mentions_only_required_variable(monkeypatch):
+    monkeypatch.delenv("TRADING_CAPITAL_RUB", raising=False)
+    monkeypatch.delenv("RISK_PCT", raising=False)
+    text = format_trade_plan(signal())
+    assert "0.50%" in text
+    assert "TRADING_CAPITAL_RUB" in text
+    assert "RISK_PCT" not in text
