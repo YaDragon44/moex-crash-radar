@@ -26,7 +26,7 @@ on:
     - cron: "0 7 * * 1-5"
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: vkco-monitor-${{ github.event_name }}-${{ github.event.schedule || 'manual' }}
@@ -44,6 +44,7 @@ jobs:
       STATE_FILE: vkco-monitor/state/state.json
       JOURNAL_JSONL: vkco-monitor/state/trade_journal.jsonl
       JOURNAL_CSV: vkco-monitor/state/trade_journal.csv
+      PUBLIC_STATUS_FILE: vkco-monitor/state/public_status.json
       MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || github.event.schedule == '0 7 * * 1-5' && 'heartbeat' || 'run' }}
 
     steps:
@@ -79,6 +80,29 @@ jobs:
       - name: Run VKCO monitor
         if: github.event_name != 'pull_request'
         run: python vkco-monitor/run_r18.py
+
+      - name: Export public dashboard state
+        if: always() && github.event_name != 'pull_request'
+        run: python vkco-monitor/export_status.py
+
+      - name: Publish live dashboard state
+        if: always() && github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin vkco-live
+          git worktree add /tmp/vkco-live origin/vkco-live
+          cp "$PUBLIC_STATUS_FILE" /tmp/vkco-live/status.json
+          cd /tmp/vkco-live
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add status.json
+          if git diff --cached --quiet; then
+            echo "live_status_unchanged=1"
+          else
+            git commit -m "data(vkco): update live status"
+            git push origin HEAD:vkco-live
+          fi
 
       - name: Notify Telegram on failure
         if: failure() && github.event_name != 'pull_request'
