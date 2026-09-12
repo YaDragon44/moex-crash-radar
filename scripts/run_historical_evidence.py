@@ -186,7 +186,9 @@ def main() -> None:
             "median_lead_days": median_lead,
             "metric_gate_pass": metric_gate_pass,
             "event_diagnostics": diagnostics,
+            "event_days": [evidence[i].day for i in events],
         },
+        "daily_evidence": [asdict(row) for row in evidence],
         "legacy_cash_day_metric": {
             "cash_days_with_full_horizon": cash_days,
             "false_cash_days": false_cash_days,
