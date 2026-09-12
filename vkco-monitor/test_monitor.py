@@ -1,7 +1,14 @@
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
-from monitor import Candle, adaptive_levels, apply_market_filter, detect_signal, market_filter
+from monitor import (
+    Candle,
+    adaptive_levels,
+    apply_market_filter,
+    detect_signal,
+    evaluate_event_risk_html,
+    market_filter,
+)
 
 MSK = ZoneInfo("Europe/Moscow")
 BASE = datetime(2026, 9, 11, 12, 0, tzinfo=MSK)
@@ -89,3 +96,30 @@ def test_market_score_is_added_to_signal():
     assert s is not None
     enriched = apply_market_filter(s, {"ok": True, "score": 2, "close": 3000, "sma20": 2990, "return_1h_pct": 0.2, "time": "x"})
     assert enriched["score"] == s["score"] + 2
+
+
+def test_recent_material_ir_news_blocks_ready():
+    raw = """
+    <html><body>
+    <div>11 сентября 2026</div>
+    <a>VK продолжает работу над снижением долговой нагрузки</a>
+    <p>Компания планирует разместить облигации объемом 5 млрд рублей.</p>
+    </body></html>
+    """
+    risk = evaluate_event_risk_html(raw, datetime(2026, 9, 12, 12, 0, tzinfo=MSK), window_days=3)
+    assert risk["ok"] is False
+    assert risk["items"]
+    assert risk["items"][0]["date"] == "11 сентября 2026"
+
+
+def test_neutral_recent_ir_news_does_not_block_ready():
+    raw = """
+    <html><body>
+    <div>12 сентября 2026</div>
+    <a>VK приняла участие в технологической конференции</a>
+    <p>Компания представила образовательный проект.</p>
+    </body></html>
+    """
+    risk = evaluate_event_risk_html(raw, datetime(2026, 9, 12, 12, 0, tzinfo=MSK), window_days=3)
+    assert risk["ok"] is True
+    assert risk["items"] == []
