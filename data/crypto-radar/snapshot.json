@@ -1,6 +1,6 @@
 {
-  "version": "1.4.1",
-  "generated_at": "2026-09-12T14:54:10.184672+00:00",
+  "version": "1.5",
+  "generated_at": "2026-09-12T14:59:36.369650+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2665761839589.323,
-    "total_change_24h_pct": -4.6144736431909115,
-    "btc_dominance_pct": 58.20080805459743,
-    "btc_cap": 1551494931452.0874,
-    "alt_cap": 1114266908137.2358
+    "total_market_cap": 2666352018373.8086,
+    "total_change_24h_pct": -4.600912546558611,
+    "btc_dominance_pct": 58.207381280643965,
+    "btc_cap": 1552013685618.9888,
+    "alt_cap": 1114338332754.8198
   },
   "derivatives": {
-    "btc_price": 77444.3,
-    "price_change_24h_pct": -1.72,
+    "btc_price": 77419.9,
+    "price_change_24h_pct": -1.71,
     "oi_usd": 4945254914.345436,
     "oi_change_24h_pct": -5.951480821311838,
-    "funding_pct": 0.0052,
+    "funding_pct": 0.005,
     "long_short_ratio": 1.6256099612990071
   },
   "context": {
-    "stablecoin_market_cap": 306734948063.0,
-    "stablecoin_market_cap_change_24h_pct": 0.11247079033591678,
+    "stablecoin_market_cap": 306743926208.0,
+    "stablecoin_market_cap_change_24h_pct": 0.11743918804842934,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -52,16 +52,47 @@
     "action": "WAIT"
   },
   "risk": {
-    "status": "N/A",
-    "reason": "Risk Engine not historically validated"
+    "model": "risk-v1-provisional",
+    "provisional": true,
+    "coverage_pct": 100,
+    "score": 55,
+    "status": "ELEVATED",
+    "components": {
+      "market_stress": 75,
+      "leverage": 45,
+      "funding_extreme": 20,
+      "positioning_extreme": 85,
+      "liquidity_context": 35
+    },
+    "reason": "Provisional composite; historical calibration required"
   },
   "regime": {
-    "status": "N/A",
-    "reason": "Transition history required"
+    "model": "regime-v1-provisional",
+    "provisional": true,
+    "status": "RISK-OFF",
+    "candidate": "RISK-OFF",
+    "candidate_count": 1,
+    "confirmed": false,
+    "transition": "WATCH RISK-OFF · 1/2",
+    "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
     "status": "WARMUP",
     "shadow": true,
     "reason": "7D persistent history required"
+  },
+  "transition": {
+    "status": "WATCH RISK-OFF · 1/2",
+    "confirmed": false
+  },
+  "action_engine": {
+    "investor": "REDUCE RISK",
+    "trader": "REDUCE EXPOSURE",
+    "why": [
+      "Long/Short extremity 85/100",
+      "Market stress 75/100",
+      "Price/OI leverage 45/100"
+    ],
+    "provisional": true
   }
 }
