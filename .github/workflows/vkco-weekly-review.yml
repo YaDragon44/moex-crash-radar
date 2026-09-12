@@ -1,0 +1,71 @@
+name: VKCO Weekly Review R1.7
+
+on:
+  pull_request:
+    paths:
+      - "vkco-monitor/**"
+      - ".github/workflows/vkco-weekly-review.yml"
+  push:
+    branches: [main]
+    paths:
+      - "vkco-monitor/weekly_review.py"
+      - "vkco-monitor/test_weekly_review.py"
+      - ".github/workflows/vkco-weekly-review.yml"
+  workflow_dispatch:
+  schedule:
+    - cron: "5 5 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  weekly-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      JOURNAL_JSONL: vkco-monitor/state/trade_journal.jsonl
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: vkco-monitor/requirements.txt
+
+      - name: Restore journal state
+        if: github.event_name != 'pull_request'
+        uses: actions/cache/restore@v4
+        with:
+          path: vkco-monitor/state
+          key: vkco-weekly-read-${{ github.run_id }}
+          restore-keys: |
+            vkco-state-
+
+      - name: Install dependencies
+        run: pip install -r vkco-monitor/requirements.txt pytest
+
+      - name: Regression tests
+        working-directory: vkco-monitor
+        run: pytest -q test_weekly_review.py test_trade_journal.py
+
+      - name: Send weekly Telegram review
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: python vkco-monitor/weekly_review.py
+
+      - name: Production preview
+        if: github.event_name == 'push'
+        run: |
+          python - <<'PY'
+          import sys
+          sys.path.insert(0, 'vkco-monitor')
+          from trade_journal import load_records
+          from weekly_review import JOURNAL_JSONL, build_weekly_review
+          rows = load_records(JOURNAL_JSONL)
+          print(build_weekly_review(rows))
+          PY
