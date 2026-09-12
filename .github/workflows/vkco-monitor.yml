@@ -1,4 +1,4 @@
-name: VKCO Monitor R1.5
+name: VKCO Monitor R1.6
 
 on:
   push:
@@ -42,6 +42,8 @@ jobs:
       TRADING_CAPITAL_RUB: ${{ vars.TRADING_CAPITAL_RUB || '1000000' }}
       RISK_PCT: ${{ vars.RISK_PCT || '0.5' }}
       STATE_FILE: vkco-monitor/state/state.json
+      JOURNAL_JSONL: vkco-monitor/state/trade_journal.jsonl
+      JOURNAL_CSV: vkco-monitor/state/trade_journal.csv
       MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || github.event.schedule == '0 7 * * 1-5' && 'heartbeat' || 'run' }}
 
     steps:
@@ -76,7 +78,7 @@ jobs:
 
       - name: Run VKCO monitor
         if: github.event_name != 'pull_request'
-        run: python vkco-monitor/run_r15.py
+        run: python vkco-monitor/run_r16.py
 
       - name: Notify Telegram on failure
         if: failure() && github.event_name != 'pull_request'
@@ -85,13 +87,13 @@ jobs:
           import json, os, urllib.request
           token=os.environ['TELEGRAM_BOT_TOKEN']
           chat=os.environ['TELEGRAM_CHAT_ID']
-          text='🔴 VKCO Monitor R1.5 — ERROR\nGitHub Actions run failed. Проверь workflow/logs.'
+          text='🔴 VKCO Monitor R1.6 — ERROR\nGitHub Actions run failed. Проверь workflow/logs.'
           data=json.dumps({'chat_id':chat,'text':text}).encode()
           req=urllib.request.Request(f'https://api.telegram.org/bot{token}/sendMessage', data=data, headers={'Content-Type':'application/json'})
           urllib.request.urlopen(req, timeout=20).read()
           PY
 
-      - name: Save signal state
+      - name: Save signal state and journal
         if: always() && github.event_name != 'pull_request'
         uses: actions/cache/save@v4
         with:
