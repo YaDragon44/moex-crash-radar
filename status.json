@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "release": "R1.8",
+  "generated_at": "2026-09-12T18:01:42.185422+03:00",
+  "ticker": "VKCO",
+  "mode": "run",
+  "health": "OK",
+  "trade": {
+    "status": "WAIT",
+    "reason": "STALE_OR_MARKET_CLOSED"
+  },
+  "position": null,
+  "journal": {
+    "trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "win_rate": null,
+    "avg_r": null,
+    "profit_factor": null,
+    "expectancy_r": null
+  },
+  "risk": {
+    "capital_rub": 1000000.0,
+    "risk_pct": 0.5,
+    "max_risk_rub": 5000.0
+  },
+  "market": {
+    "price": 118.4,
+    "candle_end": "2026-09-11T23:49:59+03:00",
+    "volume": 26390.0,
+    "age_min": 1091,
+    "fresh": false,
+    "support": 117.9,
+    "resistance": 118.6,
+    "avg_range": 0.19
+  }
+}
