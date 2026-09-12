@@ -1,0 +1,26 @@
+name: VKCO Dashboard Public Smoke
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/vkco-dashboard-smoke.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Verify public VKCO dashboard
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://yadragon44.github.io/moex-crash-radar/vkco-dashboard/'
+          code=$(curl -L -sS -o /tmp/vkco.html -w '%{http_code}' --connect-timeout 10 --max-time 30 "$URL")
+          test "$code" = '200'
+          grep -q 'VKCO Control Room' /tmp/vkco.html
+          grep -q 'PRODUCTION OBSERVATION' /tmp/vkco.html
+          echo 'VKCO DASHBOARD PUBLIC GATE: PASS'
