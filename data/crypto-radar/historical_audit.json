@@ -1,6 +1,6 @@
 {
   "release": "R1.7.0 Historical Data Audit",
-  "generated_at": "2026-09-12T15:45:00.741132+00:00",
+  "generated_at": "2026-09-12T15:45:58.282193+00:00",
   "window_days": 30,
   "target_model": "current Crypto Radar Crowd/Risk/Regime rules",
   "features": {
@@ -8,13 +8,14 @@
       "source": "Gate.io",
       "status": "AVAILABLE",
       "rows": 721,
-      "valid_rows": 0,
-      "first_ts": null,
-      "last_ts": null,
+      "valid_rows": 721,
+      "coverage_pct": 100.0,
+      "first_ts": 1786633200,
+      "last_ts": 1789225200,
       "error": null,
       "required_fields": [
-        "timestamp",
-        "close"
+        "t",
+        "c"
       ]
     },
     "open_interest_and_long_short_1h": {
@@ -22,6 +23,7 @@
       "status": "AVAILABLE",
       "rows": 720,
       "valid_rows": 720,
+      "coverage_pct": 100.0,
       "first_ts": 1786636800,
       "last_ts": 1789225200,
       "error": null,
@@ -36,6 +38,7 @@
       "status": "AVAILABLE",
       "rows": 90,
       "valid_rows": 90,
+      "coverage_pct": 100.0,
       "first_ts": 1786636801,
       "last_ts": 1789200002,
       "error": null,
@@ -72,7 +75,7 @@
     "derivatives_shadow_replay": "GO",
     "exact_full_model_replay": "NO-GO",
     "decision": "PARTIAL",
-    "reason": "Run a derivatives-only SHADOW replay if Gate historical data is available. Do not call it validation of the full live model until historical market-context series are sourced and quality-gated."
+    "reason": "Run a derivatives-only SHADOW replay if Gate historical data has >=95% field coverage. Do not call it validation of the full live model until historical market-context series are sourced and quality-gated."
   },
   "next_step": {
     "release": "R1.7.1 Derivatives Shadow Replay",
