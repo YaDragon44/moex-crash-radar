@@ -157,6 +157,8 @@ jobs:
           grep -q 'signal_performance.json' _site/ta-market/production_patch.js
           mkdir -p _site/crypto-trader
           cp crypto-trader/index.html _site/crypto-trader/index.html
+          mkdir -p _site/crypto-radar
+          cp web/crypto-radar/index.html _site/crypto-radar/index.html
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
         with:
