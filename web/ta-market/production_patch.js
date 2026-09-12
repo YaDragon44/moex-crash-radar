@@ -1,5 +1,4 @@
-// TA Market R0.8.4 production safety patch.
-// Keeps the compact UI while enforcing global snapshot freshness and conservative scoring.
+// TA Market R0.8.5 production safety + execution risk patch.
 (function(){
   const originalAnalyze = window.analyze;
   if (typeof originalAnalyze === 'function') {
@@ -16,45 +15,78 @@
       }
       return a;
     };
-    // Rebind the global identifier used by existing render/card functions.
     analyze = window.analyze;
   }
 
-  // Exact 19-point rubric, conservative for unavailable components.
-  // HTF trend, Wyckoff, Elliott and Relative Strength are currently unavailable => 0.
   window.score = function(a){
     if (!a || a.plan?.dir === 'NEUTRAL') return 0;
     let s = 0;
-    // HTF trend 0/2: unavailable in compact UI.
-    // Structure 0-2.
     if ((a.plan.dir === 'LONG' && a.st?.label === 'HH / HL') ||
         (a.plan.dir === 'SHORT' && a.st?.label === 'LH / LL')) s += 2;
-    // Level 0-2.
     if (Number.isFinite(+a.plan?.entry) && Number.isFinite(+a.plan?.stop)) s += 2;
-    // Volume/VSA 0-2: only RVOL is available, so require confirmation for 2.
     if (a.plan?.checks?.rvol) s += 2;
-    // Wyckoff 0/1: unavailable.
-    // Elliott 0/1: unavailable.
-    // Fibonacci 0-1.
     if (a.fi) s += 1;
-    // VWAP/Profile 0-1: profile available; VWAP unavailable.
     if (a.pr) s += 1;
-    // Momentum 0-1.
     if (a.plan?.checks?.momentum) s += 1;
-    // Relative Strength 0/1: unavailable.
-    // R/R 0-3.
     const rr = +a.plan?.rr;
     if (Number.isFinite(rr)) s += rr >= 3 ? 3 : rr >= 2 ? 2 : rr >= 1 ? 1 : 0;
-    // Market/sector 0-2. Sector is unavailable, so award only when market filter passes.
     if (a.plan?.checks?.market) s += 2;
     return Math.min(19, s);
   };
   score = window.score;
 
-  document.title = 'TA Market Monitor · R0.8.4';
+  const LS='ta_market_risk_v085';
+  const loadCfg=()=>{try{return {...{capital:0,riskPct:0,commissionPct:0,slippagePct:0},...JSON.parse(localStorage.getItem(LS)||'{}')}}catch(e){return{capital:0,riskPct:0,commissionPct:0,slippagePct:0}}};
+  const saveCfg=c=>localStorage.setItem(LS,JSON.stringify(c));
+  const money=x=>Number.isFinite(+x)?(+x).toLocaleString('ru-RU',{maximumFractionDigits:0})+' ₽':'N/A';
+  const num=(x,d=2)=>Number.isFinite(+x)?(+x).toLocaleString('ru-RU',{minimumFractionDigits:d,maximumFractionDigits:d}):'N/A';
+
+  function riskCalc(a){
+    const c=loadCfg(), md=J?.securities?.[sel]?.marketdata||{};
+    const lot=Math.max(1,Math.floor(+md.LOTSIZE||1));
+    const entry=+a?.plan?.entry, stop=+a?.plan?.stop;
+    if(!(c.capital>0&&c.riskPct>0&&Number.isFinite(entry)&&Number.isFinite(stop)&&entry>0)) return {lot,valid:false};
+    const allowed=c.capital*c.riskPct/100;
+    const stopRisk=Math.abs(entry-stop);
+    const friction=entry*(2*c.commissionPct+2*c.slippagePct)/100;
+    const perShare=stopRisk+friction;
+    const perLot=perShare*lot;
+    let lots=perLot>0?Math.floor(allowed/perLot):0;
+    const maxLots=Math.floor(c.capital/(entry*lot));
+    lots=Math.max(0,Math.min(lots,maxLots));
+    const shares=lots*lot;
+    return {lot,valid:true,allowed,stopRisk,friction,perShare,perLot,lots,shares,position:shares*entry,moneyRisk:lots*perLot};
+  }
+
+  function ensureRiskBox(){
+    if(document.getElementById('riskbox')) return;
+    const aside=document.querySelector('aside.panel'); if(!aside) return;
+    const box=document.createElement('div'); box.id='riskbox';
+    box.innerHTML='<div class="section">Риск и размер позиции</div><div class="trade" id="riskinputs"></div><div class="trade" id="riskout"></div><div class="gate" id="risknote">Введите капитал и риск % — без них размер позиции не рассчитывается.</div>';
+    aside.appendChild(box);
+  }
+
+  function drawRisk(){
+    ensureRiskBox(); if(!window.J||!window.sel) return;
+    const c=loadCfg(), a=window.analyze?.(sel), r=riskCalc(a);
+    const inp=document.getElementById('riskinputs'), out=document.getElementById('riskout'); if(!inp||!out)return;
+    const field=(k,label,step)=>`<label class="kv"><div class="k">${label}</div><input data-risk="${k}" type="number" min="0" step="${step}" value="${c[k]||0}" style="width:100%;margin-top:5px;background:#0a1119;color:var(--tx);border:1px solid var(--ln);border-radius:6px;padding:6px"></label>`;
+    inp.innerHTML=field('capital','Капитал ₽','1000')+field('riskPct','Риск %','0.1')+field('commissionPct','Комиссия % / сторона','0.001')+field('slippagePct','Проскальзывание % / сторона','0.001');
+    inp.querySelectorAll('[data-risk]').forEach(el=>el.onchange=()=>{c[el.dataset.risk]=Math.max(0,+el.value||0);saveCfg(c);drawRisk()});
+    out.innerHTML=[['Лот MOEX',r.lot],['Допустимый риск',r.valid?money(r.allowed):'N/A'],['Риск/акция',r.valid?num(r.perShare,2)+' ₽':'N/A'],['Риск/лот',r.valid?money(r.perLot):'N/A'],['Лотов',r.valid?r.lots:'N/A'],['Акций',r.valid?r.shares:'N/A'],['Размер позиции',r.valid?money(r.position):'N/A'],['Денежный риск',r.valid?money(r.moneyRisk):'N/A']].map(([k,v])=>`<div class="kv"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+    document.getElementById('risknote').textContent=r.valid?(r.lots>0?'Без плеча · комиссия и проскальзывание учтены на входе и выходе.':'При заданном риске корректный стоп/издержки не позволяют открыть даже 1 лот.'):'Введите капитал и риск % — без них размер позиции не рассчитывается.';
+  }
+
+  const oldRender=window.render;
+  if(typeof oldRender==='function'){
+    window.render=function(){oldRender();setTimeout(drawRisk,0)};
+    render=window.render;
+  }
+
+  document.title = 'TA Market Monitor · R0.8.5';
   const badge = document.querySelector('.top h1 .ok');
-  if (badge) badge.textContent = 'R0.8.4';
+  if (badge) badge.textContent = 'R0.8.5';
   const footer = document.querySelector('.footer');
-  if (footer) footer.innerHTML += '<br>R0.8.4: global snapshot age ≤25m is a hard READY gate. Confluence Score uses the approved 19-point rubric; unavailable components score 0.';
-  setTimeout(function(){ if (window.J) render(); }, 500);
+  if (footer) footer.innerHTML += '<br>R0.8.5: snapshot age ≤25m is a hard READY gate; Confluence Score is conservative; position sizing uses MOEX lot size plus user-entered capital/risk/fees/slippage.';
+  setTimeout(function(){ if (window.J) { render(); drawRisk(); } }, 500);
 })();
