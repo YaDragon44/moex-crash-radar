@@ -68,10 +68,10 @@ def main():
     prev_regime = None
     for x in records:
         rg = x.get("regime")
-        if x.get("regime_confirmed") and rg and rg != prev_regime:
-            confirmed_transitions += 1
         if prev_regime is not None and rg and rg != prev_regime:
             regime_changes += 1
+            if x.get("regime_confirmed"):
+                confirmed_transitions += 1
         if rg:
             prev_regime = rg
 
