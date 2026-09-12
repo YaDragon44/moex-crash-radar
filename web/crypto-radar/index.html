@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Настроение толпы — Crypto Radar R1.4.1 GITHUB PAGES SNAPSHOT</title>
+<style>
+:root{--bg:#080b10;--panel:#10151d;--line:#26303d;--text:#f4f7fb;--muted:#8c99aa;--good:#39d98a;--warn:#ffbf47;--bad:#ff5c6c;--cyan:#5bd7ff;--violet:#a98cff}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 20% 0,#17202b 0,#080b10 38%);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
+main{width:min(1920px,100%);min-height:100vh;margin:auto;padding:24px 28px 28px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:16px}.eyebrow{font-size:13px;letter-spacing:.18em;color:var(--cyan);font-weight:800}.title{font-size:31px;font-weight:850;margin-top:4px}.meta{font-size:12px;color:var(--muted);text-align:right}.btn{background:#17202b;border:1px solid #334154;color:#fff;border-radius:10px;padding:8px 11px;cursor:pointer;font-weight:800}
+.hero{display:grid;grid-template-columns:1.15fr .9fr .9fr 1.1fr 1.2fr 1.15fr;gap:10px}.card,.panel,.action{background:linear-gradient(180deg,#121923,#0e141c);border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:0 14px 40px #0004}
+.label{font-size:11px;color:var(--muted);letter-spacing:.12em;font-weight:800}.value{font-size:21px;font-weight:850;margin-top:8px}.sub{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.35}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}.cyan{color:var(--cyan)}.violet{color:var(--violet)}
+.grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:12px;margin-top:12px}.panel h2{font-size:15px;margin:0 0 13px}.metric{display:grid;grid-template-columns:1.35fr .85fr .75fr;gap:8px;padding:9px 0;border-top:1px solid #202936;align-items:center}.metric:first-of-type{border-top:0}.mname{font-size:13px}.mval{font-size:15px;font-weight:800;text-align:right}.state{font-size:11px;text-align:right;color:var(--muted)}
+.flow{display:grid;grid-template-columns:1fr 1fr;gap:9px}.big{font-size:27px;font-weight:900;margin:8px 0}.tag{display:inline-block;border:1px solid #3b4758;border-radius:999px;padding:5px 8px;font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.08em}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.action{min-height:184px}.actionhead{display:flex;justify-content:space-between;align-items:center}.who{font-size:13px;color:var(--muted);font-weight:800;letter-spacing:.12em}.act{font-size:23px;font-weight:900;margin:10px 0 14px}.why{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.why div{background:#0b1017;border:1px solid #202936;border-radius:11px;padding:9px;font-size:12px;line-height:1.35}.foot{display:flex;justify-content:space-between;margin-top:11px;color:var(--muted);font-size:11px}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;background:#566}
+.statusline{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:7px}.src{font-size:10px;border:1px solid #344153;border-radius:999px;padding:4px 7px;color:var(--muted)}
+.diag{margin-top:12px;background:#0b1017;border:1px solid #202936;border-radius:14px;padding:12px}.diaggrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.ditem{border:1px solid #202936;border-radius:10px;padding:9px;font-size:11px}.dname{color:var(--muted);font-weight:800;letter-spacing:.08em}.dok{color:var(--good)}.dfail{color:var(--bad)}@media(max-width:1100px){.hero{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:1fr}.actions{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<div class="top"><div><div class="eyebrow">MULTI-MARKET CROWD & RISK INTELLIGENCE</div><div class="title">НАСТРОЕНИЕ ТОЛПЫ · CRYPTO RADAR</div></div>
+<div class="meta"><button class="btn" onclick="loadAll()">ОБНОВИТЬ</button><div class="statusline"><span id="cgSrc" class="src">CoinGecko: …</span><span id="gateSrc" class="src">Gate.io: …</span><span id="stableSrc" class="src">Stablecoins: …</span></div><div id="ts">R1.4.1 GITHUB PAGES SNAPSHOT</div></div></div>
+
+<section class="hero">
+<div class="card"><div class="label">MARKET</div><div id="market" class="value">LOADING…</div><div id="marketSub" class="sub">TOTAL / BTC.D</div></div>
+<div class="card"><div class="label">CROWD</div><div id="crowd" class="value">N/A</div><div id="crowdSub" class="sub">v2 provisional</div></div>
+<div class="card"><div class="label">RISK</div><div class="value">N/A</div><div class="sub">Risk Engine ещё не валидирован</div></div>
+<div class="card"><div class="label">REGIME</div><div id="regime" class="value">N/A</div><div class="sub">только после подтверждений</div></div>
+<div class="card"><div class="label">TRANSITION</div><div id="transition" class="value violet">WARMUP</div><div class="sub">история хранится локально по UTC-дням</div></div>
+<div class="card"><div class="label">ACTION</div><div id="action" class="value">NO DATA</div><div id="actionSub" class="sub">Quality Gate first</div></div>
+</section>
+
+<section class="grid">
+<div class="panel"><h2>DERIVATIVES · LIVE</h2>
+<div class="metric"><div class="mname">BTC Price · 24h</div><div id="price24" class="mval">N/A</div><div id="priceState" class="state">—</div></div>
+<div class="metric"><div class="mname">Open Interest Δ · ~24h</div><div id="oiDelta" class="mval">N/A</div><div id="oiState" class="state">—</div></div>
+<div class="metric"><div class="mname">Funding</div><div id="funding" class="mval">N/A</div><div id="fundState" class="state">—</div></div>
+<div class="metric"><div class="mname">Long / Short</div><div id="lsr" class="mval">N/A</div><div id="lsState" class="state">—</div></div>
+<div class="metric"><div class="mname">OI · USD</div><div id="oiUsd" class="mval">N/A</div><div class="state">Gate.io</div></div>
+</div>
+
+<div class="panel"><h2>MARKET CONTEXT · LIVE</h2>
+<div class="metric"><div class="mname">TOTAL Market Cap</div><div id="total" class="mval">N/A</div><div id="total24" class="state">—</div></div>
+<div class="metric"><div class="mname">BTC Dominance</div><div id="btcd" class="mval">N/A</div><div class="state">CoinGecko</div></div>
+<div class="metric"><div class="mname">BTC Capitalization</div><div id="btcCap" class="mval">N/A</div><div class="state">derived</div></div>
+<div class="metric"><div class="mname">ALT Capitalization</div><div id="altCap" class="mval">N/A</div><div class="state">derived</div></div>
+<div class="metric"><div class="mname">Stablecoin MC Δ · 24h</div><div id="stableDelta" class="mval">N/A</div><div class="state">flow proxy</div></div>
+<div class="metric"><div class="mname">Stablecoin Market Cap</div><div id="stableCap" class="mval">N/A</div><div class="state">CoinGecko</div></div>
+<div class="metric"><div class="mname">Quality Coverage</div><div id="coverage" class="mval">0%</div><div id="qualityState" class="state">NO DATA</div></div>
+</div>
+
+<div class="panel"><h2>CAPITAL FLOW · SHADOW</h2>
+<div class="tag">EXPERIMENTAL · НЕ ВЛИЯЕТ НА ACTION</div>
+<div id="flowState" class="big">WARMUP</div>
+<div class="sub">TOTAL + BTC.D → BTC CAP / ALT CAP → Δ7D → STATE</div>
+<div class="flow" style="margin-top:14px">
+<div class="card"><div class="label">BTC CAP · 7D</div><div id="btc7" class="value">N/A</div><div class="sub">local daily history</div></div>
+<div class="card"><div class="label">ALT CAP · 7D</div><div id="alt7" class="value">N/A</div><div class="sub">local daily history</div></div>
+</div>
+<div id="flowSub" class="sub" style="margin-top:12px">До 7 дней: WARMUP. Никаких выдуманных значений.</div>
+</div>
+</section>
+
+<section class="actions">
+<div class="action"><div class="actionhead"><div class="who">ИНВЕСТОР</div><div class="tag">LIVE / PROVISIONAL</div></div><div id="investorAct" class="act">WAIT</div>
+<div class="why"><div id="iw1"><b>1 · DATA</b><br>Ждём Quality Gate.</div><div id="iw2"><b>2 · CROWD</b><br>N/A.</div><div id="iw3"><b>3 · CAPITAL FLOW</b><br>Shadow warmup.</div></div></div>
+<div class="action"><div class="actionhead"><div class="who">ТРЕЙДЕР</div><div class="tag">LIVE / PROVISIONAL</div></div><div id="traderAct" class="act">WAIT</div>
+<div class="why"><div id="tw1"><b>1 · PRICE/OI</b><br>N/A.</div><div id="tw2"><b>2 · FUNDING</b><br>N/A.</div><div id="tw3"><b>3 · POSITIONING</b><br>N/A.</div></div></div>
+</section>
+
+<section class="diag">
+  <div class="label" style="margin-bottom:9px">RUNTIME DIAGNOSTICS · SOURCE GATE</div>
+  <div class="diaggrid">
+    <div class="ditem"><div class="dname">COINGECKO GLOBAL</div><div id="diagCg">CHECKING…</div></div>
+    <div class="ditem"><div class="dname">GATE TICKER</div><div id="diagTick">CHECKING…</div></div>
+    <div class="ditem"><div class="dname">GATE CONTRACT STATS</div><div id="diagStats">CHECKING…</div></div>
+    <div class="ditem"><div class="dname">STABLECOIN CONTEXT</div><div id="diagStable">CHECKING…</div></div>
+  </div>
+  <div id="diagSummary" class="sub" style="margin-top:9px">Проверка источников…</div>
+</section>
+
+<div class="foot"><span><span id="qdot" class="dot"></span><span id="footQ">QUALITY: loading</span></span><span>Stablecoin Δ = market-cap change proxy, не буквальный денежный приток · DATA → STATE → TRANSITION → RISK → ACTION</span></div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const pct=(x,d=2)=>x==null?'N/A':`${x>=0?'+':''}${Number(x).toFixed(d)}%`;
+const usd=x=>x==null?'N/A':x>=1e12?`$${(x/1e12).toFixed(2)}T`:x>=1e9?`$${(x/1e9).toFixed(2)}B`:`$${(x/1e6).toFixed(1)}M`;
+
+function src(id,status){$(id).textContent=$(id).textContent.split(':')[0]+': '+status;$(id).style.color=status==='LIVE'?'var(--good)':'var(--bad)'}
+async function loadAll(){
+  $('ts').textContent='Обновление…';
+  let s=null;
+  try{
+    const r=await fetch('https://raw.githubusercontent.com/YaDragon44/moex-crash-radar/main/data/crypto-radar/snapshot.json',{cache:'no-store'});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    s=await r.json();
+  }catch(e){
+    $('diagSummary').textContent='SNAPSHOT GATE FAIL · '+e.message;
+    $('footQ').textContent='QUALITY: BLOCKED · snapshot unavailable';
+    $('ts').textContent='R1.4 SNAPSHOT GATE · FAIL';
+    return;
+  }
+
+  src('cgSrc',s.source_status.coingecko_global);
+  src('gateSrc',(s.source_status.gate_ticker==='LIVE'&&s.source_status.gate_contract_stats==='LIVE')?'LIVE':'N/A');
+  src('stableSrc',s.source_status.coingecko_stablecoins);
+
+  const m=s.market,d=s.derivatives,c=s.context,q=s.crowd;
+  $('market').textContent=m.total_market_cap?`TOTAL ${usd(m.total_market_cap)}`:'N/A';
+  $('marketSub').textContent=m.btc_dominance_pct==null?'BTC.D N/A':`BTC.D ${m.btc_dominance_pct.toFixed(2)}% · TOTAL 24h ${pct(m.total_change_24h_pct)}`;
+  $('total').textContent=usd(m.total_market_cap); $('total24').textContent=pct(m.total_change_24h_pct);
+  $('btcd').textContent=m.btc_dominance_pct==null?'N/A':m.btc_dominance_pct.toFixed(2)+'%';
+  $('btcCap').textContent=usd(m.btc_cap); $('altCap').textContent=usd(m.alt_cap);
+  $('price24').textContent=d.btc_price==null?'N/A':`$${Math.round(d.btc_price).toLocaleString()} · ${pct(d.price_change_24h_pct)}`;
+  $('oiDelta').textContent=pct(d.oi_change_24h_pct); $('oiUsd').textContent=usd(d.oi_usd);
+  $('funding').textContent=d.funding_pct==null?'N/A':d.funding_pct.toFixed(5)+'%';
+  $('lsr').textContent=d.long_short_ratio==null?'N/A':d.long_short_ratio.toFixed(3);
+  $('stableCap').textContent=usd(c.stablecoin_market_cap); $('stableDelta').textContent=pct(c.stablecoin_market_cap_change_24h_pct,3);
+
+  $('coverage').textContent=q.coverage_pct+'%';
+  $('qualityState').textContent=q.quality_passed?'DATA READY':'NO DATA';
+  $('crowd').textContent=q.score==null?'N/A':`${q.state} ${q.score}`;
+  $('crowdSub').textContent=`${q.model} · coverage ${q.coverage_pct}%`;
+  $('action').textContent=q.action; $('actionSub').textContent=q.quality_passed?'Quality Gate PASS':'Quality Gate blocked';
+
+  $('investorAct').textContent=!q.quality_passed?'WAIT':q.score>=76?'DO NOT CHASE':q.score>=61?'REDUCE NEW RISK':q.score<=39?'BUY GRADUALLY':'HOLD';
+  $('traderAct').textContent=!q.quality_passed?'WAIT':q.score>=76?'REDUCE EXPOSURE':q.score>=61?'SELECTIVE LONG / REDUCE SIZE':q.score<=39?'LOOK FOR REVERSAL':'WAIT';
+
+  $('tw1').innerHTML=`<b>1 · PRICE/OI</b><br>${pct(d.price_change_24h_pct)} / ${pct(d.oi_change_24h_pct)}`;
+  $('tw2').innerHTML=`<b>2 · FUNDING</b><br>${d.funding_pct==null?'N/A':d.funding_pct.toFixed(5)+'%'}`;
+  $('tw3').innerHTML=`<b>3 · POSITIONING</b><br>${d.long_short_ratio==null?'N/A':d.long_short_ratio.toFixed(3)}`;
+  $('iw1').innerHTML=`<b>1 · QUALITY</b><br>${q.quality_passed?'DATA READY':'Gate blocked'}`;
+  $('iw2').innerHTML=`<b>2 · CROWD</b><br>${q.score==null?'N/A':q.state+' '+q.score}`;
+  $('iw3').innerHTML=`<b>3 · STABLECOINS</b><br>${pct(c.stablecoin_market_cap_change_24h_pct,3)} MC proxy`;
+
+  const map=[['diagCg','coingecko_global'],['diagTick','gate_ticker'],['diagStats','gate_contract_stats'],['diagStable','coingecko_stablecoins']];
+  const blockers=[];
+  for(const [id,k] of map){const ok=s.source_status[k]==='LIVE';$(id).textContent=ok?'LIVE':('FAIL · '+(s.source_errors[k]||'unknown'));$(id).className=ok?'dok':'dfail';if(!ok) blockers.push(k);}
+  $('diagSummary').textContent=blockers.length?'BLOCKED BY: '+blockers.join(' · '):'ALL REQUIRED NETWORK SOURCES RESPONDED';
+  $('footQ').textContent=`QUALITY: ${q.coverage_pct}% · ${q.quality_passed?'DATA READY':'BLOCKED'} · GitHub snapshot`;
+  $('qdot').style.background=q.quality_passed?'var(--good)':'var(--warn)';
+  $('ts').textContent=`R1.4 SNAPSHOT GATE · ${new Date(s.generated_at).toLocaleString('ru-RU')}`;
+}
+loadAll(); setInterval(loadAll,300000);
+</script>
+</body></html>
