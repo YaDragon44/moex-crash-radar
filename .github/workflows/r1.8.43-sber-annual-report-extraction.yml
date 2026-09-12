@@ -1,0 +1,54 @@
+name: R1.8.43 SBER Annual Report Extraction
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+    paths:
+      - 'web/investor-radar/sber-ar-2025-extractor.py'
+      - '.github/workflows/r1.8.43-sber-annual-report-extraction.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install PDF text tools
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+      - name: Download and extract official Sber 2025 annual report
+        run: python web/investor-radar/sber-ar-2025-extractor.py
+      - name: Validate fail-closed boundary
+        run: |
+          python - <<'PY'
+          import json
+          p='artifacts/r1.8.43/sber-ar-2025-extraction.json'
+          r=json.load(open(p,encoding='utf-8'))
+          if r.get('status')!='EXTRACTED_PRIMARY_DOCUMENT': raise SystemExit('primary report extraction failed')
+          if r.get('commonBvpsEligible') is not False: raise SystemExit('extractor must not unlock BVPS')
+          if r.get('valuationStatus')!='PARTIAL': raise SystemExit('valuation must remain PARTIAL')
+          if r.get('textLines',0)<1000: raise SystemExit('unexpectedly small extracted report text')
+          if not r.get('targetsFound',{}).get('preferred_share_current_rights'): raise SystemExit('preferred-share evidence not located')
+          if not r.get('targetsFound',{}).get('common_shares_outstanding'): raise SystemExit('common-share evidence not located')
+          print('R1.8.43 extraction boundary: PASS')
+          PY
+      - name: Show target summary
+        if: always()
+        run: |
+          test -f artifacts/r1.8.43/sber-ar-2025-extraction.json && python - <<'PY' || true
+          import json
+          r=json.load(open('artifacts/r1.8.43/sber-ar-2025-extraction.json',encoding='utf-8'))
+          print(json.dumps({k:r.get(k) for k in ['status','sourceUrl','documentBytes','textLines','targetsFound','commonBvpsEligible','valuationStatus']},ensure_ascii=False,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: r1.8.43-sber-annual-report-extraction
+          path: artifacts/r1.8.43/
+          if-no-files-found: warn
+          retention-days: 7
