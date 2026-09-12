@@ -155,6 +155,8 @@ jobs:
           grep -q 'Production Observation' _site/ta-market/production_patch.js
           grep -q 'Sample Quality' _site/ta-market/production_patch.js
           grep -q 'signal_performance.json' _site/ta-market/production_patch.js
+          mkdir -p _site/vkco-dashboard
+          cp web/vkco-dashboard/index.html _site/vkco-dashboard/index.html
           mkdir -p _site/crypto-trader
           cp crypto-trader/index.html _site/crypto-trader/index.html
           mkdir -p _site/crypto-radar
