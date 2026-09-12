@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/collect_crypto_radar_snapshot.py'
+      - 'scripts/enrich_crypto_risk.py'
       - '.github/workflows/crypto-radar-snapshot.yml'
 
 permissions:
@@ -25,8 +26,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Preserve previous snapshot
+        run: cp data/crypto-radar/snapshot.json /tmp/crypto-radar-prev.json || true
       - name: Collect crypto snapshot
         run: python scripts/collect_crypto_radar_snapshot.py
+      - name: Enrich Risk / Regime / Transition / Action
+        run: python scripts/enrich_crypto_risk.py /tmp/crypto-radar-prev.json
       - name: Validate snapshot
         run: |
           python - <<'PY'
@@ -34,16 +39,27 @@ jobs:
           from pathlib import Path
           p=Path('data/crypto-radar/snapshot.json')
           j=json.loads(p.read_text(encoding='utf-8'))
-          assert j['version']=='1.4.1'
+          assert j['version']=='1.5'
           assert 'generated_at' in j
           assert set(j['source_status'])=={'coingecko_global','coingecko_stablecoins','gate_ticker','gate_contract_stats'}
           assert 0 <= j['crowd']['coverage_pct'] <= 100
+          assert j['risk']['model']=='risk-v1-provisional'
+          assert j['regime']['model']=='regime-v1-provisional'
+          assert j['regime']['confirmation_rule']=='2 consecutive observations'
+          assert set(j['action_engine']) >= {'investor','trader','why','provisional'}
           if j['crowd']['quality_passed']:
               assert j['crowd']['coverage_pct'] >= 70
               assert j['crowd']['score'] is not None
+              assert j['risk']['coverage_pct'] >= 80
+              assert j['risk']['score'] is not None
+              assert j['risk']['status'] in {'LOW','MODERATE','ELEVATED','HIGH','CRITICAL'}
+              assert j['regime']['status'] in {'RISK-ON','RISK-ON / OVERHEATED','NEUTRAL','DISTRIBUTION','RISK-OFF','PANIC'}
           else:
               assert j['crowd']['score'] is None
-          print('CRYPTO RADAR SNAPSHOT GATE: PASS')
+              assert j['risk']['score'] is None
+              assert j['action_engine']['investor']=='WAIT'
+              assert j['action_engine']['trader']=='WAIT'
+          print('CRYPTO RADAR R1.5 SNAPSHOT + RISK/REGIME GATE: PASS')
           PY
       - name: Commit snapshot if changed
         run: |
