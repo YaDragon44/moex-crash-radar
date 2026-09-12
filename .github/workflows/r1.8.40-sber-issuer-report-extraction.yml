@@ -1,0 +1,29 @@
+name: R1.8.40 SBER Issuer Report Extraction
+
+on:
+  push:
+    branches: [r1.8.14-sber-valuation]
+    paths:
+      - 'web/investor-radar/sber-issuer-report-extraction.js'
+      - 'web/investor-radar/sber-issuer-report-extraction.test.js'
+      - '.github/workflows/r1.8.40-sber-issuer-report-extraction.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax
+        run: node --check web/investor-radar/sber-issuer-report-extraction.js
+      - name: Extraction gate regression
+        run: node web/investor-radar/sber-issuer-report-extraction.test.js
+      - name: Fail-closed current evidence state
+        run: |
+          node - <<'NODE'
+          const g=require('./web/investor-radar/sber-issuer-report-extraction.js');
+          const r=g.current();
+          if(r.status!=='PARTIAL'||r.verified!==false) throw new Error('Current real evidence must remain PARTIAL until report content is extracted');
+          if(!r.missing.includes('attributable_common_equity')) throw new Error('common equity blocker missing');
+          console.log('R1.8.40 current evidence: PARTIAL (expected)');
+          NODE
