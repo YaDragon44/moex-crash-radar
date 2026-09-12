@@ -47,12 +47,12 @@ def manage_existing_position_r16() -> bool:
         record, added = append_record_once(JOURNAL_JSONL, updated)
         export_csv(JOURNAL_JSONL, JOURNAL_CSV)
         journal_stats = stats(load_records(JOURNAL_JSONL))
+        result_r_text = f"{record['result_r']:+.2f}R" if record.get("result_r") is not None else "n/a"
         text += (
-            f"\n\n📒 JOURNAL\n"
-            f"P/L: {record['pnl_rub']:+,.0f} ₽ | Result: "
-            f"{record['result_r']:+.2f}R" if record.get("result_r") is not None else "R: n/a"
+            "\n\n📒 JOURNAL\n"
+            f"P/L: {record['pnl_rub']:+,.0f} ₽ | Result: {result_r_text}\n"
+            f"{format_stats(journal_stats)}"
         )
-        text += "\n" + format_stats(journal_stats)
         print(f"journal_added={int(added)} trades={journal_stats['trades']}")
 
     monitor.send_telegram(text)
