@@ -1,0 +1,81 @@
+{
+  "release": "R1.7.0 Historical Data Audit",
+  "generated_at": "2026-09-12T15:45:00.741132+00:00",
+  "window_days": 30,
+  "target_model": "current Crypto Radar Crowd/Risk/Regime rules",
+  "features": {
+    "btc_price_1h": {
+      "source": "Gate.io",
+      "status": "AVAILABLE",
+      "rows": 721,
+      "valid_rows": 0,
+      "first_ts": null,
+      "last_ts": null,
+      "error": null,
+      "required_fields": [
+        "timestamp",
+        "close"
+      ]
+    },
+    "open_interest_and_long_short_1h": {
+      "source": "Gate.io",
+      "status": "AVAILABLE",
+      "rows": 720,
+      "valid_rows": 720,
+      "first_ts": 1786636800,
+      "last_ts": 1789225200,
+      "error": null,
+      "required_fields": [
+        "time",
+        "open_interest_usd",
+        "lsr_account"
+      ]
+    },
+    "funding_history": {
+      "source": "Gate.io",
+      "status": "AVAILABLE",
+      "rows": 90,
+      "valid_rows": 90,
+      "first_ts": 1786636801,
+      "last_ts": 1789200002,
+      "error": null,
+      "required_fields": [
+        "t",
+        "r"
+      ]
+    },
+    "total_crypto_market_cap_history": {
+      "source": "current source set",
+      "status": "MISSING",
+      "reason": "Current live CoinGecko /global feed does not provide historical TOTAL series in the existing implementation."
+    },
+    "btc_dominance_history": {
+      "source": "current source set",
+      "status": "MISSING",
+      "reason": "Current live CoinGecko /global feed does not provide historical BTC dominance series in the existing implementation."
+    },
+    "stablecoin_market_cap_delta_history": {
+      "source": "current source set",
+      "status": "MISSING",
+      "reason": "Existing stablecoin proxy is computed from current 24h market-cap changes; no persistent historical series existed before R1.6."
+    },
+    "news_history": {
+      "status": "MISSING",
+      "reason": "Not present in current live MVP and therefore excluded rather than imputed."
+    },
+    "liquidation_proxy_history": {
+      "status": "MISSING",
+      "reason": "Current Crowd MVP does not have a live liquidation factor; no historical value is fabricated."
+    }
+  },
+  "gate": {
+    "derivatives_shadow_replay": "GO",
+    "exact_full_model_replay": "NO-GO",
+    "decision": "PARTIAL",
+    "reason": "Run a derivatives-only SHADOW replay if Gate historical data is available. Do not call it validation of the full live model until historical market-context series are sourced and quality-gated."
+  },
+  "next_step": {
+    "release": "R1.7.1 Derivatives Shadow Replay",
+    "rule": "No threshold calibration from partial replay; use only for transition/noise diagnostics."
+  }
+}
