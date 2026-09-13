@@ -7,10 +7,15 @@
   "historyPoints": 24,
   "historyFrom": "2003-01-15",
   "historyTo": "2026-01-15",
+  "history10YMin": 6.3,
+  "history10YMax": 15.86,
   "windowMethod": "10 rolling 5Y historical 10Y-yield paths; start every 2 years; annual CBR points near Jan-15",
   "validationType": "HISTORICAL_YIELD_PATH_REPLAY_PROXY",
   "regimeObservationCounts": {
-    "D": 24
+    "C": 2,
+    "E": 16,
+    "D": 4,
+    "B": 2
   },
   "windows": [
     {
@@ -18,67 +23,67 @@
       "dates": [
         "2003-01-15",
         "2004-01-15",
-        "2005-01-15",
-        "2006-01-15",
+        "2005-01-14",
+        "2006-01-13",
         "2007-01-15",
         "2008-01-15"
       ],
       "path": [
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0
+        13.19,
+        7.93,
+        8.23,
+        6.66,
+        6.51,
+        6.46
       ],
       "regimes": [
-        "D",
-        "D",
-        "D",
-        "D",
-        "D",
-        "D"
+        "C",
+        "E",
+        "E",
+        "E",
+        "E",
+        "E"
       ],
       "buyHold": {
-        "terminalValue": 2281892.8886910314,
-        "cagr": 0.17939437190386487,
+        "terminalValue": 2596248.626796497,
+        "cagr": 0.21023373873075224,
         "maxDrawdown": 0.0
       },
       "policies": {
         "BASELINE_100_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
+          "terminalValue": 1726569.4364477543,
+          "cagr": 0.11541584553259776,
           "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
+          "turnoverPct": 1.2759871322969794,
+          "deltaTerminal": -869679.1903487428,
+          "deltaCagr": -0.09481789319815448,
           "drawdownImprovement": 0.0
         },
         "LATE_EXIT_100_80_50": {
-          "terminalValue": 2076197.4574602789,
-          "cagr": 0.15732072645753936,
+          "terminalValue": 1981182.854093506,
+          "cagr": 0.14652865157912154,
           "maxDrawdown": 0.0,
-          "turnoverPct": 0.7982609259886169,
-          "deltaTerminal": -205695.4312307525,
-          "deltaCagr": -0.022073645446325507,
+          "turnoverPct": 1.038925065457721,
+          "deltaTerminal": -615065.772702991,
+          "deltaCagr": -0.0637050871516307,
           "drawdownImprovement": 0.0
         },
         "MILD_EXIT_100_90_65": {
-          "terminalValue": 2176809.1173691796,
-          "cagr": 0.1683260751583,
+          "terminalValue": 2150137.093023368,
+          "cagr": 0.1654488838842494,
           "maxDrawdown": 0.0,
-          "turnoverPct": 0.7827141003093914,
-          "deltaTerminal": -105083.77132185176,
-          "deltaCagr": -0.011068296745564865,
+          "turnoverPct": 0.9200870621352071,
+          "deltaTerminal": -446111.5337731289,
+          "deltaCagr": -0.04478485484650285,
           "drawdownImprovement": 0.0
         },
         "EARLY_CUT_100_85_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
+          "terminalValue": 1673475.1378377937,
+          "cagr": 0.10846976824777266,
           "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
+          "turnoverPct": 1.1093198268689362,
+          "deltaTerminal": -922773.4889587034,
+          "deltaCagr": -0.10176397048297958,
           "drawdownImprovement": 0.0
         }
       }
@@ -86,70 +91,70 @@
     {
       "name": "2005-2010",
       "dates": [
-        "2005-01-15",
-        "2006-01-15",
+        "2005-01-14",
+        "2006-01-13",
         "2007-01-15",
         "2008-01-15",
         "2009-01-15",
         "2010-01-15"
       ],
       "path": [
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0
+        8.23,
+        6.66,
+        6.51,
+        6.46,
+        10.82,
+        8.34
       ],
       "regimes": [
+        "E",
+        "E",
+        "E",
+        "E",
         "D",
-        "D",
-        "D",
-        "D",
-        "D",
-        "D"
+        "E"
       ],
       "buyHold": {
-        "terminalValue": 2281892.8886910314,
-        "cagr": 0.17939437190386487,
-        "maxDrawdown": 0.0
+        "terminalValue": 2318514.4559210837,
+        "cagr": 0.18315586693998331,
+        "maxDrawdown": -0.1571353393135505
       },
       "policies": {
         "BASELINE_100_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1861184.4098043155,
+          "cagr": 0.13229054597817957,
+          "maxDrawdown": -0.0411613954225023,
+          "turnoverPct": 2.585113006042599,
+          "deltaTerminal": -457330.04611676815,
+          "deltaCagr": -0.05086532096180374,
+          "drawdownImprovement": 0.1159739438910482
         },
         "LATE_EXIT_100_80_50": {
-          "terminalValue": 2076197.4574602789,
-          "cagr": 0.15732072645753936,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.7982609259886169,
-          "deltaTerminal": -205695.4312307525,
-          "deltaCagr": -0.022073645446325507,
-          "drawdownImprovement": 0.0
+          "terminalValue": 2023733.0052721815,
+          "cagr": 0.1514117125689174,
+          "maxDrawdown": -0.08106161696352943,
+          "turnoverPct": 2.1847896036033854,
+          "deltaTerminal": -294781.4506489022,
+          "deltaCagr": -0.031744154371065925,
+          "drawdownImprovement": 0.07607372235002108
         },
         "MILD_EXIT_100_90_65": {
-          "terminalValue": 2176809.1173691796,
-          "cagr": 0.1683260751583,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.7827141003093914,
-          "deltaTerminal": -105083.77132185176,
-          "deltaCagr": -0.011068296745564865,
-          "drawdownImprovement": 0.0
+          "terminalValue": 2120708.982553469,
+          "cagr": 0.16224106246345027,
+          "maxDrawdown": -0.10443954723631921,
+          "turnoverPct": 1.8688037638792443,
+          "deltaTerminal": -197805.47336761467,
+          "deltaCagr": -0.020914804476533044,
+          "drawdownImprovement": 0.052695792077231296
         },
         "EARLY_CUT_100_85_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1861184.4098043155,
+          "cagr": 0.13229054597817957,
+          "maxDrawdown": -0.0411613954225023,
+          "turnoverPct": 2.585113006042599,
+          "deltaTerminal": -457330.04611676815,
+          "deltaCagr": -0.05086532096180374,
+          "drawdownImprovement": 0.1159739438910482
         }
       }
     },
@@ -160,66 +165,66 @@
         "2008-01-15",
         "2009-01-15",
         "2010-01-15",
-        "2011-01-15",
-        "2012-01-15"
+        "2011-01-14",
+        "2012-01-13"
       ],
       "path": [
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0
+        6.51,
+        6.46,
+        10.82,
+        8.34,
+        7.82,
+        8.6
       ],
       "regimes": [
+        "E",
+        "E",
         "D",
-        "D",
-        "D",
-        "D",
-        "D",
-        "D"
+        "E",
+        "E",
+        "E"
       ],
       "buyHold": {
-        "terminalValue": 2281892.8886910314,
-        "cagr": 0.17939437190386487,
-        "maxDrawdown": 0.0
+        "terminalValue": 2316390.9398005283,
+        "cagr": 0.1829390581542707,
+        "maxDrawdown": -0.18320623309527417
       },
       "policies": {
         "BASELINE_100_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
-          "drawdownImprovement": 0.0
+          "terminalValue": 2030863.6894928026,
+          "cagr": 0.1522219781466263,
+          "maxDrawdown": -0.04844441164500557,
+          "turnoverPct": 2.8088648043169933,
+          "deltaTerminal": -285527.25030772574,
+          "deltaCagr": -0.030717080007644393,
+          "drawdownImprovement": 0.1347618214502686
         },
         "LATE_EXIT_100_80_50": {
-          "terminalValue": 2076197.4574602789,
-          "cagr": 0.15732072645753936,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.7982609259886169,
-          "deltaTerminal": -205695.4312307525,
-          "deltaCagr": -0.022073645446325507,
-          "drawdownImprovement": 0.0
+          "terminalValue": 2145633.2802784005,
+          "cagr": 0.16496022974090918,
+          "maxDrawdown": -0.09508119131600634,
+          "turnoverPct": 2.3263094489298344,
+          "deltaTerminal": -170757.65952212783,
+          "deltaCagr": -0.017978828413361514,
+          "drawdownImprovement": 0.08812504177926783
         },
         "MILD_EXIT_100_90_65": {
-          "terminalValue": 2176809.1173691796,
-          "cagr": 0.1683260751583,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.7827141003093914,
-          "deltaTerminal": -105083.77132185176,
-          "deltaCagr": -0.011068296745564865,
-          "drawdownImprovement": 0.0
+          "terminalValue": 2209361.3127668854,
+          "cagr": 0.1717996096431833,
+          "maxDrawdown": -0.12228519064441301,
+          "turnoverPct": 1.9499571593622032,
+          "deltaTerminal": -107029.62703364296,
+          "deltaCagr": -0.011139448511087391,
+          "drawdownImprovement": 0.06092104245086116
         },
         "EARLY_CUT_100_85_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
-          "drawdownImprovement": 0.0
+          "terminalValue": 2030863.6894928026,
+          "cagr": 0.1522219781466263,
+          "maxDrawdown": -0.04844441164500557,
+          "turnoverPct": 2.8088648043169933,
+          "deltaTerminal": -285527.25030772574,
+          "deltaCagr": -0.030717080007644393,
+          "drawdownImprovement": 0.1347618214502686
         }
       }
     },
@@ -228,138 +233,138 @@
       "dates": [
         "2009-01-15",
         "2010-01-15",
-        "2011-01-15",
-        "2012-01-15",
+        "2011-01-14",
+        "2012-01-13",
         "2013-01-15",
         "2014-01-15"
       ],
       "path": [
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0
+        10.82,
+        8.34,
+        7.82,
+        8.6,
+        6.81,
+        8.09
       ],
       "regimes": [
         "D",
-        "D",
-        "D",
-        "D",
-        "D",
-        "D"
+        "E",
+        "E",
+        "E",
+        "E",
+        "E"
       ],
       "buyHold": {
-        "terminalValue": 2281892.8886910314,
-        "cagr": 0.17939437190386487,
-        "maxDrawdown": 0.0
+        "terminalValue": 2392133.934028652,
+        "cagr": 0.19057593067413126,
+        "maxDrawdown": -0.0015602783108606966
       },
       "policies": {
         "BASELINE_100_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1650775.3129113745,
+          "cagr": 0.10544615408375768,
+          "maxDrawdown": -0.00039290625657240064,
+          "turnoverPct": 1.1345864773963021,
+          "deltaTerminal": -741358.6211172775,
+          "deltaCagr": -0.08512977659037357,
+          "drawdownImprovement": 0.001167372054288296
         },
         "LATE_EXIT_100_80_50": {
-          "terminalValue": 2076197.4574602789,
-          "cagr": 0.15732072645753936,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.7982609259886169,
-          "deltaTerminal": -205695.4312307525,
-          "deltaCagr": -0.022073645446325507,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1886222.0807631006,
+          "cagr": 0.1353207225016031,
+          "maxDrawdown": -0.0007815627415315163,
+          "turnoverPct": 0.9153085998050683,
+          "deltaTerminal": -505911.8532655514,
+          "deltaCagr": -0.05525520817252816,
+          "drawdownImprovement": 0.0007787155693291803
         },
         "MILD_EXIT_100_90_65": {
-          "terminalValue": 2176809.1173691796,
-          "cagr": 0.1683260751583,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.7827141003093914,
-          "deltaTerminal": -105083.77132185176,
-          "deltaCagr": -0.011068296745564865,
-          "drawdownImprovement": 0.0
+          "terminalValue": 2036776.3050266663,
+          "cagr": 0.15289210935757414,
+          "maxDrawdown": -0.001013675981507367,
+          "turnoverPct": 0.8173581667785205,
+          "deltaTerminal": -355357.62900198577,
+          "deltaCagr": -0.03768382131655712,
+          "drawdownImprovement": 0.0005466023293533295
         },
         "EARLY_CUT_100_85_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1650775.3129113745,
+          "cagr": 0.10544615408375768,
+          "maxDrawdown": -0.00039290625657240064,
+          "turnoverPct": 1.1345864773963021,
+          "deltaTerminal": -741358.6211172775,
+          "deltaCagr": -0.08512977659037357,
+          "drawdownImprovement": 0.001167372054288296
         }
       }
     },
     {
       "name": "2011-2016",
       "dates": [
-        "2011-01-15",
-        "2012-01-15",
+        "2011-01-14",
+        "2012-01-13",
         "2013-01-15",
         "2014-01-15",
         "2015-01-15",
         "2016-01-15"
       ],
       "path": [
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0
+        7.82,
+        8.6,
+        6.81,
+        8.09,
+        13.85,
+        10.56
       ],
       "regimes": [
-        "D",
-        "D",
-        "D",
-        "D",
-        "D",
+        "E",
+        "E",
+        "E",
+        "E",
+        "C",
         "D"
       ],
       "buyHold": {
-        "terminalValue": 2281892.8886910314,
-        "cagr": 0.17939437190386487,
-        "maxDrawdown": 0.0
+        "terminalValue": 2164091.5278760497,
+        "cagr": 0.16695772951862797,
+        "maxDrawdown": -0.19955518528192884
       },
       "policies": {
         "BASELINE_100_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1986306.7220064518,
+          "cagr": 0.14712108487151987,
+          "maxDrawdown": -0.09564779619807551,
+          "turnoverPct": 3.3954815047805345,
+          "deltaTerminal": -177784.80586959794,
+          "deltaCagr": -0.019836644647108104,
+          "drawdownImprovement": 0.10390738908385333
         },
         "LATE_EXIT_100_80_50": {
-          "terminalValue": 2076197.4574602789,
-          "cagr": 0.15732072645753936,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.7982609259886169,
-          "deltaTerminal": -205695.4312307525,
-          "deltaCagr": -0.022073645446325507,
-          "drawdownImprovement": 0.0
+          "terminalValue": 2058784.5905672158,
+          "cagr": 0.15537291364587058,
+          "maxDrawdown": -0.13238724398062274,
+          "turnoverPct": 2.346609303716651,
+          "deltaTerminal": -105306.93730883393,
+          "deltaCagr": -0.011584815872757392,
+          "drawdownImprovement": 0.0671679413013061
         },
         "MILD_EXIT_100_90_65": {
-          "terminalValue": 2176809.1173691796,
-          "cagr": 0.1683260751583,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.7827141003093914,
-          "deltaTerminal": -105083.77132185176,
-          "deltaCagr": -0.011068296745564865,
-          "drawdownImprovement": 0.0
+          "terminalValue": 2098255.408307279,
+          "cagr": 0.15976946500404576,
+          "maxDrawdown": -0.15355335571646245,
+          "turnoverPct": 1.743879252110403,
+          "deltaTerminal": -65836.11956877075,
+          "deltaCagr": -0.00718826451458221,
+          "drawdownImprovement": 0.04600182956546639
         },
         "EARLY_CUT_100_85_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1952711.9031146932,
+          "cagr": 0.14321426443542085,
+          "maxDrawdown": -0.08839554990801857,
+          "turnoverPct": 2.87756089837015,
+          "deltaTerminal": -211379.6247613565,
+          "deltaCagr": -0.023743465083207127,
+          "drawdownImprovement": 0.11115963537391027
         }
       }
     },
@@ -370,66 +375,66 @@
         "2014-01-15",
         "2015-01-15",
         "2016-01-15",
-        "2017-01-15",
+        "2017-01-13",
         "2018-01-15"
       ],
       "path": [
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0
+        6.81,
+        8.09,
+        13.85,
+        10.56,
+        8.09,
+        7.49
       ],
       "regimes": [
+        "E",
+        "E",
+        "C",
         "D",
-        "D",
-        "D",
-        "D",
-        "D",
-        "D"
+        "E",
+        "E"
       ],
       "buyHold": {
-        "terminalValue": 2281892.8886910314,
-        "cagr": 0.17939437190386487,
-        "maxDrawdown": 0.0
+        "terminalValue": 2567715.7342244084,
+        "cagr": 0.20756186219167216,
+        "maxDrawdown": -0.2312055751584372
       },
       "policies": {
         "BASELINE_100_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
-          "drawdownImprovement": 0.0
+          "terminalValue": 2307676.7956430777,
+          "cagr": 0.1820476845842116,
+          "maxDrawdown": -0.11060850296902403,
+          "turnoverPct": 4.299375374994222,
+          "deltaTerminal": -260038.9385813307,
+          "deltaCagr": -0.025514177607460553,
+          "drawdownImprovement": 0.12059707218941318
         },
         "LATE_EXIT_100_80_50": {
-          "terminalValue": 2076197.4574602789,
-          "cagr": 0.15732072645753936,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.7982609259886169,
-          "deltaTerminal": -205695.4312307525,
-          "deltaCagr": -0.022073645446325507,
-          "drawdownImprovement": 0.0
+          "terminalValue": 2432842.480404187,
+          "cagr": 0.1946007913452945,
+          "maxDrawdown": -0.15343096972136938,
+          "turnoverPct": 3.021626680712763,
+          "deltaTerminal": -134873.2538202214,
+          "deltaCagr": -0.012961070846377654,
+          "drawdownImprovement": 0.07777460543706782
         },
         "MILD_EXIT_100_90_65": {
-          "terminalValue": 2176809.1173691796,
-          "cagr": 0.1683260751583,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.7827141003093914,
-          "deltaTerminal": -105083.77132185176,
-          "deltaCagr": -0.011068296745564865,
-          "drawdownImprovement": 0.0
+          "terminalValue": 2497011.0668456256,
+          "cagr": 0.20083709008081896,
+          "maxDrawdown": -0.17801360263263555,
+          "turnoverPct": 2.2669611687180886,
+          "deltaTerminal": -70704.66737878276,
+          "deltaCagr": -0.0067247721108532055,
+          "drawdownImprovement": 0.053191972525801656
         },
         "EARLY_CUT_100_85_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
-          "drawdownImprovement": 0.0
+          "terminalValue": 2267709.0611153357,
+          "cagr": 0.17792453303661748,
+          "maxDrawdown": -0.10239060385290066,
+          "turnoverPct": 3.7729659043624144,
+          "deltaTerminal": -300006.6731090727,
+          "deltaCagr": -0.02963732915505468,
+          "drawdownImprovement": 0.12881497130553654
         }
       }
     },
@@ -438,67 +443,67 @@
       "dates": [
         "2015-01-15",
         "2016-01-15",
-        "2017-01-15",
+        "2017-01-13",
         "2018-01-15",
         "2019-01-15",
         "2020-01-15"
       ],
       "path": [
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0
+        13.85,
+        10.56,
+        8.09,
+        7.49,
+        8.41,
+        6.3
       ],
       "regimes": [
+        "C",
         "D",
-        "D",
-        "D",
-        "D",
-        "D",
-        "D"
+        "E",
+        "E",
+        "E",
+        "E"
       ],
       "buyHold": {
-        "terminalValue": 2281892.8886910314,
-        "cagr": 0.17939437190386487,
+        "terminalValue": 2710891.121828696,
+        "cagr": 0.22073786294503983,
         "maxDrawdown": 0.0
       },
       "policies": {
         "BASELINE_100_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
+          "terminalValue": 1770908.8490500476,
+          "cagr": 0.12108680651443193,
           "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
+          "turnoverPct": 1.2675022818122317,
+          "deltaTerminal": -939982.2727786487,
+          "deltaCagr": -0.0996510564306079,
           "drawdownImprovement": 0.0
         },
         "LATE_EXIT_100_80_50": {
-          "terminalValue": 2076197.4574602789,
-          "cagr": 0.15732072645753936,
+          "terminalValue": 2081395.645829219,
+          "cagr": 0.15789966515752685,
           "maxDrawdown": 0.0,
-          "turnoverPct": 0.7982609259886169,
-          "deltaTerminal": -205695.4312307525,
-          "deltaCagr": -0.022073645446325507,
+          "turnoverPct": 1.0363325242623709,
+          "deltaTerminal": -629495.4759994773,
+          "deltaCagr": -0.06283819778751298,
           "drawdownImprovement": 0.0
         },
         "MILD_EXIT_100_90_65": {
-          "terminalValue": 2176809.1173691796,
-          "cagr": 0.1683260751583,
+          "terminalValue": 2278523.367797638,
+          "cagr": 0.17904585919906646,
           "maxDrawdown": 0.0,
-          "turnoverPct": 0.7827141003093914,
-          "deltaTerminal": -105083.77132185176,
-          "deltaCagr": -0.011068296745564865,
+          "turnoverPct": 0.9204667762013439,
+          "deltaTerminal": -432367.7540310584,
+          "deltaCagr": -0.04169200374597337,
           "drawdownImprovement": 0.0
         },
         "EARLY_CUT_100_85_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
+          "terminalValue": 1730516.8940582902,
+          "cagr": 0.11592541502977283,
           "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
+          "turnoverPct": 1.1094615240810888,
+          "deltaTerminal": -980374.227770406,
+          "deltaCagr": -0.104812447915267,
           "drawdownImprovement": 0.0
         }
       }
@@ -506,70 +511,70 @@
     {
       "name": "2017-2022",
       "dates": [
-        "2017-01-15",
+        "2017-01-13",
         "2018-01-15",
         "2019-01-15",
         "2020-01-15",
         "2021-01-15",
-        "2022-01-15"
+        "2022-01-14"
       ],
       "path": [
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0
+        8.09,
+        7.49,
+        8.41,
+        6.3,
+        6.47,
+        9.25
       ],
       "regimes": [
-        "D",
-        "D",
-        "D",
-        "D",
-        "D",
-        "D"
+        "E",
+        "E",
+        "E",
+        "E",
+        "E",
+        "E"
       ],
       "buyHold": {
-        "terminalValue": 2281892.8886910314,
-        "cagr": 0.17939437190386487,
-        "maxDrawdown": 0.0
+        "terminalValue": 2194851.0758773256,
+        "cagr": 0.1702563641304189,
+        "maxDrawdown": -0.07454755170303462
       },
       "policies": {
         "BASELINE_100_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1749897.6682600651,
+          "cagr": 0.1184138343487986,
+          "maxDrawdown": -0.019052088411594115,
+          "turnoverPct": 1.319752657098836,
+          "deltaTerminal": -444953.40761726047,
+          "deltaCagr": -0.051842529781620295,
+          "drawdownImprovement": 0.055495463291440505
         },
         "LATE_EXIT_100_80_50": {
-          "terminalValue": 2076197.4574602789,
-          "cagr": 0.15732072645753936,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.7982609259886169,
-          "deltaTerminal": -205695.4312307525,
-          "deltaCagr": -0.022073645446325507,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1888824.8451419312,
+          "cagr": 0.1356338714895926,
+          "maxDrawdown": -0.03780806512695689,
+          "turnoverPct": 1.0839004150168186,
+          "deltaTerminal": -306026.2307353944,
+          "deltaCagr": -0.034622492640826286,
+          "drawdownImprovement": 0.03673948657607773
         },
         "MILD_EXIT_100_90_65": {
-          "terminalValue": 2176809.1173691796,
-          "cagr": 0.1683260751583,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.7827141003093914,
-          "deltaTerminal": -105083.77132185176,
-          "deltaCagr": -0.011068296745564865,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1976755.0562071495,
+          "cagr": 0.1460157113875329,
+          "maxDrawdown": -0.04897564011379152,
+          "turnoverPct": 0.948589146002521,
+          "deltaTerminal": -218096.0196701761,
+          "deltaCagr": -0.024240652742886004,
+          "drawdownImprovement": 0.0255719115892431
         },
         "EARLY_CUT_100_85_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1749897.6682600651,
+          "cagr": 0.1184138343487986,
+          "maxDrawdown": -0.019052088411594115,
+          "turnoverPct": 1.319752657098836,
+          "deltaTerminal": -444953.40761726047,
+          "deltaCagr": -0.051842529781620295,
+          "drawdownImprovement": 0.055495463291440505
         }
       }
     },
@@ -579,67 +584,67 @@
         "2019-01-15",
         "2020-01-15",
         "2021-01-15",
-        "2022-01-15",
-        "2023-01-15",
+        "2022-01-14",
+        "2023-01-13",
         "2024-01-15"
       ],
       "path": [
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0
+        8.41,
+        6.3,
+        6.47,
+        9.25,
+        10.38,
+        11.86
       ],
       "regimes": [
-        "D",
-        "D",
-        "D",
-        "D",
+        "E",
+        "E",
+        "E",
+        "E",
         "D",
         "D"
       ],
       "buyHold": {
-        "terminalValue": 2281892.8886910314,
-        "cagr": 0.17939437190386487,
-        "maxDrawdown": 0.0
+        "terminalValue": 1978993.6504767905,
+        "cagr": 0.14627515707576388,
+        "maxDrawdown": -0.09509788142758824
       },
       "policies": {
         "BASELINE_100_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1716677.8243648643,
+          "cagr": 0.11413485075191465,
+          "maxDrawdown": -0.024436594002273937,
+          "turnoverPct": 1.9947182604623275,
+          "deltaTerminal": -262315.82611192623,
+          "deltaCagr": -0.03214030632384923,
+          "drawdownImprovement": 0.0706612874253143
         },
         "LATE_EXIT_100_80_50": {
-          "terminalValue": 2076197.4574602789,
-          "cagr": 0.15732072645753936,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.7982609259886169,
-          "deltaTerminal": -205695.4312307525,
-          "deltaCagr": -0.022073645446325507,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1807111.7660791925,
+          "cagr": 0.1256334819964875,
+          "maxDrawdown": -0.048426910052392635,
+          "turnoverPct": 1.7128448741593423,
+          "deltaTerminal": -171881.88439759798,
+          "deltaCagr": -0.02064167507927639,
+          "drawdownImprovement": 0.0466709713751956
         },
         "MILD_EXIT_100_90_65": {
-          "terminalValue": 2176809.1173691796,
-          "cagr": 0.1683260751583,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.7827141003093914,
-          "deltaTerminal": -105083.77132185176,
-          "deltaCagr": -0.011068296745564865,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1860675.8924734865,
+          "cagr": 0.1322286657796483,
+          "maxDrawdown": -0.06264588656098458,
+          "turnoverPct": 1.483956839959792,
+          "deltaTerminal": -118317.75800330401,
+          "deltaCagr": -0.01404649129611557,
+          "drawdownImprovement": 0.03245199486660366
         },
         "EARLY_CUT_100_85_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1716677.8243648643,
+          "cagr": 0.11413485075191465,
+          "maxDrawdown": -0.024436594002273937,
+          "turnoverPct": 1.9947182604623275,
+          "deltaTerminal": -262315.82611192623,
+          "deltaCagr": -0.03214030632384923,
+          "drawdownImprovement": 0.0706612874253143
         }
       }
     },
@@ -647,69 +652,69 @@
       "name": "2021-2026",
       "dates": [
         "2021-01-15",
-        "2022-01-15",
-        "2023-01-15",
+        "2022-01-14",
+        "2023-01-13",
         "2024-01-15",
         "2025-01-15",
         "2026-01-15"
       ],
       "path": [
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0,
-        10.0
+        6.47,
+        9.25,
+        10.38,
+        11.86,
+        15.86,
+        14.59
       ],
       "regimes": [
+        "E",
+        "E",
         "D",
         "D",
-        "D",
-        "D",
-        "D",
-        "D"
+        "B",
+        "B"
       ],
       "buyHold": {
-        "terminalValue": 2281892.8886910314,
-        "cagr": 0.17939437190386487,
-        "maxDrawdown": 0.0
+        "terminalValue": 1908727.4432962232,
+        "cagr": 0.13801708866260154,
+        "maxDrawdown": -0.12298487249216217
       },
       "policies": {
         "BASELINE_100_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
-          "drawdownImprovement": 0.0
+          "terminalValue": 2024906.757055953,
+          "cagr": 0.15154524383210255,
+          "maxDrawdown": -0.06956012787139243,
+          "turnoverPct": 3.195579052194882,
+          "deltaTerminal": 116179.31375972973,
+          "deltaCagr": 0.01352815516950101,
+          "drawdownImprovement": 0.05342474462076974
         },
         "LATE_EXIT_100_80_50": {
-          "terminalValue": 2076197.4574602789,
-          "cagr": 0.15732072645753936,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.7982609259886169,
-          "deltaTerminal": -205695.4312307525,
-          "deltaCagr": -0.022073645446325507,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1988594.0723046162,
+          "cagr": 0.14738515888838366,
+          "maxDrawdown": -0.08628375830715851,
+          "turnoverPct": 2.41789287109324,
+          "deltaTerminal": 79866.62900839304,
+          "deltaCagr": 0.009368070225782121,
+          "drawdownImprovement": 0.03670111418500366
         },
         "MILD_EXIT_100_90_65": {
-          "terminalValue": 2176809.1173691796,
-          "cagr": 0.1683260751583,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.7827141003093914,
-          "deltaTerminal": -105083.77132185176,
-          "deltaCagr": -0.011068296745564865,
-          "drawdownImprovement": 0.0
+          "terminalValue": 1965928.6797436308,
+          "cagr": 0.14475764271014913,
+          "maxDrawdown": -0.0966688257906062,
+          "turnoverPct": 1.9433313967236832,
+          "deltaTerminal": 57201.23644740763,
+          "deltaCagr": 0.006740554047547587,
+          "drawdownImprovement": 0.026316046701555962
         },
         "EARLY_CUT_100_85_60_25": {
-          "terminalValue": 1888028.8190222103,
-          "cagr": 0.1355381350684306,
-          "maxDrawdown": 0.0,
-          "turnoverPct": 0.8720829574845461,
-          "deltaTerminal": -393864.06966882106,
-          "deltaCagr": -0.04385623683543427,
-          "drawdownImprovement": 0.0
+          "terminalValue": 2037750.9873373243,
+          "cagr": 0.1530024296228356,
+          "maxDrawdown": -0.06370596139581153,
+          "turnoverPct": 3.182000299001529,
+          "deltaTerminal": 129023.54404110112,
+          "deltaCagr": 0.014985340960234073,
+          "drawdownImprovement": 0.05927891109635064
         }
       }
     }
@@ -725,14 +730,14 @@
         "E": 0.25
       },
       "windows": 10,
-      "avgDeltaTerminal": -393864.06966882106,
-      "medianDeltaTerminal": -393864.06966882106,
-      "winRateVsHold": 0.0,
-      "avgDrawdownImprovement": 0.0,
-      "drawdownImprovementWinRate": 0.0,
-      "avgTurnoverPct": 0.8720829574845461,
-      "worstDeltaTerminal": -393864.06966882106,
-      "bestDeltaTerminal": -393864.06966882106
+      "avgDeltaTerminal": -432279.10450895486,
+      "medianDeltaTerminal": -365240.3289624931,
+      "winRateVsHold": 0.1,
+      "avgDrawdownImprovement": 0.06559890940063962,
+      "drawdownImprovementWinRate": 0.8,
+      "avgTurnoverPct": 2.3276960551395907,
+      "worstDeltaTerminal": -939982.2727786487,
+      "bestDeltaTerminal": 116179.31375972973
     },
     {
       "name": "LATE_EXIT_100_80_50",
@@ -744,14 +749,14 @@
         "E": 0.5
       },
       "windows": 10,
-      "avgDeltaTerminal": -205695.4312307525,
-      "medianDeltaTerminal": -205695.4312307525,
-      "winRateVsHold": 0.0,
-      "avgDrawdownImprovement": 0.0,
-      "drawdownImprovementWinRate": 0.0,
-      "avgTurnoverPct": 0.7982609259886169,
-      "worstDeltaTerminal": -205695.4312307525,
-      "bestDeltaTerminal": -205695.4312307525
+      "avgDeltaTerminal": -285423.38893927046,
+      "medianDeltaTerminal": -233331.6675232501,
+      "winRateVsHold": 0.1,
+      "avgDrawdownImprovement": 0.0430031598573269,
+      "drawdownImprovementWinRate": 0.8,
+      "avgTurnoverPct": 1.8084539386757195,
+      "worstDeltaTerminal": -629495.4759994773,
+      "bestDeltaTerminal": 79866.62900839304
     },
     {
       "name": "MILD_EXIT_100_90_65",
@@ -763,14 +768,14 @@
         "E": 0.65
       },
       "windows": 10,
-      "avgDeltaTerminal": -105083.77132185176,
-      "medianDeltaTerminal": -105083.77132185176,
-      "winRateVsHold": 0.0,
-      "avgDrawdownImprovement": 0.0,
-      "drawdownImprovementWinRate": 0.0,
-      "avgTurnoverPct": 0.7827141003093914,
-      "worstDeltaTerminal": -105083.77132185176,
-      "bestDeltaTerminal": -105083.77132185176
+      "avgDeltaTerminal": -195442.53453810565,
+      "medianDeltaTerminal": -158061.61568545934,
+      "winRateVsHold": 0.1,
+      "avgDrawdownImprovement": 0.029769719210611657,
+      "drawdownImprovementWinRate": 0.8,
+      "avgTurnoverPct": 1.4863390731871007,
+      "worstDeltaTerminal": -446111.5337731289,
+      "bestDeltaTerminal": 57201.23644740763
     },
     {
       "name": "EARLY_CUT_100_85_60_25",
@@ -782,18 +787,18 @@
         "E": 0.25
       },
       "windows": 10,
-      "avgDeltaTerminal": -393864.06966882106,
-      "medianDeltaTerminal": -393864.06966882106,
-      "winRateVsHold": 0.0,
-      "avgDrawdownImprovement": 0.0,
-      "drawdownImprovementWinRate": 0.0,
-      "avgTurnoverPct": 0.8720829574845461,
-      "worstDeltaTerminal": -393864.06966882106,
-      "bestDeltaTerminal": -393864.06966882106
+      "avgDeltaTerminal": -447699.56218293955,
+      "medianDeltaTerminal": -372480.0403631666,
+      "winRateVsHold": 0.1,
+      "avgDrawdownImprovement": 0.06773134058881573,
+      "drawdownImprovementWinRate": 0.8,
+      "avgTurnoverPct": 2.1894343658001176,
+      "worstDeltaTerminal": -980374.227770406,
+      "bestDeltaTerminal": 129023.54404110112
     }
   ],
   "bestAvgReturnProxy": "MILD_EXIT_100_90_65",
-  "bestAvgDrawdownProxy": "BASELINE_100_60_25",
+  "bestAvgDrawdownProxy": "EARLY_CUT_100_85_60_25",
   "decision": "NO_PRODUCTION_CHANGE",
   "reason": "Historical CBR yield-path replay improves evidence, but current-basket P&L before issue dates is a repricing/cashflow proxy, not a true MOEX price backtest. Require common-life MOEX quote backtest before changing production thresholds.",
   "limitations": [
