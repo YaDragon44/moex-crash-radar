@@ -1,0 +1,16 @@
+const assert=require('assert');
+const R=require('./sber-valuation-registry.js');
+const a=R.audit();
+assert.equal(a.status,'VERIFIED_INPUT');
+assert.equal(a.epsOk,true);
+assert.equal(a.bankOk,true);
+assert.equal(a.historicalPriceGate,'RUNTIME_MOEX_REQUIRED');
+assert.equal(a.peerPriceGate,'RUNTIME_MOEX_REQUIRED');
+assert.equal(a.bankValuationGate,'PB_ROE_REQUIRED');
+assert.deepEqual(R.SBER.epsSeries.map(x=>x.eps),[69.10,72.03,77.81]);
+assert.deepEqual(R.SBER.peers,['VTBR','T']);
+assert.equal(R.SBER.bankMetrics[2025].roe,22.7);
+assert.equal(R.SBER.bankMetrics[2025].cet1,12.3);
+assert.equal(R.SBER.bankMetrics[2025].npl,4.9);
+assert.equal(R.SBER.bankMetrics[2025].costOfRisk,1.30);
+console.log('R1.8.14 SBER valuation input tests: PASS');

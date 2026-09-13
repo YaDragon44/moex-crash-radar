@@ -1,0 +1,12 @@
+const assert=require('assert');
+const B=require('./bank-valuation-gate.js');
+let x=B.assess({});
+assert.equal(x.status,'LOCK');
+assert.equal(x.verified,false);
+x=B.assess({price:300,bookValuePerShare:350,roe:22.7,cet1:12.3,npl:4.9,costOfRisk:1.3,verified:true,source:'verified source',asOf:'2025-12-31'});
+assert.equal(x.status,'VERIFIED');
+assert(Math.abs(x.pb-(300/350))<1e-12);
+assert.equal(x.quality,'YELLOW');
+assert.equal(B.combine({status:'VERIFIED',verified:true},x).status,'VERIFIED');
+assert.equal(B.combine({status:'PARTIAL',verified:false},x).status,'PARTIAL');
+console.log('R1.8.15 bank valuation gate tests: PASS');

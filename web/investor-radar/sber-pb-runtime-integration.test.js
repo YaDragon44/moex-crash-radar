@@ -1,0 +1,23 @@
+'use strict';
+require('./sber-reported-bvps-registry.js');
+require('./sber-moex-runtime.js');
+require('./bank-valuation-gate.js');
+require('./sber-valuation-registry.js');
+const x=require('./sber-pb-runtime-integration.js');
+const assert=(v,m)=>{if(!v)throw new Error(m)};
+const payload={marketdata:{columns:['SECID','LAST','LCURRENTPRICE','UPDATETIME'],data:[['SBER',312.016,null,'18:40:00']]}};
+const r=x.assessFromQuotePayload(payload,'2026-09-12T18:40:00+03:00');
+assert(r.verified===true&&r.status==='VERIFIED','verified path');
+assert(Math.abs(r.pb-0.8)<1e-12,'P/B formula');
+assert(r.bookValuePerShare===390.02,'issuer BVPS');
+assert(r.quality==='YELLOW','2025 quality controls');
+const bad=x.assessFromQuotePayload({marketdata:{columns:['SECID','LAST'],data:[['SBER',null]]}});
+assert(bad.verified===false&&bad.pb===null&&bad.missing.includes('moex_sber_price'),'fail closed without price');
+(async()=>{
+ const live=await x.collect(async()=>({ok:true,json:async()=>payload}));
+ assert(live.verified===true&&Math.abs(live.pb-0.8)<1e-12,'collector path');
+ const fail=await x.collect(async()=>({ok:false,status:503}));
+ assert(fail.verified===false&&fail.pb===null,'HTTP fail closed');
+ console.log('R1.8.45 SBER P/B runtime integration: PASS');
+ console.log(JSON.stringify({status:r.status,pb:r.pb,bvps:r.bookValuePerShare,quality:r.quality}));
+})().catch(e=>{console.error(e);process.exit(1)});
