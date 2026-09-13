@@ -1,0 +1,812 @@
+{
+  "version": "0.5.6",
+  "sourceVersion": "0.5.3",
+  "valuationDate": "2026-09-11",
+  "status": "PASS",
+  "historySource": "CBR Russian Government Bond Zero Coupon Yield Curve",
+  "historyPoints": 24,
+  "historyFrom": "2003-01-15",
+  "historyTo": "2026-01-15",
+  "windowMethod": "10 rolling 5Y historical 10Y-yield paths; start every 2 years; annual CBR points near Jan-15",
+  "validationType": "HISTORICAL_YIELD_PATH_REPLAY_PROXY",
+  "regimeObservationCounts": {
+    "D": 24
+  },
+  "windows": [
+    {
+      "name": "2003-2008",
+      "dates": [
+        "2003-01-15",
+        "2004-01-15",
+        "2005-01-15",
+        "2006-01-15",
+        "2007-01-15",
+        "2008-01-15"
+      ],
+      "path": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "regimes": [
+        "D",
+        "D",
+        "D",
+        "D",
+        "D",
+        "D"
+      ],
+      "buyHold": {
+        "terminalValue": 2281892.8886910314,
+        "cagr": 0.17939437190386487,
+        "maxDrawdown": 0.0
+      },
+      "policies": {
+        "BASELINE_100_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        },
+        "LATE_EXIT_100_80_50": {
+          "terminalValue": 2076197.4574602789,
+          "cagr": 0.15732072645753936,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7982609259886169,
+          "deltaTerminal": -205695.4312307525,
+          "deltaCagr": -0.022073645446325507,
+          "drawdownImprovement": 0.0
+        },
+        "MILD_EXIT_100_90_65": {
+          "terminalValue": 2176809.1173691796,
+          "cagr": 0.1683260751583,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7827141003093914,
+          "deltaTerminal": -105083.77132185176,
+          "deltaCagr": -0.011068296745564865,
+          "drawdownImprovement": 0.0
+        },
+        "EARLY_CUT_100_85_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        }
+      }
+    },
+    {
+      "name": "2005-2010",
+      "dates": [
+        "2005-01-15",
+        "2006-01-15",
+        "2007-01-15",
+        "2008-01-15",
+        "2009-01-15",
+        "2010-01-15"
+      ],
+      "path": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "regimes": [
+        "D",
+        "D",
+        "D",
+        "D",
+        "D",
+        "D"
+      ],
+      "buyHold": {
+        "terminalValue": 2281892.8886910314,
+        "cagr": 0.17939437190386487,
+        "maxDrawdown": 0.0
+      },
+      "policies": {
+        "BASELINE_100_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        },
+        "LATE_EXIT_100_80_50": {
+          "terminalValue": 2076197.4574602789,
+          "cagr": 0.15732072645753936,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7982609259886169,
+          "deltaTerminal": -205695.4312307525,
+          "deltaCagr": -0.022073645446325507,
+          "drawdownImprovement": 0.0
+        },
+        "MILD_EXIT_100_90_65": {
+          "terminalValue": 2176809.1173691796,
+          "cagr": 0.1683260751583,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7827141003093914,
+          "deltaTerminal": -105083.77132185176,
+          "deltaCagr": -0.011068296745564865,
+          "drawdownImprovement": 0.0
+        },
+        "EARLY_CUT_100_85_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        }
+      }
+    },
+    {
+      "name": "2007-2012",
+      "dates": [
+        "2007-01-15",
+        "2008-01-15",
+        "2009-01-15",
+        "2010-01-15",
+        "2011-01-15",
+        "2012-01-15"
+      ],
+      "path": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "regimes": [
+        "D",
+        "D",
+        "D",
+        "D",
+        "D",
+        "D"
+      ],
+      "buyHold": {
+        "terminalValue": 2281892.8886910314,
+        "cagr": 0.17939437190386487,
+        "maxDrawdown": 0.0
+      },
+      "policies": {
+        "BASELINE_100_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        },
+        "LATE_EXIT_100_80_50": {
+          "terminalValue": 2076197.4574602789,
+          "cagr": 0.15732072645753936,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7982609259886169,
+          "deltaTerminal": -205695.4312307525,
+          "deltaCagr": -0.022073645446325507,
+          "drawdownImprovement": 0.0
+        },
+        "MILD_EXIT_100_90_65": {
+          "terminalValue": 2176809.1173691796,
+          "cagr": 0.1683260751583,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7827141003093914,
+          "deltaTerminal": -105083.77132185176,
+          "deltaCagr": -0.011068296745564865,
+          "drawdownImprovement": 0.0
+        },
+        "EARLY_CUT_100_85_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        }
+      }
+    },
+    {
+      "name": "2009-2014",
+      "dates": [
+        "2009-01-15",
+        "2010-01-15",
+        "2011-01-15",
+        "2012-01-15",
+        "2013-01-15",
+        "2014-01-15"
+      ],
+      "path": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "regimes": [
+        "D",
+        "D",
+        "D",
+        "D",
+        "D",
+        "D"
+      ],
+      "buyHold": {
+        "terminalValue": 2281892.8886910314,
+        "cagr": 0.17939437190386487,
+        "maxDrawdown": 0.0
+      },
+      "policies": {
+        "BASELINE_100_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        },
+        "LATE_EXIT_100_80_50": {
+          "terminalValue": 2076197.4574602789,
+          "cagr": 0.15732072645753936,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7982609259886169,
+          "deltaTerminal": -205695.4312307525,
+          "deltaCagr": -0.022073645446325507,
+          "drawdownImprovement": 0.0
+        },
+        "MILD_EXIT_100_90_65": {
+          "terminalValue": 2176809.1173691796,
+          "cagr": 0.1683260751583,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7827141003093914,
+          "deltaTerminal": -105083.77132185176,
+          "deltaCagr": -0.011068296745564865,
+          "drawdownImprovement": 0.0
+        },
+        "EARLY_CUT_100_85_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        }
+      }
+    },
+    {
+      "name": "2011-2016",
+      "dates": [
+        "2011-01-15",
+        "2012-01-15",
+        "2013-01-15",
+        "2014-01-15",
+        "2015-01-15",
+        "2016-01-15"
+      ],
+      "path": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "regimes": [
+        "D",
+        "D",
+        "D",
+        "D",
+        "D",
+        "D"
+      ],
+      "buyHold": {
+        "terminalValue": 2281892.8886910314,
+        "cagr": 0.17939437190386487,
+        "maxDrawdown": 0.0
+      },
+      "policies": {
+        "BASELINE_100_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        },
+        "LATE_EXIT_100_80_50": {
+          "terminalValue": 2076197.4574602789,
+          "cagr": 0.15732072645753936,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7982609259886169,
+          "deltaTerminal": -205695.4312307525,
+          "deltaCagr": -0.022073645446325507,
+          "drawdownImprovement": 0.0
+        },
+        "MILD_EXIT_100_90_65": {
+          "terminalValue": 2176809.1173691796,
+          "cagr": 0.1683260751583,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7827141003093914,
+          "deltaTerminal": -105083.77132185176,
+          "deltaCagr": -0.011068296745564865,
+          "drawdownImprovement": 0.0
+        },
+        "EARLY_CUT_100_85_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        }
+      }
+    },
+    {
+      "name": "2013-2018",
+      "dates": [
+        "2013-01-15",
+        "2014-01-15",
+        "2015-01-15",
+        "2016-01-15",
+        "2017-01-15",
+        "2018-01-15"
+      ],
+      "path": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "regimes": [
+        "D",
+        "D",
+        "D",
+        "D",
+        "D",
+        "D"
+      ],
+      "buyHold": {
+        "terminalValue": 2281892.8886910314,
+        "cagr": 0.17939437190386487,
+        "maxDrawdown": 0.0
+      },
+      "policies": {
+        "BASELINE_100_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        },
+        "LATE_EXIT_100_80_50": {
+          "terminalValue": 2076197.4574602789,
+          "cagr": 0.15732072645753936,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7982609259886169,
+          "deltaTerminal": -205695.4312307525,
+          "deltaCagr": -0.022073645446325507,
+          "drawdownImprovement": 0.0
+        },
+        "MILD_EXIT_100_90_65": {
+          "terminalValue": 2176809.1173691796,
+          "cagr": 0.1683260751583,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7827141003093914,
+          "deltaTerminal": -105083.77132185176,
+          "deltaCagr": -0.011068296745564865,
+          "drawdownImprovement": 0.0
+        },
+        "EARLY_CUT_100_85_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        }
+      }
+    },
+    {
+      "name": "2015-2020",
+      "dates": [
+        "2015-01-15",
+        "2016-01-15",
+        "2017-01-15",
+        "2018-01-15",
+        "2019-01-15",
+        "2020-01-15"
+      ],
+      "path": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "regimes": [
+        "D",
+        "D",
+        "D",
+        "D",
+        "D",
+        "D"
+      ],
+      "buyHold": {
+        "terminalValue": 2281892.8886910314,
+        "cagr": 0.17939437190386487,
+        "maxDrawdown": 0.0
+      },
+      "policies": {
+        "BASELINE_100_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        },
+        "LATE_EXIT_100_80_50": {
+          "terminalValue": 2076197.4574602789,
+          "cagr": 0.15732072645753936,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7982609259886169,
+          "deltaTerminal": -205695.4312307525,
+          "deltaCagr": -0.022073645446325507,
+          "drawdownImprovement": 0.0
+        },
+        "MILD_EXIT_100_90_65": {
+          "terminalValue": 2176809.1173691796,
+          "cagr": 0.1683260751583,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7827141003093914,
+          "deltaTerminal": -105083.77132185176,
+          "deltaCagr": -0.011068296745564865,
+          "drawdownImprovement": 0.0
+        },
+        "EARLY_CUT_100_85_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        }
+      }
+    },
+    {
+      "name": "2017-2022",
+      "dates": [
+        "2017-01-15",
+        "2018-01-15",
+        "2019-01-15",
+        "2020-01-15",
+        "2021-01-15",
+        "2022-01-15"
+      ],
+      "path": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "regimes": [
+        "D",
+        "D",
+        "D",
+        "D",
+        "D",
+        "D"
+      ],
+      "buyHold": {
+        "terminalValue": 2281892.8886910314,
+        "cagr": 0.17939437190386487,
+        "maxDrawdown": 0.0
+      },
+      "policies": {
+        "BASELINE_100_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        },
+        "LATE_EXIT_100_80_50": {
+          "terminalValue": 2076197.4574602789,
+          "cagr": 0.15732072645753936,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7982609259886169,
+          "deltaTerminal": -205695.4312307525,
+          "deltaCagr": -0.022073645446325507,
+          "drawdownImprovement": 0.0
+        },
+        "MILD_EXIT_100_90_65": {
+          "terminalValue": 2176809.1173691796,
+          "cagr": 0.1683260751583,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7827141003093914,
+          "deltaTerminal": -105083.77132185176,
+          "deltaCagr": -0.011068296745564865,
+          "drawdownImprovement": 0.0
+        },
+        "EARLY_CUT_100_85_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        }
+      }
+    },
+    {
+      "name": "2019-2024",
+      "dates": [
+        "2019-01-15",
+        "2020-01-15",
+        "2021-01-15",
+        "2022-01-15",
+        "2023-01-15",
+        "2024-01-15"
+      ],
+      "path": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "regimes": [
+        "D",
+        "D",
+        "D",
+        "D",
+        "D",
+        "D"
+      ],
+      "buyHold": {
+        "terminalValue": 2281892.8886910314,
+        "cagr": 0.17939437190386487,
+        "maxDrawdown": 0.0
+      },
+      "policies": {
+        "BASELINE_100_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        },
+        "LATE_EXIT_100_80_50": {
+          "terminalValue": 2076197.4574602789,
+          "cagr": 0.15732072645753936,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7982609259886169,
+          "deltaTerminal": -205695.4312307525,
+          "deltaCagr": -0.022073645446325507,
+          "drawdownImprovement": 0.0
+        },
+        "MILD_EXIT_100_90_65": {
+          "terminalValue": 2176809.1173691796,
+          "cagr": 0.1683260751583,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7827141003093914,
+          "deltaTerminal": -105083.77132185176,
+          "deltaCagr": -0.011068296745564865,
+          "drawdownImprovement": 0.0
+        },
+        "EARLY_CUT_100_85_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        }
+      }
+    },
+    {
+      "name": "2021-2026",
+      "dates": [
+        "2021-01-15",
+        "2022-01-15",
+        "2023-01-15",
+        "2024-01-15",
+        "2025-01-15",
+        "2026-01-15"
+      ],
+      "path": [
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0,
+        10.0
+      ],
+      "regimes": [
+        "D",
+        "D",
+        "D",
+        "D",
+        "D",
+        "D"
+      ],
+      "buyHold": {
+        "terminalValue": 2281892.8886910314,
+        "cagr": 0.17939437190386487,
+        "maxDrawdown": 0.0
+      },
+      "policies": {
+        "BASELINE_100_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        },
+        "LATE_EXIT_100_80_50": {
+          "terminalValue": 2076197.4574602789,
+          "cagr": 0.15732072645753936,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7982609259886169,
+          "deltaTerminal": -205695.4312307525,
+          "deltaCagr": -0.022073645446325507,
+          "drawdownImprovement": 0.0
+        },
+        "MILD_EXIT_100_90_65": {
+          "terminalValue": 2176809.1173691796,
+          "cagr": 0.1683260751583,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.7827141003093914,
+          "deltaTerminal": -105083.77132185176,
+          "deltaCagr": -0.011068296745564865,
+          "drawdownImprovement": 0.0
+        },
+        "EARLY_CUT_100_85_60_25": {
+          "terminalValue": 1888028.8190222103,
+          "cagr": 0.1355381350684306,
+          "maxDrawdown": 0.0,
+          "turnoverPct": 0.8720829574845461,
+          "deltaTerminal": -393864.06966882106,
+          "deltaCagr": -0.04385623683543427,
+          "drawdownImprovement": 0.0
+        }
+      }
+    }
+  ],
+  "policies": [
+    {
+      "name": "BASELINE_100_60_25",
+      "policy": {
+        "A": 1.0,
+        "B": 1.0,
+        "C": 1.0,
+        "D": 0.6,
+        "E": 0.25
+      },
+      "windows": 10,
+      "avgDeltaTerminal": -393864.06966882106,
+      "medianDeltaTerminal": -393864.06966882106,
+      "winRateVsHold": 0.0,
+      "avgDrawdownImprovement": 0.0,
+      "drawdownImprovementWinRate": 0.0,
+      "avgTurnoverPct": 0.8720829574845461,
+      "worstDeltaTerminal": -393864.06966882106,
+      "bestDeltaTerminal": -393864.06966882106
+    },
+    {
+      "name": "LATE_EXIT_100_80_50",
+      "policy": {
+        "A": 1.0,
+        "B": 1.0,
+        "C": 1.0,
+        "D": 0.8,
+        "E": 0.5
+      },
+      "windows": 10,
+      "avgDeltaTerminal": -205695.4312307525,
+      "medianDeltaTerminal": -205695.4312307525,
+      "winRateVsHold": 0.0,
+      "avgDrawdownImprovement": 0.0,
+      "drawdownImprovementWinRate": 0.0,
+      "avgTurnoverPct": 0.7982609259886169,
+      "worstDeltaTerminal": -205695.4312307525,
+      "bestDeltaTerminal": -205695.4312307525
+    },
+    {
+      "name": "MILD_EXIT_100_90_65",
+      "policy": {
+        "A": 1.0,
+        "B": 1.0,
+        "C": 1.0,
+        "D": 0.9,
+        "E": 0.65
+      },
+      "windows": 10,
+      "avgDeltaTerminal": -105083.77132185176,
+      "medianDeltaTerminal": -105083.77132185176,
+      "winRateVsHold": 0.0,
+      "avgDrawdownImprovement": 0.0,
+      "drawdownImprovementWinRate": 0.0,
+      "avgTurnoverPct": 0.7827141003093914,
+      "worstDeltaTerminal": -105083.77132185176,
+      "bestDeltaTerminal": -105083.77132185176
+    },
+    {
+      "name": "EARLY_CUT_100_85_60_25",
+      "policy": {
+        "A": 1.0,
+        "B": 1.0,
+        "C": 0.85,
+        "D": 0.6,
+        "E": 0.25
+      },
+      "windows": 10,
+      "avgDeltaTerminal": -393864.06966882106,
+      "medianDeltaTerminal": -393864.06966882106,
+      "winRateVsHold": 0.0,
+      "avgDrawdownImprovement": 0.0,
+      "drawdownImprovementWinRate": 0.0,
+      "avgTurnoverPct": 0.8720829574845461,
+      "worstDeltaTerminal": -393864.06966882106,
+      "bestDeltaTerminal": -393864.06966882106
+    }
+  ],
+  "bestAvgReturnProxy": "MILD_EXIT_100_90_65",
+  "bestAvgDrawdownProxy": "BASELINE_100_60_25",
+  "decision": "NO_PRODUCTION_CHANGE",
+  "reason": "Historical CBR yield-path replay improves evidence, but current-basket P&L before issue dates is a repricing/cashflow proxy, not a true MOEX price backtest. Require common-life MOEX quote backtest before changing production thresholds.",
+  "limitations": [
+    "Current four-bond basket did not exist over the full CBR history.",
+    "Historical CBR 10Y paths are replayed from the current valuation date through the current-basket cashflow engine.",
+    "Protective sleeve yield is 0%; taxes, commissions and slippage are excluded.",
+    "This validates regime-policy behavior, not realized historical returns of these exact securities."
+  ],
+  "assumptions": {
+    "protectiveSleeveYield": 0.0,
+    "taxes": false,
+    "commissions": false,
+    "slippage": false
+  },
+  "nextTask": "R0.5.7 Common-Life MOEX Quote Backtest"
+}
