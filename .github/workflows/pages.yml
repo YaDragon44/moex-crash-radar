@@ -124,6 +124,16 @@ jobs:
           cp web/portfolio-rf/index.html _site/portfolio-rf/index.html
           mkdir -p _site/investor-radar
           cp web/investor-radar/index.html _site/investor-radar/index.html
+          find web/investor-radar -maxdepth 1 -type f -name '*.js' ! -name '*.test.js' -exec cp {} _site/investor-radar/ \;
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          html=Path('_site/investor-radar/index.html').read_text(encoding='utf-8')
+          refs=re.findall(r'<script\s+src="\.\/([^\"]+)"',html)
+          missing=[ref for ref in refs if not Path('_site/investor-radar',ref).is_file()]
+          if missing: raise SystemExit(f'Investor Radar runtime assets missing: {missing}')
+          print(f'INVESTOR RADAR BUILD ASSET GATE: PASS · assets={len(refs)}')
+          PY
           mkdir -p _site/simple-entry-radar
           cp web/simple-entry-radar/live.html _site/simple-entry-radar/index.html
           if [ -f web/simple-entry-radar/positions.json ]; then cp web/simple-entry-radar/positions.json _site/simple-entry-radar/positions.json; fi
@@ -252,14 +262,21 @@ jobs:
             sleep 10
           done
           echo "TA MARKET PUBLIC HTML + SAFETY + RISK + OBSERVATION + SAMPLE QUALITY GATE: FAIL"; exit 1
-      - name: Verify Investor Radar public URL
+      - name: Verify Investor Radar public URL and runtime assets
         shell: bash
         run: |
           set -euo pipefail
-          URL="https://yadragon44.github.io/moex-crash-radar/investor-radar/index.html"
+          BASE="https://yadragon44.github.io/moex-crash-radar/investor-radar"
+          assets=(recommendation-engine.js risk-layer.js issuer-risk-registry.js sanctions-regulatory-registry.js valuation-engine.js multiples-registry.js multiples-data-factory.js peer-universe-registry.js peer-earnings-registry.js peer-pe-data-factory.js)
           for attempt in {1..12}; do
-            code=$(curl -L -sS -o /tmp/investor-radar.html -w "%{http_code}" --connect-timeout 10 --max-time 20 "$URL" || true)
-            if [ "$code" = "200" ] && grep -q "Investor Radar R1.8" /tmp/investor-radar.html; then echo "PUBLIC HTTP GATE: PASS"; exit 0; fi
+            code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/investor-radar.html -w "%{http_code}" --connect-timeout 10 --max-time 20 "${BASE}/index.html?v=${attempt}" || true)
+            ok=true
+            if [ "$code" != "200" ] || ! grep -q "Investor Radar R1.8" /tmp/investor-radar.html; then ok=false; fi
+            for asset in "${assets[@]}"; do
+              asset_code=$(curl -L -sS -H 'Cache-Control: no-cache' -o "/tmp/${asset}" -w "%{http_code}" --connect-timeout 10 --max-time 20 "${BASE}/${asset}?v=${attempt}" || true)
+              if [ "$asset_code" != "200" ] || [ ! -s "/tmp/${asset}" ]; then ok=false; break; fi
+            done
+            if [ "$ok" = true ]; then echo "INVESTOR RADAR PUBLIC HTML + RUNTIME ASSET GATE: PASS"; exit 0; fi
             sleep 10
           done
-          echo "PUBLIC HTTP GATE: FAIL"; exit 1
+          echo "INVESTOR RADAR PUBLIC HTML + RUNTIME ASSET GATE: FAIL"; exit 1
