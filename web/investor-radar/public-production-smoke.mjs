@@ -22,7 +22,7 @@ try {
   if(pageErrors.length) throw new Error('pageerror: '+pageErrors.join(' | '));
 
   const title=(await page.locator('h1').textContent())?.trim()||'';
-  if(title!=='Investor Radar R1.8.53') throw new Error('unexpected production version: '+title);
+  if(title!=='Investor Radar R1.8.54') throw new Error('unexpected production version: '+title);
 
   const gate=(await page.locator('#gate').textContent())?.trim()||'';
   if(!gate.includes('MOEX quotes:')) throw new Error('final gate summary missing: '+gate);
@@ -41,7 +41,12 @@ try {
     if(locked && !card.text.includes('НАБЛЮДАТЬ')) throw new Error(`${card.ticker}: fail-closed violation`);
   }
 
-  console.log('Investor Radar R1.8.53 production runtime integration snapshot: PASS');
+  const sber=cards.find(c=>c.ticker==='SBER');
+  if(!sber) throw new Error('SBER card missing');
+  if(sber.text.includes('verified_fundamentals')) throw new Error('SBER verified fundamentals integration regression');
+  if(!/Auto historical P\/E3/.test(sber.text)) throw new Error('SBER historical P/E registry/runtime integration did not produce 3 observations: '+sber.text);
+
+  console.log('Investor Radar R1.8.54 SBER fundamentals production snapshot: PASS');
   console.log('FINAL GATE:',gate);
   for(const card of cards) console.log('CARD:',JSON.stringify(card));
   console.log('FAILED REQUESTS:',failed.length,failed);
