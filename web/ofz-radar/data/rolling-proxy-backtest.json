@@ -1,0 +1,4314 @@
+{
+  "version": "0.5.9",
+  "status": "PASS",
+  "validationType": "DURATION_MATCHED_ROLLING_OFZ_REAL_PRICE_PROXY",
+  "dataSource": "MOEX ISS real quotes + MOEX official coupon rows + CBR 10Y",
+  "from": "2018-01-31",
+  "to": "2026-09-11",
+  "monthlyObservations": 105,
+  "regimeCounts": {
+    "E": 53,
+    "C": 6,
+    "D": 18,
+    "B": 22,
+    "A": 6
+  },
+  "universeSize": 32,
+  "selectedIssues": [
+    "SU26218RMFS6",
+    "SU26221RMFS0",
+    "SU26224RMFS4",
+    "SU26225RMFS1",
+    "SU26233RMFS5",
+    "SU26240RMFS0",
+    "SU26243RMFS4",
+    "SU26250RMFS9",
+    "SU26253RMFS3"
+  ],
+  "selectionRule": "At each month-end choose real fixed OFZ SU262 with residual maturity >=7y and closest to 12y; roll using real MOEX full prices.",
+  "results": {
+    "BUY_HOLD": {
+      "terminalValue": 1335189.8099999994,
+      "returnPct": 0.33518980999999926,
+      "maxDrawdown": -0.2999787674754495,
+      "turnoverPct": 25.853663180000005,
+      "couponCash": 961319.9700000002,
+      "timeline": [
+        {
+          "date": "2018-01-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.34,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1000000.0
+        },
+        {
+          "date": "2018-02-28",
+          "secid": "SU26218RMFS6",
+          "y10": 7.13,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1020319.6000000001
+        },
+        {
+          "date": "2018-03-30",
+          "secid": "SU26224RMFS4",
+          "y10": 7.14,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1029682.9
+        },
+        {
+          "date": "2018-04-30",
+          "secid": "SU26224RMFS4",
+          "y10": 7.37,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1024795.15
+        },
+        {
+          "date": "2018-05-31",
+          "secid": "SU26224RMFS4",
+          "y10": 7.49,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1024260.0700000001
+        },
+        {
+          "date": "2018-06-29",
+          "secid": "SU26224RMFS4",
+          "y10": 7.81,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 998637.9700000001
+        },
+        {
+          "date": "2018-07-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.81,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1005942.4199999999
+        },
+        {
+          "date": "2018-08-31",
+          "secid": "SU26218RMFS6",
+          "y10": 8.8,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 948449.7799999999
+        },
+        {
+          "date": "2018-09-28",
+          "secid": "SU26218RMFS6",
+          "y10": 8.69,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 961780.58
+        },
+        {
+          "date": "2018-10-31",
+          "secid": "SU26218RMFS6",
+          "y10": 8.68,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 965028.1799999999
+        },
+        {
+          "date": "2018-11-30",
+          "secid": "SU26218RMFS6",
+          "y10": 8.83,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 965938.2799999999
+        },
+        {
+          "date": "2018-12-29",
+          "secid": "SU26218RMFS6",
+          "y10": 8.78,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 974703.9799999999
+        },
+        {
+          "date": "2019-01-31",
+          "secid": "SU26218RMFS6",
+          "y10": 8.21,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1017229.5999999999
+        },
+        {
+          "date": "2019-02-28",
+          "secid": "SU26218RMFS6",
+          "y10": 8.42,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1008530.96
+        },
+        {
+          "date": "2019-03-29",
+          "secid": "SU26218RMFS6",
+          "y10": 8.41,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1014767.5399999999
+        },
+        {
+          "date": "2019-04-30",
+          "secid": "SU26218RMFS6",
+          "y10": 8.23,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1035556.1399999999
+        },
+        {
+          "date": "2019-05-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.99,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1065506.02
+        },
+        {
+          "date": "2019-06-28",
+          "secid": "SU26218RMFS6",
+          "y10": 7.49,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1109792.76
+        },
+        {
+          "date": "2019-07-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.39,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1126093.7100000002
+        },
+        {
+          "date": "2019-08-30",
+          "secid": "SU26218RMFS6",
+          "y10": 7.22,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1145136.4100000001
+        },
+        {
+          "date": "2019-09-30",
+          "secid": "SU26218RMFS6",
+          "y10": 7.15,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1158197.11
+        },
+        {
+          "date": "2019-10-31",
+          "secid": "SU26218RMFS6",
+          "y10": 6.59,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1211357.15
+        },
+        {
+          "date": "2019-11-29",
+          "secid": "SU26218RMFS6",
+          "y10": 6.58,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1224889.4499999997
+        },
+        {
+          "date": "2019-12-30",
+          "secid": "SU26218RMFS6",
+          "y10": 6.41,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1245415.16
+        },
+        {
+          "date": "2020-01-31",
+          "secid": "SU26218RMFS6",
+          "y10": 6.36,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1257253.34
+        },
+        {
+          "date": "2020-02-28",
+          "secid": "SU26218RMFS6",
+          "y10": 6.6,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1240229.5
+        },
+        {
+          "date": "2020-03-31",
+          "secid": "SU26218RMFS6",
+          "y10": 6.83,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1226748.85
+        },
+        {
+          "date": "2020-04-30",
+          "secid": "SU26218RMFS6",
+          "y10": 6.17,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1291187.39
+        },
+        {
+          "date": "2020-05-29",
+          "secid": "SU26218RMFS6",
+          "y10": 5.7,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1346848.79
+        },
+        {
+          "date": "2020-06-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.05,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1313882.09
+        },
+        {
+          "date": "2020-07-31",
+          "secid": "SU26221RMFS0",
+          "y10": 6.07,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1318642.2500000002
+        },
+        {
+          "date": "2020-08-31",
+          "secid": "SU26221RMFS0",
+          "y10": 6.28,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1309212.1700000002
+        },
+        {
+          "date": "2020-09-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.42,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1303019.4500000002
+        },
+        {
+          "date": "2020-10-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.41,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1308659.4500000002
+        },
+        {
+          "date": "2020-11-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.15,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1343506.0700000003
+        },
+        {
+          "date": "2020-12-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.27,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1336317.35
+        },
+        {
+          "date": "2021-01-29",
+          "secid": "SU26221RMFS0",
+          "y10": 6.59,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1312195.46
+        },
+        {
+          "date": "2021-02-26",
+          "secid": "SU26221RMFS0",
+          "y10": 7.06,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1276695.3200000003
+        },
+        {
+          "date": "2021-03-31",
+          "secid": "SU26221RMFS0",
+          "y10": 7.23,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1274688.0800000003
+        },
+        {
+          "date": "2021-04-30",
+          "secid": "SU26221RMFS0",
+          "y10": 7.21,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1278364.13
+        },
+        {
+          "date": "2021-05-31",
+          "secid": "SU26221RMFS0",
+          "y10": 7.25,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1279960.0100000002
+        },
+        {
+          "date": "2021-06-30",
+          "secid": "SU26221RMFS0",
+          "y10": 7.2,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1290514.58
+        },
+        {
+          "date": "2021-07-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.93,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1324620.4700000002
+        },
+        {
+          "date": "2021-08-31",
+          "secid": "SU26221RMFS0",
+          "y10": 7.1,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1315939.85
+        },
+        {
+          "date": "2021-09-30",
+          "secid": "SU26221RMFS0",
+          "y10": 7.42,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1296523.31
+        },
+        {
+          "date": "2021-10-29",
+          "secid": "SU26225RMFS1",
+          "y10": 8.17,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1236133.7600000002
+        },
+        {
+          "date": "2021-11-30",
+          "secid": "SU26225RMFS1",
+          "y10": 8.32,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1224027.5000000002
+        },
+        {
+          "date": "2021-12-30",
+          "secid": "SU26225RMFS1",
+          "y10": 8.44,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1228205.56
+        },
+        {
+          "date": "2022-01-31",
+          "secid": "SU26225RMFS1",
+          "y10": 9.42,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1147886.6400000001
+        },
+        {
+          "date": "2022-02-28",
+          "secid": "SU26225RMFS1",
+          "y10": 12.52,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 952203.1800000003
+        },
+        {
+          "date": "2022-03-31",
+          "secid": "SU26225RMFS1",
+          "y10": 11.23,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1028594.4600000002
+        },
+        {
+          "date": "2022-04-29",
+          "secid": "SU26225RMFS1",
+          "y10": 10.32,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1119233.32
+        },
+        {
+          "date": "2022-05-31",
+          "secid": "SU26225RMFS1",
+          "y10": 9.48,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1179255.0400000003
+        },
+        {
+          "date": "2022-06-30",
+          "secid": "SU26225RMFS1",
+          "y10": 8.79,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1246594.78
+        },
+        {
+          "date": "2022-07-29",
+          "secid": "SU26225RMFS1",
+          "y10": 8.89,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1250318.32
+        },
+        {
+          "date": "2022-08-31",
+          "secid": "SU26225RMFS1",
+          "y10": 9.11,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 1238735.5000000002
+        },
+        {
+          "date": "2022-09-30",
+          "secid": "SU26225RMFS1",
+          "y10": 10.79,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1118084.56
+        },
+        {
+          "date": "2022-10-31",
+          "secid": "SU26225RMFS1",
+          "y10": 10.18,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1183445.7400000002
+        },
+        {
+          "date": "2022-11-30",
+          "secid": "SU26225RMFS1",
+          "y10": 10.2,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1184833.4800000002
+        },
+        {
+          "date": "2022-12-30",
+          "secid": "SU26233RMFS5",
+          "y10": 10.31,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1190297.02
+        },
+        {
+          "date": "2023-01-31",
+          "secid": "SU26233RMFS5",
+          "y10": 10.59,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1178757.52
+        },
+        {
+          "date": "2023-02-28",
+          "secid": "SU26233RMFS5",
+          "y10": 10.87,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1164156.5199999998
+        },
+        {
+          "date": "2023-03-31",
+          "secid": "SU26233RMFS5",
+          "y10": 10.83,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1175386.34
+        },
+        {
+          "date": "2023-04-28",
+          "secid": "SU26233RMFS5",
+          "y10": 10.93,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1183063.8699999999
+        },
+        {
+          "date": "2023-05-31",
+          "secid": "SU26233RMFS5",
+          "y10": 10.88,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1195079.45
+        },
+        {
+          "date": "2023-06-30",
+          "secid": "SU26233RMFS5",
+          "y10": 11.09,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1184258.88
+        },
+        {
+          "date": "2023-07-31",
+          "secid": "SU26233RMFS5",
+          "y10": 11.17,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1180952.14
+        },
+        {
+          "date": "2023-08-31",
+          "secid": "SU26233RMFS5",
+          "y10": 11.47,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1168003.47
+        },
+        {
+          "date": "2023-09-29",
+          "secid": "SU26233RMFS5",
+          "y10": 11.93,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1123440.87
+        },
+        {
+          "date": "2023-10-31",
+          "secid": "SU26233RMFS5",
+          "y10": 12.5,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1097893.47
+        },
+        {
+          "date": "2023-11-30",
+          "secid": "SU26233RMFS5",
+          "y10": 11.74,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1162326.2699999998
+        },
+        {
+          "date": "2023-12-29",
+          "secid": "SU26233RMFS5",
+          "y10": 11.86,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1162411.77
+        },
+        {
+          "date": "2024-01-31",
+          "secid": "SU26240RMFS0",
+          "y10": 11.64,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1176946.7699999998
+        },
+        {
+          "date": "2024-02-29",
+          "secid": "SU26240RMFS0",
+          "y10": 12.31,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1154163.2399999995
+        },
+        {
+          "date": "2024-03-29",
+          "secid": "SU26240RMFS0",
+          "y10": 13.26,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1107113.5799999998
+        },
+        {
+          "date": "2024-04-30",
+          "secid": "SU26240RMFS0",
+          "y10": 13.59,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1087620.1199999996
+        },
+        {
+          "date": "2024-05-31",
+          "secid": "SU26240RMFS0",
+          "y10": 14.96,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1009714.3199999997
+        },
+        {
+          "date": "2024-06-28",
+          "secid": "SU26240RMFS0",
+          "y10": 15.11,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1002621.1499999998
+        },
+        {
+          "date": "2024-07-31",
+          "secid": "SU26240RMFS0",
+          "y10": 15.68,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 982345.2299999999
+        },
+        {
+          "date": "2024-08-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.78,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 985611.1499999998
+        },
+        {
+          "date": "2024-09-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.85,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 998389.7499999997
+        },
+        {
+          "date": "2024-10-31",
+          "secid": "SU26240RMFS0",
+          "y10": 16.89,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 942822.7499999995
+        },
+        {
+          "date": "2024-11-29",
+          "secid": "SU26240RMFS0",
+          "y10": 16.24,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 999186.1499999996
+        },
+        {
+          "date": "2024-12-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.22,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1129053.6499999997
+        },
+        {
+          "date": "2025-01-31",
+          "secid": "SU26240RMFS0",
+          "y10": 16.53,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1005249.6499999998
+        },
+        {
+          "date": "2025-02-28",
+          "secid": "SU26240RMFS0",
+          "y10": 15.52,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1096817.5499999998
+        },
+        {
+          "date": "2025-03-31",
+          "secid": "SU26240RMFS0",
+          "y10": 15.33,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1121508.7499999998
+        },
+        {
+          "date": "2025-04-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.63,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1128785.5499999998
+        },
+        {
+          "date": "2025-05-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.51,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1153534.3499999996
+        },
+        {
+          "date": "2025-06-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.67,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1228030.3499999999
+        },
+        {
+          "date": "2025-07-31",
+          "secid": "SU26250RMFS9",
+          "y10": 14.05,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1277500.3499999996
+        },
+        {
+          "date": "2025-08-29",
+          "secid": "SU26250RMFS9",
+          "y10": 13.9,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1302147.5299999996
+        },
+        {
+          "date": "2025-09-30",
+          "secid": "SU26250RMFS9",
+          "y10": 14.93,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1244979.5699999994
+        },
+        {
+          "date": "2025-10-31",
+          "secid": "SU26250RMFS9",
+          "y10": 14.77,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1270385.9899999995
+        },
+        {
+          "date": "2025-11-28",
+          "secid": "SU26250RMFS9",
+          "y10": 14.33,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1306253.0499999993
+        },
+        {
+          "date": "2025-12-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.44,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1317754.1299999994
+        },
+        {
+          "date": "2026-01-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.61,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1310823.4999999995
+        },
+        {
+          "date": "2026-02-27",
+          "secid": "SU26243RMFS4",
+          "y10": 14.31,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1340352.4999999993
+        },
+        {
+          "date": "2026-03-31",
+          "secid": "SU26243RMFS4",
+          "y10": 14.52,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1358469.4099999992
+        },
+        {
+          "date": "2026-04-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.54,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1377263.7499999993
+        },
+        {
+          "date": "2026-05-29",
+          "secid": "SU26243RMFS4",
+          "y10": 14.89,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1377385.3399999994
+        },
+        {
+          "date": "2026-06-30",
+          "secid": "SU26243RMFS4",
+          "y10": 16.38,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1305021.9199999995
+        },
+        {
+          "date": "2026-07-31",
+          "secid": "SU26253RMFS3",
+          "y10": 15.69,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1357268.8799999994
+        },
+        {
+          "date": "2026-08-31",
+          "secid": "SU26253RMFS3",
+          "y10": 16.04,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1344547.3399999992
+        },
+        {
+          "date": "2026-09-11",
+          "secid": "SU26253RMFS3",
+          "y10": 16.41,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1335189.8099999994
+        }
+      ]
+    },
+    "BASELINE_100_60_25": {
+      "terminalValue": 1391969.6299999997,
+      "returnPct": 0.39196962999999974,
+      "maxDrawdown": -0.19258528418172915,
+      "turnoverPct": 19.915355979999998,
+      "couponCash": 571119.99,
+      "timeline": [
+        {
+          "date": "2018-01-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.34,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1000000.0
+        },
+        {
+          "date": "2018-02-28",
+          "secid": "SU26218RMFS6",
+          "y10": 7.13,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1005074.16
+        },
+        {
+          "date": "2018-03-30",
+          "secid": "SU26224RMFS4",
+          "y10": 7.14,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1007380.6
+        },
+        {
+          "date": "2018-04-30",
+          "secid": "SU26224RMFS4",
+          "y10": 7.37,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1006188.35
+        },
+        {
+          "date": "2018-05-31",
+          "secid": "SU26224RMFS4",
+          "y10": 7.49,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1006057.31
+        },
+        {
+          "date": "2018-06-29",
+          "secid": "SU26224RMFS4",
+          "y10": 7.81,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 999782.5099999999
+        },
+        {
+          "date": "2018-07-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.81,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1001610.3599999999
+        },
+        {
+          "date": "2018-08-31",
+          "secid": "SU26218RMFS6",
+          "y10": 8.8,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 987346.6799999999
+        },
+        {
+          "date": "2018-09-28",
+          "secid": "SU26218RMFS6",
+          "y10": 8.69,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 990809.7899999999
+        },
+        {
+          "date": "2018-10-31",
+          "secid": "SU26218RMFS6",
+          "y10": 8.68,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 991646.3999999999
+        },
+        {
+          "date": "2018-11-30",
+          "secid": "SU26218RMFS6",
+          "y10": 8.83,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 991880.0999999999
+        },
+        {
+          "date": "2018-12-29",
+          "secid": "SU26218RMFS6",
+          "y10": 8.78,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 994130.9999999999
+        },
+        {
+          "date": "2019-01-31",
+          "secid": "SU26218RMFS6",
+          "y10": 8.21,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1005006.5499999999
+        },
+        {
+          "date": "2019-02-28",
+          "secid": "SU26218RMFS6",
+          "y10": 8.42,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1002854.59
+        },
+        {
+          "date": "2019-03-29",
+          "secid": "SU26218RMFS6",
+          "y10": 8.41,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1004403.97
+        },
+        {
+          "date": "2019-04-30",
+          "secid": "SU26218RMFS6",
+          "y10": 8.23,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1009568.57
+        },
+        {
+          "date": "2019-05-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.99,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1016868.2899999999
+        },
+        {
+          "date": "2019-06-28",
+          "secid": "SU26218RMFS6",
+          "y10": 7.49,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1027484.6699999999
+        },
+        {
+          "date": "2019-07-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.39,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1031261.5199999999
+        },
+        {
+          "date": "2019-08-30",
+          "secid": "SU26218RMFS6",
+          "y10": 7.22,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1035635.4199999999
+        },
+        {
+          "date": "2019-09-30",
+          "secid": "SU26218RMFS6",
+          "y10": 7.15,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1038596.0199999999
+        },
+        {
+          "date": "2019-10-31",
+          "secid": "SU26218RMFS6",
+          "y10": 6.59,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1050539.6999999997
+        },
+        {
+          "date": "2019-11-29",
+          "secid": "SU26218RMFS6",
+          "y10": 6.58,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1053474.0999999999
+        },
+        {
+          "date": "2019-12-30",
+          "secid": "SU26218RMFS6",
+          "y10": 6.41,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1057905.1099999999
+        },
+        {
+          "date": "2020-01-31",
+          "secid": "SU26218RMFS6",
+          "y10": 6.36,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1060426.3099999998
+        },
+        {
+          "date": "2020-02-28",
+          "secid": "SU26218RMFS6",
+          "y10": 6.6,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1056833.67
+        },
+        {
+          "date": "2020-03-31",
+          "secid": "SU26218RMFS6",
+          "y10": 6.83,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1053962.67
+        },
+        {
+          "date": "2020-04-30",
+          "secid": "SU26218RMFS6",
+          "y10": 6.17,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1067811.0299999998
+        },
+        {
+          "date": "2020-05-29",
+          "secid": "SU26218RMFS6",
+          "y10": 5.7,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1079359.4699999997
+        },
+        {
+          "date": "2020-06-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.05,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1072735.3199999998
+        },
+        {
+          "date": "2020-07-31",
+          "secid": "SU26221RMFS0",
+          "y10": 6.07,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1073705.92
+        },
+        {
+          "date": "2020-08-31",
+          "secid": "SU26221RMFS0",
+          "y10": 6.28,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1071783.1199999999
+        },
+        {
+          "date": "2020-09-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.42,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1070514.93
+        },
+        {
+          "date": "2020-10-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.41,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1071669.9299999997
+        },
+        {
+          "date": "2020-11-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.15,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1078776.6099999999
+        },
+        {
+          "date": "2020-12-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.27,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1077329.0099999998
+        },
+        {
+          "date": "2021-01-29",
+          "secid": "SU26221RMFS0",
+          "y10": 6.59,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1072471.5599999998
+        },
+        {
+          "date": "2021-02-26",
+          "secid": "SU26221RMFS0",
+          "y10": 7.06,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1065231.5999999999
+        },
+        {
+          "date": "2021-03-31",
+          "secid": "SU26221RMFS0",
+          "y10": 7.23,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1064813.6399999997
+        },
+        {
+          "date": "2021-04-30",
+          "secid": "SU26221RMFS0",
+          "y10": 7.21,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1065579.0899999999
+        },
+        {
+          "date": "2021-05-31",
+          "secid": "SU26221RMFS0",
+          "y10": 7.25,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1065911.7299999997
+        },
+        {
+          "date": "2021-06-30",
+          "secid": "SU26221RMFS0",
+          "y10": 7.2,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1068111.6899999997
+        },
+        {
+          "date": "2021-07-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.93,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1075192.4
+        },
+        {
+          "date": "2021-08-31",
+          "secid": "SU26221RMFS0",
+          "y10": 7.1,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1073426.1199999996
+        },
+        {
+          "date": "2021-09-30",
+          "secid": "SU26221RMFS0",
+          "y10": 7.42,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1069475.3599999999
+        },
+        {
+          "date": "2021-10-29",
+          "secid": "SU26225RMFS1",
+          "y10": 8.17,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1057037.8099999998
+        },
+        {
+          "date": "2021-11-30",
+          "secid": "SU26225RMFS1",
+          "y10": 8.32,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1054452.4699999997
+        },
+        {
+          "date": "2021-12-30",
+          "secid": "SU26225RMFS1",
+          "y10": 8.44,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1055349.5799999998
+        },
+        {
+          "date": "2022-01-31",
+          "secid": "SU26225RMFS1",
+          "y10": 9.42,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1038103.5599999998
+        },
+        {
+          "date": "2022-02-28",
+          "secid": "SU26225RMFS1",
+          "y10": 12.52,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 993859.4999999999
+        },
+        {
+          "date": "2022-03-31",
+          "secid": "SU26225RMFS1",
+          "y10": 11.23,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1073612.46
+        },
+        {
+          "date": "2022-04-29",
+          "secid": "SU26225RMFS1",
+          "y10": 10.32,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1130416.4799999997
+        },
+        {
+          "date": "2022-05-31",
+          "secid": "SU26225RMFS1",
+          "y10": 9.48,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1166848.4799999997
+        },
+        {
+          "date": "2022-06-30",
+          "secid": "SU26225RMFS1",
+          "y10": 8.79,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1183511.88
+        },
+        {
+          "date": "2022-07-29",
+          "secid": "SU26225RMFS1",
+          "y10": 8.89,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1184398.0499999998
+        },
+        {
+          "date": "2022-08-31",
+          "secid": "SU26225RMFS1",
+          "y10": 9.11,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1181649.8699999999
+        },
+        {
+          "date": "2022-09-30",
+          "secid": "SU26225RMFS1",
+          "y10": 10.79,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1152935.9999999998
+        },
+        {
+          "date": "2022-10-31",
+          "secid": "SU26225RMFS1",
+          "y10": 10.18,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1193370.4999999998
+        },
+        {
+          "date": "2022-11-30",
+          "secid": "SU26225RMFS1",
+          "y10": 10.2,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1194210.8199999998
+        },
+        {
+          "date": "2022-12-30",
+          "secid": "SU26233RMFS5",
+          "y10": 10.31,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1197514.0899999999
+        },
+        {
+          "date": "2023-01-31",
+          "secid": "SU26233RMFS5",
+          "y10": 10.59,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1190546.2899999998
+        },
+        {
+          "date": "2023-02-28",
+          "secid": "SU26233RMFS5",
+          "y10": 10.87,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1181701.9899999998
+        },
+        {
+          "date": "2023-03-31",
+          "secid": "SU26233RMFS5",
+          "y10": 10.83,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1188541.41
+        },
+        {
+          "date": "2023-04-28",
+          "secid": "SU26233RMFS5",
+          "y10": 10.93,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1193203.27
+        },
+        {
+          "date": "2023-05-31",
+          "secid": "SU26233RMFS5",
+          "y10": 10.88,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1200484.5499999998
+        },
+        {
+          "date": "2023-06-30",
+          "secid": "SU26233RMFS5",
+          "y10": 11.09,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1193953.8699999999
+        },
+        {
+          "date": "2023-07-31",
+          "secid": "SU26233RMFS5",
+          "y10": 11.17,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1191954.0699999998
+        },
+        {
+          "date": "2023-08-31",
+          "secid": "SU26233RMFS5",
+          "y10": 11.47,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1184115.2599999998
+        },
+        {
+          "date": "2023-09-29",
+          "secid": "SU26233RMFS5",
+          "y10": 11.93,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1157012.8599999999
+        },
+        {
+          "date": "2023-10-31",
+          "secid": "SU26233RMFS5",
+          "y10": 12.5,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1141221.2799999998
+        },
+        {
+          "date": "2023-11-30",
+          "secid": "SU26233RMFS5",
+          "y10": 11.74,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1208216.3199999998
+        },
+        {
+          "date": "2023-12-29",
+          "secid": "SU26233RMFS5",
+          "y10": 11.86,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1208269.67
+        },
+        {
+          "date": "2024-01-31",
+          "secid": "SU26240RMFS0",
+          "y10": 11.64,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1217339.17
+        },
+        {
+          "date": "2024-02-29",
+          "secid": "SU26240RMFS0",
+          "y10": 12.31,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1203192.8099999998
+        },
+        {
+          "date": "2024-03-29",
+          "secid": "SU26240RMFS0",
+          "y10": 13.26,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1154151.6300000001
+        },
+        {
+          "date": "2024-04-30",
+          "secid": "SU26240RMFS0",
+          "y10": 13.59,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1133833.05
+        },
+        {
+          "date": "2024-05-31",
+          "secid": "SU26240RMFS0",
+          "y10": 14.96,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1052629.65
+        },
+        {
+          "date": "2024-06-28",
+          "secid": "SU26240RMFS0",
+          "y10": 15.11,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1045236.24
+        },
+        {
+          "date": "2024-07-31",
+          "secid": "SU26240RMFS0",
+          "y10": 15.68,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1024102.0800000001
+        },
+        {
+          "date": "2024-08-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.78,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1027506.24
+        },
+        {
+          "date": "2024-09-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.85,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1040828.4599999998
+        },
+        {
+          "date": "2024-10-31",
+          "secid": "SU26240RMFS0",
+          "y10": 16.89,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 982897.5599999997
+        },
+        {
+          "date": "2024-11-29",
+          "secid": "SU26240RMFS0",
+          "y10": 16.24,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1041658.7399999998
+        },
+        {
+          "date": "2024-12-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.22,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1177050.99
+        },
+        {
+          "date": "2025-01-31",
+          "secid": "SU26240RMFS0",
+          "y10": 16.53,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1047980.19
+        },
+        {
+          "date": "2025-02-28",
+          "secid": "SU26240RMFS0",
+          "y10": 15.52,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1143443.5199999998
+        },
+        {
+          "date": "2025-03-31",
+          "secid": "SU26240RMFS0",
+          "y10": 15.33,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1169189.24
+        },
+        {
+          "date": "2025-04-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.63,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1176776.8199999998
+        },
+        {
+          "date": "2025-05-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.51,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1202582.5999999999
+        },
+        {
+          "date": "2025-06-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.67,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1280260.2
+        },
+        {
+          "date": "2025-07-31",
+          "secid": "SU26250RMFS9",
+          "y10": 14.05,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1331830.1999999997
+        },
+        {
+          "date": "2025-08-29",
+          "secid": "SU26250RMFS9",
+          "y10": 13.9,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1357529.1799999997
+        },
+        {
+          "date": "2025-09-30",
+          "secid": "SU26250RMFS9",
+          "y10": 14.93,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1297921.6199999996
+        },
+        {
+          "date": "2025-10-31",
+          "secid": "SU26250RMFS9",
+          "y10": 14.77,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1324412.2399999995
+        },
+        {
+          "date": "2025-11-28",
+          "secid": "SU26250RMFS9",
+          "y10": 14.33,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1361809.8999999997
+        },
+        {
+          "date": "2025-12-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.44,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1373801.7799999996
+        },
+        {
+          "date": "2026-01-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.61,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1366575.8899999997
+        },
+        {
+          "date": "2026-02-27",
+          "secid": "SU26243RMFS4",
+          "y10": 14.31,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1397362.8899999994
+        },
+        {
+          "date": "2026-03-31",
+          "secid": "SU26243RMFS4",
+          "y10": 14.52,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1416251.6199999994
+        },
+        {
+          "date": "2026-04-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.54,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1435846.6399999994
+        },
+        {
+          "date": "2026-05-29",
+          "secid": "SU26243RMFS4",
+          "y10": 14.89,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1435973.4099999995
+        },
+        {
+          "date": "2026-06-30",
+          "secid": "SU26243RMFS4",
+          "y10": 16.38,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1360527.1499999994
+        },
+        {
+          "date": "2026-07-31",
+          "secid": "SU26253RMFS3",
+          "y10": 15.69,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1414995.5899999996
+        },
+        {
+          "date": "2026-08-31",
+          "secid": "SU26253RMFS3",
+          "y10": 16.04,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1401728.4699999995
+        },
+        {
+          "date": "2026-09-11",
+          "secid": "SU26253RMFS3",
+          "y10": 16.41,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1391969.6299999997
+        }
+      ]
+    },
+    "LATE_EXIT_100_80_50": {
+      "terminalValue": 1389923.53,
+      "returnPct": 0.38992353000000013,
+      "maxDrawdown": -0.1969829549041212,
+      "turnoverPct": 22.178116500000005,
+      "couponCash": 722803.43,
+      "timeline": [
+        {
+          "date": "2018-01-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.34,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1000000.0
+        },
+        {
+          "date": "2018-02-28",
+          "secid": "SU26218RMFS6",
+          "y10": 7.13,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1010148.3200000001
+        },
+        {
+          "date": "2018-03-30",
+          "secid": "SU26224RMFS4",
+          "y10": 7.14,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1014792.94
+        },
+        {
+          "date": "2018-04-30",
+          "secid": "SU26224RMFS4",
+          "y10": 7.37,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1012384.69
+        },
+        {
+          "date": "2018-05-31",
+          "secid": "SU26224RMFS4",
+          "y10": 7.49,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1012120.53
+        },
+        {
+          "date": "2018-06-29",
+          "secid": "SU26224RMFS4",
+          "y10": 7.81,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 999471.3300000001
+        },
+        {
+          "date": "2018-07-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.81,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1003127.03
+        },
+        {
+          "date": "2018-08-31",
+          "secid": "SU26218RMFS6",
+          "y10": 8.8,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 974474.55
+        },
+        {
+          "date": "2018-09-28",
+          "secid": "SU26218RMFS6",
+          "y10": 8.69,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 981313.8300000001
+        },
+        {
+          "date": "2018-10-31",
+          "secid": "SU26218RMFS6",
+          "y10": 8.68,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 982972.9299999999
+        },
+        {
+          "date": "2018-11-30",
+          "secid": "SU26218RMFS6",
+          "y10": 8.83,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 983436.53
+        },
+        {
+          "date": "2018-12-29",
+          "secid": "SU26218RMFS6",
+          "y10": 8.78,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 987901.73
+        },
+        {
+          "date": "2019-01-31",
+          "secid": "SU26218RMFS6",
+          "y10": 8.21,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1009475.27
+        },
+        {
+          "date": "2019-02-28",
+          "secid": "SU26218RMFS6",
+          "y10": 8.42,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1005153.19
+        },
+        {
+          "date": "2019-03-29",
+          "secid": "SU26218RMFS6",
+          "y10": 8.41,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1008258.46
+        },
+        {
+          "date": "2019-04-30",
+          "secid": "SU26218RMFS6",
+          "y10": 8.23,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1018609.36
+        },
+        {
+          "date": "2019-05-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.99,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1033328.96
+        },
+        {
+          "date": "2019-06-28",
+          "secid": "SU26218RMFS6",
+          "y10": 7.49,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1054828.24
+        },
+        {
+          "date": "2019-07-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.39,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1062594.49
+        },
+        {
+          "date": "2019-08-30",
+          "secid": "SU26218RMFS6",
+          "y10": 7.22,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1071590.5899999999
+        },
+        {
+          "date": "2019-09-30",
+          "secid": "SU26218RMFS6",
+          "y10": 7.15,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1077708.29
+        },
+        {
+          "date": "2019-10-31",
+          "secid": "SU26218RMFS6",
+          "y10": 6.59,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1102502.0899999999
+        },
+        {
+          "date": "2019-11-29",
+          "secid": "SU26218RMFS6",
+          "y10": 6.58,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1108659.0899999999
+        },
+        {
+          "date": "2019-12-30",
+          "secid": "SU26218RMFS6",
+          "y10": 6.41,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1117958.2499999998
+        },
+        {
+          "date": "2020-01-31",
+          "secid": "SU26218RMFS6",
+          "y10": 6.36,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1123275.69
+        },
+        {
+          "date": "2020-02-28",
+          "secid": "SU26218RMFS6",
+          "y10": 6.6,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1115661.9299999997
+        },
+        {
+          "date": "2020-03-31",
+          "secid": "SU26218RMFS6",
+          "y10": 6.83,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1109606.73
+        },
+        {
+          "date": "2020-04-30",
+          "secid": "SU26218RMFS6",
+          "y10": 6.17,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1138738.19
+        },
+        {
+          "date": "2020-05-29",
+          "secid": "SU26218RMFS6",
+          "y10": 5.7,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1163239.6099999999
+        },
+        {
+          "date": "2020-06-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.05,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1148974.5799999998
+        },
+        {
+          "date": "2020-07-31",
+          "secid": "SU26221RMFS0",
+          "y10": 6.07,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1151055.04
+        },
+        {
+          "date": "2020-08-31",
+          "secid": "SU26221RMFS0",
+          "y10": 6.28,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1146933.5599999998
+        },
+        {
+          "date": "2020-09-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.42,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1144221.5
+        },
+        {
+          "date": "2020-10-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.41,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1146696.5
+        },
+        {
+          "date": "2020-11-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.15,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1161954.96
+        },
+        {
+          "date": "2020-12-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.27,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1158844.1600000001
+        },
+        {
+          "date": "2021-01-29",
+          "secid": "SU26221RMFS0",
+          "y10": 6.59,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1148385.1400000001
+        },
+        {
+          "date": "2021-02-26",
+          "secid": "SU26221RMFS0",
+          "y10": 7.06,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1132870.94
+        },
+        {
+          "date": "2021-03-31",
+          "secid": "SU26221RMFS0",
+          "y10": 7.23,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1131981.7
+        },
+        {
+          "date": "2021-04-30",
+          "secid": "SU26221RMFS0",
+          "y10": 7.21,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1133613.4
+        },
+        {
+          "date": "2021-05-31",
+          "secid": "SU26221RMFS0",
+          "y10": 7.25,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1134320.92
+        },
+        {
+          "date": "2021-06-30",
+          "secid": "SU26221RMFS0",
+          "y10": 7.2,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1139000.2
+        },
+        {
+          "date": "2021-07-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.93,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1154064.3399999999
+        },
+        {
+          "date": "2021-08-31",
+          "secid": "SU26221RMFS0",
+          "y10": 7.1,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1150273.2999999998
+        },
+        {
+          "date": "2021-09-30",
+          "secid": "SU26221RMFS0",
+          "y10": 7.42,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1141793.6199999999
+        },
+        {
+          "date": "2021-10-29",
+          "secid": "SU26225RMFS1",
+          "y10": 8.17,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1115220.22
+        },
+        {
+          "date": "2021-11-30",
+          "secid": "SU26225RMFS1",
+          "y10": 8.32,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1109763.34
+        },
+        {
+          "date": "2021-12-30",
+          "secid": "SU26225RMFS1",
+          "y10": 8.44,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1111655.83
+        },
+        {
+          "date": "2022-01-31",
+          "secid": "SU26225RMFS1",
+          "y10": 9.42,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1075274.65
+        },
+        {
+          "date": "2022-02-28",
+          "secid": "SU26225RMFS1",
+          "y10": 12.52,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 983668.66
+        },
+        {
+          "date": "2022-03-31",
+          "secid": "SU26225RMFS1",
+          "y10": 11.23,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1062610.18
+        },
+        {
+          "date": "2022-04-29",
+          "secid": "SU26225RMFS1",
+          "y10": 10.32,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1137569.48
+        },
+        {
+          "date": "2022-05-31",
+          "secid": "SU26225RMFS1",
+          "y10": 9.48,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1186433.9
+        },
+        {
+          "date": "2022-06-30",
+          "secid": "SU26225RMFS1",
+          "y10": 8.79,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1220348.8199999998
+        },
+        {
+          "date": "2022-07-29",
+          "secid": "SU26225RMFS1",
+          "y10": 8.89,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1222172.65
+        },
+        {
+          "date": "2022-08-31",
+          "secid": "SU26225RMFS1",
+          "y10": 9.11,
+          "regime": "E",
+          "targetExposure": 0.5,
+          "value": 1216507.69
+        },
+        {
+          "date": "2022-09-30",
+          "secid": "SU26225RMFS1",
+          "y10": 10.79,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1157323.75
+        },
+        {
+          "date": "2022-10-31",
+          "secid": "SU26225RMFS1",
+          "y10": 10.18,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1211410.84
+        },
+        {
+          "date": "2022-11-30",
+          "secid": "SU26225RMFS1",
+          "y10": 10.2,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1212548.1
+        },
+        {
+          "date": "2022-12-30",
+          "secid": "SU26233RMFS5",
+          "y10": 10.31,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1217021.04
+        },
+        {
+          "date": "2023-01-31",
+          "secid": "SU26233RMFS5",
+          "y10": 10.59,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1207583.6400000001
+        },
+        {
+          "date": "2023-02-28",
+          "secid": "SU26233RMFS5",
+          "y10": 10.87,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1195614.54
+        },
+        {
+          "date": "2023-03-31",
+          "secid": "SU26233RMFS5",
+          "y10": 10.83,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1204841.24
+        },
+        {
+          "date": "2023-04-28",
+          "secid": "SU26233RMFS5",
+          "y10": 10.93,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1211144.6
+        },
+        {
+          "date": "2023-05-31",
+          "secid": "SU26233RMFS5",
+          "y10": 10.88,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1220994.8800000001
+        },
+        {
+          "date": "2023-06-30",
+          "secid": "SU26233RMFS5",
+          "y10": 11.09,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1212144.0899999999
+        },
+        {
+          "date": "2023-07-31",
+          "secid": "SU26233RMFS5",
+          "y10": 11.17,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1209435.27
+        },
+        {
+          "date": "2023-08-31",
+          "secid": "SU26233RMFS5",
+          "y10": 11.47,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1198827.96
+        },
+        {
+          "date": "2023-09-29",
+          "secid": "SU26233RMFS5",
+          "y10": 11.93,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1162239.72
+        },
+        {
+          "date": "2023-10-31",
+          "secid": "SU26233RMFS5",
+          "y10": 12.5,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1141099.6199999999
+        },
+        {
+          "date": "2023-11-30",
+          "secid": "SU26233RMFS5",
+          "y10": 11.74,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1208094.66
+        },
+        {
+          "date": "2023-12-29",
+          "secid": "SU26233RMFS5",
+          "y10": 11.86,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1208165.81
+        },
+        {
+          "date": "2024-01-31",
+          "secid": "SU26240RMFS0",
+          "y10": 11.64,
+          "regime": "D",
+          "targetExposure": 0.8,
+          "value": 1220261.3099999998
+        },
+        {
+          "date": "2024-02-29",
+          "secid": "SU26240RMFS0",
+          "y10": 12.31,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1201352.5299999996
+        },
+        {
+          "date": "2024-03-29",
+          "secid": "SU26240RMFS0",
+          "y10": 13.26,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1152394.3299999998
+        },
+        {
+          "date": "2024-04-30",
+          "secid": "SU26240RMFS0",
+          "y10": 13.59,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1132110.13
+        },
+        {
+          "date": "2024-05-31",
+          "secid": "SU26240RMFS0",
+          "y10": 14.96,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1051044.1299999997
+        },
+        {
+          "date": "2024-06-28",
+          "secid": "SU26240RMFS0",
+          "y10": 15.11,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1043663.2299999997
+        },
+        {
+          "date": "2024-07-31",
+          "secid": "SU26240RMFS0",
+          "y10": 15.68,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1022564.8299999998
+        },
+        {
+          "date": "2024-08-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.78,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1025963.2299999997
+        },
+        {
+          "date": "2024-09-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.85,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1039264.2699999997
+        },
+        {
+          "date": "2024-10-31",
+          "secid": "SU26240RMFS0",
+          "y10": 16.89,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 981425.4699999996
+        },
+        {
+          "date": "2024-11-29",
+          "secid": "SU26240RMFS0",
+          "y10": 16.24,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1040093.2299999995
+        },
+        {
+          "date": "2024-12-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.22,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1175270.23
+        },
+        {
+          "date": "2025-01-31",
+          "secid": "SU26240RMFS0",
+          "y10": 16.53,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1046404.6299999998
+        },
+        {
+          "date": "2025-02-28",
+          "secid": "SU26240RMFS0",
+          "y10": 15.52,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1141716.1899999997
+        },
+        {
+          "date": "2025-03-31",
+          "secid": "SU26240RMFS0",
+          "y10": 15.33,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1167423.3299999998
+        },
+        {
+          "date": "2025-04-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.63,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1174999.5399999996
+        },
+        {
+          "date": "2025-05-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.51,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1200766.6499999997
+        },
+        {
+          "date": "2025-06-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.67,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1278327.8499999999
+        },
+        {
+          "date": "2025-07-31",
+          "secid": "SU26250RMFS9",
+          "y10": 14.05,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1329837.8499999996
+        },
+        {
+          "date": "2025-08-29",
+          "secid": "SU26250RMFS9",
+          "y10": 13.9,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1355501.7699999996
+        },
+        {
+          "date": "2025-09-30",
+          "secid": "SU26250RMFS9",
+          "y10": 14.93,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1295975.5299999996
+        },
+        {
+          "date": "2025-10-31",
+          "secid": "SU26250RMFS9",
+          "y10": 14.77,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1322430.0099999995
+        },
+        {
+          "date": "2025-11-28",
+          "secid": "SU26250RMFS9",
+          "y10": 14.33,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1359776.6499999997
+        },
+        {
+          "date": "2025-12-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.44,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1371752.1699999997
+        },
+        {
+          "date": "2026-01-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.61,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1364534.2599999998
+        },
+        {
+          "date": "2026-02-27",
+          "secid": "SU26243RMFS4",
+          "y10": 14.31,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1395287.2599999998
+        },
+        {
+          "date": "2026-03-31",
+          "secid": "SU26243RMFS4",
+          "y10": 14.52,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1414155.1299999997
+        },
+        {
+          "date": "2026-04-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.54,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1433728.5099999998
+        },
+        {
+          "date": "2026-05-29",
+          "secid": "SU26243RMFS4",
+          "y10": 14.89,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1433855.1399999997
+        },
+        {
+          "date": "2026-06-30",
+          "secid": "SU26243RMFS4",
+          "y10": 16.38,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1358492.1999999997
+        },
+        {
+          "date": "2026-07-31",
+          "secid": "SU26253RMFS3",
+          "y10": 15.69,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1412904.4
+        },
+        {
+          "date": "2026-08-31",
+          "secid": "SU26253RMFS3",
+          "y10": 16.04,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1399663.2599999998
+        },
+        {
+          "date": "2026-09-11",
+          "secid": "SU26253RMFS3",
+          "y10": 16.41,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1389923.53
+        }
+      ]
+    },
+    "MILD_EXIT_100_90_65": {
+      "terminalValue": 1382121.3999999994,
+      "returnPct": 0.3821213999999995,
+      "maxDrawdown": -0.21264411098286817,
+      "turnoverPct": 23.43479795,
+      "couponCash": 808243.65,
+      "timeline": [
+        {
+          "date": "2018-01-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.34,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1000000.0
+        },
+        {
+          "date": "2018-02-28",
+          "secid": "SU26218RMFS6",
+          "y10": 7.13,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1013202.0
+        },
+        {
+          "date": "2018-03-30",
+          "secid": "SU26224RMFS4",
+          "y10": 7.14,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1019253.76
+        },
+        {
+          "date": "2018-04-30",
+          "secid": "SU26224RMFS4",
+          "y10": 7.37,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1016109.26
+        },
+        {
+          "date": "2018-05-31",
+          "secid": "SU26224RMFS4",
+          "y10": 7.49,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1015764.5
+        },
+        {
+          "date": "2018-06-29",
+          "secid": "SU26224RMFS4",
+          "y10": 7.81,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 999255.8
+        },
+        {
+          "date": "2018-07-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.81,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1004002.65
+        },
+        {
+          "date": "2018-08-31",
+          "secid": "SU26218RMFS6",
+          "y10": 8.8,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 966716.8900000001
+        },
+        {
+          "date": "2018-09-28",
+          "secid": "SU26218RMFS6",
+          "y10": 8.69,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 975541.3
+        },
+        {
+          "date": "2018-10-31",
+          "secid": "SU26218RMFS6",
+          "y10": 8.68,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 977684.01
+        },
+        {
+          "date": "2018-11-30",
+          "secid": "SU26218RMFS6",
+          "y10": 8.83,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 978283.46
+        },
+        {
+          "date": "2018-12-29",
+          "secid": "SU26218RMFS6",
+          "y10": 8.78,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 984057.1099999999
+        },
+        {
+          "date": "2019-01-31",
+          "secid": "SU26218RMFS6",
+          "y10": 8.21,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1012022.81
+        },
+        {
+          "date": "2019-02-28",
+          "secid": "SU26218RMFS6",
+          "y10": 8.42,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1006393.21
+        },
+        {
+          "date": "2019-03-29",
+          "secid": "SU26218RMFS6",
+          "y10": 8.41,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1010435.9199999999
+        },
+        {
+          "date": "2019-04-30",
+          "secid": "SU26218RMFS6",
+          "y10": 8.23,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1023911.6199999999
+        },
+        {
+          "date": "2019-05-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.99,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1043167.2599999999
+        },
+        {
+          "date": "2019-06-28",
+          "secid": "SU26218RMFS6",
+          "y10": 7.49,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1071373.96
+        },
+        {
+          "date": "2019-07-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.39,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1081625.4100000001
+        },
+        {
+          "date": "2019-08-30",
+          "secid": "SU26218RMFS6",
+          "y10": 7.22,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1093524.71
+        },
+        {
+          "date": "2019-09-30",
+          "secid": "SU26218RMFS6",
+          "y10": 7.15,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1101646.7100000002
+        },
+        {
+          "date": "2019-10-31",
+          "secid": "SU26218RMFS6",
+          "y10": 6.59,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1134545.15
+        },
+        {
+          "date": "2019-11-29",
+          "secid": "SU26218RMFS6",
+          "y10": 6.58,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1142785.05
+        },
+        {
+          "date": "2019-12-30",
+          "secid": "SU26218RMFS6",
+          "y10": 6.41,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1155243.54
+        },
+        {
+          "date": "2020-01-31",
+          "secid": "SU26218RMFS6",
+          "y10": 6.36,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1162394.58
+        },
+        {
+          "date": "2020-02-28",
+          "secid": "SU26218RMFS6",
+          "y10": 6.6,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1152144.02
+        },
+        {
+          "date": "2020-03-31",
+          "secid": "SU26218RMFS6",
+          "y10": 6.83,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1144000.82
+        },
+        {
+          "date": "2020-04-30",
+          "secid": "SU26218RMFS6",
+          "y10": 6.17,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1183050.7
+        },
+        {
+          "date": "2020-05-29",
+          "secid": "SU26218RMFS6",
+          "y10": 5.7,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1216187.44
+        },
+        {
+          "date": "2020-06-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.05,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1196807.95
+        },
+        {
+          "date": "2020-07-31",
+          "secid": "SU26221RMFS0",
+          "y10": 6.07,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1199626.9100000001
+        },
+        {
+          "date": "2020-08-31",
+          "secid": "SU26221RMFS0",
+          "y10": 6.28,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1194042.4299999997
+        },
+        {
+          "date": "2020-09-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.42,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1190369.62
+        },
+        {
+          "date": "2020-10-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.41,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1193719.6199999999
+        },
+        {
+          "date": "2020-11-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.15,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1214382.74
+        },
+        {
+          "date": "2020-12-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.27,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1210156.98
+        },
+        {
+          "date": "2021-01-29",
+          "secid": "SU26221RMFS0",
+          "y10": 6.59,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1195956.69
+        },
+        {
+          "date": "2021-02-26",
+          "secid": "SU26221RMFS0",
+          "y10": 7.06,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1174936.4700000002
+        },
+        {
+          "date": "2021-03-31",
+          "secid": "SU26221RMFS0",
+          "y10": 7.23,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1173735.9100000001
+        },
+        {
+          "date": "2021-04-30",
+          "secid": "SU26221RMFS0",
+          "y10": 7.21,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1175934.6099999999
+        },
+        {
+          "date": "2021-05-31",
+          "secid": "SU26221RMFS0",
+          "y10": 7.25,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1176888.9700000002
+        },
+        {
+          "date": "2021-06-30",
+          "secid": "SU26221RMFS0",
+          "y10": 7.2,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1183200.76
+        },
+        {
+          "date": "2021-07-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.93,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1203540.1700000002
+        },
+        {
+          "date": "2021-08-31",
+          "secid": "SU26221RMFS0",
+          "y10": 7.1,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1198406.4700000002
+        },
+        {
+          "date": "2021-09-30",
+          "secid": "SU26221RMFS0",
+          "y10": 7.42,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1186907.51
+        },
+        {
+          "date": "2021-10-29",
+          "secid": "SU26225RMFS1",
+          "y10": 8.17,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1150993.46
+        },
+        {
+          "date": "2021-11-30",
+          "secid": "SU26225RMFS1",
+          "y10": 8.32,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1143666.74
+        },
+        {
+          "date": "2021-12-30",
+          "secid": "SU26225RMFS1",
+          "y10": 8.44,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1146202.74
+        },
+        {
+          "date": "2022-01-31",
+          "secid": "SU26225RMFS1",
+          "y10": 9.42,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1097450.7399999998
+        },
+        {
+          "date": "2022-02-28",
+          "secid": "SU26225RMFS1",
+          "y10": 12.52,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 975853.8099999999
+        },
+        {
+          "date": "2022-03-31",
+          "secid": "SU26225RMFS1",
+          "y10": 11.23,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1054157.7699999998
+        },
+        {
+          "date": "2022-04-29",
+          "secid": "SU26225RMFS1",
+          "y10": 10.32,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1137850.8599999999
+        },
+        {
+          "date": "2022-05-31",
+          "secid": "SU26225RMFS1",
+          "y10": 9.48,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1192817.64
+        },
+        {
+          "date": "2022-06-30",
+          "secid": "SU26225RMFS1",
+          "y10": 8.79,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1237122.6799999997
+        },
+        {
+          "date": "2022-07-29",
+          "secid": "SU26225RMFS1",
+          "y10": 8.89,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1239526.45
+        },
+        {
+          "date": "2022-08-31",
+          "secid": "SU26225RMFS1",
+          "y10": 9.11,
+          "regime": "E",
+          "targetExposure": 0.65,
+          "value": 1232057.4699999997
+        },
+        {
+          "date": "2022-09-30",
+          "secid": "SU26225RMFS1",
+          "y10": 10.79,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1154082.1899999997
+        },
+        {
+          "date": "2022-10-31",
+          "secid": "SU26225RMFS1",
+          "y10": 10.18,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1214781.51
+        },
+        {
+          "date": "2022-11-30",
+          "secid": "SU26225RMFS1",
+          "y10": 10.2,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1216064.21
+        },
+        {
+          "date": "2022-12-30",
+          "secid": "SU26233RMFS5",
+          "y10": 10.31,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1221108.6499999997
+        },
+        {
+          "date": "2023-01-31",
+          "secid": "SU26233RMFS5",
+          "y10": 10.59,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1210451.1499999997
+        },
+        {
+          "date": "2023-02-28",
+          "secid": "SU26233RMFS5",
+          "y10": 10.87,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1196956.8499999994
+        },
+        {
+          "date": "2023-03-31",
+          "secid": "SU26233RMFS5",
+          "y10": 10.83,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1207349.7499999998
+        },
+        {
+          "date": "2023-04-28",
+          "secid": "SU26233RMFS5",
+          "y10": 10.93,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1214455.0999999996
+        },
+        {
+          "date": "2023-05-31",
+          "secid": "SU26233RMFS5",
+          "y10": 10.88,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1225567.8599999996
+        },
+        {
+          "date": "2023-06-30",
+          "secid": "SU26233RMFS5",
+          "y10": 11.09,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1215573.5399999996
+        },
+        {
+          "date": "2023-07-31",
+          "secid": "SU26233RMFS5",
+          "y10": 11.17,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1212519.2999999998
+        },
+        {
+          "date": "2023-08-31",
+          "secid": "SU26233RMFS5",
+          "y10": 11.47,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1200551.4699999997
+        },
+        {
+          "date": "2023-09-29",
+          "secid": "SU26233RMFS5",
+          "y10": 11.93,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1159324.5499999998
+        },
+        {
+          "date": "2023-10-31",
+          "secid": "SU26233RMFS5",
+          "y10": 12.5,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1135599.8299999996
+        },
+        {
+          "date": "2023-11-30",
+          "secid": "SU26233RMFS5",
+          "y10": 11.74,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1202255.7499999998
+        },
+        {
+          "date": "2023-12-29",
+          "secid": "SU26233RMFS5",
+          "y10": 11.86,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1202335.4
+        },
+        {
+          "date": "2024-01-31",
+          "secid": "SU26240RMFS0",
+          "y10": 11.64,
+          "regime": "D",
+          "targetExposure": 0.9,
+          "value": 1215875.8999999997
+        },
+        {
+          "date": "2024-02-29",
+          "secid": "SU26240RMFS0",
+          "y10": 12.31,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1194684.5399999993
+        },
+        {
+          "date": "2024-03-29",
+          "secid": "SU26240RMFS0",
+          "y10": 13.26,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1146002.9399999997
+        },
+        {
+          "date": "2024-04-30",
+          "secid": "SU26240RMFS0",
+          "y10": 13.59,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1125833.3399999996
+        },
+        {
+          "date": "2024-05-31",
+          "secid": "SU26240RMFS0",
+          "y10": 14.96,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1045179.5399999995
+        },
+        {
+          "date": "2024-06-28",
+          "secid": "SU26240RMFS0",
+          "y10": 15.11,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1037836.1699999996
+        },
+        {
+          "date": "2024-07-31",
+          "secid": "SU26240RMFS0",
+          "y10": 15.68,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1016845.0499999996
+        },
+        {
+          "date": "2024-08-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.78,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1020226.1699999996
+        },
+        {
+          "date": "2024-09-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.85,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1033449.5499999995
+        },
+        {
+          "date": "2024-10-31",
+          "secid": "SU26240RMFS0",
+          "y10": 16.89,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 975948.4499999994
+        },
+        {
+          "date": "2024-11-29",
+          "secid": "SU26240RMFS0",
+          "y10": 16.24,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1034273.6699999993
+        },
+        {
+          "date": "2024-12-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.22,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1168661.4199999997
+        },
+        {
+          "date": "2025-01-31",
+          "secid": "SU26240RMFS0",
+          "y10": 16.53,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1040548.2199999996
+        },
+        {
+          "date": "2025-02-28",
+          "secid": "SU26240RMFS0",
+          "y10": 15.52,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1135303.2899999996
+        },
+        {
+          "date": "2025-03-31",
+          "secid": "SU26240RMFS0",
+          "y10": 15.33,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1160868.9699999997
+        },
+        {
+          "date": "2025-04-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.63,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1168403.4899999995
+        },
+        {
+          "date": "2025-05-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.51,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1194028.8099999996
+        },
+        {
+          "date": "2025-06-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.67,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1271163.2099999997
+        },
+        {
+          "date": "2025-07-31",
+          "secid": "SU26250RMFS9",
+          "y10": 14.05,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1322373.2099999995
+        },
+        {
+          "date": "2025-08-29",
+          "secid": "SU26250RMFS9",
+          "y10": 13.9,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1347896.8899999994
+        },
+        {
+          "date": "2025-09-30",
+          "secid": "SU26250RMFS9",
+          "y10": 14.93,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1288695.9299999992
+        },
+        {
+          "date": "2025-10-31",
+          "secid": "SU26250RMFS9",
+          "y10": 14.77,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1315005.8499999994
+        },
+        {
+          "date": "2025-11-28",
+          "secid": "SU26250RMFS9",
+          "y10": 14.33,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1352148.4099999992
+        },
+        {
+          "date": "2025-12-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.44,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1364058.4899999993
+        },
+        {
+          "date": "2026-01-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.61,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1356884.4699999995
+        },
+        {
+          "date": "2026-02-27",
+          "secid": "SU26243RMFS4",
+          "y10": 14.31,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1387450.4699999993
+        },
+        {
+          "date": "2026-03-31",
+          "secid": "SU26243RMFS4",
+          "y10": 14.52,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1406203.6099999992
+        },
+        {
+          "date": "2026-04-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.54,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1425657.9699999993
+        },
+        {
+          "date": "2026-05-29",
+          "secid": "SU26243RMFS4",
+          "y10": 14.89,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1425783.8299999991
+        },
+        {
+          "date": "2026-06-30",
+          "secid": "SU26243RMFS4",
+          "y10": 16.38,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1350879.1499999992
+        },
+        {
+          "date": "2026-07-31",
+          "secid": "SU26253RMFS3",
+          "y10": 15.69,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1404982.0299999993
+        },
+        {
+          "date": "2026-08-31",
+          "secid": "SU26253RMFS3",
+          "y10": 16.04,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1391810.1699999992
+        },
+        {
+          "date": "2026-09-11",
+          "secid": "SU26253RMFS3",
+          "y10": 16.41,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1382121.3999999994
+        }
+      ]
+    },
+    "EARLY_CUT_100_85_60_25": {
+      "terminalValue": 1402925.5999999994,
+      "returnPct": 0.40292559999999944,
+      "maxDrawdown": -0.17582675744034937,
+      "turnoverPct": 19.650864740000003,
+      "couponCash": 570114.8,
+      "timeline": [
+        {
+          "date": "2018-01-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.34,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1000000.0
+        },
+        {
+          "date": "2018-02-28",
+          "secid": "SU26218RMFS6",
+          "y10": 7.13,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1005074.16
+        },
+        {
+          "date": "2018-03-30",
+          "secid": "SU26224RMFS4",
+          "y10": 7.14,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1007380.6
+        },
+        {
+          "date": "2018-04-30",
+          "secid": "SU26224RMFS4",
+          "y10": 7.37,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1006188.35
+        },
+        {
+          "date": "2018-05-31",
+          "secid": "SU26224RMFS4",
+          "y10": 7.49,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1006057.31
+        },
+        {
+          "date": "2018-06-29",
+          "secid": "SU26224RMFS4",
+          "y10": 7.81,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 999782.5099999999
+        },
+        {
+          "date": "2018-07-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.81,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1001610.3599999999
+        },
+        {
+          "date": "2018-08-31",
+          "secid": "SU26218RMFS6",
+          "y10": 8.8,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 987346.6799999999
+        },
+        {
+          "date": "2018-09-28",
+          "secid": "SU26218RMFS6",
+          "y10": 8.69,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 990809.7899999999
+        },
+        {
+          "date": "2018-10-31",
+          "secid": "SU26218RMFS6",
+          "y10": 8.68,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 991646.3999999999
+        },
+        {
+          "date": "2018-11-30",
+          "secid": "SU26218RMFS6",
+          "y10": 8.83,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 991880.0999999999
+        },
+        {
+          "date": "2018-12-29",
+          "secid": "SU26218RMFS6",
+          "y10": 8.78,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 994130.9999999999
+        },
+        {
+          "date": "2019-01-31",
+          "secid": "SU26218RMFS6",
+          "y10": 8.21,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1005006.5499999999
+        },
+        {
+          "date": "2019-02-28",
+          "secid": "SU26218RMFS6",
+          "y10": 8.42,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1002854.59
+        },
+        {
+          "date": "2019-03-29",
+          "secid": "SU26218RMFS6",
+          "y10": 8.41,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1004403.97
+        },
+        {
+          "date": "2019-04-30",
+          "secid": "SU26218RMFS6",
+          "y10": 8.23,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1009568.57
+        },
+        {
+          "date": "2019-05-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.99,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1016868.2899999999
+        },
+        {
+          "date": "2019-06-28",
+          "secid": "SU26218RMFS6",
+          "y10": 7.49,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1027484.6699999999
+        },
+        {
+          "date": "2019-07-31",
+          "secid": "SU26218RMFS6",
+          "y10": 7.39,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1031261.5199999999
+        },
+        {
+          "date": "2019-08-30",
+          "secid": "SU26218RMFS6",
+          "y10": 7.22,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1035635.4199999999
+        },
+        {
+          "date": "2019-09-30",
+          "secid": "SU26218RMFS6",
+          "y10": 7.15,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1038596.0199999999
+        },
+        {
+          "date": "2019-10-31",
+          "secid": "SU26218RMFS6",
+          "y10": 6.59,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1050539.6999999997
+        },
+        {
+          "date": "2019-11-29",
+          "secid": "SU26218RMFS6",
+          "y10": 6.58,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1053474.0999999999
+        },
+        {
+          "date": "2019-12-30",
+          "secid": "SU26218RMFS6",
+          "y10": 6.41,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1057905.1099999999
+        },
+        {
+          "date": "2020-01-31",
+          "secid": "SU26218RMFS6",
+          "y10": 6.36,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1060426.3099999998
+        },
+        {
+          "date": "2020-02-28",
+          "secid": "SU26218RMFS6",
+          "y10": 6.6,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1056833.67
+        },
+        {
+          "date": "2020-03-31",
+          "secid": "SU26218RMFS6",
+          "y10": 6.83,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1053962.67
+        },
+        {
+          "date": "2020-04-30",
+          "secid": "SU26218RMFS6",
+          "y10": 6.17,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1067811.0299999998
+        },
+        {
+          "date": "2020-05-29",
+          "secid": "SU26218RMFS6",
+          "y10": 5.7,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1079359.4699999997
+        },
+        {
+          "date": "2020-06-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.05,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1072735.3199999998
+        },
+        {
+          "date": "2020-07-31",
+          "secid": "SU26221RMFS0",
+          "y10": 6.07,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1073705.92
+        },
+        {
+          "date": "2020-08-31",
+          "secid": "SU26221RMFS0",
+          "y10": 6.28,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1071783.1199999999
+        },
+        {
+          "date": "2020-09-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.42,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1070514.93
+        },
+        {
+          "date": "2020-10-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.41,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1071669.9299999997
+        },
+        {
+          "date": "2020-11-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.15,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1078776.6099999999
+        },
+        {
+          "date": "2020-12-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.27,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1077329.0099999998
+        },
+        {
+          "date": "2021-01-29",
+          "secid": "SU26221RMFS0",
+          "y10": 6.59,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1072471.5599999998
+        },
+        {
+          "date": "2021-02-26",
+          "secid": "SU26221RMFS0",
+          "y10": 7.06,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1065231.5999999999
+        },
+        {
+          "date": "2021-03-31",
+          "secid": "SU26221RMFS0",
+          "y10": 7.23,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1064813.6399999997
+        },
+        {
+          "date": "2021-04-30",
+          "secid": "SU26221RMFS0",
+          "y10": 7.21,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1065579.0899999999
+        },
+        {
+          "date": "2021-05-31",
+          "secid": "SU26221RMFS0",
+          "y10": 7.25,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1065911.7299999997
+        },
+        {
+          "date": "2021-06-30",
+          "secid": "SU26221RMFS0",
+          "y10": 7.2,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1068111.6899999997
+        },
+        {
+          "date": "2021-07-30",
+          "secid": "SU26221RMFS0",
+          "y10": 6.93,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1075192.4
+        },
+        {
+          "date": "2021-08-31",
+          "secid": "SU26221RMFS0",
+          "y10": 7.1,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1073426.1199999996
+        },
+        {
+          "date": "2021-09-30",
+          "secid": "SU26221RMFS0",
+          "y10": 7.42,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1069475.3599999999
+        },
+        {
+          "date": "2021-10-29",
+          "secid": "SU26225RMFS1",
+          "y10": 8.17,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1057037.8099999998
+        },
+        {
+          "date": "2021-11-30",
+          "secid": "SU26225RMFS1",
+          "y10": 8.32,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1054452.4699999997
+        },
+        {
+          "date": "2021-12-30",
+          "secid": "SU26225RMFS1",
+          "y10": 8.44,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1055349.5799999998
+        },
+        {
+          "date": "2022-01-31",
+          "secid": "SU26225RMFS1",
+          "y10": 9.42,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1038103.5599999998
+        },
+        {
+          "date": "2022-02-28",
+          "secid": "SU26225RMFS1",
+          "y10": 12.52,
+          "regime": "C",
+          "targetExposure": 0.85,
+          "value": 993859.4999999999
+        },
+        {
+          "date": "2022-03-31",
+          "secid": "SU26225RMFS1",
+          "y10": 11.23,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1061614.7399999998
+        },
+        {
+          "date": "2022-04-29",
+          "secid": "SU26225RMFS1",
+          "y10": 10.32,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1117799.8299999998
+        },
+        {
+          "date": "2022-05-31",
+          "secid": "SU26225RMFS1",
+          "y10": 9.48,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1153821.9699999997
+        },
+        {
+          "date": "2022-06-30",
+          "secid": "SU26225RMFS1",
+          "y10": 8.79,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1170338.3399999999
+        },
+        {
+          "date": "2022-07-29",
+          "secid": "SU26225RMFS1",
+          "y10": 8.89,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1171213.67
+        },
+        {
+          "date": "2022-08-31",
+          "secid": "SU26225RMFS1",
+          "y10": 9.11,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 1168499.21
+        },
+        {
+          "date": "2022-09-30",
+          "secid": "SU26225RMFS1",
+          "y10": 10.79,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1140048.77
+        },
+        {
+          "date": "2022-10-31",
+          "secid": "SU26225RMFS1",
+          "y10": 10.18,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1180007.5699999998
+        },
+        {
+          "date": "2022-11-30",
+          "secid": "SU26225RMFS1",
+          "y10": 10.2,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1180838.7999999998
+        },
+        {
+          "date": "2022-12-30",
+          "secid": "SU26233RMFS5",
+          "y10": 10.31,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1184103.9699999997
+        },
+        {
+          "date": "2023-01-31",
+          "secid": "SU26233RMFS5",
+          "y10": 10.59,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1177217.0199999998
+        },
+        {
+          "date": "2023-02-28",
+          "secid": "SU26233RMFS5",
+          "y10": 10.87,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1168465.7199999997
+        },
+        {
+          "date": "2023-03-31",
+          "secid": "SU26233RMFS5",
+          "y10": 10.83,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1175229.68
+        },
+        {
+          "date": "2023-04-28",
+          "secid": "SU26233RMFS5",
+          "y10": 10.93,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1179839.9499999997
+        },
+        {
+          "date": "2023-05-31",
+          "secid": "SU26233RMFS5",
+          "y10": 10.88,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1187033.15
+        },
+        {
+          "date": "2023-06-30",
+          "secid": "SU26233RMFS5",
+          "y10": 11.09,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1180575.1799999997
+        },
+        {
+          "date": "2023-07-31",
+          "secid": "SU26233RMFS5",
+          "y10": 11.17,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1178597.5999999999
+        },
+        {
+          "date": "2023-08-31",
+          "secid": "SU26233RMFS5",
+          "y10": 11.47,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1170845.7999999998
+        },
+        {
+          "date": "2023-09-29",
+          "secid": "SU26233RMFS5",
+          "y10": 11.93,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1144056.1199999999
+        },
+        {
+          "date": "2023-10-31",
+          "secid": "SU26233RMFS5",
+          "y10": 12.5,
+          "regime": "C",
+          "targetExposure": 0.85,
+          "value": 1128443.8199999998
+        },
+        {
+          "date": "2023-11-30",
+          "secid": "SU26233RMFS5",
+          "y10": 11.74,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1184737.7399999998
+        },
+        {
+          "date": "2023-12-29",
+          "secid": "SU26233RMFS5",
+          "y10": 11.86,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1184790.0899999999
+        },
+        {
+          "date": "2024-01-31",
+          "secid": "SU26240RMFS0",
+          "y10": 11.64,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1193689.5899999996
+        },
+        {
+          "date": "2024-02-29",
+          "secid": "SU26240RMFS0",
+          "y10": 12.31,
+          "regime": "C",
+          "targetExposure": 0.85,
+          "value": 1179825.0299999996
+        },
+        {
+          "date": "2024-03-29",
+          "secid": "SU26240RMFS0",
+          "y10": 13.26,
+          "regime": "C",
+          "targetExposure": 0.85,
+          "value": 1138943.5499999998
+        },
+        {
+          "date": "2024-04-30",
+          "secid": "SU26240RMFS0",
+          "y10": 13.59,
+          "regime": "C",
+          "targetExposure": 0.85,
+          "value": 1121902.5299999998
+        },
+        {
+          "date": "2024-05-31",
+          "secid": "SU26240RMFS0",
+          "y10": 14.96,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1053614.7299999995
+        },
+        {
+          "date": "2024-06-28",
+          "secid": "SU26240RMFS0",
+          "y10": 15.11,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1046212.9799999996
+        },
+        {
+          "date": "2024-07-31",
+          "secid": "SU26240RMFS0",
+          "y10": 15.68,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1025054.9799999997
+        },
+        {
+          "date": "2024-08-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.78,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1028462.9799999997
+        },
+        {
+          "date": "2024-09-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.85,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1041799.3199999996
+        },
+        {
+          "date": "2024-10-31",
+          "secid": "SU26240RMFS0",
+          "y10": 16.89,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 983807.0199999996
+        },
+        {
+          "date": "2024-11-29",
+          "secid": "SU26240RMFS0",
+          "y10": 16.24,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1042630.4799999995
+        },
+        {
+          "date": "2024-12-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.22,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1178166.2299999997
+        },
+        {
+          "date": "2025-01-31",
+          "secid": "SU26240RMFS0",
+          "y10": 16.53,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1048958.6299999997
+        },
+        {
+          "date": "2025-02-28",
+          "secid": "SU26240RMFS0",
+          "y10": 15.52,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1144523.1399999994
+        },
+        {
+          "date": "2025-03-31",
+          "secid": "SU26240RMFS0",
+          "y10": 15.33,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1170294.5799999996
+        },
+        {
+          "date": "2025-04-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.63,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1177889.7399999995
+        },
+        {
+          "date": "2025-05-30",
+          "secid": "SU26240RMFS0",
+          "y10": 15.51,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1203721.2999999996
+        },
+        {
+          "date": "2025-06-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.67,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1281476.4999999995
+        },
+        {
+          "date": "2025-07-31",
+          "secid": "SU26250RMFS9",
+          "y10": 14.05,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1333106.4999999993
+        },
+        {
+          "date": "2025-08-29",
+          "secid": "SU26250RMFS9",
+          "y10": 13.9,
+          "regime": "C",
+          "targetExposure": 0.85,
+          "value": 1358840.539999999
+        },
+        {
+          "date": "2025-09-30",
+          "secid": "SU26250RMFS9",
+          "y10": 14.93,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1308096.8599999992
+        },
+        {
+          "date": "2025-10-31",
+          "secid": "SU26250RMFS9",
+          "y10": 14.77,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1334804.3199999991
+        },
+        {
+          "date": "2025-11-28",
+          "secid": "SU26250RMFS9",
+          "y10": 14.33,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1372508.0999999992
+        },
+        {
+          "date": "2025-12-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.44,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1384598.1399999992
+        },
+        {
+          "date": "2026-01-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.61,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1377312.3999999994
+        },
+        {
+          "date": "2026-02-27",
+          "secid": "SU26243RMFS4",
+          "y10": 14.31,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1408354.3999999992
+        },
+        {
+          "date": "2026-03-31",
+          "secid": "SU26243RMFS4",
+          "y10": 14.52,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1427399.5799999991
+        },
+        {
+          "date": "2026-04-30",
+          "secid": "SU26243RMFS4",
+          "y10": 14.54,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1447156.8999999992
+        },
+        {
+          "date": "2026-05-29",
+          "secid": "SU26243RMFS4",
+          "y10": 14.89,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1447284.719999999
+        },
+        {
+          "date": "2026-06-30",
+          "secid": "SU26243RMFS4",
+          "y10": 16.38,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1371213.5599999991
+        },
+        {
+          "date": "2026-07-31",
+          "secid": "SU26253RMFS3",
+          "y10": 15.69,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1426131.9199999995
+        },
+        {
+          "date": "2026-08-31",
+          "secid": "SU26253RMFS3",
+          "y10": 16.04,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1412760.8799999992
+        },
+        {
+          "date": "2026-09-11",
+          "secid": "SU26253RMFS3",
+          "y10": 16.41,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1402925.5999999994
+        }
+      ]
+    }
+  },
+  "comparisons": [
+    {
+      "name": "BASELINE_100_60_25",
+      "deltaTerminal": 56779.8200000003,
+      "drawdownImprovement": 0.10739348329372034,
+      "turnoverPct": 19.915355979999998
+    },
+    {
+      "name": "LATE_EXIT_100_80_50",
+      "deltaTerminal": 54733.72000000067,
+      "drawdownImprovement": 0.10299581257132828,
+      "turnoverPct": 22.178116500000005
+    },
+    {
+      "name": "MILD_EXIT_100_90_65",
+      "deltaTerminal": 46931.590000000084,
+      "drawdownImprovement": 0.08733465649258132,
+      "turnoverPct": 23.43479795
+    },
+    {
+      "name": "EARLY_CUT_100_85_60_25",
+      "deltaTerminal": 67735.79000000004,
+      "drawdownImprovement": 0.12415201003510012,
+      "turnoverPct": 19.650864740000003
+    }
+  ],
+  "bestReturnVsHold": "EARLY_CUT_100_85_60_25",
+  "bestDrawdownVsHold": "EARLY_CUT_100_85_60_25",
+  "decision": "NO_PRODUCTION_CHANGE",
+  "reason": "Rolling proxy extends real-price evidence into D/E, but remains a proxy basket and requires robustness / leave-one-episode-out validation before production threshold change.",
+  "assumptions": {
+    "taxes": false,
+    "commissions": false,
+    "slippage": false,
+    "decisionFrequency": "monthly",
+    "durationMatching": "residual maturity proxy around 12 years; not exact modified duration"
+  },
+  "nextTask": "R0.5.10 Rolling Proxy Robustness / Leave-One-Episode-Out"
+}
