@@ -259,7 +259,7 @@ jobs:
           URL="https://yadragon44.github.io/moex-crash-radar/investor-radar/index.html"
           for attempt in {1..12}; do
             code=$(curl -L -sS -o /tmp/investor-radar.html -w "%{http_code}" --connect-timeout 10 --max-time 20 "$URL" || true)
-            if [ "$code" = "200" ] && grep -q "Investor Radar R1.7.1" /tmp/investor-radar.html; then echo "PUBLIC HTTP GATE: PASS"; exit 0; fi
+            if [ "$code" = "200" ] && grep -q "Investor Radar R1.8" /tmp/investor-radar.html; then echo "PUBLIC HTTP GATE: PASS"; exit 0; fi
             sleep 10
           done
           echo "PUBLIC HTTP GATE: FAIL"; exit 1
