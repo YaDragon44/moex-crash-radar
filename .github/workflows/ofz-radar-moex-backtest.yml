@@ -1,0 +1,91 @@
+name: OFZ Radar Common-Life MOEX Backtest
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/validate_ofz_moex_backtest_r057.py'
+      - '.github/workflows/ofz-radar-moex-backtest.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ofz-radar-moex-backtest
+  cancel-in-progress: true
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate production snapshot prerequisite
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          j=json.load(open('web/ofz-radar/data/current.json',encoding='utf-8'))
+          if j.get('version')!='0.5.3': raise SystemExit('production snapshot version mismatch')
+          if not (j.get('portfolio') or {}).get('ready'): raise SystemExit('portfolio not ready')
+          if {str(x.get('secid')) for x in (j.get('bonds') or [])}!={'26254','26253','26247','26248'}: raise SystemExit('bond set invalid')
+          print('OFZ R0.5.7 PREREQUISITE: PASS')
+          PY
+      - name: Run R0.5.7 common-life MOEX quote backtest
+        run: python scripts/validate_ofz_moex_backtest_r057.py
+      - name: Validate R0.5.7 report contract
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          j=json.load(open('web/ofz-radar/data/moex-backtest.json',encoding='utf-8'))
+          if j.get('version')!='0.5.7' or j.get('status')!='PASS': raise SystemExit('R0.5.7 status fail')
+          if j.get('validationType')!='COMMON_LIFE_MOEX_REAL_QUOTE_BACKTEST': raise SystemExit('validation type invalid')
+          if (j.get('commonTradingDays') or 0)<20: raise SystemExit('common history too short')
+          if (j.get('monthlyObservations') or 0)<3: raise SystemExit('monthly observations too short')
+          if len(j.get('dates') or [])!=(j.get('monthlyObservations') or 0): raise SystemExit('date panel mismatch')
+          if set((j.get('results') or {}).keys())!={'BUY_HOLD','BASELINE_100_60_25','LATE_EXIT_100_80_50','MILD_EXIT_100_90_65','EARLY_CUT_100_85_60_25'}: raise SystemExit('result set invalid')
+          if len(j.get('comparisons') or [])!=4: raise SystemExit('comparison set invalid')
+          for name,r in (j.get('results') or {}).items():
+              if not isinstance(r.get('terminalValue'),(int,float)) or r['terminalValue']<=0: raise SystemExit(f'{name}: terminal invalid')
+              if not isinstance(r.get('maxDrawdown'),(int,float)) or r['maxDrawdown']>1e-9 or r['maxDrawdown']<-1: raise SystemExit(f'{name}: drawdown invalid')
+              if not isinstance(r.get('turnoverPct'),(int,float)) or r['turnoverPct']<0: raise SystemExit(f'{name}: turnover invalid')
+          a=j.get('assumptions') or {}
+          if a.get('prices')!='MOEX clean price + MOEX accrued interest': raise SystemExit('price semantics invalid')
+          if a.get('coupons')!='MOEX bondization official coupon rows only': raise SystemExit('coupon semantics invalid')
+          if j.get('decision')!='NO_PRODUCTION_CHANGE': raise SystemExit('production change must remain blocked')
+          print('OFZ R0.5.7 MOEX BACKTEST CONTRACT: PASS')
+          PY
+      - name: Commit MOEX backtest if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add web/ofz-radar/data/moex-backtest.json
+          if git diff --cached --quiet; then echo 'No MOEX backtest change'; exit 0; fi
+          git commit -m 'data: update OFZ R0.5.7 MOEX backtest'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Verify raw public R0.5.7 artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://raw.githubusercontent.com/YaDragon44/moex-crash-radar/main/web/ofz-radar/data/moex-backtest.json'
+          for attempt in {1..12}; do
+            code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/moexbt.json -w '%{http_code}' --connect-timeout 10 --max-time 20 "${URL}?v=${GITHUB_RUN_ID}-${attempt}" || true)
+            if [ "$code" = '200' ] && python - <<'PY'
+          import json
+          j=json.load(open('/tmp/moexbt.json',encoding='utf-8'))
+          ok=(j.get('version')=='0.5.7' and j.get('status')=='PASS' and j.get('validationType')=='COMMON_LIFE_MOEX_REAL_QUOTE_BACKTEST' and (j.get('commonTradingDays') or 0)>=20 and (j.get('monthlyObservations') or 0)>=3 and len(j.get('comparisons') or [])==4 and j.get('decision')=='NO_PRODUCTION_CHANGE')
+          raise SystemExit(0 if ok else 1)
+          PY
+            then echo 'OFZ R0.5.7 RAW PUBLIC MOEX BACKTEST GATE: PASS'; exit 0; fi
+            sleep 5
+          done
+          echo 'OFZ R0.5.7 RAW PUBLIC MOEX BACKTEST GATE: FAIL'; exit 1
