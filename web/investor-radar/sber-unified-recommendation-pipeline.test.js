@@ -25,7 +25,7 @@ assert.equal(r.status,'PARTIAL');
 assert.equal(r.verified,false);
 assert.equal(r.decision.action,'НАБЛЮДАТЬ');
 assert.equal(r.decision.light,'СЕРЫЙ');
-assert(r.missing.includes('common_equity_share_basis'));
+assert(r.missing.includes('common_equity_share_basis_or_reported_bvps'));
 assert(r.missing.includes('sber_full_valuation_completeness'));
 
 x=base();delete x.portfolio;r=P.build(x);
@@ -45,4 +45,4 @@ assert(r.missing.includes('issuer_risk_provenance_missing'));
 
 x=base();delete x.recommendationEngine;r=P.build(x);
 assert.equal(r.status,'LOCK');assert.equal(r.decision,null);assert(r.missing.includes('recommendation_engine'));
-console.log('R1.8.34 SBER unified recommendation pipeline tests: PASS');
+console.log('R1.8.47 SBER unified recommendation pipeline regression alignment tests: PASS');
