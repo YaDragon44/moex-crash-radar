@@ -9,6 +9,7 @@ on:
     paths:
       - 'scripts/collect_ofz_radar_snapshot.py'
       - 'scripts/ofz_cashflow_engine.py'
+      - 'scripts/ofz_strategy_engine.py'
       - '.github/workflows/ofz-radar-data.yml'
 
 permissions:
@@ -30,7 +31,7 @@ jobs:
           python-version: '3.11'
       - name: Collect official CBR and MOEX snapshot
         run: python scripts/collect_ofz_radar_snapshot.py
-      - name: Validate snapshot and cashflow scenarios
+      - name: Validate cashflow and strategy contract
         shell: bash
         run: |
           python - <<'PY'
@@ -39,7 +40,7 @@ jobs:
           p=Path('web/ofz-radar/data/current.json')
           if not p.exists(): raise SystemExit('snapshot missing')
           j=json.loads(p.read_text(encoding='utf-8'))
-          if j.get('version') != '0.5.2': raise SystemExit('wrong version')
+          if j.get('version') != '0.5.3': raise SystemExit('wrong version')
           pts=(j.get('curve') or {}).get('points') or []
           y10=[x.get('yield') for x in pts if x.get('years')==10]
           if not y10 or not isinstance(y10[0],(int,float)): raise SystemExit('10Y curve missing')
@@ -50,16 +51,23 @@ jobs:
               if not isinstance(b.get('ytm'),(int,float)) or b['ytm']<=0: raise SystemExit(f"{b.get('secid')}: ytm invalid")
               if b.get('scheduleStatus') not in ('FULL','PARTIAL_EXTENDED','SYNTHETIC'): raise SystemExit(f"{b.get('secid')}: schedule invalid {b.get('scheduleStatus')}")
           pq=j.get('portfolioQuality') or {}
-          if not pq.get('ok'): raise SystemExit(f'portfolio quality gate fail: {pq}')
+          if not pq.get('ok') or not pq.get('economicSanity'): raise SystemExit(f'portfolio quality gate fail: {pq}')
           scenarios=j.get('portfolioScenarios') or []
           if [x.get('targetYield') for x in scenarios] != [14,12,10,8,5]: raise SystemExit('scenario set invalid')
           for x in scenarios:
               f=x.get('fiveYear') or {}
-              if not f.get('ready'): raise SystemExit(f'scenario not ready: {x.get("targetYield")}')
-              if not f.get('economicSanity'): raise SystemExit(f'economic sanity fail: {x.get("targetYield")} cagr={f.get("cagr")}')
-              if not isinstance(f.get('terminalValue'),(int,float)) or f['terminalValue']<=0: raise SystemExit('terminal value invalid')
+              if not f.get('ready') or not f.get('economicSanity'): raise SystemExit(f'scenario fail: {x.get("targetYield")}')
+          s=j.get('strategyComparison') or {}
+          if not s.get('ready'): raise SystemExit(f'strategy comparison not ready: {s}')
+          if len(s.get('path') or []) != 6 or (s.get('path') or [])[-1] != 5.0: raise SystemExit('strategy path invalid')
+          for key in ('buyHold','active'):
+              x=s.get(key) or {}
+              if not x.get('ready') or not x.get('economicSanity'): raise SystemExit(f'{key} strategy fail')
+              if not isinstance(x.get('terminalValue'),(int,float)) or x['terminalValue']<=0: raise SystemExit(f'{key} terminal invalid')
+              if not isinstance(x.get('cagr'),(int,float)): raise SystemExit(f'{key} cagr invalid')
+          if (s.get('assumptions') or {}).get('protectiveSleeveYield') != 0.0: raise SystemExit('protective sleeve must remain explicit 0%')
           if j.get('rawRegime') not in ('A','B','C','D','E'): raise SystemExit('regime invalid')
-          print('OFZ R0.5.2 CASHFLOW + SCENARIO CONTRACT: PASS')
+          print('OFZ R0.5.3 CASHFLOW + STRATEGY CONTRACT: PASS')
           PY
       - name: Commit snapshot if changed
         shell: bash
@@ -82,25 +90,24 @@ jobs:
             code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/ofz.json -w '%{http_code}' --connect-timeout 10 --max-time 20 "${URL}?v=${GITHUB_RUN_ID}-${attempt}" || true)
             if [ "$code" = '200' ] && python - <<'PY'
           import json
-          j=json.load(open('/tmp/ofz.json',encoding='utf-8'))
-          s=j.get('portfolioScenarios') or []
-          ok=j.get('version')=='0.5.2' and j.get('rawRegime') in ('A','B','C','D','E') and len(j.get('bonds') or [])==4 and len(s)==5 and all((x.get('fiveYear') or {}).get('economicSanity') for x in s)
+          j=json.load(open('/tmp/ofz.json',encoding='utf-8'));s=j.get('portfolioScenarios') or [];st=j.get('strategyComparison') or {}
+          ok=j.get('version')=='0.5.3' and len(j.get('bonds') or [])==4 and len(s)==5 and all((x.get('fiveYear') or {}).get('economicSanity') for x in s) and st.get('ready') and (st.get('buyHold') or {}).get('economicSanity') and (st.get('active') or {}).get('economicSanity')
           raise SystemExit(0 if ok else 1)
           PY
-            then echo 'OFZ RADAR RAW PUBLIC DATA + SCENARIO GATE: PASS'; ok=1; break; fi
+            then echo 'OFZ RADAR RAW PUBLIC DATA + STRATEGY GATE: PASS'; ok=1; break; fi
             sleep 5
           done
           [ "$ok" = '1' ]
-      - name: Verify public dashboard R0.5.2
+      - name: Verify public dashboard R0.5.3
         shell: bash
         run: |
           set -euo pipefail
           URL='https://yadragon44.github.io/moex-crash-radar/ofz-radar/'
           for attempt in {1..18}; do
             code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/ofz.html -w '%{http_code}' --connect-timeout 10 --max-time 20 "${URL}?v=${GITHUB_RUN_ID}-${attempt}" || true)
-            if [ "$code" = '200' ] && grep -q 'R0.5.2 Cashflow Scenario Engine' /tmp/ofz.html && grep -q 'raw.githubusercontent.com/YaDragon44/moex-crash-radar/main/web/ofz-radar/data/current.json' /tmp/ofz.html; then
-              echo 'OFZ RADAR PUBLIC HTML + DATA WIRING GATE: PASS'; exit 0
+            if [ "$code" = '200' ] && grep -q 'R0.5.3 Live Strategy Simulator' /tmp/ofz.html && grep -q 'strategyComparison' /tmp/ofz.html; then
+              echo 'OFZ RADAR PUBLIC STRATEGY HTML GATE: PASS'; exit 0
             fi
             sleep 10
           done
-          echo 'OFZ RADAR PUBLIC HTML + DATA WIRING GATE: FAIL'; exit 1
+          echo 'OFZ RADAR PUBLIC STRATEGY HTML GATE: FAIL'; exit 1
