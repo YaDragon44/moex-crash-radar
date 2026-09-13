@@ -75,14 +75,15 @@ jobs:
           if j.get('decision')!='NO_PRODUCTION_CHANGE': raise SystemExit('production change must remain blocked pending historical validation')
           print('OFZ R0.5.5 POLICY DECISION CONTRACT: PASS')
           PY
-      - name: Commit snapshot and validation if changed
+      - name: Commit validation artifacts if changed
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add web/ofz-radar/data/current.json web/ofz-radar/data/strategy-validation.json web/ofz-radar/data/policy-validation.json
-          if git diff --cached --quiet; then echo 'No data change'; exit 0; fi
+          git restore web/ofz-radar/data/current.json
+          git add web/ofz-radar/data/strategy-validation.json web/ofz-radar/data/policy-validation.json
+          if git diff --cached --quiet; then echo 'No validation data change'; exit 0; fi
           git commit -m 'data: update OFZ strategy and policy validation'
           git pull --rebase origin main
           git push origin HEAD:main
