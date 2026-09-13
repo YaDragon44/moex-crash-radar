@@ -1,6 +1,6 @@
 {
-  "version": "0.5.2",
-  "fetchedAt": "2026-09-13T19:36:16.945582+00:00",
+  "version": "0.5.3",
+  "fetchedAt": "2026-09-13T19:40:07.460819+00:00",
   "valuationDate": "2026-09-11",
   "curve": {
     "date": "11.09.2026",
@@ -936,6 +936,261 @@
       }
     }
   ],
+  "strategyComparison": {
+    "ready": true,
+    "path": [
+      16.41,
+      15.0,
+      13.0,
+      11.0,
+      9.0,
+      5.0
+    ],
+    "buyHold": {
+      "ready": true,
+      "mode": "BUY_HOLD",
+      "path": [
+        16.41,
+        15.0,
+        13.0,
+        11.0,
+        9.0,
+        5.0
+      ],
+      "horizonDate": "2031-09-11",
+      "terminalValue": 3218322.554299945,
+      "returnPct": 2.218322554299945,
+      "cagr": 0.2633564843350067,
+      "cash": 1096.8747289043995,
+      "bondValue": 3217225.6795710404,
+      "totalCoupons": 981178.8599999998,
+      "reinvested": 983008.5752710955,
+      "realizedSales": 0.0,
+      "turnover": 983008.5752710955,
+      "turnoverPct": 0.9830085752710955,
+      "maxDrawdown": -0.01775255700852052,
+      "actions": [],
+      "timeline": [
+        {
+          "date": "2027-09-11",
+          "yield": 15.0,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1202756.2165252941,
+          "cash": 557.82815051038,
+          "bondValue": 1202198.3883747838
+        },
+        {
+          "date": "2028-09-11",
+          "yield": 12.994520547945205,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1540810.0521578533,
+          "cash": 352.56467644563736,
+          "bondValue": 1540457.4874814076
+        },
+        {
+          "date": "2029-09-11",
+          "yield": 10.994520547945205,
+          "regime": "D",
+          "targetExposure": 1.0,
+          "value": 1939959.9318604784,
+          "cash": 655.5958993132863,
+          "bondValue": 1939304.3359611651
+        },
+        {
+          "date": "2030-09-11",
+          "yield": 8.98904109589041,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 2396928.8715769313,
+          "cash": 963.6718271123673,
+          "bondValue": 2395965.199749819
+        },
+        {
+          "date": "2031-09-11",
+          "yield": 5.0,
+          "regime": "E",
+          "targetExposure": 1.0,
+          "value": 3218322.554299945,
+          "cash": 1096.8747289043995,
+          "bondValue": 3217225.6795710404
+        }
+      ],
+      "economicSanity": true
+    },
+    "active": {
+      "ready": true,
+      "mode": "ACTIVE",
+      "path": [
+        16.41,
+        15.0,
+        13.0,
+        11.0,
+        9.0,
+        5.0
+      ],
+      "horizonDate": "2031-09-11",
+      "terminalValue": 2231044.887935444,
+      "returnPct": 1.2310448879354436,
+      "cagr": 0.17409073687465448,
+      "cash": 1668681.4498805325,
+      "bondValue": 562363.4380549114,
+      "totalCoupons": 676562.7999999998,
+      "reinvested": 465602.8573175485,
+      "realizedSales": 1454794.9171980822,
+      "turnover": 1920397.7745156304,
+      "turnoverPct": 1.9203977745156304,
+      "maxDrawdown": -0.01775255700852052,
+      "actions": [
+        {
+          "date": "2029-04-18",
+          "yield": 11.794520547945204,
+          "regime": "D",
+          "action": "REDUCE",
+          "targetExposure": 0.6,
+          "amount": 628637.5463947398
+        },
+        {
+          "date": "2029-05-23",
+          "yield": 11.602739726027398,
+          "regime": "D",
+          "action": "REDUCE",
+          "targetExposure": 0.6,
+          "amount": 2189.9685951362853
+        },
+        {
+          "date": "2029-09-11",
+          "yield": 10.994520547945205,
+          "regime": "D",
+          "action": "REDUCE",
+          "targetExposure": 0.6,
+          "amount": 27785.083591114555
+        },
+        {
+          "date": "2030-04-17",
+          "yield": 9.8,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 695528.9971058794
+        },
+        {
+          "date": "2030-05-22",
+          "yield": 9.60821917808219,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 3668.2425374209834
+        },
+        {
+          "date": "2030-09-11",
+          "yield": 8.98904109589041,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 23169.901222160803
+        },
+        {
+          "date": "2030-11-20",
+          "yield": 8.221917808219178,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 3947.7953312504906
+        },
+        {
+          "date": "2030-11-27",
+          "yield": 8.145205479452056,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 1339.4279993865375
+        },
+        {
+          "date": "2031-04-16",
+          "yield": 6.610958904109587,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 26884.849308236044
+        },
+        {
+          "date": "2031-05-21",
+          "yield": 6.227397260273971,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 10123.363967938658
+        },
+        {
+          "date": "2031-09-11",
+          "yield": 5.0,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 31519.74114481874
+        }
+      ],
+      "timeline": [
+        {
+          "date": "2027-09-11",
+          "yield": 15.0,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1202756.2165252941,
+          "cash": 557.82815051038,
+          "bondValue": 1202198.3883747838
+        },
+        {
+          "date": "2028-09-11",
+          "yield": 12.994520547945205,
+          "regime": "C",
+          "targetExposure": 1.0,
+          "value": 1540810.0521578533,
+          "cash": 352.56467644563736,
+          "bondValue": 1540457.4874814076
+        },
+        {
+          "date": "2029-09-11",
+          "yield": 10.994520547945205,
+          "regime": "D",
+          "targetExposure": 0.6,
+          "value": 1872317.208911623,
+          "cash": 748206.8627396731,
+          "bondValue": 1124110.34617195
+        },
+        {
+          "date": "2030-09-11",
+          "yield": 8.98904109589041,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 2067624.90901785,
+          "cash": 1548632.907784307,
+          "bondValue": 518992.00123354304
+        },
+        {
+          "date": "2031-09-11",
+          "yield": 5.0,
+          "regime": "E",
+          "targetExposure": 0.25,
+          "value": 2231044.887935444,
+          "cash": 1668681.4498805325,
+          "bondValue": 562363.4380549114
+        }
+      ],
+      "economicSanity": true
+    },
+    "deltaTerminal": -987277.6663645012,
+    "deltaCagr": -0.08926574746035221,
+    "assumptions": {
+      "protectiveSleeveYield": 0.0,
+      "taxes": false,
+      "commissions": false,
+      "slippage": false,
+      "rebalanceRule": "continuous exposure gate evaluated at coupon/rebalance events"
+    }
+  },
   "rawRegime": "A",
   "confirmedRegime": {
     "id": "A",
@@ -964,6 +1219,7 @@
     "cbTone": "N/A",
     "curve": "CBR",
     "bonds": "MOEX",
-    "cashflows": "MOEX Bondization + safe synthetic extension"
+    "cashflows": "MOEX Bondization + safe synthetic extension",
+    "strategy": "same cashflow engine; protective sleeve 0%"
   }
 }
