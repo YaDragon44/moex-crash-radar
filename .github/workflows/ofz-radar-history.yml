@@ -49,6 +49,9 @@ jobs:
           if j.get('version')!='0.5.6' or j.get('status')!='PASS': raise SystemExit('R0.5.6 status fail')
           if j.get('validationType')!='HISTORICAL_YIELD_PATH_REPLAY_PROXY': raise SystemExit('validation type missing')
           if (j.get('historyPoints') or 0)<20: raise SystemExit('history too short')
+          if (j.get('history10YMax') or 0)-(j.get('history10YMin') or 0)<2: raise SystemExit('10Y history variance invalid')
+          rc=j.get('regimeObservationCounts') or {}
+          if len(rc)<3: raise SystemExit(f'regime diversity invalid: {rc}')
           if len(j.get('windows') or [])<8: raise SystemExit('insufficient historical windows')
           if len(j.get('policies') or [])!=4: raise SystemExit('policy matrix invalid')
           if j.get('decision')!='NO_PRODUCTION_CHANGE': raise SystemExit('production change must remain blocked before common-life MOEX backtest')
@@ -76,7 +79,7 @@ jobs:
             if [ "$code" = '200' ] && python - <<'PY'
           import json
           j=json.load(open('/tmp/hist.json',encoding='utf-8'))
-          ok=j.get('version')=='0.5.6' and j.get('status')=='PASS' and (j.get('historyPoints') or 0)>=20 and len(j.get('windows') or [])>=8 and j.get('decision')=='NO_PRODUCTION_CHANGE'
+          ok=(j.get('version')=='0.5.6' and j.get('status')=='PASS' and (j.get('historyPoints') or 0)>=20 and ((j.get('history10YMax') or 0)-(j.get('history10YMin') or 0))>=2 and len(j.get('regimeObservationCounts') or {})>=3 and len(j.get('windows') or [])>=8 and j.get('decision')=='NO_PRODUCTION_CHANGE')
           raise SystemExit(0 if ok else 1)
           PY
             then echo 'OFZ R0.5.6 RAW PUBLIC HISTORICAL GATE: PASS'; exit 0; fi
