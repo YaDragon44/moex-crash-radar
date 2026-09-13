@@ -2,12 +2,12 @@
   "version": "1.6.2",
   "method": "confirmed regime transitions; forward BTC observation at 1h/4h/24h; no lookahead",
   "max_observation_lag_minutes": 30,
-  "event_count": 4,
+  "event_count": 5,
   "sample_quality": "WARMUP",
   "summary": {
     "1h": {
       "closed": 4,
-      "open": 0,
+      "open": 1,
       "avg_btc_return_pct": -0.0471,
       "positive_rate_pct": 50.0,
       "negative_rate_pct": 50.0,
@@ -16,7 +16,7 @@
     },
     "4h": {
       "closed": 2,
-      "open": 2,
+      "open": 3,
       "avg_btc_return_pct": -0.0671,
       "positive_rate_pct": 50.0,
       "negative_rate_pct": 50.0,
@@ -25,7 +25,7 @@
     },
     "24h": {
       "closed": 0,
-      "open": 4,
+      "open": 5,
       "avg_btc_return_pct": null,
       "positive_rate_pct": null,
       "negative_rate_pct": null,
@@ -141,6 +141,37 @@
           "btc_price": 77205.4,
           "btc_return_pct": 0.0237,
           "alignment": "NOT_ALIGNED"
+        },
+        "4h": {
+          "status": "OPEN",
+          "observed_at": null,
+          "btc_price": null,
+          "btc_return_pct": null,
+          "alignment": null
+        },
+        "24h": {
+          "status": "OPEN",
+          "observed_at": null,
+          "btc_price": null,
+          "btc_return_pct": null,
+          "alignment": null
+        }
+      }
+    },
+    {
+      "generated_at": "2026-09-13T05:25:37.399331+00:00",
+      "from_regime": "RISK-OFF",
+      "to_regime": "DISTRIBUTION",
+      "btc_price_at_transition": 77247.6,
+      "investor_action": "REDUCE RISK",
+      "trader_action": "REDUCE EXPOSURE",
+      "outcomes": {
+        "1h": {
+          "status": "OPEN",
+          "observed_at": null,
+          "btc_price": null,
+          "btc_return_pct": null,
+          "alignment": null
         },
         "4h": {
           "status": "OPEN",
