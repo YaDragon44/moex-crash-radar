@@ -1,0 +1,615 @@
+{
+  "version": "0.5.7",
+  "status": "PASS",
+  "valuationDate": "2026-09-11",
+  "validationType": "COMMON_LIFE_MOEX_REAL_QUOTE_BACKTEST",
+  "dataSource": "MOEX ISS history + MOEX bondization coupons + CBR 10Y",
+  "commonFrom": "2025-11-27",
+  "commonTo": "2026-09-11",
+  "commonTradingDays": 200,
+  "monthlyObservations": 12,
+  "dates": [
+    "2025-11-27",
+    "2025-11-28",
+    "2025-12-30",
+    "2026-01-30",
+    "2026-02-27",
+    "2026-03-31",
+    "2026-04-30",
+    "2026-05-29",
+    "2026-06-30",
+    "2026-07-31",
+    "2026-08-31",
+    "2026-09-11"
+  ],
+  "y10": {
+    "2025-11-27": 14.41,
+    "2025-11-28": 14.33,
+    "2025-12-30": 14.44,
+    "2026-01-30": 14.61,
+    "2026-02-27": 14.31,
+    "2026-03-31": 14.52,
+    "2026-04-30": 14.54,
+    "2026-05-29": 14.89,
+    "2026-06-30": 16.38,
+    "2026-07-31": 15.69,
+    "2026-08-31": 16.04,
+    "2026-09-11": 16.41
+  },
+  "bondHistoryRows": {
+    "26254": 200,
+    "26253": 205,
+    "26247": 554,
+    "26248": 559
+  },
+  "couponRows": {
+    "26254": 20,
+    "26253": 20,
+    "26247": 20,
+    "26248": 20
+  },
+  "results": {
+    "BUY_HOLD": {
+      "name": "BUY_HOLD",
+      "terminalValue": 1026452.8100000155,
+      "returnPct": 0.026452810000015647,
+      "maxDrawdown": -0.05528832229093483,
+      "turnoverPct": 1.0762601900000022,
+      "couponCash": 76558.5,
+      "cash": 298.31000001549864,
+      "bondValue": 1026154.5,
+      "actions": [],
+      "timeline": [
+        {
+          "date": "2025-11-27",
+          "y10": 14.41,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1000000.0000000156
+        },
+        {
+          "date": "2025-11-28",
+          "y10": 14.33,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1004778.0500000156
+        },
+        {
+          "date": "2025-12-30",
+          "y10": 14.44,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1016976.8600000156
+        },
+        {
+          "date": "2026-01-30",
+          "y10": 14.61,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1008514.8500000156
+        },
+        {
+          "date": "2026-02-27",
+          "y10": 14.31,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1030389.7600000156
+        },
+        {
+          "date": "2026-03-31",
+          "y10": 14.52,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1045462.7600000156
+        },
+        {
+          "date": "2026-04-30",
+          "y10": 14.54,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1061050.9600000156
+        },
+        {
+          "date": "2026-05-29",
+          "y10": 14.89,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1061854.2500000154
+        },
+        {
+          "date": "2026-06-30",
+          "y10": 16.38,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1003146.1100000156
+        },
+        {
+          "date": "2026-07-31",
+          "y10": 15.69,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1045226.6700000156
+        },
+        {
+          "date": "2026-08-31",
+          "y10": 16.04,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1032836.4500000154
+        },
+        {
+          "date": "2026-09-11",
+          "y10": 16.41,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1026452.8100000155
+        }
+      ],
+      "finalQty": {
+        "26254": 534,
+        "26253": 328,
+        "26247": 144,
+        "26248": 146
+      }
+    },
+    "BASELINE_100_60_25": {
+      "name": "BASELINE_100_60_25",
+      "terminalValue": 1026452.8100000155,
+      "returnPct": 0.026452810000015647,
+      "maxDrawdown": -0.05528832229093483,
+      "turnoverPct": 1.0762601900000022,
+      "couponCash": 76558.5,
+      "cash": 298.31000001549864,
+      "bondValue": 1026154.5,
+      "actions": [],
+      "timeline": [
+        {
+          "date": "2025-11-27",
+          "y10": 14.41,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1000000.0000000156
+        },
+        {
+          "date": "2025-11-28",
+          "y10": 14.33,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1004778.0500000156
+        },
+        {
+          "date": "2025-12-30",
+          "y10": 14.44,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1016976.8600000156
+        },
+        {
+          "date": "2026-01-30",
+          "y10": 14.61,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1008514.8500000156
+        },
+        {
+          "date": "2026-02-27",
+          "y10": 14.31,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1030389.7600000156
+        },
+        {
+          "date": "2026-03-31",
+          "y10": 14.52,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1045462.7600000156
+        },
+        {
+          "date": "2026-04-30",
+          "y10": 14.54,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1061050.9600000156
+        },
+        {
+          "date": "2026-05-29",
+          "y10": 14.89,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1061854.2500000154
+        },
+        {
+          "date": "2026-06-30",
+          "y10": 16.38,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1003146.1100000156
+        },
+        {
+          "date": "2026-07-31",
+          "y10": 15.69,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1045226.6700000156
+        },
+        {
+          "date": "2026-08-31",
+          "y10": 16.04,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1032836.4500000154
+        },
+        {
+          "date": "2026-09-11",
+          "y10": 16.41,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1026452.8100000155
+        }
+      ],
+      "finalQty": {
+        "26254": 534,
+        "26253": 328,
+        "26247": 144,
+        "26248": 146
+      }
+    },
+    "LATE_EXIT_100_80_50": {
+      "name": "LATE_EXIT_100_80_50",
+      "terminalValue": 1026452.8100000155,
+      "returnPct": 0.026452810000015647,
+      "maxDrawdown": -0.05528832229093483,
+      "turnoverPct": 1.0762601900000022,
+      "couponCash": 76558.5,
+      "cash": 298.31000001549864,
+      "bondValue": 1026154.5,
+      "actions": [],
+      "timeline": [
+        {
+          "date": "2025-11-27",
+          "y10": 14.41,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1000000.0000000156
+        },
+        {
+          "date": "2025-11-28",
+          "y10": 14.33,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1004778.0500000156
+        },
+        {
+          "date": "2025-12-30",
+          "y10": 14.44,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1016976.8600000156
+        },
+        {
+          "date": "2026-01-30",
+          "y10": 14.61,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1008514.8500000156
+        },
+        {
+          "date": "2026-02-27",
+          "y10": 14.31,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1030389.7600000156
+        },
+        {
+          "date": "2026-03-31",
+          "y10": 14.52,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1045462.7600000156
+        },
+        {
+          "date": "2026-04-30",
+          "y10": 14.54,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1061050.9600000156
+        },
+        {
+          "date": "2026-05-29",
+          "y10": 14.89,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1061854.2500000154
+        },
+        {
+          "date": "2026-06-30",
+          "y10": 16.38,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1003146.1100000156
+        },
+        {
+          "date": "2026-07-31",
+          "y10": 15.69,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1045226.6700000156
+        },
+        {
+          "date": "2026-08-31",
+          "y10": 16.04,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1032836.4500000154
+        },
+        {
+          "date": "2026-09-11",
+          "y10": 16.41,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1026452.8100000155
+        }
+      ],
+      "finalQty": {
+        "26254": 534,
+        "26253": 328,
+        "26247": 144,
+        "26248": 146
+      }
+    },
+    "MILD_EXIT_100_90_65": {
+      "name": "MILD_EXIT_100_90_65",
+      "terminalValue": 1026452.8100000155,
+      "returnPct": 0.026452810000015647,
+      "maxDrawdown": -0.05528832229093483,
+      "turnoverPct": 1.0762601900000022,
+      "couponCash": 76558.5,
+      "cash": 298.31000001549864,
+      "bondValue": 1026154.5,
+      "actions": [],
+      "timeline": [
+        {
+          "date": "2025-11-27",
+          "y10": 14.41,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1000000.0000000156
+        },
+        {
+          "date": "2025-11-28",
+          "y10": 14.33,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1004778.0500000156
+        },
+        {
+          "date": "2025-12-30",
+          "y10": 14.44,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1016976.8600000156
+        },
+        {
+          "date": "2026-01-30",
+          "y10": 14.61,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1008514.8500000156
+        },
+        {
+          "date": "2026-02-27",
+          "y10": 14.31,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1030389.7600000156
+        },
+        {
+          "date": "2026-03-31",
+          "y10": 14.52,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1045462.7600000156
+        },
+        {
+          "date": "2026-04-30",
+          "y10": 14.54,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1061050.9600000156
+        },
+        {
+          "date": "2026-05-29",
+          "y10": 14.89,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1061854.2500000154
+        },
+        {
+          "date": "2026-06-30",
+          "y10": 16.38,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1003146.1100000156
+        },
+        {
+          "date": "2026-07-31",
+          "y10": 15.69,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1045226.6700000156
+        },
+        {
+          "date": "2026-08-31",
+          "y10": 16.04,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1032836.4500000154
+        },
+        {
+          "date": "2026-09-11",
+          "y10": 16.41,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1026452.8100000155
+        }
+      ],
+      "finalQty": {
+        "26254": 534,
+        "26253": 328,
+        "26247": 144,
+        "26248": 146
+      }
+    },
+    "EARLY_CUT_100_85_60_25": {
+      "name": "EARLY_CUT_100_85_60_25",
+      "terminalValue": 1026452.8100000155,
+      "returnPct": 0.026452810000015647,
+      "maxDrawdown": -0.05528832229093483,
+      "turnoverPct": 1.0762601900000022,
+      "couponCash": 76558.5,
+      "cash": 298.31000001549864,
+      "bondValue": 1026154.5,
+      "actions": [],
+      "timeline": [
+        {
+          "date": "2025-11-27",
+          "y10": 14.41,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1000000.0000000156
+        },
+        {
+          "date": "2025-11-28",
+          "y10": 14.33,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1004778.0500000156
+        },
+        {
+          "date": "2025-12-30",
+          "y10": 14.44,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1016976.8600000156
+        },
+        {
+          "date": "2026-01-30",
+          "y10": 14.61,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1008514.8500000156
+        },
+        {
+          "date": "2026-02-27",
+          "y10": 14.31,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1030389.7600000156
+        },
+        {
+          "date": "2026-03-31",
+          "y10": 14.52,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1045462.7600000156
+        },
+        {
+          "date": "2026-04-30",
+          "y10": 14.54,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1061050.9600000156
+        },
+        {
+          "date": "2026-05-29",
+          "y10": 14.89,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1061854.2500000154
+        },
+        {
+          "date": "2026-06-30",
+          "y10": 16.38,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1003146.1100000156
+        },
+        {
+          "date": "2026-07-31",
+          "y10": 15.69,
+          "regime": "B",
+          "targetExposure": 1.0,
+          "value": 1045226.6700000156
+        },
+        {
+          "date": "2026-08-31",
+          "y10": 16.04,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1032836.4500000154
+        },
+        {
+          "date": "2026-09-11",
+          "y10": 16.41,
+          "regime": "A",
+          "targetExposure": 1.0,
+          "value": 1026452.8100000155
+        }
+      ],
+      "finalQty": {
+        "26254": 534,
+        "26253": 328,
+        "26247": 144,
+        "26248": 146
+      }
+    }
+  },
+  "comparisons": [
+    {
+      "name": "BASELINE_100_60_25",
+      "deltaTerminal": 0.0,
+      "drawdownImprovement": 0.0,
+      "turnoverPct": 1.0762601900000022,
+      "terminalValue": 1026452.8100000155,
+      "maxDrawdown": -0.05528832229093483
+    },
+    {
+      "name": "LATE_EXIT_100_80_50",
+      "deltaTerminal": 0.0,
+      "drawdownImprovement": 0.0,
+      "turnoverPct": 1.0762601900000022,
+      "terminalValue": 1026452.8100000155,
+      "maxDrawdown": -0.05528832229093483
+    },
+    {
+      "name": "MILD_EXIT_100_90_65",
+      "deltaTerminal": 0.0,
+      "drawdownImprovement": 0.0,
+      "turnoverPct": 1.0762601900000022,
+      "terminalValue": 1026452.8100000155,
+      "maxDrawdown": -0.05528832229093483
+    },
+    {
+      "name": "EARLY_CUT_100_85_60_25",
+      "deltaTerminal": 0.0,
+      "drawdownImprovement": 0.0,
+      "turnoverPct": 1.0762601900000022,
+      "terminalValue": 1026452.8100000155,
+      "maxDrawdown": -0.05528832229093483
+    }
+  ],
+  "bestReturnVsHold": "BASELINE_100_60_25",
+  "bestDrawdownVsHold": "BASELINE_100_60_25",
+  "decision": "NO_PRODUCTION_CHANGE",
+  "reason": "Common-life realized quote history is still short; use results as validation evidence, not as sufficient basis for changing production thresholds.",
+  "assumptions": {
+    "taxes": false,
+    "commissions": false,
+    "slippage": false,
+    "monthlyDecisionFrequency": true,
+    "prices": "MOEX clean price + MOEX accrued interest",
+    "coupons": "MOEX bondization official coupon rows only"
+  },
+  "nextTask": "R0.5.8 Production Policy Decision / Evidence Review"
+}
