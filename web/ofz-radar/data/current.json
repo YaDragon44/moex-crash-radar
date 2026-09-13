@@ -1,0 +1,228 @@
+{
+  "version": "0.5.1",
+  "fetchedAt": "2026-09-13T19:20:47.455673+00:00",
+  "curve": {
+    "date": "11.09.2026",
+    "points": [
+      {
+        "years": 0.25,
+        "label": "0.25Y",
+        "yield": 13.38
+      },
+      {
+        "years": 0.5,
+        "label": "0.5Y",
+        "yield": 13.49
+      },
+      {
+        "years": 0.75,
+        "label": "0.75Y",
+        "yield": 13.66
+      },
+      {
+        "years": 1,
+        "label": "1Y",
+        "yield": 13.86
+      },
+      {
+        "years": 2,
+        "label": "2Y",
+        "yield": 14.64
+      },
+      {
+        "years": 3,
+        "label": "3Y",
+        "yield": 15.23
+      },
+      {
+        "years": 5,
+        "label": "5Y",
+        "yield": 15.92
+      },
+      {
+        "years": 7,
+        "label": "7Y",
+        "yield": 16.23
+      },
+      {
+        "years": 10,
+        "label": "10Y",
+        "yield": 16.41
+      },
+      {
+        "years": 15,
+        "label": "15Y",
+        "yield": 16.5
+      },
+      {
+        "years": 20,
+        "label": "20Y",
+        "yield": 16.56
+      },
+      {
+        "years": 30,
+        "label": "30Y",
+        "yield": 16.66
+      }
+    ],
+    "source": "CBR"
+  },
+  "curveHistory": [],
+  "keyRate": {
+    "date": "11.09.2026",
+    "value": 14.0,
+    "source": "CBR"
+  },
+  "inflation": {
+    "date": "08.2026",
+    "keyRate": 14.0,
+    "yoy": 6.33,
+    "target": 4.0,
+    "source": "CBR"
+  },
+  "inflationExpectations": null,
+  "minfinAuction": null,
+  "budget": null,
+  "cbTone": null,
+  "bonds": [
+    {
+      "secid": "26254",
+      "moexSecid": "SU26254RMFS1",
+      "price": 85.23,
+      "ytm": 16.23,
+      "couponPercent": 13.0,
+      "couponValue": 64.82,
+      "couponPeriod": 182.0,
+      "nextCouponDate": "2026-10-21",
+      "faceValue": 1000.0,
+      "lotSize": 1,
+      "accruedInt": 51.64,
+      "duration": 2159.0,
+      "matDate": "2040-10-03",
+      "quality": "LIVE",
+      "source": "MOEX"
+    },
+    {
+      "secid": "26253",
+      "moexSecid": "SU26253RMFS3",
+      "price": 85.801,
+      "ytm": 16.26,
+      "couponPercent": 13.0,
+      "couponValue": 64.82,
+      "couponPeriod": 182.0,
+      "nextCouponDate": "2026-10-21",
+      "faceValue": 1000.0,
+      "lotSize": 1,
+      "accruedInt": 51.64,
+      "duration": 2061.0,
+      "matDate": "2038-10-06",
+      "quality": "LIVE",
+      "source": "MOEX"
+    },
+    {
+      "secid": "26247",
+      "moexSecid": "SU26247RMFS5",
+      "price": 81.57,
+      "ytm": 16.23,
+      "couponPercent": 12.25,
+      "couponValue": 61.08,
+      "couponPeriod": 182.0,
+      "nextCouponDate": "2026-11-25",
+      "faceValue": 1000.0,
+      "lotSize": 1,
+      "accruedInt": 36.92,
+      "duration": 2149.0,
+      "matDate": "2039-05-11",
+      "quality": "LIVE",
+      "source": "MOEX"
+    },
+    {
+      "secid": "26248",
+      "moexSecid": "SU26248RMFS3",
+      "price": 81.148,
+      "ytm": 16.23,
+      "couponPercent": 12.25,
+      "couponValue": 61.08,
+      "couponPeriod": 182.0,
+      "nextCouponDate": "2026-12-02",
+      "faceValue": 1000.0,
+      "lotSize": 1,
+      "accruedInt": 34.57,
+      "duration": 2204.0,
+      "matDate": "2040-05-16",
+      "quality": "LIVE",
+      "source": "MOEX"
+    }
+  ],
+  "portfolio": {
+    "ready": true,
+    "capital": 1000000,
+    "invested": 997073.41,
+    "cash": 2926.59,
+    "annualCoupon": 143228.05,
+    "positions": [
+      {
+        "secid": "26254",
+        "weightPct": 47.0,
+        "qty": 519,
+        "cost": 469144.86,
+        "fullPrice": 903.94
+      },
+      {
+        "secid": "26253",
+        "weightPct": 28.999999999999996,
+        "qty": 318,
+        "cost": 289268.7,
+        "fullPrice": 909.65
+      },
+      {
+        "secid": "26247",
+        "weightPct": 12.0,
+        "qty": 140,
+        "cost": 119366.8,
+        "fullPrice": 852.62
+      },
+      {
+        "secid": "26248",
+        "weightPct": 12.0,
+        "qty": 141,
+        "cost": 119293.05,
+        "fullPrice": 846.05
+      }
+    ]
+  },
+  "portfolioQuality": {
+    "ok": true,
+    "scheduleStatus": "MARKET DATA VERIFIED; CASHFLOW SCHEDULE LIMITED"
+  },
+  "portfolioScenarios": [],
+  "rawRegime": "A",
+  "confirmedRegime": {
+    "id": "A",
+    "signal": "НАБЛЮДАТЬ",
+    "blocked": true,
+    "blockReason": "недостаточно подтвержденных макрофакторов",
+    "confidence": "LOW",
+    "macroScore": null
+  },
+  "transition": {
+    "text": "LIVE SNAPSHOT"
+  },
+  "macro": {
+    "known": 1
+  },
+  "quality": {
+    "market": "LIVE",
+    "curve": "LIVE",
+    "macro": "PARTIAL",
+    "system": "LIVE"
+  },
+  "sources": {
+    "inflationExpectations": "N/A",
+    "minfinAuctions": "N/A",
+    "budget": "N/A",
+    "cbTone": "N/A",
+    "curve": "CBR",
+    "bonds": "MOEX"
+  }
+}
