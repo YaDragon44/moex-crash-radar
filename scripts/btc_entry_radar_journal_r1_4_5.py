@@ -15,6 +15,7 @@ FIELDS = [
     "stop_atr", "quality_coverage_pct", "quality_status", "why"
 ]
 POSITIVE = {"WATCH", "ARMED", "LONG_READY", "MANAGE"}
+CONFIRM_REQUIRED = 2
 
 
 def row_from_snapshot(p: dict) -> dict:
@@ -57,6 +58,37 @@ def append_if_new(row: dict) -> tuple[list[dict], bool]:
     return rows, True
 
 
+def load_previous_confirmed_state() -> str:
+    if not TRANSITION.exists():
+        return "NO_TRADE"
+    try:
+        old = json.loads(TRANSITION.read_text(encoding="utf-8"))
+        return old.get("confirmed_state") or old.get("current_state") or "NO_TRADE"
+    except Exception:
+        return "NO_TRADE"
+
+
+def confirm_state(raw_state: str, previous_rows: list[dict], previous_confirmed: str) -> tuple[str, int, bool]:
+    """Return confirmed state, consecutive raw count, pending flag.
+
+    Protective NO_TRADE is immediate. Any non-NO_TRADE state must appear in
+    two consecutive snapshots before it becomes the confirmed decision state.
+    """
+    if raw_state == "NO_TRADE":
+        return "NO_TRADE", 1, False
+
+    count = 1
+    for r in reversed(previous_rows):
+        if r.get("state") == raw_state:
+            count += 1
+        else:
+            break
+
+    if count >= CONFIRM_REQUIRED:
+        return raw_state, count, False
+    return previous_confirmed, count, True
+
+
 def main() -> None:
     p = json.loads(SNAPSHOT.read_text(encoding="utf-8"))
     row = row_from_snapshot(p)
@@ -64,16 +96,31 @@ def main() -> None:
         raise SystemExit("positive state blocked: Quality Gate is not DATA READY")
 
     old_rows = read_rows()
-    prev_state = old_rows[-1]["state"] if old_rows else None
+    prev_raw_state = old_rows[-1]["state"] if old_rows else None
+    previous_confirmed = load_previous_confirmed_state()
+    confirmed_state, confirmation_count, pending = confirm_state(
+        row["state"], old_rows, previous_confirmed
+    )
+
     rows, appended = append_if_new(row)
-    transition = bool(prev_state and prev_state != row["state"])
+    raw_transition = bool(prev_raw_state and prev_raw_state != row["state"])
+    confirmed_transition = previous_confirmed != confirmed_state
+
     payload = {
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "snapshot_time": row["generated_at_utc"],
-        "previous_state": prev_state,
+        "previous_state": prev_raw_state,
         "current_state": row["state"],
-        "transition": transition,
-        "positive_transition": bool(transition and row["state"] in POSITIVE),
+        "raw_state": row["state"],
+        "previous_confirmed_state": previous_confirmed,
+        "confirmed_state": confirmed_state,
+        "confirmation_count": confirmation_count,
+        "confirmation_required": CONFIRM_REQUIRED,
+        "pending_confirmation": pending,
+        "transition": raw_transition,
+        "positive_transition": bool(raw_transition and row["state"] in POSITIVE),
+        "confirmed_transition": confirmed_transition,
+        "confirmed_positive_transition": bool(confirmed_transition and confirmed_state in POSITIVE),
         "journal_rows": len(rows),
         "appended": appended,
         "quality_status": row["quality_status"],
