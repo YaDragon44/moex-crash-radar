@@ -1,0 +1,80 @@
+name: OFZ Radar Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/30 * * * 1-5'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/collect_ofz_radar_snapshot.py'
+      - '.github/workflows/ofz-radar-data.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ofz-radar-data
+  cancel-in-progress: true
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Collect official CBR and MOEX snapshot
+        run: python scripts/collect_ofz_radar_snapshot.py
+      - name: Validate snapshot contract
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('web/ofz-radar/data/current.json')
+          if not p.exists(): raise SystemExit('snapshot missing')
+          j=json.loads(p.read_text(encoding='utf-8'))
+          if j.get('version') != '0.5.1': raise SystemExit('wrong version')
+          pts=(j.get('curve') or {}).get('points') or []
+          y10=[x.get('yield') for x in pts if x.get('years')==10]
+          if not y10 or not isinstance(y10[0],(int,float)): raise SystemExit('10Y curve missing')
+          bonds=j.get('bonds') or []
+          if {x.get('secid') for x in bonds} != {'26254','26253','26247','26248'}: raise SystemExit('bond set invalid')
+          for b in bonds:
+              if not isinstance(b.get('price'),(int,float)) or b['price']<=0: raise SystemExit(f"{b.get('secid')}: price invalid")
+              if not isinstance(b.get('faceValue'),(int,float)) or b['faceValue']<=0: raise SystemExit(f"{b.get('secid')}: face invalid")
+          if j.get('rawRegime') not in ('A','B','C','D','E'): raise SystemExit('regime invalid')
+          print('OFZ RADAR DATA CONTRACT: PASS')
+          PY
+      - name: Commit snapshot if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add web/ofz-radar/data/current.json
+          if git diff --cached --quiet; then echo 'No data change'; exit 0; fi
+          git commit -m 'data: update OFZ radar snapshot'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Verify raw public snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://raw.githubusercontent.com/YaDragon44/moex-crash-radar/main/web/ofz-radar/data/current.json'
+          for attempt in {1..12}; do
+            code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/ofz.json -w '%{http_code}' --connect-timeout 10 --max-time 20 "${URL}?v=${GITHUB_RUN_ID}-${attempt}" || true)
+            if [ "$code" = '200' ] && python - <<'PY'
+          import json
+          j=json.load(open('/tmp/ofz.json',encoding='utf-8'))
+          ok=j.get('version')=='0.5.1' and j.get('rawRegime') in ('A','B','C','D','E') and len(j.get('bonds') or [])==4
+          raise SystemExit(0 if ok else 1)
+          PY
+            then echo 'OFZ RADAR RAW PUBLIC DATA GATE: PASS'; exit 0; fi
+            sleep 5
+          done
+          echo 'OFZ RADAR RAW PUBLIC DATA GATE: FAIL'; exit 1
