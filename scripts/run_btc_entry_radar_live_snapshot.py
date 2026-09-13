@@ -10,7 +10,7 @@ OKX_CANDLES='https://www.okx.com/api/v5/market/candles'
 OKX_OI_HISTORY='https://www.okx.com/api/v5/rubik/stat/contracts/open-interest-history'
 
 def fetch_json(url,params):
-    req=Request(f"{url}?{urlencode(params)}",headers={'User-Agent':'btc-entry-radar/1.4.4'})
+    req=Request(f"{url}?{urlencode(params)}",headers={'User-Agent':'btc-entry-radar/1.4.6'})
     with urlopen(req,timeout=30) as r:return json.loads(r.read().decode())
 
 def percentile(values,q):
@@ -45,7 +45,7 @@ def load_oi(now):
     pts=sorted(dict(x for x in (_oi_point(r) for r in p.get('data',[])) if x and x[1]>0).items())
     if len(pts)<30:raise RuntimeError('insufficient OI history')
     vals=[v for _,v in pts]; deltas=[vals[i]/vals[i-6]-1 for i in range(6,len(vals))]; cur=deltas[-1]; p10,p90=percentile(deltas,.10),percentile(deltas,.90)
-    regime='DELEVERAGING' if cur<=p10 else 'OVERHEATED' if cur>=p90 and cur>0 else 'MODERATE_BUILD' if cur>.03 else 'STABLE'
+    regime='DELEVERAGING' if cur<=p10 else 'LEVERAGE_BUILD_UP' if cur>=p90 and cur>0 else 'MODERATE_BUILD' if cur>.03 else 'STABLE'
     ts=datetime.fromtimestamp(pts[-1][0]/1000,tz=timezone.utc); age=(now-ts).total_seconds()/3600
     return {'regime':regime,'timestamp':ts.isoformat(),'age_h':age,'fresh':age<=12,'oi_value':vals[-1],'delta_24h':cur,'delta_p10':p10,'delta_p90':p90,'points':len(vals)}
 
