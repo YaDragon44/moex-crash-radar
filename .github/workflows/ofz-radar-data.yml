@@ -74,7 +74,20 @@ jobs:
           ok=j.get('version')=='0.5.1' and j.get('rawRegime') in ('A','B','C','D','E') and len(j.get('bonds') or [])==4
           raise SystemExit(0 if ok else 1)
           PY
-            then echo 'OFZ RADAR RAW PUBLIC DATA GATE: PASS'; exit 0; fi
+            then echo 'OFZ RADAR RAW PUBLIC DATA GATE: PASS'; break; fi
             sleep 5
           done
-          echo 'OFZ RADAR RAW PUBLIC DATA GATE: FAIL'; exit 1
+          test -s /tmp/ofz.json
+      - name: Verify public dashboard R0.5.1
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://yadragon44.github.io/moex-crash-radar/ofz-radar/'
+          for attempt in {1..18}; do
+            code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/ofz.html -w '%{http_code}' --connect-timeout 10 --max-time 20 "${URL}?v=${GITHUB_RUN_ID}-${attempt}" || true)
+            if [ "$code" = '200' ] && grep -q 'R0.5.1 Production Data Hotfix' /tmp/ofz.html && grep -q 'raw.githubusercontent.com/YaDragon44/moex-crash-radar/main/web/ofz-radar/data/current.json' /tmp/ofz.html; then
+              echo 'OFZ RADAR PUBLIC HTML + DATA WIRING GATE: PASS'; exit 0
+            fi
+            sleep 10
+          done
+          echo 'OFZ RADAR PUBLIC HTML + DATA WIRING GATE: FAIL'; exit 1
