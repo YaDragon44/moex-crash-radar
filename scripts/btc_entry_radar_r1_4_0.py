@@ -29,16 +29,14 @@ def evaluate(x:EntryRadarInput)->EntryRadarOutput:
         return EntryRadarOutput("NO_TRADE","WAIT",0.0,["Quality Gate failed","Required entry input is STALE/N/A","Missing data cannot create a positive setup"],"Data quality restored")
     if x.stop_atr is None or x.stop_atr<=0 or x.stop_atr>2:
         return EntryRadarOutput("NO_TRADE","WAIT",0.0,["Risk gate failed","Stop distance is invalid or >2 ATR","Entry is too late or structure unclear"],"Valid stop <=2 ATR")
-    if x.oi_regime=="OVERHEATED":
-        return EntryRadarOutput("NO_TRADE","DO NOT CHASE",0.0,["Leverage build-up is overheated","Long squeeze risk elevated","OI is a risk modifier, not a buy trigger"],"Leverage normalizes")
     if x.new_local_low_4h:
         return EntryRadarOutput("WATCH" if x.fgi<=35 else "NO_TRADE","WAIT",0.0,["Fear zone is present" if x.fgi<=35 else "Crowd gate is weak","BTC still makes a local low","Price reversal is not confirmed"],"BTC stops making local lows")
     if x.fgi<=35 and not x.price_confirm_4h:
         return EntryRadarOutput("ARMED","WAIT FOR 4H CONFIRMATION",0.0,["F&G permits long search","BTC has stopped making a local low","4H breakout confirmation is still absent"],"New local low")
     if x.fgi<=35 and x.price_confirm_4h:
         size=1.0 if x.fgi<=25 and x.oi_regime=="DELEVERAGING" else 0.75
-        if x.oi_regime in {"MODERATE_BUILD","N/A"}: size=0.5
-        return EntryRadarOutput("LONG_READY","SELECTIVE LONG",size,["Fear/Crowd Gate passed","4H price reversal confirmed",f"OI regime: {x.oi_regime}"],"New 4H local low / protective stop")
+        if x.oi_regime in {"LEVERAGE_BUILD_UP","MODERATE_BUILD","N/A"}: size=0.5
+        return EntryRadarOutput("LONG_READY","SELECTIVE LONG",size,["Fear/Crowd Gate passed","4H price reversal confirmed",f"OI regime: {x.oi_regime} (risk/size modifier)"],"New 4H local low / protective stop")
     return EntryRadarOutput("NO_TRADE","WAIT",0.0,["No validated MVP setup","Crowd/price combination is insufficient","Capital preservation has priority"],"Wait for next setup")
 
 def to_dict(x:EntryRadarInput): return {"input":asdict(x),"output":asdict(evaluate(x))}
