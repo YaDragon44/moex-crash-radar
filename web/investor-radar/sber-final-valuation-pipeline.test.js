@@ -8,7 +8,7 @@ assert.equal(r.status,'PARTIAL');
 assert.equal(r.action,'НАБЛЮДАТЬ');
 assert.equal(r.confidence,'НИЗКАЯ');
 assert.equal(r.valuation,'INSUFFICIENT_DATA');
-assert(r.blockers.includes('common_equity_share_basis'));
+assert(r.blockers.includes('common_equity_share_basis_or_reported_bvps'));
 
 r=P.build({completenessGate:C,price:null,priceVerified:false,peRuntime:V,bankValuation:V,bankQuality:{...V,traffic:'GREEN'},equityAttribution:V});
 assert.equal(r.status,'PARTIAL');
@@ -23,4 +23,4 @@ assert.equal(r.action,'ДЕРЖАТЬ');
 assert.equal(r.traffic,'YELLOW');
 assert.deepEqual(r.blockers,[]);
 
-console.log('R1.8.23 SBER final valuation pipeline tests: PASS');
+console.log('R1.8.47 SBER final valuation pipeline regression alignment tests: PASS');
