@@ -1,6 +1,7 @@
 {
-  "version": "0.5.1",
-  "fetchedAt": "2026-09-13T19:24:12.922324+00:00",
+  "version": "0.5.2",
+  "fetchedAt": "2026-09-13T19:36:16.945582+00:00",
+  "valuationDate": "2026-09-11",
   "curve": {
     "date": "11.09.2026",
     "points": [
@@ -94,13 +95,97 @@
       "couponValue": 64.82,
       "couponPeriod": 182.0,
       "nextCouponDate": "2026-10-21",
+      "couponSchedule": [
+        {
+          "date": "2026-04-22",
+          "value": 64.82
+        },
+        {
+          "date": "2026-10-21",
+          "value": 64.82
+        },
+        {
+          "date": "2027-04-21",
+          "value": 64.82
+        },
+        {
+          "date": "2027-10-20",
+          "value": 64.82
+        },
+        {
+          "date": "2028-04-19",
+          "value": 64.82
+        },
+        {
+          "date": "2028-10-18",
+          "value": 64.82
+        },
+        {
+          "date": "2029-04-18",
+          "value": 64.82
+        },
+        {
+          "date": "2029-10-17",
+          "value": 64.82
+        },
+        {
+          "date": "2030-04-17",
+          "value": 64.82
+        },
+        {
+          "date": "2030-10-16",
+          "value": 64.82
+        },
+        {
+          "date": "2031-04-16",
+          "value": 64.82
+        },
+        {
+          "date": "2031-10-15",
+          "value": 64.82
+        },
+        {
+          "date": "2032-04-14",
+          "value": 64.82
+        },
+        {
+          "date": "2032-10-13",
+          "value": 64.82
+        },
+        {
+          "date": "2033-04-13",
+          "value": 64.82
+        },
+        {
+          "date": "2033-10-12",
+          "value": 64.82
+        },
+        {
+          "date": "2034-04-12",
+          "value": 64.82
+        },
+        {
+          "date": "2034-10-11",
+          "value": 64.82
+        },
+        {
+          "date": "2035-04-11",
+          "value": 64.82
+        },
+        {
+          "date": "2035-10-10",
+          "value": 64.82
+        }
+      ],
+      "scheduleSource": "MOEX_PARTIAL_EXTENDED",
       "faceValue": 1000.0,
       "lotSize": 1,
       "accruedInt": 51.64,
       "duration": 2159.0,
       "matDate": "2040-10-03",
       "quality": "LIVE",
-      "source": "MOEX"
+      "source": "MOEX",
+      "scheduleStatus": "PARTIAL_EXTENDED"
     },
     {
       "secid": "26253",
@@ -111,13 +196,97 @@
       "couponValue": 64.82,
       "couponPeriod": 182.0,
       "nextCouponDate": "2026-10-21",
+      "couponSchedule": [
+        {
+          "date": "2026-04-22",
+          "value": 64.82
+        },
+        {
+          "date": "2026-10-21",
+          "value": 64.82
+        },
+        {
+          "date": "2027-04-21",
+          "value": 64.82
+        },
+        {
+          "date": "2027-10-20",
+          "value": 64.82
+        },
+        {
+          "date": "2028-04-19",
+          "value": 64.82
+        },
+        {
+          "date": "2028-10-18",
+          "value": 64.82
+        },
+        {
+          "date": "2029-04-18",
+          "value": 64.82
+        },
+        {
+          "date": "2029-10-17",
+          "value": 64.82
+        },
+        {
+          "date": "2030-04-17",
+          "value": 64.82
+        },
+        {
+          "date": "2030-10-16",
+          "value": 64.82
+        },
+        {
+          "date": "2031-04-16",
+          "value": 64.82
+        },
+        {
+          "date": "2031-10-15",
+          "value": 64.82
+        },
+        {
+          "date": "2032-04-14",
+          "value": 64.82
+        },
+        {
+          "date": "2032-10-13",
+          "value": 64.82
+        },
+        {
+          "date": "2033-04-13",
+          "value": 64.82
+        },
+        {
+          "date": "2033-10-12",
+          "value": 64.82
+        },
+        {
+          "date": "2034-04-12",
+          "value": 64.82
+        },
+        {
+          "date": "2034-10-11",
+          "value": 64.82
+        },
+        {
+          "date": "2035-04-11",
+          "value": 64.82
+        },
+        {
+          "date": "2035-10-10",
+          "value": 64.82
+        }
+      ],
+      "scheduleSource": "MOEX_PARTIAL_EXTENDED",
       "faceValue": 1000.0,
       "lotSize": 1,
       "accruedInt": 51.64,
       "duration": 2061.0,
       "matDate": "2038-10-06",
       "quality": "LIVE",
-      "source": "MOEX"
+      "source": "MOEX",
+      "scheduleStatus": "PARTIAL_EXTENDED"
     },
     {
       "secid": "26247",
@@ -128,13 +297,97 @@
       "couponValue": 61.08,
       "couponPeriod": 182.0,
       "nextCouponDate": "2026-11-25",
+      "couponSchedule": [
+        {
+          "date": "2024-11-27",
+          "value": 65.78
+        },
+        {
+          "date": "2025-05-28",
+          "value": 61.08
+        },
+        {
+          "date": "2025-11-26",
+          "value": 61.08
+        },
+        {
+          "date": "2026-05-27",
+          "value": 61.08
+        },
+        {
+          "date": "2026-11-25",
+          "value": 61.08
+        },
+        {
+          "date": "2027-05-26",
+          "value": 61.08
+        },
+        {
+          "date": "2027-11-24",
+          "value": 61.08
+        },
+        {
+          "date": "2028-05-24",
+          "value": 61.08
+        },
+        {
+          "date": "2028-11-22",
+          "value": 61.08
+        },
+        {
+          "date": "2029-05-23",
+          "value": 61.08
+        },
+        {
+          "date": "2029-11-21",
+          "value": 61.08
+        },
+        {
+          "date": "2030-05-22",
+          "value": 61.08
+        },
+        {
+          "date": "2030-11-20",
+          "value": 61.08
+        },
+        {
+          "date": "2031-05-21",
+          "value": 61.08
+        },
+        {
+          "date": "2031-11-19",
+          "value": 61.08
+        },
+        {
+          "date": "2032-05-19",
+          "value": 61.08
+        },
+        {
+          "date": "2032-11-17",
+          "value": 61.08
+        },
+        {
+          "date": "2033-05-18",
+          "value": 61.08
+        },
+        {
+          "date": "2033-11-16",
+          "value": 61.08
+        },
+        {
+          "date": "2034-05-17",
+          "value": 61.08
+        }
+      ],
+      "scheduleSource": "MOEX_PARTIAL_EXTENDED",
       "faceValue": 1000.0,
       "lotSize": 1,
       "accruedInt": 36.92,
       "duration": 2149.0,
       "matDate": "2039-05-11",
       "quality": "LIVE",
-      "source": "MOEX"
+      "source": "MOEX",
+      "scheduleStatus": "PARTIAL_EXTENDED"
     },
     {
       "secid": "26248",
@@ -145,13 +398,97 @@
       "couponValue": 61.08,
       "couponPeriod": 182.0,
       "nextCouponDate": "2026-12-02",
+      "couponSchedule": [
+        {
+          "date": "2024-12-04",
+          "value": 68.13
+        },
+        {
+          "date": "2025-06-04",
+          "value": 61.08
+        },
+        {
+          "date": "2025-12-03",
+          "value": 61.08
+        },
+        {
+          "date": "2026-06-03",
+          "value": 61.08
+        },
+        {
+          "date": "2026-12-02",
+          "value": 61.08
+        },
+        {
+          "date": "2027-06-02",
+          "value": 61.08
+        },
+        {
+          "date": "2027-12-01",
+          "value": 61.08
+        },
+        {
+          "date": "2028-05-31",
+          "value": 61.08
+        },
+        {
+          "date": "2028-11-29",
+          "value": 61.08
+        },
+        {
+          "date": "2029-05-30",
+          "value": 61.08
+        },
+        {
+          "date": "2029-11-28",
+          "value": 61.08
+        },
+        {
+          "date": "2030-05-29",
+          "value": 61.08
+        },
+        {
+          "date": "2030-11-27",
+          "value": 61.08
+        },
+        {
+          "date": "2031-05-28",
+          "value": 61.08
+        },
+        {
+          "date": "2031-11-26",
+          "value": 61.08
+        },
+        {
+          "date": "2032-05-26",
+          "value": 61.08
+        },
+        {
+          "date": "2032-11-24",
+          "value": 61.08
+        },
+        {
+          "date": "2033-05-25",
+          "value": 61.08
+        },
+        {
+          "date": "2033-11-23",
+          "value": 61.08
+        },
+        {
+          "date": "2034-05-24",
+          "value": 61.08
+        }
+      ],
+      "scheduleSource": "MOEX_PARTIAL_EXTENDED",
       "faceValue": 1000.0,
       "lotSize": 1,
       "accruedInt": 34.57,
       "duration": 2204.0,
       "matDate": "2040-05-16",
       "quality": "LIVE",
-      "source": "MOEX"
+      "source": "MOEX",
+      "scheduleStatus": "PARTIAL_EXTENDED"
     }
   ],
   "portfolio": {
@@ -159,43 +496,446 @@
     "capital": 1000000,
     "invested": 997073.41,
     "cash": 2926.59,
-    "annualCoupon": 143228.05,
+    "annualCoupon": 142835.64,
+    "annualCouponYield": 0.143254888323619,
     "positions": [
       {
         "secid": "26254",
         "weightPct": 47.0,
+        "weight": 0.47,
         "qty": 519,
+        "lotSize": 1,
         "cost": 469144.86,
-        "fullPrice": 903.94
+        "fullPrice": 903.94,
+        "ytm": 16.23
       },
       {
         "secid": "26253",
         "weightPct": 28.999999999999996,
+        "weight": 0.29,
         "qty": 318,
+        "lotSize": 1,
         "cost": 289268.7,
-        "fullPrice": 909.65
+        "fullPrice": 909.65,
+        "ytm": 16.26
       },
       {
         "secid": "26247",
         "weightPct": 12.0,
+        "weight": 0.12,
         "qty": 140,
+        "lotSize": 1,
         "cost": 119366.8,
-        "fullPrice": 852.62
+        "fullPrice": 852.62,
+        "ytm": 16.23
       },
       {
         "secid": "26248",
         "weightPct": 12.0,
+        "weight": 0.12,
         "qty": 141,
+        "lotSize": 1,
         "cost": 119293.05,
-        "fullPrice": 846.05
+        "fullPrice": 846.05,
+        "ytm": 16.23
       }
     ]
   },
   "portfolioQuality": {
     "ok": true,
-    "scheduleStatus": "MARKET DATA VERIFIED; CASHFLOW SCHEDULE LIMITED"
+    "ready": true,
+    "issues": [],
+    "warnings": [
+      "26254: PARTIAL_EXTENDED",
+      "26253: PARTIAL_EXTENDED",
+      "26247: PARTIAL_EXTENDED",
+      "26248: PARTIAL_EXTENDED"
+    ],
+    "scheduleStatus": "MOEX VERIFIED + SAFE EXTENSION",
+    "economicSanity": true
   },
-  "portfolioScenarios": [],
+  "portfolioScenarios": [
+    {
+      "targetYield": 14,
+      "repricedNow": {
+        "ready": true,
+        "targetYield": 14,
+        "value": 1093488.3287289937,
+        "returnPct": 0.0934883287289936,
+        "positions": [
+          {
+            "secid": "26254",
+            "qty": 519,
+            "fullPrice": 989.3826576836065,
+            "value": 513489.59933779173
+          },
+          {
+            "secid": "26253",
+            "qty": 318,
+            "fullPrice": 992.680217448467,
+            "value": 315672.3091486125
+          },
+          {
+            "secid": "26247",
+            "qty": 140,
+            "fullPrice": 932.8838411096299,
+            "value": 130603.73775534818
+          },
+          {
+            "secid": "26248",
+            "qty": 141,
+            "fullPrice": 927.6318616116388,
+            "value": 130796.09248724107
+          }
+        ],
+        "cash": 2926.59
+      },
+      "fiveYear": {
+        "ready": true,
+        "targetYield": 14,
+        "horizonDate": "2031-09-11",
+        "terminalValue": 2248842.164186694,
+        "finalValue": 2248842.164186694,
+        "cash": 328.17067011576773,
+        "totalCoupons": 1012122.8799999999,
+        "reinvested": 1014721.2993298811,
+        "purchases": 1150,
+        "returnPct": 1.2488421641866942,
+        "cagr": 0.17595795703237638,
+        "economicSanity": true,
+        "positions": [
+          {
+            "secid": "26254",
+            "qty": 1055,
+            "value": 1056966.5875528152,
+            "fullPrice": 1001.8640640311044
+          },
+          {
+            "secid": "26253",
+            "qty": 646,
+            "value": 651396.4686817017,
+            "fullPrice": 1008.3536666899406
+          },
+          {
+            "secid": "26247",
+            "qty": 282,
+            "value": 269788.5412801037,
+            "fullPrice": 956.6969548939846
+          },
+          {
+            "secid": "26248",
+            "qty": 285,
+            "value": 270362.3960019578,
+            "fullPrice": 948.6399859717819
+          }
+        ]
+      }
+    },
+    {
+      "targetYield": 12,
+      "repricedNow": {
+        "ready": true,
+        "targetYield": 12,
+        "value": 1232059.2674435007,
+        "returnPct": 0.2320592674435007,
+        "positions": [
+          {
+            "secid": "26254",
+            "qty": 519,
+            "fullPrice": 1117.3909731366139,
+            "value": 579925.9150579026
+          },
+          {
+            "secid": "26253",
+            "qty": 318,
+            "fullPrice": 1113.1621428619674,
+            "value": 353985.56143010565
+          },
+          {
+            "secid": "26247",
+            "qty": 140,
+            "fullPrice": 1051.5263702650288,
+            "value": 147213.69183710404
+          },
+          {
+            "secid": "26248",
+            "qty": 141,
+            "fullPrice": 1049.6986462297052,
+            "value": 148007.50911838844
+          }
+        ],
+        "cash": 2926.59
+      },
+      "fiveYear": {
+        "ready": true,
+        "targetYield": 12,
+        "horizonDate": "2031-09-11",
+        "terminalValue": 2393418.222304941,
+        "finalValue": 2393418.222304941,
+        "cash": 384.48840020216255,
+        "totalCoupons": 1000646.0199999998,
+        "reinvested": 1003188.1215998026,
+        "purchases": 1077,
+        "returnPct": 1.3934182223049412,
+        "cagr": 0.19070374245163735,
+        "economicSanity": true,
+        "positions": [
+          {
+            "secid": "26254",
+            "qty": 1017,
+            "value": 1125589.6996145567,
+            "fullPrice": 1106.7745325610194
+          },
+          {
+            "secid": "26253",
+            "qty": 631,
+            "value": 693594.3023418753,
+            "fullPrice": 1099.1985774039229
+          },
+          {
+            "secid": "26247",
+            "qty": 273,
+            "value": 286593.45451228594,
+            "fullPrice": 1049.792873671377
+          },
+          {
+            "secid": "26248",
+            "qty": 274,
+            "value": 287256.2774360207,
+            "fullPrice": 1048.3805745840173
+          }
+        ]
+      }
+    },
+    {
+      "targetYield": 10,
+      "repricedNow": {
+        "ready": true,
+        "targetYield": 10,
+        "value": 1400692.4998362302,
+        "returnPct": 0.40069249983623023,
+        "positions": [
+          {
+            "secid": "26254",
+            "qty": 519,
+            "fullPrice": 1274.2823459458298,
+            "value": 661352.5375458857
+          },
+          {
+            "secid": "26253",
+            "qty": 318,
+            "fullPrice": 1257.9560683718823,
+            "value": 400030.0297422586
+          },
+          {
+            "secid": "26247",
+            "qty": 140,
+            "fullPrice": 1195.181112328566,
+            "value": 167325.35572599925
+          },
+          {
+            "secid": "26248",
+            "qty": 141,
+            "fullPrice": 1198.9928143410405,
+            "value": 169057.9868220867
+          }
+        ],
+        "cash": 2926.59
+      },
+      "fiveYear": {
+        "ready": true,
+        "targetYield": 10,
+        "horizonDate": "2031-09-11",
+        "terminalValue": 2560555.7467852817,
+        "finalValue": 2560555.7467852817,
+        "cash": 17.880111771955853,
+        "totalCoupons": 989611.6799999999,
+        "reinvested": 992520.3898882229,
+        "purchases": 1009,
+        "returnPct": 1.5605557467852815,
+        "cagr": 0.20688766079244503,
+        "economicSanity": true,
+        "positions": [
+          {
+            "secid": "26254",
+            "qty": 981,
+            "value": 1205284.8296690423,
+            "fullPrice": 1228.628776421042
+          },
+          {
+            "secid": "26253",
+            "qty": 617,
+            "value": 741650.674996929,
+            "fullPrice": 1202.0270259269514
+          },
+          {
+            "secid": "26247",
+            "qty": 265,
+            "value": 306364.10625477997,
+            "fullPrice": 1156.0909669991697
+          },
+          {
+            "secid": "26248",
+            "qty": 264,
+            "value": 307238.2557527584,
+            "fullPrice": 1163.7812717907516
+          }
+        ]
+      }
+    },
+    {
+      "targetYield": 8,
+      "repricedNow": {
+        "ready": true,
+        "targetYield": 8,
+        "value": 1607368.055795848,
+        "returnPct": 0.6073680557958478,
+        "positions": [
+          {
+            "secid": "26254",
+            "qty": 519,
+            "fullPrice": 1468.0735898271619,
+            "value": 761930.193120297
+          },
+          {
+            "secid": "26253",
+            "qty": 318,
+            "fullPrice": 1432.9752894259718,
+            "value": 455686.14203745907
+          },
+          {
+            "secid": "26247",
+            "qty": 140,
+            "fullPrice": 1370.2236813778172,
+            "value": 191831.3153928944
+          },
+          {
+            "secid": "26248",
+            "qty": 141,
+            "fullPrice": 1382.934859895017,
+            "value": 194993.81524519742
+          }
+        ],
+        "cash": 2926.59
+      },
+      "fiveYear": {
+        "ready": true,
+        "targetYield": 8,
+        "horizonDate": "2031-09-11",
+        "terminalValue": 2753949.470041584,
+        "finalValue": 2753949.470041584,
+        "cash": 264.6013104714257,
+        "totalCoupons": 979080.94,
+        "reinvested": 981742.9286895252,
+        "purchases": 945,
+        "returnPct": 1.7539494700415843,
+        "cagr": 0.22459136708708338,
+        "economicSanity": true,
+        "positions": [
+          {
+            "secid": "26254",
+            "qty": 946,
+            "value": 1296625.4936771356,
+            "fullPrice": 1370.640056741158
+          },
+          {
+            "secid": "26253",
+            "qty": 604,
+            "value": 796478.9450591996,
+            "fullPrice": 1318.6737500980125
+          },
+          {
+            "secid": "26247",
+            "qty": 258,
+            "value": 329663.36042792036,
+            "fullPrice": 1277.764962898916
+          },
+          {
+            "secid": "26248",
+            "qty": 255,
+            "value": 330917.0695668573,
+            "fullPrice": 1297.7139983014013
+          }
+        ]
+      }
+    },
+    {
+      "targetYield": 5,
+      "repricedNow": {
+        "ready": true,
+        "targetYield": 5,
+        "value": 2012198.6916472265,
+        "returnPct": 1.0121986916472263,
+        "positions": [
+          {
+            "secid": "26254",
+            "qty": 519,
+            "fullPrice": 1851.8265765878427,
+            "value": 961097.9932490904
+          },
+          {
+            "secid": "26253",
+            "qty": 318,
+            "fullPrice": 1769.1641140302265,
+            "value": 562594.1882616121
+          },
+          {
+            "secid": "26247",
+            "qty": 140,
+            "fullPrice": 1710.1723519552775,
+            "value": 239424.12927373886
+          },
+          {
+            "secid": "26248",
+            "qty": 141,
+            "fullPrice": 1745.7857507998926,
+            "value": 246155.79086278487
+          }
+        ],
+        "cash": 2926.59
+      },
+      "fiveYear": {
+        "ready": true,
+        "targetYield": 5,
+        "horizonDate": "2031-09-11",
+        "terminalValue": 3103436.601574327,
+        "finalValue": 3103436.601574327,
+        "cash": 1183.4142598559356,
+        "totalCoupons": 964206.0199999999,
+        "reinvested": 965949.1957401452,
+        "purchases": 857,
+        "returnPct": 2.1034366015743267,
+        "cagr": 0.2542051379631989,
+        "economicSanity": true,
+        "positions": [
+          {
+            "secid": "26254",
+            "qty": 897,
+            "value": 1462267.448934865,
+            "fullPrice": 1630.1755283554794
+          },
+          {
+            "secid": "26253",
+            "qty": 588,
+            "value": 896315.09078377,
+            "fullPrice": 1524.3453924894047
+          },
+          {
+            "secid": "26247",
+            "qty": 248,
+            "value": 370723.35098186263,
+            "fullPrice": 1494.852221701059
+          },
+          {
+            "secid": "26248",
+            "qty": 242,
+            "value": 372947.2966139733,
+            "fullPrice": 1541.1045314626995
+          }
+        ]
+      }
+    }
+  ],
   "rawRegime": "A",
   "confirmedRegime": {
     "id": "A",
@@ -223,6 +963,7 @@
     "budget": "N/A",
     "cbTone": "N/A",
     "curve": "CBR",
-    "bonds": "MOEX"
+    "bonds": "MOEX",
+    "cashflows": "MOEX Bondization + safe synthetic extension"
   }
 }
