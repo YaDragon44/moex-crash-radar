@@ -1,4 +1,4 @@
-name: BTC Entry Radar Production R1.4.5
+name: BTC Entry Radar Production R1.4.7
 
 on:
   workflow_dispatch:
@@ -11,6 +11,7 @@ on:
       - 'scripts/btc_entry_radar_performance_r1_4_5.py'
       - 'scripts/__init__.py'
       - 'tests/test_btc_entry_radar_r1_4_0.py'
+      - 'tests/test_btc_entry_radar_hysteresis_r1_4_7.py'
       - 'web/btc-entry-radar/**'
       - '.github/workflows/btc-entry-radar-prod.yml'
   schedule:
@@ -32,7 +33,7 @@ jobs:
           python-version: '3.12'
       - run: pip install pytest
       - name: Regression
-        run: pytest tests/test_btc_entry_radar_r1_4_0.py -q
+        run: pytest tests/test_btc_entry_radar_r1_4_0.py tests/test_btc_entry_radar_hysteresis_r1_4_7.py -q
       - name: Live snapshot
         run: python scripts/run_btc_entry_radar_live_snapshot.py | tee btc_entry_radar_prod.log
       - name: Quality gate
@@ -66,7 +67,7 @@ jobs:
           fi
       - uses: actions/upload-artifact@v4
         with:
-          name: btc-entry-radar-prod-r1-4-5
+          name: btc-entry-radar-prod-r1-4-7
           path: |
             artifacts/btc_entry_radar_live_snapshot.json
             evidence/btc_entry_radar_production_journal.csv
