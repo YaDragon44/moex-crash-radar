@@ -1,0 +1,240 @@
+{
+  "version": "0.5.4",
+  "sourceVersion": "0.5.3",
+  "valuationDate": "2026-09-11",
+  "capital": 1000000,
+  "status": "PASS",
+  "scenarios": [
+    {
+      "name": "FAST_FALL",
+      "path": [
+        16.41,
+        14.0,
+        12.0,
+        10.0,
+        8.0,
+        5.0
+      ],
+      "buyHoldTerminal": 3134153.068087912,
+      "activeTerminal": 2069042.595110259,
+      "deltaTerminal": -1065110.4729776531,
+      "deltaCagr": -0.10015611493100418,
+      "buyHoldMaxDrawdown": -0.012145446255892867,
+      "activeMaxDrawdown": -0.012145446255892867,
+      "drawdownImprovement": 0.0,
+      "activeTurnoverPct": 1.7780519682837463,
+      "activeActions": [
+        {
+          "date": "2028-09-11",
+          "yield": 11.994520547945205,
+          "regime": "D",
+          "action": "REDUCE",
+          "targetExposure": 0.6,
+          "amount": 642930.9380540221
+        },
+        {
+          "date": "2029-09-11",
+          "yield": 9.994520547945205,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 670696.296491452
+        },
+        {
+          "date": "2029-11-21",
+          "yield": 9.605479452054794,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 1238.1998850529374
+        },
+        {
+          "date": "2030-04-17",
+          "yield": 8.8,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 10164.71842561106
+        },
+        {
+          "date": "2030-05-22",
+          "yield": 8.60821917808219,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 3889.937951228472
+        },
+        {
+          "date": "2030-09-11",
+          "yield": 7.991780821917808,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 17760.91368297564
+        },
+        {
+          "date": "2030-11-20",
+          "yield": 7.416438356164384,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 2739.470329918039
+        },
+        {
+          "date": "2031-04-16",
+          "yield": 6.2082191780821905,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 15980.397077303202
+        },
+        {
+          "date": "2031-05-21",
+          "yield": 5.920547945205478,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 4463.262513388114
+        },
+        {
+          "date": "2031-05-28",
+          "yield": 5.863013698630136,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 1523.2818773287038
+        },
+        {
+          "date": "2031-09-11",
+          "yield": 5.0,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 26735.044695618377
+        }
+      ],
+      "returnWinner": "BUY_HOLD",
+      "riskWinner": "TIE"
+    },
+    {
+      "name": "HIGH_FOR_LONGER",
+      "path": [
+        16.41,
+        16.0,
+        15.5,
+        15.0,
+        14.5,
+        14.0
+      ],
+      "buyHoldTerminal": 2259591.37157546,
+      "activeTerminal": 2259591.37157546,
+      "deltaTerminal": 0.0,
+      "deltaCagr": 0.0,
+      "buyHoldMaxDrawdown": -0.023304568393476943,
+      "activeMaxDrawdown": -0.023304568393476943,
+      "drawdownImprovement": 0.0,
+      "activeTurnoverPct": 1.0180514638688993,
+      "activeActions": [],
+      "returnWinner": "TIE",
+      "riskWinner": "TIE"
+    },
+    {
+      "name": "FALL_REVERSAL",
+      "path": [
+        16.41,
+        14.0,
+        11.0,
+        9.0,
+        12.0,
+        16.0
+      ],
+      "buyHoldTerminal": 1868652.2552636375,
+      "activeTerminal": 1679957.1513823434,
+      "deltaTerminal": -188695.10388129414,
+      "deltaCagr": -0.02387058826556121,
+      "buyHoldMaxDrawdown": -0.11829574655383801,
+      "activeMaxDrawdown": -0.07989540033075959,
+      "drawdownImprovement": 0.03840034622307842,
+      "activeTurnoverPct": 3.2503858939681516,
+      "activeActions": [
+        {
+          "date": "2028-05-24",
+          "yield": 11.895890410958904,
+          "regime": "D",
+          "action": "REDUCE",
+          "targetExposure": 0.6,
+          "amount": 611912.8573389059
+        },
+        {
+          "date": "2028-09-11",
+          "yield": 10.994520547945205,
+          "regime": "D",
+          "action": "REDUCE",
+          "targetExposure": 0.6,
+          "amount": 29094.93265688137
+        },
+        {
+          "date": "2029-04-18",
+          "yield": 9.794520547945204,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 615215.0057947387
+        },
+        {
+          "date": "2029-05-23",
+          "yield": 9.602739726027398,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 3707.6743868560384
+        },
+        {
+          "date": "2029-09-11",
+          "yield": 9.008219178082193,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 19471.832306353255
+        }
+      ],
+      "returnWinner": "BUY_HOLD",
+      "riskWinner": "ACTIVE"
+    },
+    {
+      "name": "STRESS_RISE",
+      "path": [
+        16.41,
+        17.0,
+        18.0,
+        19.0,
+        18.0,
+        17.0
+      ],
+      "buyHoldTerminal": 2158597.5173225864,
+      "activeTerminal": 2158597.5173225864,
+      "deltaTerminal": 0.0,
+      "deltaCagr": 0.0,
+      "buyHoldMaxDrawdown": -0.028802138715239733,
+      "activeMaxDrawdown": -0.028802138715239733,
+      "drawdownImprovement": 0.0,
+      "activeTurnoverPct": 1.053735503380068,
+      "activeActions": [],
+      "returnWinner": "TIE",
+      "riskWinner": "TIE"
+    }
+  ],
+  "structuralChecks": {
+    "fastFallDoesNotArtificiallyFavorActive": true,
+    "highForLongerNearHold": true,
+    "stressRiseRevealsNoAutomaticProtection": true,
+    "allFinite": true
+  },
+  "conclusion": "Current A/B/C=100%, D=60%, E=25% rule is a profit-locking / duration-reduction policy after yields fall; it is not a hedge against an initial rise in long OFZ yields. Validate thresholds before treating it as a risk-control rule.",
+  "assumptions": {
+    "protectiveSleeveYield": 0.0,
+    "taxes": false,
+    "commissions": false,
+    "slippage": false
+  }
+}
