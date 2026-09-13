@@ -1,0 +1,79 @@
+name: OFZ Radar Rolling Proxy Validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/validate_ofz_rolling_proxy_r059.py'
+      - '.github/workflows/ofz-radar-rolling-proxy.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ofz-radar-rolling-proxy
+  cancel-in-progress: true
+
+jobs:
+  validate-proxy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run R0.5.9 duration-matched rolling OFZ proxy
+        run: python scripts/validate_ofz_rolling_proxy_r059.py
+      - name: Validate R0.5.9 semantic contract
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          j=json.load(open('web/ofz-radar/data/rolling-proxy-backtest.json',encoding='utf-8'))
+          if j.get('version')!='0.5.9' or j.get('status')!='PASS': raise SystemExit('R0.5.9 status fail')
+          if j.get('validationType')!='DURATION_MATCHED_ROLLING_OFZ_REAL_PRICE_PROXY': raise SystemExit('validation type invalid')
+          if (j.get('monthlyObservations') or 0)<48: raise SystemExit('proxy history too short')
+          rc=j.get('regimeCounts') or {}
+          if not any(k in rc for k in ('D','E')): raise SystemExit(f'D/E not represented: {rc}')
+          if (j.get('universeSize') or 0)<5: raise SystemExit('universe too small')
+          if len(j.get('selectedIssues') or [])<2: raise SystemExit('rolling basket did not roll')
+          if set((j.get('results') or {}).keys())!={'BUY_HOLD','BASELINE_100_60_25','LATE_EXIT_100_80_50','MILD_EXIT_100_90_65','EARLY_CUT_100_85_60_25'}: raise SystemExit('results invalid')
+          if len(j.get('comparisons') or [])!=4: raise SystemExit('comparisons invalid')
+          for n,r in (j.get('results') or {}).items():
+              if not isinstance(r.get('terminalValue'),(int,float)) or r['terminalValue']<=0: raise SystemExit(f'{n}: terminal invalid')
+              if not isinstance(r.get('maxDrawdown'),(int,float)) or not (-1<=r['maxDrawdown']<=0): raise SystemExit(f'{n}: drawdown invalid')
+          if j.get('decision')!='NO_PRODUCTION_CHANGE': raise SystemExit('production change must remain blocked pending robustness')
+          print('OFZ R0.5.9 ROLLING PROXY CONTRACT: PASS')
+          PY
+      - name: Commit rolling proxy artifact if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add web/ofz-radar/data/rolling-proxy-backtest.json
+          if git diff --cached --quiet; then echo 'No rolling proxy change'; exit 0; fi
+          git commit -m 'data: update OFZ R0.5.9 rolling proxy backtest'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Verify raw public R0.5.9 artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://raw.githubusercontent.com/YaDragon44/moex-crash-radar/main/web/ofz-radar/data/rolling-proxy-backtest.json'
+          for attempt in {1..12}; do
+            code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/r059.json -w '%{http_code}' --connect-timeout 10 --max-time 20 "${URL}?v=${GITHUB_RUN_ID}-${attempt}" || true)
+            if [ "$code" = '200' ] && python - <<'PY'
+          import json
+          j=json.load(open('/tmp/r059.json',encoding='utf-8'))
+          rc=j.get('regimeCounts') or {}
+          ok=j.get('version')=='0.5.9' and j.get('status')=='PASS' and (j.get('monthlyObservations') or 0)>=48 and any(k in rc for k in ('D','E')) and len(j.get('comparisons') or [])==4 and j.get('decision')=='NO_PRODUCTION_CHANGE'
+          raise SystemExit(0 if ok else 1)
+          PY
+            then echo 'OFZ R0.5.9 RAW PUBLIC ROLLING PROXY GATE: PASS'; exit 0; fi
+            sleep 5
+          done
+          echo 'OFZ R0.5.9 RAW PUBLIC ROLLING PROXY GATE: FAIL'; exit 1
