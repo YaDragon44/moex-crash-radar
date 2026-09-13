@@ -2,21 +2,21 @@
   "version": "1.6.2",
   "method": "confirmed regime transitions; forward BTC observation at 1h/4h/24h; no lookahead",
   "max_observation_lag_minutes": 30,
-  "event_count": 3,
+  "event_count": 4,
   "sample_quality": "WARMUP",
   "summary": {
     "1h": {
-      "closed": 2,
+      "closed": 3,
       "open": 1,
-      "avg_btc_return_pct": -0.0641,
-      "positive_rate_pct": 50.0,
-      "negative_rate_pct": 50.0,
-      "directional_cases": 2,
-      "alignment_rate_pct": 50.0
+      "avg_btc_return_pct": -0.0707,
+      "positive_rate_pct": 33.3,
+      "negative_rate_pct": 66.7,
+      "directional_cases": 3,
+      "alignment_rate_pct": 66.7
     },
     "4h": {
       "closed": 2,
-      "open": 1,
+      "open": 2,
       "avg_btc_return_pct": -0.0671,
       "positive_rate_pct": 50.0,
       "negative_rate_pct": 50.0,
@@ -25,7 +25,7 @@
     },
     "24h": {
       "closed": 0,
-      "open": 3,
+      "open": 4,
       "avg_btc_return_pct": null,
       "positive_rate_pct": null,
       "negative_rate_pct": null,
@@ -101,6 +101,37 @@
       "from_regime": "RISK-OFF",
       "to_regime": "DISTRIBUTION",
       "btc_price_at_transition": 77251.8,
+      "investor_action": "REDUCE RISK",
+      "trader_action": "REDUCE EXPOSURE",
+      "outcomes": {
+        "1h": {
+          "status": "CLOSED",
+          "observed_at": "2026-09-13T03:55:04.851933+00:00",
+          "btc_price": 77187.1,
+          "btc_return_pct": -0.0838,
+          "alignment": "ALIGNED"
+        },
+        "4h": {
+          "status": "OPEN",
+          "observed_at": null,
+          "btc_price": null,
+          "btc_return_pct": null,
+          "alignment": null
+        },
+        "24h": {
+          "status": "OPEN",
+          "observed_at": null,
+          "btc_price": null,
+          "btc_return_pct": null,
+          "alignment": null
+        }
+      }
+    },
+    {
+      "generated_at": "2026-09-13T03:55:04.851933+00:00",
+      "from_regime": "DISTRIBUTION",
+      "to_regime": "RISK-OFF",
+      "btc_price_at_transition": 77187.1,
       "investor_action": "REDUCE RISK",
       "trader_action": "REDUCE EXPOSURE",
       "outcomes": {
