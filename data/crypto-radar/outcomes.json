@@ -6,13 +6,13 @@
   "sample_quality": "WARMUP",
   "summary": {
     "1h": {
-      "closed": 3,
-      "open": 1,
-      "avg_btc_return_pct": -0.0707,
-      "positive_rate_pct": 33.3,
-      "negative_rate_pct": 66.7,
-      "directional_cases": 3,
-      "alignment_rate_pct": 66.7
+      "closed": 4,
+      "open": 0,
+      "avg_btc_return_pct": -0.0471,
+      "positive_rate_pct": 50.0,
+      "negative_rate_pct": 50.0,
+      "directional_cases": 4,
+      "alignment_rate_pct": 50.0
     },
     "4h": {
       "closed": 2,
@@ -136,11 +136,11 @@
       "trader_action": "REDUCE EXPOSURE",
       "outcomes": {
         "1h": {
-          "status": "OPEN",
-          "observed_at": null,
-          "btc_price": null,
-          "btc_return_pct": null,
-          "alignment": null
+          "status": "CLOSED",
+          "observed_at": "2026-09-13T05:10:57.052195+00:00",
+          "btc_price": 77205.4,
+          "btc_return_pct": 0.0237,
+          "alignment": "NOT_ALIGNED"
         },
         "4h": {
           "status": "OPEN",
