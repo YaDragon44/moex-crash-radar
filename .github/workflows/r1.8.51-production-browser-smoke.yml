@@ -1,0 +1,25 @@
+name: R1.8.51 Production Browser Smoke
+
+on:
+  workflow_run:
+    workflows: ["Deploy Dashboard"]
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  production-browser-smoke:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Verify public Investor Radar runtime
+        run: node web/investor-radar/public-production-smoke.mjs
