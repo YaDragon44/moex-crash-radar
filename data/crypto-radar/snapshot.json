@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-13T05:51:31.124115+00:00",
+  "generated_at": "2026-09-13T06:19:08.377902+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,30 +14,30 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2637320000552.893,
-    "total_change_24h_pct": -3.3726424154132366,
-    "btc_dominance_pct": 58.7324472496395,
-    "btc_cap": 1548962578128.92,
-    "alt_cap": 1088357422423.9731
+    "total_market_cap": 2635989220383.027,
+    "total_change_24h_pct": -3.379995419499373,
+    "btc_dominance_pct": 58.74154434938658,
+    "btc_cap": 1548420776936.3452,
+    "alt_cap": 1087568443446.6816
   },
   "derivatives": {
-    "btc_price": 77288.2,
-    "price_change_24h_pct": 0.11,
-    "oi_usd": 4929330336.358176,
-    "oi_change_24h_pct": 0.23866701292849513,
-    "funding_pct": 0.01,
-    "long_short_ratio": 1.663173020032119
+    "btc_price": 77272.4,
+    "price_change_24h_pct": 0.09,
+    "oi_usd": 4936573619.665542,
+    "oi_change_24h_pct": 0.4393318465856888,
+    "funding_pct": 0.0097,
+    "long_short_ratio": 1.6663570342847491
   },
   "context": {
-    "stablecoin_market_cap": 306641431288.0,
-    "stablecoin_market_cap_change_24h_pct": -0.003623631348503853,
+    "stablecoin_market_cap": 306633830441.0,
+    "stablecoin_market_cap_change_24h_pct": -0.003309577829957444,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
     "model": "v2-provisional",
     "factors": {
       "oi_price": 50,
-      "funding": 75,
+      "funding": 50,
       "long_short": 85,
       "liquidation_risk": null,
       "news": null,
@@ -47,20 +47,20 @@
     "derivative_factor_count": 3,
     "external_context_present": true,
     "quality_passed": true,
-    "score": 65,
-    "state": "GREED",
-    "action": "REDUCE"
+    "score": 58,
+    "state": "NEUTRAL",
+    "action": "WAIT"
   },
   "risk": {
     "model": "risk-v1-provisional",
     "provisional": true,
     "coverage_pct": 100,
-    "score": 58,
+    "score": 54,
     "status": "ELEVATED",
     "components": {
       "market_stress": 55,
       "leverage": 55,
-      "funding_extreme": 45,
+      "funding_extreme": 20,
       "positioning_extreme": 85,
       "liquidity_context": 55
     },
@@ -70,10 +70,10 @@
     "model": "regime-v1-provisional",
     "provisional": true,
     "status": "DISTRIBUTION",
-    "candidate": "DISTRIBUTION",
-    "candidate_count": 4,
-    "confirmed": true,
-    "transition": "STABLE",
+    "candidate": "RISK-OFF",
+    "candidate_count": 1,
+    "confirmed": false,
+    "transition": "WATCH DISTRIBUTION -> RISK-OFF · 1/2",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,8 +82,8 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "STABLE",
-    "confirmed": true
+    "status": "WATCH DISTRIBUTION -> RISK-OFF · 1/2",
+    "confirmed": false
   },
   "action_engine": {
     "investor": "REDUCE RISK",
