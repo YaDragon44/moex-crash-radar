@@ -1,0 +1,32 @@
+{
+  "release": "R1.5.2",
+  "production": "NO-GO",
+  "secrets_policy": {
+    "runtime_only": true,
+    "commit_allowed": false,
+    "artifact_allowed": false,
+    "log_allowed": false
+  },
+  "sources": {
+    "OI_HISTORY": {
+      "access": "AUTH_REQUIRED_OR_SUBSCRIPTION",
+      "unauthenticated_quality": "BLOCKED_AUTH",
+      "required_fields": ["source", "secid", "event_time", "available_time", "decision_time", "quality", "oi_total"]
+    },
+    "MOEX_FUTOI": {
+      "access": "SUBSCRIPTION_AUTH_REQUIRED",
+      "unauthenticated_quality": "BLOCKED_AUTH",
+      "event_time_field": "MOMENT",
+      "available_time_field": "SYSTIME",
+      "required_fields": ["TICKER", "CLGROUP", "POS", "POS_LONG", "POS_SHORT", "MOMENT", "SYSTIME"]
+    }
+  },
+  "gates": {
+    "minimum_families": 2,
+    "minimum_chronological_subperiods": 2,
+    "no_forward_fill": true,
+    "no_lookahead": true,
+    "m1_requires_oi_data_ready": true,
+    "m2_m3_require_futoi_data_ready": true
+  }
+}
