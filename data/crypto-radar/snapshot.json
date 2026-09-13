@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-13T17:25:19.094184+00:00",
+  "generated_at": "2026-09-13T17:39:04.611391+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2634284375995.423,
-    "total_change_24h_pct": -3.6714720129787417,
-    "btc_dominance_pct": 58.81337065047263,
-    "btc_cap": 1549311434041.6782,
-    "alt_cap": 1084972941953.7446
+    "total_market_cap": 2633092568390.0386,
+    "total_change_24h_pct": -3.7320483051875004,
+    "btc_dominance_pct": 58.81849452738012,
+    "btc_cap": 1548745408239.3474,
+    "alt_cap": 1084347160150.6912
   },
   "derivatives": {
-    "btc_price": 77289.9,
-    "price_change_24h_pct": 0.03,
+    "btc_price": 77231.8,
+    "price_change_24h_pct": 0.04,
     "oi_usd": 5063063604.7572,
     "oi_change_24h_pct": 2.882950902993553,
     "funding_pct": 0.01,
     "long_short_ratio": 1.6994590939824206
   },
   "context": {
-    "stablecoin_market_cap": 306677357441.0,
-    "stablecoin_market_cap_change_24h_pct": -0.021836487546222916,
+    "stablecoin_market_cap": 306714932217.0,
+    "stablecoin_market_cap_change_24h_pct": -0.010730530521441128,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -69,11 +69,11 @@
   "regime": {
     "model": "regime-v1-provisional",
     "provisional": true,
-    "status": "RISK-OFF",
+    "status": "DISTRIBUTION",
     "candidate": "DISTRIBUTION",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH RISK-OFF -> DISTRIBUTION · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> DISTRIBUTION",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,8 +82,8 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH RISK-OFF -> DISTRIBUTION · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> DISTRIBUTION",
+    "confirmed": true
   },
   "action_engine": {
     "investor": "REDUCE RISK",
