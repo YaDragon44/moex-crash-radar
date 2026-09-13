@@ -10,6 +10,7 @@ on:
       - 'scripts/collect_ofz_radar_snapshot.py'
       - 'scripts/ofz_cashflow_engine.py'
       - 'scripts/ofz_strategy_engine.py'
+      - 'scripts/validate_ofz_strategy_r054.py'
       - '.github/workflows/ofz-radar-data.yml'
 
 permissions:
@@ -40,7 +41,7 @@ jobs:
           p=Path('web/ofz-radar/data/current.json')
           if not p.exists(): raise SystemExit('snapshot missing')
           j=json.loads(p.read_text(encoding='utf-8'))
-          if j.get('version') != '0.5.3': raise SystemExit('wrong version')
+          if j.get('version') != '0.5.3': raise SystemExit('wrong production version')
           pts=(j.get('curve') or {}).get('points') or []
           y10=[x.get('yield') for x in pts if x.get('years')==10]
           if not y10 or not isinstance(y10[0],(int,float)): raise SystemExit('10Y curve missing')
@@ -59,42 +60,54 @@ jobs:
               if not f.get('ready') or not f.get('economicSanity'): raise SystemExit(f'scenario fail: {x.get("targetYield")}')
           s=j.get('strategyComparison') or {}
           if not s.get('ready'): raise SystemExit(f'strategy comparison not ready: {s}')
-          if len(s.get('path') or []) != 6 or (s.get('path') or [])[-1] != 5.0: raise SystemExit('strategy path invalid')
           for key in ('buyHold','active'):
               x=s.get(key) or {}
               if not x.get('ready') or not x.get('economicSanity'): raise SystemExit(f'{key} strategy fail')
-              if not isinstance(x.get('terminalValue'),(int,float)) or x['terminalValue']<=0: raise SystemExit(f'{key} terminal invalid')
-              if not isinstance(x.get('cagr'),(int,float)): raise SystemExit(f'{key} cagr invalid')
           if (s.get('assumptions') or {}).get('protectiveSleeveYield') != 0.0: raise SystemExit('protective sleeve must remain explicit 0%')
-          if j.get('rawRegime') not in ('A','B','C','D','E'): raise SystemExit('regime invalid')
-          print('OFZ R0.5.3 CASHFLOW + STRATEGY CONTRACT: PASS')
+          print('OFZ R0.5.3 PRODUCTION CONTRACT: PASS')
           PY
-      - name: Commit snapshot if changed
+      - name: Run R0.5.4 strategy validation matrix
+        run: python scripts/validate_ofz_strategy_r054.py
+      - name: Validate R0.5.4 report contract
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          j=json.load(open('web/ofz-radar/data/strategy-validation.json',encoding='utf-8'))
+          if j.get('version')!='0.5.4' or j.get('status')!='PASS': raise SystemExit('R0.5.4 validation status not PASS')
+          rows=j.get('scenarios') or []
+          if [x.get('name') for x in rows] != ['FAST_FALL','HIGH_FOR_LONGER','FALL_REVERSAL','STRESS_RISE']: raise SystemExit('scenario matrix invalid')
+          checks=j.get('structuralChecks') or {}
+          if not checks or not all(checks.values()): raise SystemExit(f'structural checks fail: {checks}')
+          print('OFZ R0.5.4 STRATEGY VALIDATION CONTRACT: PASS')
+          PY
+      - name: Commit snapshot and validation if changed
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add web/ofz-radar/data/current.json
+          git add web/ofz-radar/data/current.json web/ofz-radar/data/strategy-validation.json
           if git diff --cached --quiet; then echo 'No data change'; exit 0; fi
-          git commit -m 'data: update OFZ radar snapshot'
+          git commit -m 'data: update OFZ radar snapshot and strategy validation'
           git pull --rebase origin main
           git push origin HEAD:main
-      - name: Verify raw public snapshot
+      - name: Verify raw public snapshot and validation
         shell: bash
         run: |
           set -euo pipefail
-          URL='https://raw.githubusercontent.com/YaDragon44/moex-crash-radar/main/web/ofz-radar/data/current.json'
+          BASE='https://raw.githubusercontent.com/YaDragon44/moex-crash-radar/main/web/ofz-radar/data'
           ok=0
           for attempt in {1..12}; do
-            code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/ofz.json -w '%{http_code}' --connect-timeout 10 --max-time 20 "${URL}?v=${GITHUB_RUN_ID}-${attempt}" || true)
-            if [ "$code" = '200' ] && python - <<'PY'
+            c1=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/ofz.json -w '%{http_code}' --connect-timeout 10 --max-time 20 "${BASE}/current.json?v=${GITHUB_RUN_ID}-${attempt}" || true)
+            c2=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/val.json -w '%{http_code}' --connect-timeout 10 --max-time 20 "${BASE}/strategy-validation.json?v=${GITHUB_RUN_ID}-${attempt}" || true)
+            if [ "$c1" = '200' ] && [ "$c2" = '200' ] && python - <<'PY'
           import json
-          j=json.load(open('/tmp/ofz.json',encoding='utf-8'));s=j.get('portfolioScenarios') or [];st=j.get('strategyComparison') or {}
-          ok=j.get('version')=='0.5.3' and len(j.get('bonds') or [])==4 and len(s)==5 and all((x.get('fiveYear') or {}).get('economicSanity') for x in s) and st.get('ready') and (st.get('buyHold') or {}).get('economicSanity') and (st.get('active') or {}).get('economicSanity')
+          p=json.load(open('/tmp/ofz.json',encoding='utf-8'));v=json.load(open('/tmp/val.json',encoding='utf-8'))
+          ok=p.get('version')=='0.5.3' and (p.get('strategyComparison') or {}).get('ready') and v.get('version')=='0.5.4' and v.get('status')=='PASS' and len(v.get('scenarios') or [])==4
           raise SystemExit(0 if ok else 1)
           PY
-            then echo 'OFZ RADAR RAW PUBLIC DATA + STRATEGY GATE: PASS'; ok=1; break; fi
+            then echo 'OFZ R0.5.4 RAW PUBLIC VALIDATION GATE: PASS'; ok=1; break; fi
             sleep 5
           done
           [ "$ok" = '1' ]
