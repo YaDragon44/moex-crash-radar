@@ -21,6 +21,9 @@ try {
   if(JSON.stringify(tickers)!==JSON.stringify(expected)) throw new Error(`unexpected cards: ${JSON.stringify(tickers)}`);
   if(pageErrors.length) throw new Error('pageerror: '+pageErrors.join(' | '));
 
+  const title=(await page.locator('h1').textContent())?.trim()||'';
+  if(title!=='Investor Radar R1.8.53') throw new Error('unexpected production version: '+title);
+
   const gate=(await page.locator('#gate').textContent())?.trim()||'';
   if(!gate.includes('MOEX quotes:')) throw new Error('final gate summary missing: '+gate);
 
@@ -33,11 +36,12 @@ try {
     if(!card.text.includes('Recommendation gate:')) throw new Error(`${card.ticker}: recommendation gate missing`);
     if(!card.text.includes('Full risk gate')) throw new Error(`${card.ticker}: risk gate missing`);
     if(!card.text.includes('Valuation gate')) throw new Error(`${card.ticker}: valuation gate missing`);
+    if(card.text.includes('issuer_risk_provenance_missing')) throw new Error(`${card.ticker}: issuer provenance wiring regression`);
     const locked=card.text.includes('Recommendation gate: LOCK');
     if(locked && !card.text.includes('НАБЛЮДАТЬ')) throw new Error(`${card.ticker}: fail-closed violation`);
   }
 
-  console.log('Investor Radar R1.8.52 production functional snapshot: PASS');
+  console.log('Investor Radar R1.8.53 production runtime integration snapshot: PASS');
   console.log('FINAL GATE:',gate);
   for(const card of cards) console.log('CARD:',JSON.stringify(card));
   console.log('FAILED REQUESTS:',failed.length,failed);
