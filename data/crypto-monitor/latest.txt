@@ -1,22 +1,22 @@
 📊 CRYPTO 4H MONITOR
-13.09.2026 18:00 MSK
+13.09.2026 22:00 MSK
 
 BTC FILTER: WEAK / BLOCK AGGRESSIVE ALT-LONG
-BTC: ~$77.15k | WAIT | 7/19
-GRAM: $1.3824 (latest available CoinEx quote) | WAIT / WATCH | 8/19
-DOT: ~$1.02 | INVALID prior LONG / WATCH RECLAIM | 7/19
+BTC: $77,246 | WAIT / FILTER BLOCK | 7/19
+GRAM: latest synchronized quote not reliably verified | NO TRADE | 6/19
+DOT: $1.02 | INVALID prior LONG / WATCH RECLAIM | 7/19
 
-BEST CANDIDATE: GRAM on relative strength, but no confirmed entry trigger.
+BEST CANDIDATE: DOT only as a reclaim-watch; no confirmed entry trigger.
 STATUS: NO TRADE
 
-FACT: CoinGecko BTC ~$77,158, -0.4% 24h and -3.9% 7d. Global crypto market cap ~$2.69T, down ~1.95% 24h, BTC dominance ~57.6%. CoinGecko DOT ~$1.02, -1.8% 24h, +4.4% 7d, 24h volume ~$109.3M; volume is materially below the prior day. CoinEx's latest available GRAM quote is $1.38240191, +1.47% 24h. A fresh synchronized OI/funding/liquidation/CVD/order-book snapshot for all three assets was not reliably available, so those fields are not scored.
-CALCULATED: DOT/BTC ≈ 0.00001322; GRAM/BTC ≈ 0.00001792 using the latest available GRAM quote.
-INFERENCE: Market regime remains defensive. BTC is still below the ~$78k recovery filter. DOT remains below the old $1.03 invalidation and its declining activity does not confirm a bullish reclaim. GRAM shows better relative strength versus BTC/DOT, but without a confirmed 1H/4H breakout/retest or higher-low trigger it remains WAIT, not READY. No confirmed Breakout+Retest, False Breakout, Trend Pullback, Reversal, Range Breakout, Liquidity Sweep, Wyckoff Spring/Upthrust or Elliott completion is claimed.
-EVENT RISK: HIGH — Reuters reports Saudi Arabia's East-West pipeline outage threatens roughly 4% of global oil supply if prolonged; oil/inflation/yield pressure remains a negative risk factor for crypto. Fed meeting is approaching, adding macro event risk.
+FACT: CoinGecko BTC $77,246.28 with 24h volume ~$15.95B. CoinGecko DOT $1.02 with 24h volume ~$107.36M. A fresh synchronized GRAM quote and synchronized OI/funding/liquidation/CVD/order-book snapshot for all three assets were not reliably available, so those fields are not scored. Reuters reports the Saudi East-West pipeline outage could threaten up to ~4% of global oil supply if prolonged; oil remains above $100 and the Fed meeting is approaching.
+CALCULATED: DOT/BTC ≈ 0.00001320 using the current CoinGecko prices. GRAM/BTC is not recalculated without a fresh verified GRAM quote.
+INFERENCE: Market regime remains defensive. BTC is still below the ~$78k recovery filter. DOT remains below the old $1.03 invalidation, so the prior LONG thesis stays INVALID; $1.02 is not a confirmed Wyckoff Spring or Liquidity Sweep reversal without reclaim + higher low + local-high break. No confirmed Breakout+Retest, False Breakout, Trend Pullback, Reversal, Range Breakout, Liquidity Sweep, Wyckoff Spring/Upthrust or Elliott completion is claimed.
+EVENT RISK: HIGH — Saudi pipeline outage / Hormuz conflict and the approaching Fed decision keep energy, inflation and rates risk elevated.
 
-KEY TRIGGER: GRAM — confirmed 1H/4H higher low + breakout/retest above the current local range while BTC recovers >~$78k. DOT requires reclaim >$1.03 → 1H/4H HL → local-high break before a new LONG thesis can be considered.
+KEY TRIGGER: DOT reclaim >$1.03 → confirmed 1H/4H higher low → local-high break, preferably with BTC recovery >~$78k. GRAM requires a fresh synchronized quote and confirmed 1H/4H structure before it can return to candidate status.
 ENTRY / STOP / TP1 / TP2 / TP3 / R:R: NOT SET — no confirmed high-quality trigger.
 
-ДЕЙСТВИЕ СЕЙЧАС: NO TRADE. Приоритет наблюдения GRAM; DOT не восстанавливаем до новой подтверждённой структуры; BTC остаётся главным фильтром.
+ДЕЙСТВИЕ СЕЙЧАС: NO TRADE. Не восстанавливать старый DOT LONG; ждать новой структуры и улучшения BTC FILTER.
 
-Источник: CoinGecko + CoinEx + Reuters | Данные получены: 13.09.2026 17:59–18:00 MSK
+Источник: CoinGecko + Reuters | Данные получены: 13.09.2026 22:00 MSK
