@@ -1,0 +1,85 @@
+name: OFZ Radar Historical Validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/validate_ofz_history_r056.py'
+      - 'scripts/ofz_cashflow_engine.py'
+      - 'scripts/ofz_strategy_engine.py'
+      - '.github/workflows/ofz-radar-history.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ofz-radar-history
+  cancel-in-progress: true
+
+jobs:
+  validate-history:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate production snapshot prerequisite
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          j=json.load(open('web/ofz-radar/data/current.json',encoding='utf-8'))
+          if j.get('version')!='0.5.3': raise SystemExit('production snapshot version mismatch')
+          if not (j.get('portfolio') or {}).get('ready'): raise SystemExit('portfolio not ready')
+          if len(j.get('bonds') or [])!=4: raise SystemExit('bond set invalid')
+          print('OFZ R0.5.6 PREREQUISITE: PASS')
+          PY
+      - name: Run R0.5.6 historical regime validation
+        run: python scripts/validate_ofz_history_r056.py
+      - name: Validate R0.5.6 report contract
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          j=json.load(open('web/ofz-radar/data/historical-validation.json',encoding='utf-8'))
+          if j.get('version')!='0.5.6' or j.get('status')!='PASS': raise SystemExit('R0.5.6 status fail')
+          if j.get('validationType')!='HISTORICAL_YIELD_PATH_REPLAY_PROXY': raise SystemExit('validation type missing')
+          if (j.get('historyRows') or 0)<100: raise SystemExit('history too short')
+          if len(j.get('windows') or [])<8: raise SystemExit('insufficient historical windows')
+          if len(j.get('policies') or [])!=4: raise SystemExit('policy matrix invalid')
+          if j.get('decision')!='NO_PRODUCTION_CHANGE': raise SystemExit('production change must remain blocked before common-life MOEX backtest')
+          if (j.get('assumptions') or {}).get('protectiveSleeveYield')!=0.0: raise SystemExit('protective sleeve must remain 0%')
+          print('OFZ R0.5.6 HISTORICAL VALIDATION CONTRACT: PASS')
+          PY
+      - name: Commit historical validation if changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add web/ofz-radar/data/historical-validation.json
+          if git diff --cached --quiet; then echo 'No historical validation change'; exit 0; fi
+          git commit -m 'data: update OFZ R0.5.6 historical validation'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Verify raw public R0.5.6 artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://raw.githubusercontent.com/YaDragon44/moex-crash-radar/main/web/ofz-radar/data/historical-validation.json'
+          for attempt in {1..12}; do
+            code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/hist.json -w '%{http_code}' --connect-timeout 10 --max-time 20 "${URL}?v=${GITHUB_RUN_ID}-${attempt}" || true)
+            if [ "$code" = '200' ] && python - <<'PY'
+          import json
+          j=json.load(open('/tmp/hist.json',encoding='utf-8'))
+          ok=j.get('version')=='0.5.6' and j.get('status')=='PASS' and len(j.get('windows') or [])>=8 and j.get('decision')=='NO_PRODUCTION_CHANGE'
+          raise SystemExit(0 if ok else 1)
+          PY
+            then echo 'OFZ R0.5.6 RAW PUBLIC HISTORICAL GATE: PASS'; exit 0; fi
+            sleep 5
+          done
+          echo 'OFZ R0.5.6 RAW PUBLIC HISTORICAL GATE: FAIL'; exit 1
