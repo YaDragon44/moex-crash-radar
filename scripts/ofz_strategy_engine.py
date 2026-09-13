@@ -4,12 +4,14 @@ from math import floor
 from ofz_cashflow_engine import _date,_ds,_add_years,coupon_amount,schedule_integrity,theoretical_full_price,WEIGHTS
 
 DEFAULT_PATH=[16.2,15.0,13.0,11.0,9.0,5.0]
+DEFAULT_POLICY={'A':1.0,'B':1.0,'C':1.0,'D':.60,'E':.25}
 
 def regime(y):
     return 'A' if y>=16 else 'B' if y>=14 else 'C' if y>=12 else 'D' if y>=10 else 'E'
 
-def exposure_for_yield(y):
-    return 1.0 if y>=12 else .60 if y>=10 else .25
+def exposure_for_yield(y,policy=None):
+    p=policy or DEFAULT_POLICY
+    return float(p[regime(y)])
 
 def _interpolate(path,start,ds):
     d=_date(ds);years=(d-start).days/365.0
@@ -18,8 +20,10 @@ def _interpolate(path,start,ds):
     i=int(years);f=years-i
     return float(path[i])+(float(path[i+1])-float(path[i]))*f
 
-def simulate_path_strategy(portfolio,bonds,valuation_date,path=None,active=True,weights=WEIGHTS):
+def simulate_path_strategy(portfolio,bonds,valuation_date,path=None,active=True,weights=WEIGHTS,exposure_policy=None):
     path=list(path or DEFAULT_PATH)
+    policy=dict(DEFAULT_POLICY if exposure_policy is None else exposure_policy)
+    if set(policy)!={'A','B','C','D','E'} or any(float(v)<0 or float(v)>1 for v in policy.values()):return {'ready':False,'reason':'invalid exposure policy'}
     if not portfolio.get('ready') or len(path)<2:return {'ready':False,'reason':'portfolio/path not ready'}
     start=_date(valuation_date);horizon=_add_years(start,len(path)-1) if start else None
     if not start or not horizon:return {'ready':False,'reason':'invalid valuation date'}
@@ -39,7 +43,7 @@ def simulate_path_strategy(portfolio,bonds,valuation_date,path=None,active=True,
             v=q*fp;values[secid]={'fp':fp,'value':v};bond_value+=v
         total=bond_value+cash
         return {'values':values,'bondValue':bond_value,'total':total}
-    def target_exposure(y):return exposure_for_yield(y) if active else 1.0
+    def target_exposure(y):return exposure_for_yield(y,policy) if active else 1.0
     def sell_to_target(ds,y,mv,target):
         nonlocal cash,realized_sales,turnover
         desired=mv['total']*target
@@ -88,9 +92,9 @@ def simulate_path_strategy(portfolio,bonds,valuation_date,path=None,active=True,
     final=mark(_ds(horizon),float(path[-1]))
     if not final:return {'ready':False,'reason':'final pricing unavailable'}
     years=len(path)-1;cagr=(final['total']/initial)**(1/years)-1
-    return {'ready':True,'mode':'ACTIVE' if active else 'BUY_HOLD','path':path,'horizonDate':_ds(horizon),'terminalValue':final['total'],'returnPct':final['total']/initial-1,'cagr':cagr,'cash':cash,'bondValue':final['bondValue'],'totalCoupons':total_coupons,'reinvested':reinvested,'realizedSales':realized_sales,'turnover':turnover,'turnoverPct':turnover/initial,'maxDrawdown':max_dd,'actions':actions,'timeline':timeline,'economicSanity':-.20<cagr<.35}
+    return {'ready':True,'mode':'ACTIVE' if active else 'BUY_HOLD','path':path,'policy':policy,'horizonDate':_ds(horizon),'terminalValue':final['total'],'returnPct':final['total']/initial-1,'cagr':cagr,'cash':cash,'bondValue':final['bondValue'],'totalCoupons':total_coupons,'reinvested':reinvested,'realizedSales':realized_sales,'turnover':turnover,'turnoverPct':turnover/initial,'maxDrawdown':max_dd,'actions':actions,'timeline':timeline,'economicSanity':-.20<cagr<.35}
 
-def compare_strategies(portfolio,bonds,valuation_date,path=None):
-    path=list(path or DEFAULT_PATH);hold=simulate_path_strategy(portfolio,bonds,valuation_date,path,False);active=simulate_path_strategy(portfolio,bonds,valuation_date,path,True)
+def compare_strategies(portfolio,bonds,valuation_date,path=None,exposure_policy=None):
+    path=list(path or DEFAULT_PATH);hold=simulate_path_strategy(portfolio,bonds,valuation_date,path,False,exposure_policy=exposure_policy);active=simulate_path_strategy(portfolio,bonds,valuation_date,path,True,exposure_policy=exposure_policy)
     ready=hold.get('ready') and active.get('ready') and hold.get('economicSanity') and active.get('economicSanity')
-    return {'ready':bool(ready),'path':path,'buyHold':hold,'active':active,'deltaTerminal':active.get('terminalValue',0)-hold.get('terminalValue',0) if ready else None,'deltaCagr':active.get('cagr',0)-hold.get('cagr',0) if ready else None,'assumptions':{'protectiveSleeveYield':0.0,'taxes':False,'commissions':False,'slippage':False,'rebalanceRule':'continuous exposure gate evaluated at coupon/rebalance events'}}
+    return {'ready':bool(ready),'path':path,'policy':dict(DEFAULT_POLICY if exposure_policy is None else exposure_policy),'buyHold':hold,'active':active,'deltaTerminal':active.get('terminalValue',0)-hold.get('terminalValue',0) if ready else None,'deltaCagr':active.get('cagr',0)-hold.get('cagr',0) if ready else None,'assumptions':{'protectiveSleeveYield':0.0,'taxes':False,'commissions':False,'slippage':False,'rebalanceRule':'continuous exposure gate evaluated at coupon/rebalance events'}}
