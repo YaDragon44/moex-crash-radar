@@ -171,6 +171,8 @@ jobs:
           cp crypto-trader/index.html _site/crypto-trader/index.html
           mkdir -p _site/crypto-radar
           cp web/crypto-radar/index.html _site/crypto-radar/index.html
+          mkdir -p _site/ofz-radar
+          cp web/ofz-radar/index.html _site/ofz-radar/index.html
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
         with:
