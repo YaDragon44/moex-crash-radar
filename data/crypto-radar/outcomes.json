@@ -15,13 +15,13 @@
       "alignment_rate_pct": 40.0
     },
     "4h": {
-      "closed": 2,
-      "open": 4,
-      "avg_btc_return_pct": -0.0671,
-      "positive_rate_pct": 50.0,
-      "negative_rate_pct": 50.0,
-      "directional_cases": 2,
-      "alignment_rate_pct": 50.0
+      "closed": 3,
+      "open": 3,
+      "avg_btc_return_pct": -0.1449,
+      "positive_rate_pct": 33.3,
+      "negative_rate_pct": 66.7,
+      "directional_cases": 3,
+      "alignment_rate_pct": 66.7
     },
     "24h": {
       "closed": 0,
@@ -112,11 +112,11 @@
           "alignment": "ALIGNED"
         },
         "4h": {
-          "status": "OPEN",
-          "observed_at": null,
-          "btc_price": null,
-          "btc_return_pct": null,
-          "alignment": null
+          "status": "CLOSED",
+          "observed_at": "2026-09-13T06:58:26.285762+00:00",
+          "btc_price": 77019.7,
+          "btc_return_pct": -0.3004,
+          "alignment": "ALIGNED"
         },
         "24h": {
           "status": "OPEN",
