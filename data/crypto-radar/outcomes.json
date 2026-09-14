@@ -6,13 +6,13 @@
   "sample_quality": "PRELIMINARY",
   "summary": {
     "1h": {
-      "closed": 9,
-      "open": 1,
-      "avg_btc_return_pct": -0.0322,
-      "positive_rate_pct": 55.6,
-      "negative_rate_pct": 44.4,
-      "directional_cases": 9,
-      "alignment_rate_pct": 44.4
+      "closed": 10,
+      "open": 0,
+      "avg_btc_return_pct": -0.0058,
+      "positive_rate_pct": 60.0,
+      "negative_rate_pct": 40.0,
+      "directional_cases": 10,
+      "alignment_rate_pct": 40.0
     },
     "4h": {
       "closed": 8,
@@ -24,13 +24,13 @@
       "alignment_rate_pct": 62.5
     },
     "24h": {
-      "closed": 5,
-      "open": 5,
-      "avg_btc_return_pct": 0.2539,
-      "positive_rate_pct": 80.0,
-      "negative_rate_pct": 20.0,
-      "directional_cases": 5,
-      "alignment_rate_pct": 20.0
+      "closed": 6,
+      "open": 4,
+      "avg_btc_return_pct": 0.3031,
+      "positive_rate_pct": 83.3,
+      "negative_rate_pct": 16.7,
+      "directional_cases": 6,
+      "alignment_rate_pct": 16.7
     }
   },
   "events": [
@@ -212,11 +212,11 @@
           "alignment": "ALIGNED"
         },
         "24h": {
-          "status": "OPEN",
-          "observed_at": null,
-          "btc_price": null,
-          "btc_return_pct": null,
-          "alignment": null
+          "status": "CLOSED",
+          "observed_at": "2026-09-14T06:46:37.232079+00:00",
+          "btc_price": 77682.6,
+          "btc_return_pct": 0.5491,
+          "alignment": "NOT_ALIGNED"
         }
       }
     },
@@ -322,11 +322,11 @@
       "trader_action": "REDUCE EXPOSURE",
       "outcomes": {
         "1h": {
-          "status": "OPEN",
-          "observed_at": null,
-          "btc_price": null,
-          "btc_return_pct": null,
-          "alignment": null
+          "status": "CLOSED",
+          "observed_at": "2026-09-14T06:46:37.232079+00:00",
+          "btc_price": 77682.6,
+          "btc_return_pct": 0.2319,
+          "alignment": "NOT_ALIGNED"
         },
         "4h": {
           "status": "OPEN",
