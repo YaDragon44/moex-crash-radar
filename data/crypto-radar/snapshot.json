@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-14T08:13:30.186846+00:00",
+  "generated_at": "2026-09-14T08:33:04.779536+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2649214794446.7607,
-    "total_change_24h_pct": -2.0241351823267117,
-    "btc_dominance_pct": 58.88944367638563,
-    "btc_cap": 1560107854242.2007,
-    "alt_cap": 1089106940204.56
+    "total_market_cap": 2646842691563.7246,
+    "total_change_24h_pct": -2.029292043341069,
+    "btc_dominance_pct": 58.87709999788022,
+    "btc_cap": 1558384218298.5583,
+    "alt_cap": 1088458473265.1663
   },
   "derivatives": {
-    "btc_price": 77748.5,
-    "price_change_24h_pct": 0.93,
+    "btc_price": 77720.1,
+    "price_change_24h_pct": 1.04,
     "oi_usd": 5055727863.26044,
     "oi_change_24h_pct": 0.8751478664444701,
-    "funding_pct": 0.0052,
+    "funding_pct": 0.007600000000000001,
     "long_short_ratio": 1.4929802169751116
   },
   "context": {
-    "stablecoin_market_cap": 306455642740.0,
-    "stablecoin_market_cap_change_24h_pct": -0.03940216252288353,
+    "stablecoin_market_cap": 306446728743.0,
+    "stablecoin_market_cap_change_24h_pct": -0.03853261025765775,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -71,9 +71,9 @@
     "provisional": true,
     "status": "RISK-OFF",
     "candidate": "RISK-OFF",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH RISK-OFF · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> RISK-OFF",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,8 +82,8 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH RISK-OFF · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> RISK-OFF",
+    "confirmed": true
   },
   "action_engine": {
     "investor": "REDUCE RISK",
