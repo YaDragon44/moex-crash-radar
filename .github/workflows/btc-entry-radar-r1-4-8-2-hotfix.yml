@@ -58,6 +58,8 @@ jobs:
           p.write_text(s, encoding='utf-8')
           print('BTC R1.4.8.2 PATCH GATE: PASS')
           PY
+      - name: Install regression test runner
+        run: python -m pip install pytest
       - name: Regression tests for BTC model
         run: python -m pytest -q tests/test_btc_entry_radar_r1_4_0.py tests/test_btc_entry_radar_hysteresis_r1_4_7.py
       - name: Commit hotfix
