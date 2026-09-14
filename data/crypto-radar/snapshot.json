@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-14T18:45:12.307913+00:00",
+  "generated_at": "2026-09-14T19:11:53.131489+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,29 +14,29 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2702823568509.195,
-    "total_change_24h_pct": 0.09021416721996263,
-    "btc_dominance_pct": 58.518579942390105,
-    "btc_cap": 1581653970639.814,
-    "alt_cap": 1121169597869.3809
+    "total_market_cap": 2699746523475.431,
+    "total_change_24h_pct": -0.03625722418881739,
+    "btc_dominance_pct": 58.527998494458124,
+    "btc_cap": 1580107604613.886,
+    "alt_cap": 1119638918861.5452
   },
   "derivatives": {
-    "btc_price": 79167.5,
-    "price_change_24h_pct": 2.35,
-    "oi_usd": 5098196704.1494,
-    "oi_change_24h_pct": 0.8707136498038226,
-    "funding_pct": 0.0039,
-    "long_short_ratio": 1.1369088183181137
+    "btc_price": 79060.1,
+    "price_change_24h_pct": 2.28,
+    "oi_usd": 5100876720.137124,
+    "oi_change_24h_pct": 1.2284074767676678,
+    "funding_pct": 0.0044,
+    "long_short_ratio": 1.1097083445854712
   },
   "context": {
-    "stablecoin_market_cap": 306697761493.0,
-    "stablecoin_market_cap_change_24h_pct": -0.020901603768397337,
+    "stablecoin_market_cap": 306765869234.0,
+    "stablecoin_market_cap_change_24h_pct": 0.00669473836856227,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
     "model": "v2-provisional",
     "factors": {
-      "oi_price": 60,
+      "oi_price": 70,
       "funding": 50,
       "long_short": 70,
       "liquidation_risk": null,
@@ -47,7 +47,7 @@
     "derivative_factor_count": 3,
     "external_context_present": true,
     "quality_passed": true,
-    "score": 57,
+    "score": 60,
     "state": "NEUTRAL",
     "action": "WAIT"
   },
@@ -55,14 +55,14 @@
     "model": "risk-v1-provisional",
     "provisional": true,
     "coverage_pct": 100,
-    "score": 38,
+    "score": 41,
     "status": "MODERATE",
     "components": {
-      "market_stress": 25,
+      "market_stress": 40,
       "leverage": 55,
       "funding_extreme": 20,
       "positioning_extreme": 40,
-      "liquidity_context": 55
+      "liquidity_context": 35
     },
     "reason": "Provisional composite; historical calibration required"
   },
@@ -71,7 +71,7 @@
     "provisional": true,
     "status": "NEUTRAL",
     "candidate": "NEUTRAL",
-    "candidate_count": 29,
+    "candidate_count": 30,
     "confirmed": true,
     "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
@@ -90,7 +90,7 @@
     "trader": "WAIT",
     "why": [
       "Price/OI leverage 55/100",
-      "Stablecoin liquidity 55/100",
+      "Market stress 40/100",
       "Long/Short extremity 40/100"
     ],
     "provisional": true
