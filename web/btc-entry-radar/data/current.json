@@ -1,10 +1,10 @@
 {
   "input": {
     "fgi": 57.0,
-    "price_confirm_4h": false,
-    "new_local_low_4h": false,
+    "price_confirm_4h": true,
+    "new_local_low_4h": true,
     "oi_regime": "STABLE",
-    "stop_atr": 1.2877153909271872,
+    "stop_atr": 2.9473755735686358,
     "data_ready": true,
     "position_open": false
   },
@@ -13,38 +13,38 @@
     "action": "WAIT",
     "standard_size": 0.0,
     "why": [
-      "No validated MVP setup",
-      "Crowd/price combination is insufficient",
-      "Capital preservation has priority"
+      "Risk gate failed",
+      "Stop distance is invalid or >2 ATR",
+      "Entry is too late or structure unclear"
     ],
-    "invalidation": "Wait for next setup"
+    "invalidation": "Valid stop <=2 ATR"
   },
   "market": {
-    "price": 76836.0,
-    "timestamp": "2026-09-13T20:00:00+00:00",
-    "age_h": 4.509056284444444,
+    "price": 77593.4,
+    "timestamp": "2026-09-14T00:00:00+00:00",
+    "age_h": 4.398222595,
     "fresh": true,
-    "price_confirm_4h": false,
-    "new_local_low_4h": false,
-    "atr14_4h": 426.5500000000019,
+    "price_confirm_4h": true,
+    "new_local_low_4h": true,
+    "atr14_4h": 446.76428571428863,
     "swing_low_4h": 76500.0,
-    "stop_price": 76286.725,
-    "stop_atr": 1.2877153909271872
+    "stop_price": 76276.61785714286,
+    "stop_atr": 2.9473755735686358
   },
   "crowd": {
     "value": 57.0,
     "classification": "Greed",
     "timestamp": "2026-09-14T00:00:00+00:00",
-    "age_h": 0.5090562844444445,
+    "age_h": 4.398222595,
     "fresh": true
   },
   "open_interest": {
     "regime": "STABLE",
-    "timestamp": "2026-09-14T00:00:00+00:00",
-    "age_h": 0.5090562844444445,
+    "timestamp": "2026-09-14T04:00:00+00:00",
+    "age_h": 0.39822259499999996,
     "fresh": true,
-    "oi_value": 2780918.700000014,
-    "delta_24h": 0.010336854738142831,
+    "oi_value": 2793792.3800000134,
+    "delta_24h": 0.005808833668881297,
     "delta_p10": -0.06140386115802635,
     "delta_p90": 0.04730841958388682,
     "points": 100
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-09-14T00:30:32.602624+00:00"
+  "generated_at_utc": "2026-09-14T04:23:53.601342+00:00"
 }
