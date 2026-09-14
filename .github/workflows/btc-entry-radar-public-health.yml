@@ -1,0 +1,53 @@
+name: BTC Entry Radar Public Health
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 */4 * * *'
+  workflow_run:
+    workflows: ['Deploy Dashboard']
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  public-health:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify public shell and live evidence contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          PAGE='https://yadragon44.github.io/moex-crash-radar/btc-entry-radar/'
+          RAW='https://raw.githubusercontent.com/YaDragon44/moex-crash-radar/main/web/btc-entry-radar'
+          for attempt in {1..12}; do
+            bust="$(date +%s)-${attempt}"
+            html_code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/btc.html -w '%{http_code}' --connect-timeout 10 --max-time 20 "${PAGE}?v=${bust}" || true)
+            cur_code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/current.json -w '%{http_code}' --connect-timeout 10 --max-time 20 "${RAW}/data/current.json?v=${bust}" || true)
+            tr_code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/transition.json -w '%{http_code}' --connect-timeout 10 --max-time 20 "${RAW}/data/transition.json?v=${bust}" || true)
+            perf_code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/performance.json -w '%{http_code}' --connect-timeout 10 --max-time 20 "${RAW}/data/performance.json?v=${bust}" || true)
+            old_code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/legacy.html -w '%{http_code}' --connect-timeout 10 --max-time 20 "${RAW}/old/index.html?v=${bust}" || true)
+            if [ "$html_code" = '200' ] && [ "$cur_code" = '200' ] && [ "$tr_code" = '200' ] && [ "$perf_code" = '200' ] && [ "$old_code" = '200' ] && grep -q 'BTC Entry Radar R1.4.8.2' /tmp/btc.html && grep -q 'RAW_EVIDENCE_BASE' /tmp/btc.html && grep -q '?legacy=1' /tmp/btc.html && grep -q 'BTC Entry Radar' /tmp/legacy.html && python - <<'PY'
+          import json
+          cur=json.load(open('/tmp/current.json', encoding='utf-8'))
+          tr=json.load(open('/tmp/transition.json', encoding='utf-8'))
+          perf=json.load(open('/tmp/performance.json', encoding='utf-8'))
+          q=cur.get('quality') or {}
+          ok=(q.get('status') == 'DATA READY'
+              and float(q.get('coverage_pct', 0)) >= 100
+              and tr.get('confirmed_state') is not None
+              and tr.get('raw_state') is not None
+              and isinstance(perf.get('signal_count'), int)
+              and isinstance(perf.get('scored_count'), int))
+          raise SystemExit(0 if ok else 1)
+          PY
+            then
+              echo 'BTC ENTRY RADAR PUBLIC SHELL + LIVE EVIDENCE GATE: PASS'
+              exit 0
+            fi
+            sleep 10
+          done
+          echo 'BTC ENTRY RADAR PUBLIC SHELL + LIVE EVIDENCE GATE: FAIL'
+          exit 1
