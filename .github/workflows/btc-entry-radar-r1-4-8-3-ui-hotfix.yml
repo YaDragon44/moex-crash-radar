@@ -1,0 +1,44 @@
+name: BTC Entry Radar R1.4.8.3 Price Clarity Hotfix
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/btc-entry-radar-r1-4-8-3-ui-hotfix.yml']
+permissions:
+  contents: write
+  actions: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: main}
+      - name: Simplify price presentation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('web/btc-entry-radar/index.html')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace('BTC Entry Radar R1.4.8.2','BTC Entry Radar R1.4.8.3')
+          s=s.replace('BTC Entry Radar <span>R1.4.8.2</span>','BTC Entry Radar <span>R1.4.8.3</span>')
+          s=s.replace('⌁ BTC LIVE · OKX','⌁ BTC NOW · OKX')
+          s=s.replace('<article class="metric closecard"><div class="cap">▥ 4H STRATEGY CLOSE</div><div class="value" id="strategyPrice">—</div><div class="desc">закрытая 4H свеча</div><div class="meta" id="strategyTime">—</div></article>','')
+          s=s.replace('<article class="metric deltacard"><div class="cap">△ Δ к 4H close</div><div class="value" id="deltaPct">—</div><div class="desc" id="deltaUsd">—</div><div class="meta">Live price против strategy close</div></article>','')
+          s=s.replace('grid-template-columns:1.08fr 1fr .94fr 1fr 1fr .96fr','grid-template-columns:1.15fr 1fr 1fr 1fr')
+          s=s.replace('<div class="context" id="context">—</div>','<div class="context" id="context">—</div><div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--line);color:#86a6c4;font-size:13px">4H close used by model: <b id="strategyPrice" style="color:#cfe7f8">—</b> <span id="strategyTime"></span><span id="deltaPct" style="display:none"></span><span id="deltaUsd" style="display:none"></span></div>')
+          p.write_text(s,encoding='utf-8')
+          assert 'BTC NOW · OKX' in s
+          assert '4H STRATEGY CLOSE</div><div class="value"' not in s
+          assert '4H close used by model:' in s
+          PY
+      - name: Commit UI-only change
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add web/btc-entry-radar/index.html
+          git diff --cached --check
+          git commit -m 'R1.4.8.3: simplify BTC price presentation'
+          git push origin main
+      - name: Trigger Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --repo YaDragon44/moex-crash-radar --ref main
