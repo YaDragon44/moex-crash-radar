@@ -1,4 +1,4 @@
-name: BTC Entry Radar R1.4.8.2 One-shot Hotfix
+name: BTC Entry Radar R1.4.8.2 One-shot Final Gate
 
 on:
   push:
@@ -7,71 +7,14 @@ on:
       - '.github/workflows/btc-entry-radar-r1-4-8-2-hotfix.yml'
 
 permissions:
-  contents: write
   actions: write
+  contents: read
 
 jobs:
-  patch:
+  final-gate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Patch BTC dashboard freshness only
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          p = Path('web/btc-entry-radar/index.html')
-          s = p.read_text(encoding='utf-8')
-          original = s
-
-          s = s.replace('BTC Entry Radar R1.4.8.1 <a class="archive-link" href="old/">', 'BTC Entry Radar R1.4.8.2 <a class="archive-link" href="?legacy=1">')
-          s = s.replace('BTC Entry Radar R1.4.8.1', 'BTC Entry Radar R1.4.8.2')
-          s = s.replace('BTC Entry Radar <span>R1.4.8.1</span>', 'BTC Entry Radar <span>R1.4.8.2</span>')
-
-          marker = "async function liveBtc(){"
-          helper = """const RAW_EVIDENCE_BASE='https://raw.githubusercontent.com/YaDragon44/moex-crash-radar/main/web/btc-entry-radar/data/';\nconst LEGACY_URL='https://raw.githubusercontent.com/YaDragon44/moex-crash-radar/main/web/btc-entry-radar/old/index.html';\nconst legacyMode=new URLSearchParams(location.search).get('legacy')==='1';\nasync function evidence(name){const bust='?t='+Date.now();for(const url of [RAW_EVIDENCE_BASE+name+bust,'data/'+name+bust]){try{const r=await fetch(url,{cache:'no-store'});if(r.ok)return await r.json()}catch(_){}}return null}\nasync function loadLegacy(){try{const r=await fetch(LEGACY_URL+'?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('legacy unavailable');const html=await r.text();document.open();document.write(html);document.close()}catch(e){document.body.innerHTML='<main style=\\\"font:16px system-ui;padding:32px;background:#070b12;color:#fff;min-height:100vh\\\"><h1>Legacy view unavailable</h1><p>Архив R1.4.7 сохранён в GitHub.</p></main>'}}\n"""
-          if 'RAW_EVIDENCE_BASE' not in s:
-              s = s.replace(marker, helper + marker)
-
-          old = "(async()=>{try{const [cr,trr,pr,live]=await Promise.all([fetch('data/current.json?t='+Date.now()),fetch('data/transition.json?t='+Date.now()),fetch('data/performance.json?t='+Date.now()),liveBtc()]);if(!cr.ok)throw Error('current.json unavailable');const s=await cr.json();const t=trr.ok?await trr.json():null;const p=pr.ok?await pr.json():null;"
-          new = "if(!legacyMode)(async()=>{try{const [s,t,p,live]=await Promise.all([evidence('current.json'),evidence('transition.json'),evidence('performance.json'),liveBtc()]);if(!s)throw Error('current.json unavailable');"
-          if old not in s:
-              raise SystemExit('expected dashboard fetch block not found')
-          s = s.replace(old, new, 1)
-
-          ending = "}})();\n</script>"
-          if ending not in s:
-              raise SystemExit('expected dashboard script ending not found')
-          s = s.replace(ending, "}})(); else loadLegacy();\n</script>", 1)
-
-          if s == original:
-              raise SystemExit('no changes produced')
-          required = ['R1.4.8.2', 'RAW_EVIDENCE_BASE', "evidence('transition.json')", "evidence('performance.json')", '?legacy=1', 'else loadLegacy()']
-          missing = [x for x in required if x not in s]
-          if missing:
-              raise SystemExit(f'missing hotfix markers: {missing}')
-          p.write_text(s, encoding='utf-8')
-          print('BTC R1.4.8.2 PATCH GATE: PASS')
-          PY
-      - name: Install regression test runner
-        run: python -m pip install pytest
-      - name: Regression tests for BTC model
-        run: python -m pytest -q tests/test_btc_entry_radar_r1_4_0.py tests/test_btc_entry_radar_hysteresis_r1_4_7.py
-      - name: Commit hotfix
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git pull --rebase --autostash origin main
-          git add web/btc-entry-radar/index.html
-          git diff --cached --check
-          git commit -m 'R1.4.8.2: harden BTC dashboard freshness'
-          git push origin main
-      - name: Trigger Pages deployment
+      - name: Trigger BTC public health workflow
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run pages.yml --ref main
+        run: gh workflow run btc-entry-radar-public-health.yml --repo YaDragon44/moex-crash-radar --ref main
