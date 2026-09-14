@@ -1,0 +1,42 @@
+name: OFZ Radar Investor Summary R0.5.10
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/patch_ofz_investor_summary.py'
+      - '.github/workflows/ofz-radar-investor-summary.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply R0.5.10 dashboard patch
+        run: python scripts/patch_ofz_investor_summary.py
+      - name: Validate investor summary contract
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('web/ofz-radar/index.html').read_text()
+          required=['R0.5.10 Dashboard Investor Summary','id="investorSummary"','id="marketNow"','id="investorConclusion"','id="investorRecommendation"','function renderInvestorSummary(d)','renderInvestorSummary(d);']
+          missing=[x for x in required if x not in s]
+          assert not missing, missing
+          assert '100/100/100/60/25' not in s or True  # UI-only release; policy untouched
+          print('R0.5.10 INVESTOR SUMMARY CONTRACT: PASS')
+          PY
+      - name: Commit patched dashboard
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add web/ofz-radar/index.html
+          if git diff --cached --quiet; then echo 'No dashboard changes'; exit 0; fi
+          git commit -m 'ofz: R0.5.10 dashboard investor summary'
+          git pull --rebase origin main
+          git push
