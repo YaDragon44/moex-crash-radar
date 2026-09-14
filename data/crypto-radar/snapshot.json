@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-14T08:56:32.028401+00:00",
+  "generated_at": "2026-09-14T09:14:33.279167+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2640404255671.9834,
-    "total_change_24h_pct": -2.149476993842754,
-    "btc_dominance_pct": 58.86220665664179,
-    "btc_cap": 1554200209544.4072,
-    "alt_cap": 1086204046127.5762
+    "total_market_cap": 2646908476527.8994,
+    "total_change_24h_pct": -1.6003775442197827,
+    "btc_dominance_pct": 58.875492687388984,
+    "btc_cap": 1558380406540.0625,
+    "alt_cap": 1088528069987.8369
   },
   "derivatives": {
-    "btc_price": 77676.2,
-    "price_change_24h_pct": 1.22,
-    "oi_usd": 5055727863.26044,
-    "oi_change_24h_pct": 0.8751478664444701,
-    "funding_pct": 0.0053,
-    "long_short_ratio": 1.4929802169751116
+    "btc_price": 77682.2,
+    "price_change_24h_pct": 1.17,
+    "oi_usd": 5028296237.84928,
+    "oi_change_24h_pct": -0.42051033644048275,
+    "funding_pct": 0.006200000000000001,
+    "long_short_ratio": 1.4722464169767995
   },
   "context": {
-    "stablecoin_market_cap": 306498575396.0,
-    "stablecoin_market_cap_change_24h_pct": -0.035905269164338005,
+    "stablecoin_market_cap": 306552971766.0,
+    "stablecoin_market_cap_change_24h_pct": -0.04069002715842984,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -55,11 +55,11 @@
     "model": "risk-v1-provisional",
     "provisional": true,
     "coverage_pct": 100,
-    "score": 51,
-    "status": "ELEVATED",
+    "score": 39,
+    "status": "MODERATE",
     "components": {
-      "market_stress": 55,
-      "leverage": 55,
+      "market_stress": 40,
+      "leverage": 30,
       "funding_extreme": 20,
       "positioning_extreme": 65,
       "liquidity_context": 55
@@ -70,10 +70,10 @@
     "model": "regime-v1-provisional",
     "provisional": true,
     "status": "RISK-OFF",
-    "candidate": "RISK-OFF",
-    "candidate_count": 3,
-    "confirmed": true,
-    "transition": "STABLE",
+    "candidate": "NEUTRAL",
+    "candidate_count": 1,
+    "confirmed": false,
+    "transition": "WATCH RISK-OFF -> NEUTRAL · 1/2",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,16 +82,16 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "STABLE",
-    "confirmed": true
+    "status": "WATCH RISK-OFF -> NEUTRAL · 1/2",
+    "confirmed": false
   },
   "action_engine": {
     "investor": "REDUCE RISK",
     "trader": "REDUCE EXPOSURE",
     "why": [
       "Long/Short extremity 65/100",
-      "Market stress 55/100",
-      "Price/OI leverage 55/100"
+      "Stablecoin liquidity 55/100",
+      "Market stress 40/100"
     ],
     "provisional": true
   }
