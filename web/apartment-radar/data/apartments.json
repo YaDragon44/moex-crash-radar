@@ -1,0 +1,102 @@
+{
+  "updated_at": "14.09.2026 19:42 MSK",
+  "diamond_found": false,
+  "kpi": {"active": 5},
+  "my_choice_reason": "Лучший баланс цены, обязательной комплектации и прямой логистики до Павелецкой среди тестовых карточек.",
+  "call_questions": [
+    "Объявление актуально и квартира свободна?",
+    "Подтвердите кондиционер, стиральную и посудомоечную машины.",
+    "Двуспальная кровать остаётся в квартире?",
+    "Какие платежи идут сверх аренды?",
+    "Можно ли снизить комиссию или разбить депозит?"
+  ],
+  "changes": [
+    "🆕 Добавлен тестовый лидер",
+    "↓ Тестовое снижение цены у Watch List",
+    "💎 Бриллиант не найден"
+  ],
+  "recommended": [
+    {
+      "id": "test-1",
+      "rank": 1,
+      "address": "Ореховый бульвар, 47/33",
+      "rent": 58000,
+      "area": 37.8,
+      "rooms": "1-комнатная",
+      "value_score": 91,
+      "category": "BEST VALUE",
+      "traffic_light": "green",
+      "metro": "Красногвардейская",
+      "walk_minutes": 1,
+      "total_paveletskaya_minutes": null,
+      "direct_green": true,
+      "air_conditioner": "confirmed",
+      "washing_machine": "confirmed",
+      "dishwasher": "confirmed",
+      "double_bed": "confirmed",
+      "deposit": 58000,
+      "commission": 58000,
+      "move_in_cost": 174000,
+      "monthly_total": null,
+      "main_plus": "Очень низкая цена и метро практически у дома.",
+      "main_risk": "Комиссия 100%.",
+      "listing_url": null
+    },
+    {
+      "id": "test-2",
+      "rank": 2,
+      "address": "Севанская, 5к1",
+      "rent": 65000,
+      "area": 35,
+      "rooms": "1-комнатная",
+      "value_score": 88,
+      "category": "HOT",
+      "traffic_light": "green",
+      "metro": "Царицыно",
+      "walk_minutes": 18,
+      "total_paveletskaya_minutes": 39,
+      "direct_green": true,
+      "air_conditioner": "confirmed",
+      "washing_machine": "confirmed",
+      "dishwasher": "confirmed",
+      "double_bed": "confirmed",
+      "move_in_cost": null,
+      "monthly_total": null,
+      "main_plus": "Хорошая комплектация и прямая зелёная линия.",
+      "main_risk": "Стоимость въезда требует подтверждения.",
+      "listing_url": null
+    },
+    {
+      "id": "test-3",
+      "rank": 3,
+      "address": "Тестовый вариант — данные неполные",
+      "rent": 69000,
+      "area": 42,
+      "rooms": "евро-2",
+      "value_score": 84,
+      "category": "GOOD",
+      "traffic_light": "yellow",
+      "metro": "Коломенская",
+      "walk_minutes": 14,
+      "total_paveletskaya_minutes": 36,
+      "direct_green": true,
+      "air_conditioner": "confirmed",
+      "washing_machine": "confirmed",
+      "dishwasher": "unknown",
+      "double_bed": "confirmed",
+      "move_in_cost": null,
+      "monthly_total": null,
+      "main_plus": "Площадь выше среднего.",
+      "main_risk": "Посудомойка требует подтверждения.",
+      "listing_url": null
+    }
+  ],
+  "watch_list": [
+    {
+      "address": "Судостроительная, 35/12",
+      "current_price": 68000,
+      "previous_price": 70000,
+      "status_icon": "↓"
+    }
+  ]
+}
