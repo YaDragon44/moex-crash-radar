@@ -2,13 +2,25 @@
   "schema_version": 2,
   "release": "R1.8",
   "dashboard_release": "R0.6.2",
-  "generated_at": "2026-09-14T10:04:29.432911+03:00",
+  "generated_at": "2026-09-14T10:06:58.239181+03:00",
   "ticker": "VKCO",
-  "mode": "run",
+  "mode": "heartbeat",
   "health": "OK",
   "trade": {
     "status": "WAIT",
-    "reason": "NO_TRIGGER"
+    "reason": "EVENT_RISK",
+    "setup": "Adaptive Breakout + Hold",
+    "score": 11,
+    "entry": 120.7,
+    "stop": 120.35,
+    "tp1": 121.23,
+    "tp2": 121.58,
+    "tp3": 122.1,
+    "rr_tp2": 2.5,
+    "rvol": 3.8,
+    "support": 117.95,
+    "resistance": 120.65,
+    "signal_id": "VKCO:ADAPTIVE_BREAKOUT:2026-09-14T09:49:59+03:00"
   },
   "position": null,
   "journal": {
@@ -26,15 +38,6 @@
     "max_risk_rub": 5000.0
   },
   "candles": [
-    {
-      "t": "2026-09-11T14:40:00+03:00",
-      "end": "2026-09-11T14:49:59+03:00",
-      "o": 118.0,
-      "h": 118.05,
-      "l": 117.15,
-      "c": 117.35,
-      "v": 272211.0
-    },
     {
       "t": "2026-09-11T14:50:00+03:00",
       "end": "2026-09-11T14:59:59+03:00",
@@ -673,16 +676,44 @@
       "l": 120.25,
       "c": 120.9,
       "v": 336339.0
+    },
+    {
+      "t": "2026-09-14T09:40:00+03:00",
+      "end": "2026-09-14T09:49:59+03:00",
+      "o": 120.9,
+      "h": 121.0,
+      "l": 120.6,
+      "c": 120.7,
+      "v": 93548.0
     }
   ],
   "market": {
-    "price": 120.9,
-    "candle_end": "2026-09-14T09:39:59+03:00",
-    "volume": 336339.0,
-    "age_min": 24,
+    "price": 120.7,
+    "candle_end": "2026-09-14T09:49:59+03:00",
+    "volume": 93548.0,
+    "age_min": 16,
     "fresh": true,
-    "support": 117.9,
+    "support": 117.95,
     "resistance": 120.65,
-    "avg_range": 0.4905
+    "avg_range": 0.5005
+  },
+  "imoex": {
+    "ok": true,
+    "score": 2,
+    "close": 2313.04,
+    "sma20": 2292.492,
+    "return_1h_pct": 0.2209762818790706,
+    "time": "2026-09-14T10:06:56+03:00"
+  },
+  "event_risk": {
+    "ok": false,
+    "window_days": 3,
+    "source": "https://vk.company.ru/ru/investors/info/",
+    "items": [
+      {
+        "date": "11 сентября 2026",
+        "text": "11 сентября 2026 VK продолжает работу над снижением долговой нагрузки 13 августа 2026 Пресс-релиз по результатам за 2 кв. и 1 пол. 2026 <div class=\"Pub"
+      }
+    ]
   }
 }
