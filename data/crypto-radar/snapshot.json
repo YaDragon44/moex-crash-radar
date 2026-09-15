@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-15T14:31:57.163096+00:00",
+  "generated_at": "2026-09-15T14:54:44.408017+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2630241448955.374,
-    "total_change_24h_pct": -4.318322031825123,
-    "btc_dominance_pct": 58.23282315643073,
-    "btc_cap": 1531663851557.3245,
-    "alt_cap": 1098577597398.0496
+    "total_market_cap": 2595183585037.1387,
+    "total_change_24h_pct": -5.4034798992529405,
+    "btc_dominance_pct": 58.2981527364709,
+    "btc_cap": 1512944090196.7722,
+    "alt_cap": 1082239494840.3665
   },
   "derivatives": {
-    "btc_price": 76240.1,
-    "price_change_24h_pct": -3.05,
+    "btc_price": 75858.6,
+    "price_change_24h_pct": -3.39,
     "oi_usd": 5063075874.387,
     "oi_change_24h_pct": -0.8638360233073294,
-    "funding_pct": 0.004699999999999999,
+    "funding_pct": 0.005399999999999999,
     "long_short_ratio": 1.70578620464204
   },
   "context": {
-    "stablecoin_market_cap": 306764339620.0,
-    "stablecoin_market_cap_change_24h_pct": 0.05181967083214278,
+    "stablecoin_market_cap": 306752156108.0,
+    "stablecoin_market_cap_change_24h_pct": 0.046088047659553766,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -41,13 +41,13 @@
       "long_short": 85,
       "liquidation_risk": null,
       "news": null,
-      "flows": 65
+      "flows": 50
     },
     "coverage_pct": 70,
     "derivative_factor_count": 3,
     "external_context_present": true,
     "quality_passed": true,
-    "score": 58,
+    "score": 55,
     "state": "NEUTRAL",
     "action": "WAIT"
   },
@@ -71,7 +71,7 @@
     "provisional": true,
     "status": "RISK-OFF",
     "candidate": "RISK-OFF",
-    "candidate_count": 4,
+    "candidate_count": 5,
     "confirmed": true,
     "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
