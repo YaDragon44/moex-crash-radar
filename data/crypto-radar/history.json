@@ -2,11 +2,11 @@
   "version": "1.6",
   "cadence_minutes": 15,
   "retention_records": 2880,
-  "record_count": 215,
+  "record_count": 216,
   "first_generated_at": "2026-09-12T15:13:27.289827+00:00",
-  "last_generated_at": "2026-09-15T06:46:23.745330+00:00",
-  "confirmed_transition_count": 10,
-  "regime_change_count": 11,
+  "last_generated_at": "2026-09-15T07:14:01.512145+00:00",
+  "confirmed_transition_count": 11,
+  "regime_change_count": 12,
   "records": [
     {
       "generated_at": "2026-09-12T15:13:27.289827+00:00",
@@ -3876,6 +3876,24 @@
       "transition": "WATCH NEUTRAL -> RISK-OFF · 1/2",
       "investor_action": "HOLD",
       "trader_action": "WAIT",
+      "quality_ready": true
+    },
+    {
+      "generated_at": "2026-09-15T07:14:01.512145+00:00",
+      "btc_price": 77173.2,
+      "btc_change_24h_pct": -0.59,
+      "total_change_24h_pct": -2.3139309079296297,
+      "crowd_score": 56,
+      "crowd_state": "NEUTRAL",
+      "risk_score": 46,
+      "risk_status": "ELEVATED",
+      "regime": "RISK-OFF",
+      "regime_candidate": "RISK-OFF",
+      "regime_confirmed": true,
+      "candidate_count": 2,
+      "transition": "CONFIRMED -> RISK-OFF",
+      "investor_action": "REDUCE RISK",
+      "trader_action": "REDUCE EXPOSURE",
       "quality_ready": true
     }
   ]
