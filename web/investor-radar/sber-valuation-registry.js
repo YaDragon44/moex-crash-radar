@@ -1,4 +1,4 @@
-// Investor Radar R1.8.16 — SBER Valuation Input Registry
+// Investor Radar R1.8.55 — SBER Valuation Input Registry
 // Facts only. Market prices remain runtime MOEX inputs; no guessed historical closes.
 (function(global){
 'use strict';
@@ -27,8 +27,16 @@ function audit(){
  const epsOk=SBER.epsSeries.length>=3&&SBER.epsSeries.every(x=>x.verified===true&&Number(x.eps)>0&&x.source&&x.asOf);
  const capitalOk=SBER.capitalSeries.length>=3&&SBER.capitalSeries.every(x=>x.verified===true&&Number(x.capitalBnRub)>0&&x.source&&x.asOf);
  const bankOk=[2023,2024,2025].every(y=>['roe','cet1','npl','costOfRisk'].every(k=>Number.isFinite(SBER.bankMetrics[y]?.[k])));
- return {status:epsOk&&capitalOk&&bankOk?'VERIFIED_INPUT':'LOCK',epsOk,capitalOk,bankOk,historicalPriceGate:'RUNTIME_MOEX_REQUIRED',peerPriceGate:'RUNTIME_MOEX_REQUIRED',bookValuePerShareGate:'ATTRIBUTABLE_EQUITY_AND_SHARE_BASIS_REQUIRED',bankValuationGate:'PB_ROE_REQUIRED'};
+ return {status:epsOk&&capitalOk&&bankOk?'VERIFIED_INPUT':'LOCK',epsOk,capitalOk,bankOk,historicalPriceGate:'RUNTIME_MOEX_REQUIRED',peerPriceGate:'RUNTIME_MOEX_REQUIRED',bookValuePerShareGate:'ISSUER_REPORTED_COMMON_BVPS_ACCEPTED',bankValuationGate:'PB_ROE_QUALITY_REQUIRED'};
 }
 global.InvestorRadarSberValuation={SBER,audit};
 if(typeof module!=='undefined'&&module.exports)module.exports=global.InvestorRadarSberValuation;
+
+// Production entrypoint currently loads this registry as its final external script.
+// Reuse that single hook to load the already existing bank gates before the inline app runs;
+// no second application architecture or duplicated valuation logic is introduced.
+if(typeof document!=='undefined'&&document.readyState==='loading'){
+ const files=['bank-valuation-gate.js','bank-quality-trend.js','sber-reported-bvps-registry.js','sber-valuation-completeness-gate.js','sber-production-completeness-integration.js'];
+ for(const file of files) document.write('<script src="./'+file+'"><\/script>');
+}
 })(typeof window!=='undefined'?window:globalThis);
