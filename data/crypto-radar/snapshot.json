@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-15T16:12:14.254128+00:00",
+  "generated_at": "2026-09-15T16:29:48.629023+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2622694603306.661,
-    "total_change_24h_pct": -4.800026334706483,
-    "btc_dominance_pct": 58.396460443529506,
-    "btc_cap": 1531560816574.5576,
-    "alt_cap": 1091133786732.1035
+    "total_market_cap": 2622624817142.452,
+    "total_change_24h_pct": -4.924055079995241,
+    "btc_dominance_pct": 58.387674805287624,
+    "btc_cap": 1531289649595.904,
+    "alt_cap": 1091335167546.5481
   },
   "derivatives": {
-    "btc_price": 76317.3,
-    "price_change_24h_pct": -2.71,
+    "btc_price": 76434.1,
+    "price_change_24h_pct": -2.79,
     "oi_usd": 5110446454.987816,
     "oi_change_24h_pct": 0.1399863082542918,
-    "funding_pct": -0.0038000000000000004,
+    "funding_pct": -0.003,
     "long_short_ratio": 1.7401334761473182
   },
   "context": {
-    "stablecoin_market_cap": 306524333748.0,
-    "stablecoin_market_cap_change_24h_pct": -0.012431589152805955,
+    "stablecoin_market_cap": 306527508272.0,
+    "stablecoin_market_cap_change_24h_pct": -0.013376212839955048,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -71,9 +71,9 @@
     "provisional": true,
     "status": "RISK-OFF",
     "candidate": "RISK-OFF",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH RISK-OFF · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> RISK-OFF",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,8 +82,8 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH RISK-OFF · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> RISK-OFF",
+    "confirmed": true
   },
   "action_engine": {
     "investor": "REDUCE RISK",
