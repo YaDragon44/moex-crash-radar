@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-15T18:55:20.480594+00:00",
+  "generated_at": "2026-09-15T19:10:23.141150+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,29 +14,29 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2593016316289.936,
-    "total_change_24h_pct": -6.74343395287463,
-    "btc_dominance_pct": 58.42823063984981,
-    "btc_cap": 1515053553810.8213,
-    "alt_cap": 1077962762479.1147
+    "total_market_cap": 2601384048441.1987,
+    "total_change_24h_pct": -6.581295216860219,
+    "btc_dominance_pct": 58.414133171473125,
+    "btc_cap": 1519575942357.9006,
+    "alt_cap": 1081808106083.2981
   },
   "derivatives": {
-    "btc_price": 75889.4,
-    "price_change_24h_pct": -4.18,
-    "oi_usd": 5088845633.14896,
-    "oi_change_24h_pct": -0.24142039643370028,
-    "funding_pct": 0.0007,
-    "long_short_ratio": 1.6937949268776336
+    "btc_price": 76025.3,
+    "price_change_24h_pct": -3.77,
+    "oi_usd": 4988642278.516326,
+    "oi_change_24h_pct": -2.2932017098098667,
+    "funding_pct": 0.002,
+    "long_short_ratio": 1.7112345151644597
   },
   "context": {
-    "stablecoin_market_cap": 306469985760.0,
-    "stablecoin_market_cap_change_24h_pct": -0.08123109331505951,
+    "stablecoin_market_cap": 306449624985.0,
+    "stablecoin_market_cap_change_24h_pct": -0.10388692814046196,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
     "model": "v2-provisional",
     "factors": {
-      "oi_price": 40,
+      "oi_price": 35,
       "funding": 50,
       "long_short": 85,
       "liquidation_risk": null,
@@ -47,7 +47,7 @@
     "derivative_factor_count": 3,
     "external_context_present": true,
     "quality_passed": true,
-    "score": 51,
+    "score": 50,
     "state": "NEUTRAL",
     "action": "WAIT"
   },
@@ -71,7 +71,7 @@
     "provisional": true,
     "status": "RISK-OFF",
     "candidate": "RISK-OFF",
-    "candidate_count": 10,
+    "candidate_count": 11,
     "confirmed": true,
     "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
