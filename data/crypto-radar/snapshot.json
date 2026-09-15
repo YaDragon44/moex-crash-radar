@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-15T21:40:24.327961+00:00",
+  "generated_at": "2026-09-15T21:51:58.833180+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2589485450931.8877,
-    "total_change_24h_pct": -7.024766648308513,
-    "btc_dominance_pct": 58.48915620700532,
-    "btc_cap": 1514568190353.2278,
-    "alt_cap": 1074917260578.6599
+    "total_market_cap": 2594197837636.203,
+    "total_change_24h_pct": -6.94574750004788,
+    "btc_dominance_pct": 58.482957721381304,
+    "btc_cap": 1517163624593.7688,
+    "alt_cap": 1077034213042.4343
   },
   "derivatives": {
-    "btc_price": 75665.5,
-    "price_change_24h_pct": -3.97,
+    "btc_price": 75506.2,
+    "price_change_24h_pct": -4.12,
     "oi_usd": 4946406417.56952,
     "oi_change_24h_pct": -1.4272351862809174,
     "funding_pct": 0.0019000000000000002,
     "long_short_ratio": 1.7159062050283587
   },
   "context": {
-    "stablecoin_market_cap": 306321912901.0,
-    "stablecoin_market_cap_change_24h_pct": -0.15075263960310226,
+    "stablecoin_market_cap": 306342337322.0,
+    "stablecoin_market_cap_change_24h_pct": -0.1382384413758042,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -55,10 +55,10 @@
     "model": "risk-v1-provisional",
     "provisional": true,
     "coverage_pct": 100,
-    "score": 65,
+    "score": 60,
     "status": "HIGH",
     "components": {
-      "market_stress": 90,
+      "market_stress": 75,
       "leverage": 55,
       "funding_extreme": 20,
       "positioning_extreme": 85,
@@ -71,7 +71,7 @@
     "provisional": true,
     "status": "RISK-OFF",
     "candidate": "RISK-OFF",
-    "candidate_count": 21,
+    "candidate_count": 22,
     "confirmed": true,
     "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
@@ -89,8 +89,8 @@
     "investor": "REDUCE RISK",
     "trader": "REDUCE EXPOSURE",
     "why": [
-      "Market stress 90/100",
       "Long/Short extremity 85/100",
+      "Market stress 75/100",
       "Price/OI leverage 55/100"
     ],
     "provisional": true
