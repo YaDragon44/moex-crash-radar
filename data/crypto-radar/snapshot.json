@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-15T22:11:41.657595+00:00",
+  "generated_at": "2026-09-15T22:27:19.486201+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2582384201104.35,
-    "total_change_24h_pct": -6.809217867661374,
-    "btc_dominance_pct": 58.47039132614531,
-    "btc_cap": 1509930147930.2646,
-    "alt_cap": 1072454053174.0854
+    "total_market_cap": 2576752159951.2744,
+    "total_change_24h_pct": -6.999683938854227,
+    "btc_dominance_pct": 58.442864910356754,
+    "btc_cap": 1505927783915.0232,
+    "alt_cap": 1070824376036.2512
   },
   "derivatives": {
-    "btc_price": 75395.6,
-    "price_change_24h_pct": -4.28,
+    "btc_price": 75486.2,
+    "price_change_24h_pct": -3.86,
     "oi_usd": 4918282777.51776,
     "oi_change_24h_pct": -1.4564374283204895,
-    "funding_pct": 0.003,
+    "funding_pct": 0.0031999999999999997,
     "long_short_ratio": 1.7173027989821883
   },
   "context": {
-    "stablecoin_market_cap": 306301636984.0,
-    "stablecoin_market_cap_change_24h_pct": -0.15181155994352658,
+    "stablecoin_market_cap": 306299153816.0,
+    "stablecoin_market_cap_change_24h_pct": -0.15611632791016072,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -71,7 +71,7 @@
     "provisional": true,
     "status": "RISK-OFF",
     "candidate": "RISK-OFF",
-    "candidate_count": 23,
+    "candidate_count": 24,
     "confirmed": true,
     "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
