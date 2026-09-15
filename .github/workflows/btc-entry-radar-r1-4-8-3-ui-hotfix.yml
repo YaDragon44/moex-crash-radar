@@ -25,6 +25,7 @@ jobs:
           s=s.replace('<article class="metric deltacard"><div class="cap">△ Δ к 4H close</div><div class="value" id="deltaPct">—</div><div class="desc" id="deltaUsd">—</div><div class="meta">Live price против strategy close</div></article>','')
           s=s.replace('grid-template-columns:1.08fr 1fr .94fr 1fr 1fr .96fr','grid-template-columns:1.15fr 1fr 1fr 1fr')
           s=s.replace('<div class="context" id="context">—</div>','<div class="context" id="context">—</div><div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--line);color:#86a6c4;font-size:13px">4H close used by model: <b id="strategyPrice" style="color:#cfe7f8">—</b> <span id="strategyTime"></span><span id="deltaPct" style="display:none"></span><span id="deltaUsd" style="display:none"></span></div>')
+          s='\n'.join(line.rstrip() for line in s.splitlines())+'\n'
           p.write_text(s,encoding='utf-8')
           assert 'BTC NOW · OKX' in s
           assert '4H STRATEGY CLOSE</div><div class="value"' not in s
