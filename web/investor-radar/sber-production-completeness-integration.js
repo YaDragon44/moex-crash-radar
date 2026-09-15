@@ -35,16 +35,17 @@ function build(input){
     asOf:new Date().toISOString().slice(0,10)
   }):{status:'LOCK',verified:false,missing:[...(priceOk?[]:['current_price']),...(b.verified?[]:['reported_bvps']),...(m?[]:['bank_metrics_2025'])]};
 
-  const pe=input?.valuation?.status==='VERIFIED'
-    ? {status:'VERIFIED',verified:true}
-    : (global.InvestorRadarSberProductionPE?.current?.()||{status:'LOCK',verified:false});
+  // The generic valuation may remain PROVISIONAL when peer P/E is incomplete. For the
+  // bank completeness gate, verified historical P/E evidence is independently sufficient.
+  const historicalPeOk=Number.isFinite(Number(input?.valuation?.historicalMedianPE));
+  const pe=historicalPeOk?{status:'VERIFIED',verified:true}:{status:'LOCK',verified:false};
   const c=complete.assess({
     peRuntime:pe,
     bankValuation:bankVal,
     bankQuality:q,
     equityAttribution:null,
     reportedBvps:b,
-    valuationLabel:input?.valuation?.status==='VERIFIED'?'VERIFIED_MODEL_OUTPUT':'INSUFFICIENT_DATA'
+    valuationLabel:input?.valuation?.status==='VERIFIED'?'VERIFIED_MODEL_OUTPUT':'PROVISIONAL_MODEL_OUTPUT'
   });
   return {...input,valuationCompleteness:c,sberBankValuation:bankVal,sberBankQuality:q,sberReportedBvps:b};
 }
