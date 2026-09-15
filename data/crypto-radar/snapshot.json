@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-15T01:12:26.804998+00:00",
+  "generated_at": "2026-09-15T01:31:57.550523+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2668365191469.552,
-    "total_change_24h_pct": -0.5685503820340203,
-    "btc_dominance_pct": 58.381218913137204,
-    "btc_cap": 1557824123833.7915,
-    "alt_cap": 1110541067635.7603
+    "total_market_cap": 2672736509447.7505,
+    "total_change_24h_pct": -0.45443953585120983,
+    "btc_dominance_pct": 58.390505173764964,
+    "btc_cap": 1560624349830.1938,
+    "alt_cap": 1112112159617.5566
   },
   "derivatives": {
-    "btc_price": 77830.8,
-    "price_change_24h_pct": 1.42,
+    "btc_price": 77912.0,
+    "price_change_24h_pct": 1.46,
     "oi_usd": 4878550202.40024,
     "oi_change_24h_pct": -2.1468539178350787,
     "funding_pct": 0.01,
     "long_short_ratio": 1.1261950286806883
   },
   "context": {
-    "stablecoin_market_cap": 306947413486.0,
-    "stablecoin_market_cap_change_24h_pct": 0.18497477531229656,
+    "stablecoin_market_cap": 307011523225.0,
+    "stablecoin_market_cap_change_24h_pct": 0.20314536415202422,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -41,13 +41,13 @@
       "long_short": 70,
       "liquidation_risk": null,
       "news": null,
-      "flows": 65
+      "flows": 80
     },
     "coverage_pct": 70,
     "derivative_factor_count": 3,
     "external_context_present": true,
     "quality_passed": true,
-    "score": 66,
+    "score": 69,
     "state": "GREED",
     "action": "REDUCE"
   },
@@ -55,14 +55,14 @@
     "model": "risk-v1-provisional",
     "provisional": true,
     "coverage_pct": 100,
-    "score": 37,
+    "score": 36,
     "status": "MODERATE",
     "components": {
       "market_stress": 40,
       "leverage": 30,
       "funding_extreme": 45,
       "positioning_extreme": 40,
-      "liquidity_context": 35
+      "liquidity_context": 20
     },
     "reason": "Provisional composite; historical calibration required"
   },
@@ -71,7 +71,7 @@
     "provisional": true,
     "status": "NEUTRAL",
     "candidate": "NEUTRAL",
-    "candidate_count": 50,
+    "candidate_count": 51,
     "confirmed": true,
     "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
