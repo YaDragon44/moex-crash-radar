@@ -1,0 +1,63 @@
+name: OFZ Radar R0.5.10.1 Visual QA + Production Validation
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/ofz-radar-r05101-production-validation.yml'
+permissions:
+  contents: read
+jobs:
+  production-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate public dashboard HTML
+        run: |
+          set -euo pipefail
+          URL='https://yadragon44.github.io/moex-crash-radar/ofz-radar/'
+          for i in 1 2 3 4 5 6; do
+            curl -fsSL --retry 3 --retry-delay 5 "$URL" -o /tmp/ofz.html && break
+            sleep 10
+          done
+          test -s /tmp/ofz.html
+          grep -q 'Для долгосрочного инвестора' /tmp/ofz.html
+          grep -q 'Рынок сейчас' /tmp/ofz.html
+          grep -q 'Рекомендация' /tmp/ofz.html
+          grep -q 'investorSummary' /tmp/ofz.html
+          grep -q 'renderInvestorSummary' /tmp/ofz.html
+          grep -q 'signalView' /tmp/ofz.html
+          grep -q 'portfolioView' /tmp/ofz.html
+          grep -q 'strategyView' /tmp/ofz.html
+      - name: Validate public live snapshot
+        run: |
+          set -euo pipefail
+          DATA='https://raw.githubusercontent.com/YaDragon44/moex-crash-radar/main/web/ofz-radar/data/current.json'
+          curl -fsSL --retry 3 --retry-delay 5 "$DATA" -o /tmp/current.json
+          python - <<'PY'
+          import json
+          d=json.load(open('/tmp/current.json'))
+          pts=d.get('curve',{}).get('points',[])
+          y10=next((p.get('yield') for p in pts if p.get('years')==10),None)
+          assert y10 is not None and 0 < float(y10) < 50, y10
+          assert d.get('rawRegime') in ['A','B','C','D','E']
+          assert len(d.get('bonds',[])) >= 4
+          assert d.get('fetchedAt')
+          print('LIVE SNAPSHOT PASS', '10Y=',y10,'regime=',d.get('rawRegime'),'confirmed=',d.get('confirmedRegime',{}).get('id'))
+          PY
+      - name: Visual layout static QA
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          h=open('/tmp/ofz.html',encoding='utf-8').read()
+          checks={
+            'desktop max width 1920':'max-width:1920px' in h,
+            'responsive breakpoint':'@media(max-width:1100px)' in h,
+            'investor 3-column layout':'investor-grid' in h and 'repeat(3,1fr)' in h,
+            'summary after main views':h.find('id="investorSummary"') > h.find('id="strategyView"'),
+            'live data source':'raw.githubusercontent.com/YaDragon44/moex-crash-radar/main/web/ofz-radar/data/current.json' in h,
+          }
+          bad=[k for k,v in checks.items() if not v]
+          print(checks)
+          assert not bad, bad
+          PY
+      - name: Production validation PASS
+        run: echo 'R0.5.10.1 PASS — public HTML, live snapshot, investor summary and responsive static visual contract verified.'
