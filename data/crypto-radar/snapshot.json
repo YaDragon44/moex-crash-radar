@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-16T16:17:20.491643+00:00",
+  "generated_at": "2026-09-16T16:40:57.792507+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2599014468536.4673,
-    "total_change_24h_pct": -3.763988940054455,
-    "btc_dominance_pct": 58.547809637798544,
-    "btc_cap": 1521666043497.5725,
-    "alt_cap": 1077348425038.8948
+    "total_market_cap": 2589805993392.557,
+    "total_change_24h_pct": -3.870723752170894,
+    "btc_dominance_pct": 58.53117491669227,
+    "btc_cap": 1515843875995.5774,
+    "alt_cap": 1073962117396.9797
   },
   "derivatives": {
-    "btc_price": 75725.0,
-    "price_change_24h_pct": -0.86,
+    "btc_price": 75683.2,
+    "price_change_24h_pct": -0.81,
     "oi_usd": 5080723051.89304,
     "oi_change_24h_pct": -0.4543880134946998,
-    "funding_pct": 0.0052,
+    "funding_pct": 0.0009,
     "long_short_ratio": 1.807988214110329
   },
   "context": {
-    "stablecoin_market_cap": 305823101213.0,
-    "stablecoin_market_cap_change_24h_pct": -0.2058693303102599,
+    "stablecoin_market_cap": 305846391617.0,
+    "stablecoin_market_cap_change_24h_pct": -0.19802997429739788,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -41,13 +41,13 @@
       "long_short": 85,
       "liquidation_risk": null,
       "news": null,
-      "flows": 20
+      "flows": 35
     },
     "coverage_pct": 70,
     "derivative_factor_count": 3,
     "external_context_present": true,
     "quality_passed": true,
-    "score": 51,
+    "score": 54,
     "state": "NEUTRAL",
     "action": "WAIT"
   },
@@ -55,14 +55,14 @@
     "model": "risk-v1-provisional",
     "provisional": true,
     "coverage_pct": 100,
-    "score": 53,
+    "score": 51,
     "status": "ELEVATED",
     "components": {
       "market_stress": 55,
       "leverage": 45,
       "funding_extreme": 20,
       "positioning_extreme": 85,
-      "liquidity_context": 75
+      "liquidity_context": 55
     },
     "reason": "Provisional composite; historical calibration required"
   },
@@ -71,7 +71,7 @@
     "provisional": true,
     "status": "RISK-OFF",
     "candidate": "RISK-OFF",
-    "candidate_count": 31,
+    "candidate_count": 32,
     "confirmed": true,
     "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
@@ -90,8 +90,8 @@
     "trader": "REDUCE EXPOSURE",
     "why": [
       "Long/Short extremity 85/100",
-      "Stablecoin liquidity 75/100",
-      "Market stress 55/100"
+      "Market stress 55/100",
+      "Stablecoin liquidity 55/100"
     ],
     "provisional": true
   }
