@@ -1,24 +1,24 @@
 📊 CRYPTO 4H MONITOR
-15.09.2026 22:00 MSK
+16.09.2026 06:00 MSK
 
-BTC FILTER: DEFENSIVE / FILTER LOST — BTC ~$77.0k, still below the ~$78k recovery gate.
-BTC: ~$76.97k | WAIT / FILTER LOST | 7/19
-GRAM: ~$1.34 | WAIT / WEAK | 6/19
-DOT: ~$0.990 | INVALID / BELOW $1.00 | 4/19
+BTC FILTER: DEFENSIVE / FILTER LOST — BTC remains below the ~$78k recovery gate after the U.S. Senate failed to advance the crypto regulatory bill.
+BTC: ~$75.9k reference from Reuters post-vote reaction | WAIT / FILTER LOST | 6/19
+GRAM: fresh synchronized quote not reliably confirmed | WAIT / DATA LIMITED | 5/19
+DOT: ~$0.9486 | INVALID / WEAK | 4/19
 
 PRIORITY: BTC → DOT → GRAM.
 BEST CANDIDATE: BTC recovery only; no alt READY.
 STATUS: NO TRADE
 
-FACT: CoinMarketCap live conversion shows BTC about $76,973, down roughly 1.3% over 24h. GRAM is about $1.34, down ~0.54% over 24h, with ~$40.6M 24h volume. DOT is about $0.990, down ~2.9% over 24h, with ~$127.5M 24h volume; its 24h low is ~$0.989 and high ~$1.04. A synchronized live OI + funding + liquidations + CVD/order-flow snapshot for all BTC/GRAM/DOT was not reliably obtained and is not scored.
-CALCULATED: DOT/BTC ≈ 0.00001286; GRAM/BTC ≈ 0.00001741. Ratios use near-current public quotes but timestamps are not perfectly synchronized.
-INFERENCE: Market regime remains DEFENSIVE. BTC remains below ~$78k and DOT has now lost $1.00 again, so alt-long quality deteriorated. No verified Breakout+Retest, False Breakout, Trend Pullback, Reversal, Range Breakout, Liquidity Sweep, Wyckoff Spring/Upthrust or completed Elliott setup is READY.
+FACT: Reuters reports Bitcoin fell about 4% to $75,908 after the U.S. Senate failed to advance the comprehensive crypto regulatory bill. CoinGecko currently shows DOT around $0.9486 with about $145.1M 24h volume; its historical-data page shows 16 Sep market cap ~$1.608B and volume ~$144.2M. A reliable synchronized live GRAM quote and synchronized OI + funding + liquidations + CVD/order-flow snapshot for all three assets were not obtained, so those fields are not scored.
+CALCULATED: DOT/BTC ≈ 0.00001250 using the Reuters BTC reference and current CoinGecko DOT quote; timestamps are not synchronized, so treat as indicative only. GRAM/BTC is not calculated without a reliable fresh GRAM quote.
+INFERENCE: Market regime remains DEFENSIVE. DOT has extended below $1.00 and is materially weaker than the prior recovery thesis. No verified Breakout+Retest, False Breakout, Trend Pullback, Reversal, Range Breakout, Liquidity Sweep, Wyckoff Spring/Upthrust or completed Elliott setup is READY.
 
-LIQUIDITY / EVENT RISK: HIGH — current reporting places major BTC liquidation interest around ~$76k below and ~$82k above into the Fed decision window. The U.S. Senate CLARITY Act procedural vote is also a binary crypto-specific catalyst; Reuters reports 60 votes are required and passage is uncertain. U.S. 10Y yields have reached roughly 5.04%, while higher oil reinforces inflation/rate risk.
+EVENT RISK: VERY HIGH — the Federal Reserve decision is due today. Reuters reports markets price roughly a 90% probability of a 25 bp hike; the dollar is near multi-week highs and oil remains above $100. This is an unfavorable event window for premature crypto longs.
 
-KEY TRIGGER: BTC reclaim/hold >~$78k → confirmed 1H/4H Higher Low → acceptance toward $80k. DOT needs reclaim $1.00 → reclaim/hold $1.03 → 1H/4H Higher Low → local-high break before a new long setup is valid.
+KEY TRIGGER: BTC reclaim/hold >~$78k → confirmed 1H/4H Higher Low → acceptance toward $80k. DOT first needs reclaim $1.00, then reclaim/hold $1.03 → Higher Low → local-high break before a new long setup is valid.
 ENTRY / STOP / TP1 / TP2 / TP3 / R:R: NOT SET — no confirmed high-quality trigger.
 
-ДЕЙСТВИЕ СЕЙЧАС: NO TRADE. Do not catch DOT below $1.00. Preserve capital through the CLARITY/FOMC event window and wait for BTC to restore the market filter before considering alt longs.
+ДЕЙСТВИЕ СЕЙЧАС: NO TRADE. Preserve capital ahead of the Fed decision. Do not catch DOT weakness. Wait for BTC to restore the market filter before considering alt longs.
 
-Источник: CoinMarketCap + Reuters + current liquidation-zone reporting | Данные получены: 15.09.2026 21:58–22:00 MSK
+Источник: Reuters + CoinGecko | Данные получены: 16.09.2026 05:58–06:00 MSK; BTC reference is Reuters post-vote market level, DOT is current CoinGecko quote.
