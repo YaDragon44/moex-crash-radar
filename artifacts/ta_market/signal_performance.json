@@ -1,6 +1,6 @@
 {
   "release": "R0.9.2 Production Observation",
-  "generated_at": "2026-09-15T18:51:57+03:00",
+  "generated_at": "2026-09-16T10:16:26+03:00",
   "definition": "Model signal quality: WIN if TP2 is reached before Stop after READY; LOSS if Stop first; AMBIGUOUS if both occur in one candle and order is unknown. This is not actual account P/L.",
   "sample_quality": {
     "status": "INSUFFICIENT",
