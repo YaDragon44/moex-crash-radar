@@ -2,13 +2,25 @@
   "schema_version": 2,
   "release": "R1.8",
   "dashboard_release": "R0.6.2",
-  "generated_at": "2026-09-16T12:19:30.160245+03:00",
+  "generated_at": "2026-09-16T12:34:48.784685+03:00",
   "ticker": "VKCO",
   "mode": "run",
   "health": "OK",
   "trade": {
     "status": "WAIT",
-    "reason": "NO_TRIGGER"
+    "reason": "EVENT_RISK",
+    "setup": "Adaptive Wyckoff Spring",
+    "score": 11,
+    "entry": 118.65,
+    "stop": 118.1,
+    "tp1": 120.0,
+    "tp2": 120.03,
+    "tp3": 120.85,
+    "rr_tp2": 2.5,
+    "rvol": 2.63,
+    "support": 118.35,
+    "resistance": 120.0,
+    "signal_id": "VKCO:ADAPTIVE_SPRING:2026-09-16T12:09:59+03:00"
   },
   "position": null,
   "journal": {
@@ -26,15 +38,6 @@
     "max_risk_rub": 5000.0
   },
   "candles": [
-    {
-      "t": "2026-09-15T17:00:00+03:00",
-      "end": "2026-09-15T17:09:59+03:00",
-      "o": 120.0,
-      "h": 120.0,
-      "l": 119.7,
-      "c": 119.75,
-      "v": 8052.0
-    },
     {
       "t": "2026-09-15T17:10:00+03:00",
       "end": "2026-09-15T17:19:59+03:00",
@@ -673,16 +676,44 @@
       "l": 118.3,
       "c": 118.6,
       "v": 75660.0
+    },
+    {
+      "t": "2026-09-16T12:00:00+03:00",
+      "end": "2026-09-16T12:09:59+03:00",
+      "o": 118.6,
+      "h": 118.75,
+      "l": 118.5,
+      "c": 118.65,
+      "v": 31179.0
     }
   ],
   "market": {
-    "price": 118.6,
-    "candle_end": "2026-09-16T11:59:59+03:00",
-    "volume": 75660.0,
-    "age_min": 19,
+    "price": 118.65,
+    "candle_end": "2026-09-16T12:09:59+03:00",
+    "volume": 31179.0,
+    "age_min": 24,
     "fresh": true,
     "support": 118.35,
     "resistance": 120.0,
-    "avg_range": 0.35
+    "avg_range": 0.335
+  },
+  "imoex": {
+    "ok": true,
+    "score": 1,
+    "close": 2325.18,
+    "sma20": 2330.5825,
+    "return_1h_pct": -0.21800142473373807,
+    "time": "2026-09-16T12:34:48+03:00"
+  },
+  "event_risk": {
+    "ok": false,
+    "window_days": 3,
+    "source": "https://vk.company.ru/ru/investors/info/",
+    "items": [
+      {
+        "date": "15 сентября 2026",
+        "text": "15 сентября 2026 VK погасила выпуск облигаций серии 001P-01 объемом 15 млрд рублей 11 сентября 2026 VK продолжает работу над снижением долговой нагрузки <div class=\"Publications_publicationBody___FYql"
+      }
+    ]
   }
 }
