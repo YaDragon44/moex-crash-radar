@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-17T12:59:34.508417+00:00",
+  "generated_at": "2026-09-17T13:20:17.231718+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2632671323931.5215,
-    "total_change_24h_pct": -1.6751123885503545,
-    "btc_dominance_pct": 58.330781265178786,
-    "btc_cap": 1535657751393.5823,
-    "alt_cap": 1097013572537.9392
+    "total_market_cap": 2634162993038.1704,
+    "total_change_24h_pct": -1.3576363829510645,
+    "btc_dominance_pct": 58.311072968201216,
+    "btc_cap": 1536008704971.8406,
+    "alt_cap": 1098154288066.3298
   },
   "derivatives": {
-    "btc_price": 76692.6,
-    "price_change_24h_pct": 1.01,
-    "oi_usd": 4925231706.45402,
-    "oi_change_24h_pct": -3.274927666700378,
-    "funding_pct": 0.0036999999999999997,
-    "long_short_ratio": 1.653440366972477
+    "btc_price": 76623.1,
+    "price_change_24h_pct": 1.16,
+    "oi_usd": 4969203223.90748,
+    "oi_change_24h_pct": -1.84509561974171,
+    "funding_pct": 0.0031999999999999997,
+    "long_short_ratio": 1.5374906646751307
   },
   "context": {
-    "stablecoin_market_cap": 305728920273.0,
-    "stablecoin_market_cap_change_24h_pct": -0.022077485363980465,
+    "stablecoin_market_cap": 305726992961.0,
+    "stablecoin_market_cap_change_24h_pct": -0.004660951827628601,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -71,9 +71,9 @@
     "provisional": true,
     "status": "NEUTRAL",
     "candidate": "NEUTRAL",
-    "candidate_count": 2,
+    "candidate_count": 3,
     "confirmed": true,
-    "transition": "CONFIRMED -> NEUTRAL",
+    "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,7 +82,7 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "CONFIRMED -> NEUTRAL",
+    "status": "STABLE",
     "confirmed": true
   },
   "action_engine": {
