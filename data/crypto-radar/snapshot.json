@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-17T00:44:56.662219+00:00",
+  "generated_at": "2026-09-17T00:59:10.482238+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2620599335672.981,
-    "total_change_24h_pct": -1.481377793240666,
-    "btc_dominance_pct": 58.410087936709864,
-    "btc_cap": 1530694376435.4229,
-    "alt_cap": 1089904959237.5581
+    "total_market_cap": 2616936692438.2925,
+    "total_change_24h_pct": -1.5984162069979924,
+    "btc_dominance_pct": 58.42983729447884,
+    "btc_cap": 1529071851491.2102,
+    "alt_cap": 1087864840947.0823
   },
   "derivatives": {
-    "btc_price": 76385.0,
-    "price_change_24h_pct": 0.82,
+    "btc_price": 76307.7,
+    "price_change_24h_pct": 0.76,
     "oi_usd": 4955011432.53988,
     "oi_change_24h_pct": -0.6342181691761151,
-    "funding_pct": 0.0012000000000000001,
+    "funding_pct": 0.00030000000000000003,
     "long_short_ratio": 1.733087232164353
   },
   "context": {
-    "stablecoin_market_cap": 305660674323.0,
-    "stablecoin_market_cap_change_24h_pct": -0.030209299760808328,
+    "stablecoin_market_cap": 305716713685.0,
+    "stablecoin_market_cap_change_24h_pct": -0.027536836751829163,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -71,9 +71,9 @@
     "provisional": true,
     "status": "NEUTRAL",
     "candidate": "NEUTRAL",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH NEUTRAL · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> NEUTRAL",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,8 +82,8 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH NEUTRAL · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> NEUTRAL",
+    "confirmed": true
   },
   "action_engine": {
     "investor": "HOLD",
