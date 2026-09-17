@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-17T12:44:52.997780+00:00",
+  "generated_at": "2026-09-17T12:59:34.508417+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2643592360761.9727,
-    "total_change_24h_pct": -1.4107804696201844,
-    "btc_dominance_pct": 58.325727558782056,
-    "btc_cap": 1541894478102.8032,
-    "alt_cap": 1101697882659.1694
+    "total_market_cap": 2632671323931.5215,
+    "total_change_24h_pct": -1.6751123885503545,
+    "btc_dominance_pct": 58.330781265178786,
+    "btc_cap": 1535657751393.5823,
+    "alt_cap": 1097013572537.9392
   },
   "derivatives": {
-    "btc_price": 76841.1,
-    "price_change_24h_pct": 1.22,
+    "btc_price": 76692.6,
+    "price_change_24h_pct": 1.01,
     "oi_usd": 4925231706.45402,
     "oi_change_24h_pct": -3.274927666700378,
-    "funding_pct": 0.005,
+    "funding_pct": 0.0036999999999999997,
     "long_short_ratio": 1.653440366972477
   },
   "context": {
-    "stablecoin_market_cap": 305737682472.0,
-    "stablecoin_market_cap_change_24h_pct": -0.015036241795673977,
+    "stablecoin_market_cap": 305728920273.0,
+    "stablecoin_market_cap_change_24h_pct": -0.022077485363980465,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -69,11 +69,11 @@
   "regime": {
     "model": "regime-v1-provisional",
     "provisional": true,
-    "status": "RISK-OFF",
+    "status": "NEUTRAL",
     "candidate": "NEUTRAL",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH RISK-OFF -> NEUTRAL · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> NEUTRAL",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,12 +82,12 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH RISK-OFF -> NEUTRAL · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> NEUTRAL",
+    "confirmed": true
   },
   "action_engine": {
-    "investor": "REDUCE RISK",
-    "trader": "REDUCE EXPOSURE",
+    "investor": "HOLD",
+    "trader": "WAIT",
     "why": [
       "Long/Short extremity 85/100",
       "Stablecoin liquidity 55/100",
