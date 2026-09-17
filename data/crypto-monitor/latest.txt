@@ -1,24 +1,24 @@
 📊 CRYPTO 4H MONITOR
-17.09.2026 22:00 MSK
+18.09.2026 02:00 MSK
 
-BTC FILTER: WAIT / NEAR RECOVERY GATE — Coinbase live page shows BTC ~$77,438, now only ~0.72% below the $78k recovery gate.
-BTC: ~$77,438 | WAIT / NEAR TRIGGER | 9/19
-GRAM (prev. TON): LIVE SYNCHRONIZED PRICE NOT VERIFIED | WAIT / DATA LIMITED | 5/19
-DOT: LIVE SYNCHRONIZED PRICE NOT RELIABLY VERIFIED | WAIT / DATA CONFLICT | 8/19
+BTC FILTER: WAIT / RECOVERY REJECTED — BTC ~$76.2–76.8k, back below the $78k recovery gate after the prior approach.
+BTC: ~$76,206–76,758 | WAIT / FAILED $78K APPROACH | 7/19
+GRAM (prev. TON): ~$1.33–1.34 | WAIT / RECOVERY | 7/19
+DOT: ~R$5.51 CMC reference (~$1.04 at contemporaneous FX, USD conversion approximate) | WAIT / RELATIVE-STRENGTH WATCH | 9/19
 
-BEST CANDIDATE: BTC — recovery watch. Price has advanced materially from ~$76,622 at the prior 18:00 run and is approaching the $78k structural gate, but a reclaim/hold is not yet verified.
-MARKET REGIME: DEFENSIVE → EARLY RECOVERY ATTEMPT. CoinDesk reported BTC +0.88% around $76,621 earlier today after the Fed hike; Coinbase now shows ~$77,437.74.
-FACT: BTC current Coinbase reference ~$77,437.74; 24h volume ~$30.69B. The Fed raised rates 25 bp to 3.75–4.00%; Reuters reports 16 of 18 policymakers expect at least one additional hike in 2026.
-FACT: Reliable synchronized 22:00 MSK GRAM and DOT prices were not verified. Conflicting/stale DOT web references were found, so they are not treated as live market data.
-CALCULATED: BTC is ~0.72% below $78,000. From the prior monitor reference ~$76,622, BTC has improved by ~1.06%.
-INFERENCE: BTC is close enough to $78k that the next 1H structure matters. A clean reclaim/hold above $78k followed by a Higher Low would materially improve the long filter. Failure at $78k followed by loss of ~$76.5k would favor a False Breakout / rejection interpretation.
-FLOW / DERIVATIVES: no reliable synchronized 22:00 live OI + funding + liquidation + CVD/order-flow snapshot was verified for BTC/GRAM/DOT; no points are awarded for unavailable data.
-SETUP RADAR: BTC — WAIT for Breakout+Retest above $78k. DOT — prior $1.03 recovery thesis cannot be upgraded without reliable fresh price confirmation. GRAM — WAIT / data limited. No verified READY setup.
-EVENT RISK: HIGH — post-Fed repricing continues; policy remains restrictive and another 2026 hike is expected by most FOMC participants. Positive regulatory offset: U.S. SEC announced conditional exemptions enabling tokenized-stock trading, but this does not override BTC technical confirmation.
+BEST CANDIDATE: DOT — relative-strength watch, but NOT READY while BTC filter remains closed.
+FACT: CoinMarketCap live BTC page returned ~$76,206 with 24h volume ~$22.39B and +0.76%/24h; its live converter returned ~$76,758. This source-level variation is preserved rather than averaged.
+FACT: GRAM CoinMarketCap page shows ~$1.33–1.34, +2.9%/24h, 24h range ~$1.30–1.35 and volume ~$52.22M.
+FACT: DOT CoinMarketCap BRL page shows R$5.51, +9.48%/24h, 24h range R$5.00–5.53 and volume R$1.24B. A clean synchronized USD quote was not returned in this run, so no false precision is used.
+CALCULATED: BTC is roughly 1.6–2.3% below $78k depending on the contemporaneous CMC reference. GRAM/BTC is approximately 0.0000174 using $1.34 / $76.76k. DOT/BTC is not reported because the fresh DOT source is BRL-denominated and a synchronized FX conversion was not independently verified.
+INFERENCE: BTC's prior near-$78k recovery attempt has not converted into breakout+retest; the filter deteriorates from NEAR TRIGGER back to WAIT. DOT is outperforming strongly on the day and remains the best altcoin candidate, but BTC confirmation is missing. GRAM is recovering but weaker than DOT.
+FLOW / DERIVATIVES: no reliable synchronized 02:00 MSK BTC/GRAM/DOT OI + funding + liquidations + CVD/order-flow snapshot was verified. No Confluence points are awarded for unavailable flow data.
+SETUP RADAR: BTC — failed/unfinished $78k recovery attempt; watch False Breakout/rejection versus renewed Breakout+Retest. DOT — Trend/Relative Strength continuation watch; no READY entry without BTC filter and a verified USD structure/retest. GRAM — recovery/range watch. Wyckoff/Elliott labels are not asserted without sufficient structure evidence.
+EVENT RISK: HIGH — post-Fed repricing remains active; crypto also continues to digest the U.S. Senate failure to advance the CLARITY bill. Fresh positive regulatory news around non-custodial software does not override the technical BTC filter.
 
-KEY TRIGGER: BTC reclaim >$78k → hold/retest → confirmed 1H Higher Low; stronger confirmation on 4H acceptance. If triggered, reassess GRAM and DOT relative strength before any altcoin entry.
-ENTRY / STOP / TP1 / TP2 / TP3 / R:R: NOT SET — BTC has not yet confirmed the $78k reclaim.
+KEY TRIGGER: BTC reclaim >$78k → hold/retest → confirmed 1H Higher Low, preferably 4H acceptance. For DOT, require fresh USD quote + hold/retest of the breakout structure while BTC filter is positive.
+ENTRY / STOP / TP1 / TP2 / TP3 / R:R: NOT SET — no verified READY setup.
 
-ДЕЙСТВИЕ СЕЙЧАС: NO TRADE. Watch BTC $78k closely. Do not front-run the breakout. Upgrade only after reclaim + hold/retest; if rejected, remain defensive.
+ДЕЙСТВИЕ СЕЙЧАС: NO TRADE. Do not chase DOT's +9% daily move while BTC remains below $78k. Priority is BTC $78k recovery confirmation; if BTC loses ~$76k decisively, remain defensive and watch for downside liquidity sweep/continuation.
 
-Источник: Coinbase + CoinDesk + Reuters + SEC-related current reports | Данные получены: 17.09.2026 22:00 MSK; BTC live reference ~$77,437.74. GRAM/DOT synchronized live prices not reliably verified.
+Источник: CoinMarketCap + Reuters + current crypto market reports | Данные получены: 18.09.2026 02:00 MSK; BTC CMC references ~$76,206–76,758, GRAM ~$1.33–1.34, DOT R$5.51 (+9.48%/24h).
