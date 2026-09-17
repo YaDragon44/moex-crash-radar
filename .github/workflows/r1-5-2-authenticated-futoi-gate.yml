@@ -6,7 +6,7 @@ on:
       - 'scripts/r1_5_2_authenticated_futoi_adapter.py'
       - 'tests/test_r1_5_2_authenticated_futoi_adapter.py'
       - '.github/workflows/r1-5-2-authenticated-futoi-gate.yml'
-      - 'config/r1_5_2_authenticated_acquisition_contract.json'
+      - 'config/r1_5_2_authenticated_source_contract.json'
       - 'docs/r1_5_2_authenticated_oi_futoi_acquisition_gate.md'
 jobs:
   adapter-gate:
@@ -22,7 +22,7 @@ jobs:
         run: |
           python - <<'PY'
           import json
-          p=json.load(open('config/r1_5_2_authenticated_acquisition_contract.json'))
+          p=json.load(open('config/r1_5_2_authenticated_source_contract.json'))
           assert p['release']=='R1.5.2'
           assert p['production']=='NO-GO'
           assert p['secrets_policy']['runtime_only'] is True
