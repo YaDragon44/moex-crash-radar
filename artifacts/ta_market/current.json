@@ -1,6 +1,6 @@
 {
   "release": "R0.8.5 Execution Risk",
-  "generated_at": "2026-09-17T16:00:33+03:00",
+  "generated_at": "2026-09-17T16:25:01+03:00",
   "source": "MOEX ISS",
   "quality": "OK",
   "context_quality": "OK",
@@ -9,15 +9,15 @@
       "marketdata": {
         "SECID": "SBERP",
         "BOARDID": "TQBR",
-        "LAST": 277.21,
+        "LAST": 276.04,
         "OPEN": 280.52,
         "HIGH": 280.99,
         "LOW": 273.59,
-        "LASTTOPREVPRICE": -1.18,
-        "VOLTODAY": 1925080,
-        "VALTODAY": 534171615,
-        "UPDATETIME": "15:45:37",
-        "SYSTIME": "2026-09-17 16:00:37",
+        "LASTTOPREVPRICE": -1.6,
+        "VOLTODAY": 2085678,
+        "VALTODAY": 578638388,
+        "UPDATETIME": "16:09:14",
+        "SYSTIME": "2026-09-17 16:24:14",
         "SHORTNAME": "Сбербанк-п",
         "LOTSIZE": 1,
         "MINSTEP": 0.01,
@@ -4757,13 +4757,13 @@
           },
           {
             "t": "2026-09-17 00:00:00",
-            "end": "2026-09-17 16:00:34",
+            "end": "2026-09-17 16:23:15",
             "o": 280.52,
             "h": 280.99,
             "l": 273.59,
-            "c": 276.29,
-            "v": 2064388,
-            "value": 572761230.2800002
+            "c": 276.42,
+            "v": 2222156,
+            "value": 616345602.5800002
           }
         ],
         "H1": [
@@ -14777,15 +14777,15 @@
       "marketdata": {
         "SECID": "VKCO",
         "BOARDID": "TQBR",
-        "LAST": 111.95,
+        "LAST": 111.65,
         "OPEN": 110.9,
         "HIGH": 113.65,
         "LOW": 109.05,
-        "LASTTOPREVPRICE": 0.18,
-        "VOLTODAY": 10469697,
-        "VALTODAY": 1162504585,
-        "UPDATETIME": "15:45:44",
-        "SYSTIME": "2026-09-17 16:00:45",
+        "LASTTOPREVPRICE": -0.09,
+        "VOLTODAY": 10645216,
+        "VALTODAY": 1182105560,
+        "UPDATETIME": "16:09:50",
+        "SYSTIME": "2026-09-17 16:24:50",
         "SHORTNAME": "МКПАО \"ВК\"",
         "LOTSIZE": 1,
         "MINSTEP": 0.05,
@@ -19525,13 +19525,13 @@
           },
           {
             "t": "2026-09-17 00:00:00",
-            "end": "2026-09-17 16:00:44",
+            "end": "2026-09-17 16:25:10",
             "o": 110.9,
             "h": 113.65,
             "l": 109.05,
-            "c": 111.5,
-            "v": 10566069,
-            "value": 1173283788.2
+            "c": 111.7,
+            "v": 10707981,
+            "value": 1189112563.3999996
           }
         ],
         "H1": [
@@ -29545,15 +29545,15 @@
       "marketdata": {
         "SECID": "OZPH",
         "BOARDID": "TQBR",
-        "LAST": 42.84,
+        "LAST": 42.95,
         "OPEN": 43.57,
         "HIGH": 43.67,
         "LOW": 42.6,
-        "LASTTOPREVPRICE": -1.68,
-        "VOLTODAY": 584130,
-        "VALTODAY": 25190799,
-        "UPDATETIME": "15:45:49",
-        "SYSTIME": "2026-09-17 16:00:50",
+        "LASTTOPREVPRICE": -1.42,
+        "VOLTODAY": 696880,
+        "VALTODAY": 30025556,
+        "UPDATETIME": "16:09:26",
+        "SYSTIME": "2026-09-17 16:24:26",
         "SHORTNAME": "iОзонФарм",
         "LOTSIZE": 10,
         "MINSTEP": 0.01,
@@ -34273,13 +34273,13 @@
           },
           {
             "t": "2026-09-17 00:00:00",
-            "end": "2026-09-17 16:00:44",
+            "end": "2026-09-17 16:23:15",
             "o": 43.57,
             "h": 43.67,
             "l": 42.6,
-            "c": 42.89,
-            "v": 666340,
-            "value": 28715314.400000002
+            "c": 43.04,
+            "v": 728400,
+            "value": 31380078.900000002
           }
         ],
         "H1": [
@@ -44694,37 +44694,37 @@
   ],
   "context": {
     "breadth": {
-      "advancers": 140,
-      "decliners": 261,
-      "flat": 34,
+      "advancers": 130,
+      "decliners": 270,
+      "flat": 35,
       "total": 435,
-      "advance_ratio": 0.3491271820448878,
-      "time": "2026-09-17 16:00:35"
+      "advance_ratio": 0.325,
+      "time": "2026-09-17 16:23:24"
     },
     "cnyrub": {
       "SECID": "CNYRUB_TOM",
       "BOARDID": "CETS",
-      "LAST": 12.5945,
-      "WAPRICE": 12.5799,
+      "LAST": 12.5875,
+      "WAPRICE": 12.5801,
       "OPEN": 12.585,
       "HIGH": 12.643,
       "LOW": 12.53,
-      "LASTCHANGEPRCNT": 0,
-      "UPDATETIME": "15:45:36",
-      "SYSTIME": "2026-09-17 16:00:36"
+      "LASTCHANGEPRCNT": 0.01,
+      "UPDATETIME": "16:08:25",
+      "SYSTIME": "2026-09-17 16:23:25"
     },
     "brent": {
       "SECID": "BRV6",
-      "LAST": 102.44,
+      "LAST": 102.26,
       "OPEN": 105.7,
       "HIGH": 105.93,
       "LOW": 101.5,
       "LASTCHANGEPRCNT": 0.01,
-      "NUMTRADES": 82921,
-      "VOLTODAY": 567763,
-      "VALTODAY": 49490989164,
-      "UPDATETIME": "15:45:38",
-      "SYSTIME": "2026-09-17 16:00:38",
+      "NUMTRADES": 86740,
+      "VOLTODAY": 592358,
+      "VALTODAY": 51607029937,
+      "UPDATETIME": "16:10:06",
+      "SYSTIME": "2026-09-17 16:25:07",
       "CONTRACT": "BR-10.26",
       "LASTTRADEDATE": "2026-10-01"
     },
