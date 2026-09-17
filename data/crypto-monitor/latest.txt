@@ -1,24 +1,28 @@
-📊 CRYPTO 4H MONITOR
-17.09.2026 06:01 MSK
+📊 CRYPTO 4H MORNING MONITOR
+17.09.2026 10:00 MSK
 
-BTC FILTER: DEFENSIVE / FILTER LOST — BTC $76,562.25 (Reuters latest reference), still below the ~$78k recovery gate.
-BTC: $76,562 | WAIT / FILTER LOST | 7/19
-GRAM: fresh synchronized executable quote not reliably confirmed | WAIT / DATA LIMITED | 5/19
-DOT: fresh synchronized executable quote not reliably confirmed | INVALID prior recovery / DATA LIMITED | 4/19
+BTC FILTER: DEFENSIVE / FILTER LOST — BTC ~$76,500 (CoinMarketCap live conversion reference), still below the $78k recovery gate.
+BTC: ~$76,500 | WAIT / FILTER LOST | 7/19
+GRAM: ~$1.31 | WAIT / WEAK | 5/19
+DOT: ~$1.01 | WAIT / RECLAIM WATCH | 8/19
 
-BEST CANDIDATE: BTC recovery watch; still no READY setup.
-MARKET REGIME: DEFENSIVE / HAWKISH POST-FED.
-FLOW: a reliable synchronized OI + funding + liquidations + CVD/order-flow snapshot for BTC/GRAM/DOT was not obtained; missing fields are not scored.
-SETUPS: no verified READY Breakout+Retest, False Breakout, Trend Pullback, Reversal, Range Breakout, Liquidity Sweep, Wyckoff Spring/Upthrust or completed Elliott setup.
+PRIORITY: BTC → DOT → GRAM.
+BEST CANDIDATE: DOT recovery watch, but BTC filter remains closed; no READY setup.
+MARKET PULSE: DEFENSIVE / HAWKISH POST-FED.
+TREND POWER: BTC recovery attempt remains below $78k; DOT has reclaimed $1.00 but not confirmed $1.03; GRAM is essentially flat/weak around $1.31.
+FLOW PRESSURE: reliable synchronized OI + funding + liquidations + CVD/order-flow for all three assets was not obtained; missing components are not scored. A CryptoQuant market note reports BTC funding has remained negative and highlights ~$79.5k as a potential liquidation-sensitive upside level, but this is not treated as a synchronized live snapshot.
+ENTRY RADAR: no verified READY Breakout+Retest, False Breakout, Trend Pullback, Reversal, Range Breakout, Liquidity Sweep, Wyckoff Spring/Upthrust or completed Elliott setup.
+LIQUIDITY RADAR: BTC $78k is the first recovery gate; ~$79.5k is a reported liquidation-sensitive upside area. DOT $1.00 has been reclaimed; $1.03 remains the next structural gate.
+TRADE QUALITY: LOW / WAIT.
 
-FACT: Reuters reports BTC at $76,562.25 on 17 Sep. The Fed raised rates 25 bp to 3.75%-4.00%, and the dollar index reached a seven-week high at 100.33; markets price about a 90% chance of another Fed hike by end-2026. US 10Y is above the 5% area in current market reporting. The failed CLARITY Act remains a crypto-specific overhang.
-CALCULATED: BTC is about +1.15% versus the prior monitor reference $75,688, but remains ~1.84% below the $78k recovery gate. GRAM/BTC and DOT/BTC are not recalculated because sufficiently fresh synchronized GRAM and DOT USD quotes were not confirmed.
-INFERENCE: The post-Fed bounce is constructive but insufficient to flip the market filter. Hawkish rates, stronger USD and elevated yields keep altcoin-long quality low. A confirmed BTC reclaim/hold above $78k remains the prerequisite for upgrading risk appetite.
+FACT: CoinMarketCap shows BTC live conversion around $76,500 and +~1.2%/24h; GRAM around $1.31 and roughly flat over 24h; DOT around $1.01 with a strong ~7% 24h recovery. Reuters reports the Fed's hawkish stance pushed the dollar index to about 100.3, a seven-week high, while expectations for further tightening increased. The failed CLARITY Act remains a crypto-specific overhang.
+CALCULATED: GRAM/BTC ≈ 0.00001712 and DOT/BTC ≈ 0.00001320 using the contemporaneous CoinMarketCap references; ratios are approximate because page refresh timestamps may differ slightly. BTC remains ~1.96% below $78k. DOT is above $1.00 but still ~1.94% below $1.03.
+INFERENCE: DOT shows the clearest relative recovery of the three and upgrades from INVALID to WAIT, but it is not a standalone long while BTC remains below $78k. A DOT reclaim/hold above $1.03 combined with BTC reclaim/hold above $78k would materially improve trade quality.
 
-EVENT RISK: HIGH — hawkish Fed digestion, potential further tightening, strong USD/elevated Treasury yields; BOJ decision is the next major macro catalyst.
-KEY TRIGGER: BTC reclaim/hold >$78k → confirmed 1H/4H Higher Low → acceptance toward $80k. Loss of $75k/$74k would restore bearish continuation/liquidity-sweep risk. DOT still needs reclaim $1.00 → $1.03 hold → HL → local-high break. GRAM requires fresh synchronized price and relative-strength improvement.
+EVENT RISK: HIGH — hawkish Fed digestion, strong USD/elevated yields, and upcoming BOJ/BOE policy decisions.
+KEY TRIGGER: BTC reclaim/hold >$78k → confirmed 1H/4H Higher Low → acceptance toward $80k. DOT: hold $1.00 → reclaim/hold $1.03 → HL → local-high break. GRAM requires fresh relative-strength improvement.
 ENTRY / STOP / TP1 / TP2 / TP3 / R:R: NOT SET — no confirmed high-quality trigger.
 
-ДЕЙСТВИЕ СЕЙЧАС: NO TRADE. BTC has bounced from the post-Fed lows, but wait for a confirmed reclaim and hold above $78k before considering altcoin longs.
+ДЕЙСТВИЕ СЕЙЧАС: NO TRADE. DOT has improved and is now the best recovery candidate, but wait for BTC >$78k and DOT >$1.03 with confirmed holds before considering a long.
 
-Источник: Reuters + The Block + AP + Financial Express | Данные получены: 17.09.2026 06:01 MSK; наиболее свежий подтвержденный BTC reference: $76,562.25.
+Источник: CoinMarketCap + Reuters + CryptoQuant | Данные получены: 17.09.2026 09:58–10:00 MSK; BTC ~$76,500, GRAM ~$1.31, DOT ~$1.01.
