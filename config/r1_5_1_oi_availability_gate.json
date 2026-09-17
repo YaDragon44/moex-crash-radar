@@ -1,0 +1,20 @@
+{
+  "release": "R1.5.1",
+  "production": "NO-GO",
+  "pilot_families": ["MX", "SI", "SR", "GZ"],
+  "phase_a_required": ["source", "field_semantics", "first_timestamp", "last_timestamp", "event_time_semantics", "available_time_semantics", "frequency", "contract_coverage", "gaps", "access", "quality"],
+  "quality": ["LIVE", "DELAYED", "STALE", "N/A", "BLOCKED_AUTH"],
+  "rules": {
+    "no_forward_fill": true,
+    "no_inferred_history": true,
+    "daily_positioning_substitution": false,
+    "m1_allowed_only_if_data_ready": true,
+    "minimum_families": 2,
+    "minimum_chronological_subperiods": 2
+  },
+  "ablation": {
+    "M0": "PRICE_CONTROL",
+    "M1": "PRICE_PLUS_OI",
+    "positioning": "EXCLUDED_BLOCKED_AUTH"
+  }
+}
