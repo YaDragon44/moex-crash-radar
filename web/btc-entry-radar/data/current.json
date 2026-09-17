@@ -1,10 +1,10 @@
 {
   "input": {
     "fgi": 50.0,
-    "price_confirm_4h": false,
+    "price_confirm_4h": true,
     "new_local_low_4h": false,
     "oi_regime": "STABLE",
-    "stop_atr": 1.9917014150485979,
+    "stop_atr": 2.2637642316203137,
     "data_ready": true,
     "position_open": false
   },
@@ -13,40 +13,40 @@
     "action": "WAIT",
     "standard_size": 0.0,
     "why": [
-      "No validated MVP setup",
-      "Crowd/price combination is insufficient",
-      "Capital preservation has priority"
+      "Risk gate failed",
+      "Stop distance is invalid or >2 ATR",
+      "Entry is too late or structure unclear"
     ],
-    "invalidation": "Wait for next setup"
+    "invalidation": "Valid stop <=2 ATR"
   },
   "market": {
-    "price": 76483.4,
-    "timestamp": "2026-09-17T08:00:00+00:00",
-    "age_h": 4.462331700555556,
+    "price": 76780.1,
+    "timestamp": "2026-09-17T12:00:00+00:00",
+    "age_h": 4.389915150833334,
     "fresh": true,
-    "price_confirm_4h": false,
+    "price_confirm_4h": true,
     "new_local_low_4h": false,
-    "atr14_4h": 957.5642857142853,
+    "atr14_4h": 978.0785714285709,
     "swing_low_4h": 75055.0,
-    "stop_price": 74576.21785714285,
-    "stop_atr": 1.9917014150485979
+    "stop_price": 74565.96071428571,
+    "stop_atr": 2.2637642316203137
   },
   "crowd": {
     "value": 50.0,
     "classification": "Neutral",
     "timestamp": "2026-09-17T00:00:00+00:00",
-    "age_h": 12.462331700555556,
+    "age_h": 16.389915150833332,
     "fresh": true
   },
   "open_interest": {
     "regime": "STABLE",
-    "timestamp": "2026-09-17T12:00:00+00:00",
-    "age_h": 0.46233170055555556,
+    "timestamp": "2026-09-17T16:00:00+00:00",
+    "age_h": 0.38991515083333333,
     "fresh": true,
-    "oi_value": 2853611.9500000128,
-    "delta_24h": 0.01068951630492121,
+    "oi_value": 2891654.170000012,
+    "delta_24h": 0.02309219762140824,
     "delta_p10": -0.05986710474475475,
-    "delta_p90": 0.05222157249792663,
+    "delta_p90": 0.05036755019222949,
     "points": 100
   },
   "quality": {
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-09-17T12:27:44.394122+00:00"
+  "generated_at_utc": "2026-09-17T16:23:23.694543+00:00"
 }
