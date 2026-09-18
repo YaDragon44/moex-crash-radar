@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-18T11:11:18.480523+00:00",
+  "generated_at": "2026-09-18T11:26:36.061883+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2683678890118.8867,
-    "total_change_24h_pct": -0.1460600049070074,
-    "btc_dominance_pct": 58.192439254951665,
-    "btc_cap": 1561698207930.394,
-    "alt_cap": 1121980682188.4927
+    "total_market_cap": 2663922317758.111,
+    "total_change_24h_pct": -1.0746513336819428,
+    "btc_dominance_pct": 58.68428839832725,
+    "btc_cap": 1563303855660.5735,
+    "alt_cap": 1100618462097.5374
   },
   "derivatives": {
-    "btc_price": 78127.0,
-    "price_change_24h_pct": 2.31,
+    "btc_price": 78045.1,
+    "price_change_24h_pct": 2.2,
     "oi_usd": 5171651482.9644,
     "oi_change_24h_pct": 5.011507749358324,
     "funding_pct": 0.002,
     "long_short_ratio": 1.161906051170976
   },
   "context": {
-    "stablecoin_market_cap": 305973288493.0,
-    "stablecoin_market_cap_change_24h_pct": 0.0498940893482569,
+    "stablecoin_market_cap": 305978499351.0,
+    "stablecoin_market_cap_change_24h_pct": 0.059101899461988516,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -41,13 +41,13 @@
       "long_short": 70,
       "liquidation_risk": null,
       "news": null,
-      "flows": 50
+      "flows": 65
     },
     "coverage_pct": 70,
     "derivative_factor_count": 3,
     "external_context_present": true,
     "quality_passed": true,
-    "score": 63,
+    "score": 66,
     "state": "GREED",
     "action": "REDUCE"
   },
@@ -69,11 +69,11 @@
   "regime": {
     "model": "regime-v1-provisional",
     "provisional": true,
-    "status": "NEUTRAL",
+    "status": "DISTRIBUTION",
     "candidate": "DISTRIBUTION",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH NEUTRAL -> DISTRIBUTION · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> DISTRIBUTION",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,12 +82,12 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH NEUTRAL -> DISTRIBUTION · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> DISTRIBUTION",
+    "confirmed": true
   },
   "action_engine": {
-    "investor": "DO NOT CHASE",
-    "trader": "WAIT",
+    "investor": "REDUCE RISK",
+    "trader": "REDUCE EXPOSURE",
     "why": [
       "Price/OI leverage 70/100",
       "Market stress 40/100",
