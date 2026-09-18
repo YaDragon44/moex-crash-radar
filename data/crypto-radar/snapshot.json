@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-18T11:52:01.684806+00:00",
+  "generated_at": "2026-09-18T12:14:32.656270+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2663575511709.853,
-    "total_change_24h_pct": -1.0794050881833452,
-    "btc_dominance_pct": 58.63603430509663,
-    "btc_cap": 1561815050788.3425,
-    "alt_cap": 1101760460921.5105
+    "total_market_cap": 2683778681127.998,
+    "total_change_24h_pct": -0.3943120097972287,
+    "btc_dominance_pct": 58.15419845790449,
+    "btc_cap": 1560729980394.108,
+    "alt_cap": 1123048700733.8901
   },
   "derivatives": {
-    "btc_price": 78007.8,
-    "price_change_24h_pct": 2.37,
-    "oi_usd": 5171651482.9644,
-    "oi_change_24h_pct": 5.011507749358324,
-    "funding_pct": 0.0023,
-    "long_short_ratio": 1.161906051170976
+    "btc_price": 78048.8,
+    "price_change_24h_pct": 1.64,
+    "oi_usd": 5164025675.0174,
+    "oi_change_24h_pct": 4.1065980614449105,
+    "funding_pct": 0.0034999999999999996,
+    "long_short_ratio": 1.0830478365689633
   },
   "context": {
-    "stablecoin_market_cap": 305964820461.0,
-    "stablecoin_market_cap_change_24h_pct": 0.0669424255529183,
+    "stablecoin_market_cap": 305962914589.0,
+    "stablecoin_market_cap_change_24h_pct": 0.07444086352921264,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -55,13 +55,13 @@
     "model": "risk-v1-provisional",
     "provisional": true,
     "coverage_pct": 100,
-    "score": 46,
-    "status": "ELEVATED",
+    "score": 42,
+    "status": "MODERATE",
     "components": {
       "market_stress": 40,
       "leverage": 70,
       "funding_extreme": 20,
-      "positioning_extreme": 40,
+      "positioning_extreme": 20,
       "liquidity_context": 35
     },
     "reason": "Provisional composite; historical calibration required"
@@ -70,10 +70,10 @@
     "model": "regime-v1-provisional",
     "provisional": true,
     "status": "DISTRIBUTION",
-    "candidate": "DISTRIBUTION",
-    "candidate_count": 4,
-    "confirmed": true,
-    "transition": "STABLE",
+    "candidate": "NEUTRAL",
+    "candidate_count": 1,
+    "confirmed": false,
+    "transition": "WATCH DISTRIBUTION -> NEUTRAL · 1/2",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,8 +82,8 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "STABLE",
-    "confirmed": true
+    "status": "WATCH DISTRIBUTION -> NEUTRAL · 1/2",
+    "confirmed": false
   },
   "action_engine": {
     "investor": "REDUCE RISK",
@@ -91,7 +91,7 @@
     "why": [
       "Price/OI leverage 70/100",
       "Market stress 40/100",
-      "Long/Short extremity 40/100"
+      "Stablecoin liquidity 35/100"
     ],
     "provisional": true
   }
