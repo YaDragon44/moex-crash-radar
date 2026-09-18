@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-18T10:43:50.567367+00:00",
+  "generated_at": "2026-09-18T10:54:38.871220+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2695139342612.757,
-    "total_change_24h_pct": -0.0038251490155875485,
-    "btc_dominance_pct": 58.10274164035465,
-    "btc_cap": 1565949849085.8428,
-    "alt_cap": 1129189493526.914
+    "total_market_cap": 2698056956259.733,
+    "total_change_24h_pct": -0.008929274666990063,
+    "btc_dominance_pct": 58.10617042957649,
+    "btc_cap": 1567737573291.3245,
+    "alt_cap": 1130319382968.4084
   },
   "derivatives": {
-    "btc_price": 78164.8,
-    "price_change_24h_pct": 2.43,
+    "btc_price": 78266.1,
+    "price_change_24h_pct": 2.54,
     "oi_usd": 5143536183.80704,
     "oi_change_24h_pct": 3.978371667693126,
-    "funding_pct": 0.0026999999999999997,
+    "funding_pct": 0.0024000000000000002,
     "long_short_ratio": 1.1785885413101513
   },
   "context": {
-    "stablecoin_market_cap": 305982133475.0,
-    "stablecoin_market_cap_change_24h_pct": 0.08781726018132208,
+    "stablecoin_market_cap": 305975814597.0,
+    "stablecoin_market_cap_change_24h_pct": 0.04597761617415319,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -41,15 +41,15 @@
       "long_short": 70,
       "liquidation_risk": null,
       "news": null,
-      "flows": 65
+      "flows": 50
     },
     "coverage_pct": 70,
     "derivative_factor_count": 3,
     "external_context_present": true,
     "quality_passed": true,
-    "score": 63,
-    "state": "GREED",
-    "action": "REDUCE"
+    "score": 60,
+    "state": "NEUTRAL",
+    "action": "WAIT"
   },
   "risk": {
     "model": "risk-v1-provisional",
@@ -71,7 +71,7 @@
     "provisional": true,
     "status": "NEUTRAL",
     "candidate": "NEUTRAL",
-    "candidate_count": 13,
+    "candidate_count": 14,
     "confirmed": true,
     "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
