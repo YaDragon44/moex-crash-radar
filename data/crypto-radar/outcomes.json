@@ -6,11 +6,11 @@
   "sample_quality": "USABLE",
   "summary": {
     "1h": {
-      "closed": 16,
-      "open": 2,
-      "avg_btc_return_pct": -0.0238,
-      "positive_rate_pct": 56.2,
-      "negative_rate_pct": 43.8,
+      "closed": 17,
+      "open": 1,
+      "avg_btc_return_pct": 0.0009,
+      "positive_rate_pct": 58.8,
+      "negative_rate_pct": 41.2,
       "directional_cases": 13,
       "alignment_rate_pct": 53.8
     },
@@ -539,10 +539,10 @@
       "trader_action": "WAIT",
       "outcomes": {
         "1h": {
-          "status": "OPEN",
-          "observed_at": null,
-          "btc_price": null,
-          "btc_return_pct": null,
+          "status": "CLOSED",
+          "observed_at": "2026-09-18T01:52:17.099635+00:00",
+          "btc_price": 76666.9,
+          "btc_return_pct": 0.3965,
           "alignment": null
         },
         "4h": {
