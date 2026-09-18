@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-18T17:24:53.343891+00:00",
+  "generated_at": "2026-09-18T17:37:08.852016+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2764294901956.8164,
-    "total_change_24h_pct": 1.9520307601240068,
-    "btc_dominance_pct": 58.497700757270486,
-    "btc_cap": 1617048959795.1821,
-    "alt_cap": 1147245942161.6343
+    "total_market_cap": 2766004743642.613,
+    "total_change_24h_pct": 1.8937146903594035,
+    "btc_dominance_pct": 58.48950107330616,
+    "btc_cap": 1617822374220.5454,
+    "alt_cap": 1148182369422.0674
   },
   "derivatives": {
-    "btc_price": 80719.3,
-    "price_change_24h_pct": 5.03,
+    "btc_price": 80591.7,
+    "price_change_24h_pct": 4.93,
     "oi_usd": 5352319759.7204,
     "oi_change_24h_pct": 5.879069625926037,
     "funding_pct": 0.01,
     "long_short_ratio": 0.7527315786640831
   },
   "context": {
-    "stablecoin_market_cap": 306305480327.0,
-    "stablecoin_market_cap_change_24h_pct": 0.12280156947139798,
+    "stablecoin_market_cap": 306267975622.0,
+    "stablecoin_market_cap_change_24h_pct": 0.1367722716892894,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -69,11 +69,11 @@
   "regime": {
     "model": "regime-v1-provisional",
     "provisional": true,
-    "status": "RISK-ON",
+    "status": "RISK-ON / OVERHEATED",
     "candidate": "RISK-ON / OVERHEATED",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH RISK-ON -> RISK-ON / OVERHEATED · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> RISK-ON / OVERHEATED",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,8 +82,8 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH RISK-ON -> RISK-ON / OVERHEATED · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> RISK-ON / OVERHEATED",
+    "confirmed": true
   },
   "action_engine": {
     "investor": "DO NOT CHASE",
