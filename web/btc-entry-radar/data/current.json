@@ -3,8 +3,8 @@
     "fgi": 56.0,
     "price_confirm_4h": true,
     "new_local_low_4h": false,
-    "oi_regime": "LEVERAGE_BUILD_UP",
-    "stop_atr": 5.22225360168733,
+    "oi_regime": "MODERATE_BUILD",
+    "stop_atr": 5.496339899419284,
     "data_ready": true,
     "position_open": false
   },
@@ -20,33 +20,33 @@
     "invalidation": "Valid stop <=2 ATR"
   },
   "market": {
-    "price": 80728.7,
-    "timestamp": "2026-09-18T12:00:00+00:00",
-    "age_h": 4.3471823233333335,
+    "price": 81211.5,
+    "timestamp": "2026-09-18T16:00:00+00:00",
+    "age_h": 4.353878056944445,
     "fresh": true,
     "price_confirm_4h": true,
     "new_local_low_4h": false,
-    "atr14_4h": 999.0357142857154,
-    "swing_low_4h": 76011.0,
-    "stop_price": 75511.48214285714,
-    "stop_atr": 5.22225360168733
+    "atr14_4h": 991.3857142857149,
+    "swing_low_4h": 76258.2,
+    "stop_price": 75762.50714285714,
+    "stop_atr": 5.496339899419284
   },
   "crowd": {
     "value": 56.0,
     "classification": "Greed",
     "timestamp": "2026-09-18T00:00:00+00:00",
-    "age_h": 16.34718232333333,
+    "age_h": 20.353878056944446,
     "fresh": true
   },
   "open_interest": {
-    "regime": "LEVERAGE_BUILD_UP",
-    "timestamp": "2026-09-18T16:00:00+00:00",
-    "age_h": 0.3471823233333333,
+    "regime": "MODERATE_BUILD",
+    "timestamp": "2026-09-18T20:00:00+00:00",
+    "age_h": 0.3538780569444444,
     "fresh": true,
-    "oi_value": 2997215.1400000127,
-    "delta_24h": 0.050402745690964146,
+    "oi_value": 2978404.9800000107,
+    "delta_24h": 0.04012381252206043,
     "delta_p10": -0.05986710474475475,
-    "delta_p90": 0.04941377311193576,
+    "delta_p90": 0.04706794372312205,
     "points": 100
   },
   "quality": {
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-09-18T16:20:49.856364+00:00"
+  "generated_at_utc": "2026-09-18T20:21:13.961005+00:00"
 }
