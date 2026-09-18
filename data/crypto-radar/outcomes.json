@@ -2,21 +2,21 @@
   "version": "1.6.2",
   "method": "confirmed regime transitions; forward BTC observation at 1h/4h/24h; no lookahead",
   "max_observation_lag_minutes": 30,
-  "event_count": 20,
+  "event_count": 21,
   "sample_quality": "USABLE",
   "summary": {
     "1h": {
-      "closed": 19,
+      "closed": 20,
       "open": 1,
-      "avg_btc_return_pct": 0.0431,
-      "positive_rate_pct": 63.2,
-      "negative_rate_pct": 36.8,
-      "directional_cases": 14,
-      "alignment_rate_pct": 50.0
+      "avg_btc_return_pct": 0.0428,
+      "positive_rate_pct": 65.0,
+      "negative_rate_pct": 35.0,
+      "directional_cases": 15,
+      "alignment_rate_pct": 46.7
     },
     "4h": {
       "closed": 19,
-      "open": 1,
+      "open": 2,
       "avg_btc_return_pct": 0.1218,
       "positive_rate_pct": 57.9,
       "negative_rate_pct": 42.1,
@@ -24,13 +24,13 @@
       "alignment_rate_pct": 57.1
     },
     "24h": {
-      "closed": 13,
+      "closed": 14,
       "open": 7,
-      "avg_btc_return_pct": 0.2548,
-      "positive_rate_pct": 61.5,
-      "negative_rate_pct": 38.5,
-      "directional_cases": 11,
-      "alignment_rate_pct": 36.4
+      "avg_btc_return_pct": 0.3569,
+      "positive_rate_pct": 64.3,
+      "negative_rate_pct": 35.7,
+      "directional_cases": 12,
+      "alignment_rate_pct": 33.3
     }
   },
   "events": [
@@ -460,11 +460,11 @@
           "alignment": "ALIGNED"
         },
         "24h": {
-          "status": "OPEN",
-          "observed_at": null,
-          "btc_price": null,
-          "btc_return_pct": null,
-          "alignment": null
+          "status": "CLOSED",
+          "observed_at": "2026-09-18T12:35:49.773900+00:00",
+          "btc_price": 78074.4,
+          "btc_return_pct": 1.6833,
+          "alignment": "NOT_ALIGNED"
         }
       }
     },
@@ -630,6 +630,37 @@
       "btc_price_at_transition": 78045.1,
       "investor_action": "REDUCE RISK",
       "trader_action": "REDUCE EXPOSURE",
+      "outcomes": {
+        "1h": {
+          "status": "CLOSED",
+          "observed_at": "2026-09-18T12:35:49.773900+00:00",
+          "btc_price": 78074.4,
+          "btc_return_pct": 0.0375,
+          "alignment": "NOT_ALIGNED"
+        },
+        "4h": {
+          "status": "OPEN",
+          "observed_at": null,
+          "btc_price": null,
+          "btc_return_pct": null,
+          "alignment": null
+        },
+        "24h": {
+          "status": "OPEN",
+          "observed_at": null,
+          "btc_price": null,
+          "btc_return_pct": null,
+          "alignment": null
+        }
+      }
+    },
+    {
+      "generated_at": "2026-09-18T12:35:49.773900+00:00",
+      "from_regime": "DISTRIBUTION",
+      "to_regime": "NEUTRAL",
+      "btc_price_at_transition": 78074.4,
+      "investor_action": "HOLD",
+      "trader_action": "WAIT",
       "outcomes": {
         "1h": {
           "status": "OPEN",

@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-18T12:14:32.656270+00:00",
+  "generated_at": "2026-09-18T12:35:49.773900+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2683778681127.998,
-    "total_change_24h_pct": -0.3943120097972287,
-    "btc_dominance_pct": 58.15419845790449,
-    "btc_cap": 1560729980394.108,
-    "alt_cap": 1123048700733.8901
+    "total_market_cap": 2684696521563.653,
+    "total_change_24h_pct": -0.3979048571396764,
+    "btc_dominance_pct": 58.15653797628729,
+    "btc_cap": 1561326552111.2297,
+    "alt_cap": 1123369969452.423
   },
   "derivatives": {
-    "btc_price": 78048.8,
-    "price_change_24h_pct": 1.64,
+    "btc_price": 78074.4,
+    "price_change_24h_pct": 1.48,
     "oi_usd": 5164025675.0174,
     "oi_change_24h_pct": 4.1065980614449105,
-    "funding_pct": 0.0034999999999999996,
+    "funding_pct": 0.0038000000000000004,
     "long_short_ratio": 1.0830478365689633
   },
   "context": {
-    "stablecoin_market_cap": 305962914589.0,
-    "stablecoin_market_cap_change_24h_pct": 0.07444086352921264,
+    "stablecoin_market_cap": 305964530131.0,
+    "stablecoin_market_cap_change_24h_pct": 0.07019632055258462,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -69,11 +69,11 @@
   "regime": {
     "model": "regime-v1-provisional",
     "provisional": true,
-    "status": "DISTRIBUTION",
+    "status": "NEUTRAL",
     "candidate": "NEUTRAL",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH DISTRIBUTION -> NEUTRAL · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> NEUTRAL",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,12 +82,12 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH DISTRIBUTION -> NEUTRAL · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> NEUTRAL",
+    "confirmed": true
   },
   "action_engine": {
-    "investor": "REDUCE RISK",
-    "trader": "REDUCE EXPOSURE",
+    "investor": "HOLD",
+    "trader": "WAIT",
     "why": [
       "Price/OI leverage 70/100",
       "Market stress 40/100",
