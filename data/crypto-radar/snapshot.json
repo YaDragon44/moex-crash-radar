@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-18T01:52:17.099635+00:00",
+  "generated_at": "2026-09-18T02:11:52.474224+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2644687628302.806,
-    "total_change_24h_pct": -1.6425111374150598,
-    "btc_dominance_pct": 58.081747578309894,
-    "btc_cap": 1536080792505.6265,
-    "alt_cap": 1108606835797.1797
+    "total_market_cap": 2641198047174.965,
+    "total_change_24h_pct": -1.7400900291722268,
+    "btc_dominance_pct": 58.05720467384305,
+    "btc_cap": 1533405756089.915,
+    "alt_cap": 1107792291085.0498
   },
   "derivatives": {
-    "btc_price": 76666.9,
-    "price_change_24h_pct": 0.25,
-    "oi_usd": 5076371194.20152,
-    "oi_change_24h_pct": 1.4400216343770644,
-    "funding_pct": 0.0034,
-    "long_short_ratio": 1.569839588377724
+    "btc_price": 76703.4,
+    "price_change_24h_pct": 0.77,
+    "oi_usd": 5129266916.777668,
+    "oi_change_24h_pct": 2.837609908606309,
+    "funding_pct": 0.0018,
+    "long_short_ratio": 1.5590071455434373
   },
   "context": {
-    "stablecoin_market_cap": 306158966688.0,
-    "stablecoin_market_cap_change_24h_pct": 0.0949801036158382,
+    "stablecoin_market_cap": 306096698365.0,
+    "stablecoin_market_cap_change_24h_pct": 0.0739389328546558,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -71,9 +71,9 @@
     "provisional": true,
     "status": "DISTRIBUTION",
     "candidate": "DISTRIBUTION",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH DISTRIBUTION · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> DISTRIBUTION",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,8 +82,8 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH DISTRIBUTION · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> DISTRIBUTION",
+    "confirmed": true
   },
   "action_engine": {
     "investor": "REDUCE RISK",
