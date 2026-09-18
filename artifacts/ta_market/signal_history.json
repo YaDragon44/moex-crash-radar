@@ -1,6 +1,6 @@
 {
   "release": "R0.8.1 Signal History",
-  "updated_at": "2026-09-17T18:58:25+03:00",
+  "updated_at": "2026-09-18T10:15:05+03:00",
   "events": [
     {
       "ticker": "SBERP",
@@ -553,6 +553,90 @@
       "reason": "Нет направленной структуры",
       "price": 44.66,
       "time": "2026-09-17T10:17:06+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "H1",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "STALE data",
+      "price": 281.32,
+      "entry": 281.86,
+      "stop": 275.1133,
+      "tp1": 282.14,
+      "tp2": 285.2326,
+      "tp3": 289.1667,
+      "rr": 0.4999,
+      "time": "2026-09-18T10:15:05+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "M10",
+      "direction": "SHORT",
+      "status": "WAIT",
+      "reason": "STALE data",
+      "price": 280.92,
+      "entry": 279.46,
+      "stop": 283.5079,
+      "tp1": null,
+      "tp2": null,
+      "tp3": null,
+      "rr": null,
+      "time": "2026-09-18T10:15:05+03:00"
+    },
+    {
+      "ticker": "VKCO",
+      "tf": "H1",
+      "direction": "NEUTRAL",
+      "status": "WAIT",
+      "reason": "Нет направленной структуры",
+      "price": 121.2,
+      "time": "2026-09-18T10:15:05+03:00"
+    },
+    {
+      "ticker": "VKCO",
+      "tf": "M10",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "STALE data",
+      "price": 112.0,
+      "entry": 112.2,
+      "stop": 111.6,
+      "tp1": 112.3,
+      "tp2": 112.45,
+      "tp3": 113.0583,
+      "rr": 0.4167,
+      "time": "2026-09-18T10:15:05+03:00"
+    },
+    {
+      "ticker": "OZPH",
+      "tf": "H1",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "STALE data",
+      "price": 44.67,
+      "entry": 44.69,
+      "stop": 43.1883,
+      "tp1": 45.351,
+      "tp2": 46.1917,
+      "tp3": null,
+      "rr": 1.0,
+      "time": "2026-09-18T10:15:05+03:00"
+    },
+    {
+      "ticker": "OZPH",
+      "tf": "M10",
+      "direction": "SHORT",
+      "status": "WAIT",
+      "reason": "STALE data",
+      "price": 43.7,
+      "entry": 43.41,
+      "stop": 44.2381,
+      "tp1": null,
+      "tp2": null,
+      "tp3": null,
+      "rr": null,
+      "time": "2026-09-18T10:15:05+03:00"
     }
   ]
 }
