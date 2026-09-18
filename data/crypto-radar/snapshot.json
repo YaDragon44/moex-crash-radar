@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-18T00:16:14.043028+00:00",
+  "generated_at": "2026-09-18T00:43:52.113031+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2633479369981.3623,
-    "total_change_24h_pct": -1.9053229449746416,
-    "btc_dominance_pct": 58.089990461092256,
-    "btc_cap": 1529787914817.0059,
-    "alt_cap": 1103691455164.3564
+    "total_market_cap": 2629519002594.601,
+    "total_change_24h_pct": -1.9830075439271566,
+    "btc_dominance_pct": 58.12268730262733,
+    "btc_cap": 1528347107441.225,
+    "alt_cap": 1101171895153.376
   },
   "derivatives": {
-    "btc_price": 76381.5,
-    "price_change_24h_pct": -0.02,
+    "btc_price": 76364.1,
+    "price_change_24h_pct": -0.09,
     "oi_usd": 5063492934.054,
     "oi_change_24h_pct": 1.308424891544857,
-    "funding_pct": -0.0021,
+    "funding_pct": 0.0005,
     "long_short_ratio": 1.5653656688139448
   },
   "context": {
-    "stablecoin_market_cap": 306147122499.0,
-    "stablecoin_market_cap_change_24h_pct": 0.1106122413342181,
+    "stablecoin_market_cap": 306118620203.0,
+    "stablecoin_market_cap_change_24h_pct": 0.10366774787984312,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -69,11 +69,11 @@
   "regime": {
     "model": "regime-v1-provisional",
     "provisional": true,
-    "status": "DISTRIBUTION",
+    "status": "NEUTRAL",
     "candidate": "NEUTRAL",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH DISTRIBUTION -> NEUTRAL · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> NEUTRAL",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,12 +82,12 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH DISTRIBUTION -> NEUTRAL · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> NEUTRAL",
+    "confirmed": true
   },
   "action_engine": {
-    "investor": "REDUCE RISK",
-    "trader": "REDUCE EXPOSURE",
+    "investor": "HOLD",
+    "trader": "WAIT",
     "why": [
       "Long/Short extremity 85/100",
       "Price/OI leverage 65/100",
