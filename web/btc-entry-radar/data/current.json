@@ -1,10 +1,10 @@
 {
   "input": {
     "fgi": 56.0,
-    "price_confirm_4h": false,
+    "price_confirm_4h": true,
     "new_local_low_4h": false,
     "oi_regime": "STABLE",
-    "stop_atr": 1.3635366944517053,
+    "stop_atr": 2.160095833080611,
     "data_ready": true,
     "position_open": false
   },
@@ -13,40 +13,40 @@
     "action": "WAIT",
     "standard_size": 0.0,
     "why": [
-      "No validated MVP setup",
-      "Crowd/price combination is insufficient",
-      "Capital preservation has priority"
+      "Risk gate failed",
+      "Stop distance is invalid or >2 ATR",
+      "Entry is too late or structure unclear"
     ],
-    "invalidation": "Wait for next setup"
+    "invalidation": "Valid stop <=2 ATR"
   },
   "market": {
-    "price": 76419.3,
-    "timestamp": "2026-09-17T20:00:00+00:00",
-    "age_h": 4.469161637777778,
+    "price": 77379.5,
+    "timestamp": "2026-09-18T00:00:00+00:00",
+    "age_h": 4.3692103497222226,
     "fresh": true,
-    "price_confirm_4h": false,
+    "price_confirm_4h": true,
     "new_local_low_4h": false,
-    "atr14_4h": 902.3357142857141,
-    "swing_low_4h": 75640.1,
-    "stop_price": 75188.93214285714,
-    "stop_atr": 1.3635366944517053
+    "atr14_4h": 824.3500000000006,
+    "swing_low_4h": 76011.0,
+    "stop_price": 75598.825,
+    "stop_atr": 2.160095833080611
   },
   "crowd": {
     "value": 56.0,
     "classification": "Greed",
     "timestamp": "2026-09-18T00:00:00+00:00",
-    "age_h": 0.4691616377777778,
+    "age_h": 4.3692103497222226,
     "fresh": true
   },
   "open_interest": {
     "regime": "STABLE",
-    "timestamp": "2026-09-18T00:00:00+00:00",
-    "age_h": 0.4691616377777778,
+    "timestamp": "2026-09-18T04:00:00+00:00",
+    "age_h": 0.3692103497222222,
     "fresh": true,
-    "oi_value": 2861321.7100000125,
-    "delta_24h": -0.0019527192945746341,
+    "oi_value": 2880953.6700000125,
+    "delta_24h": -0.0007887028887016978,
     "delta_p10": -0.05986710474475475,
-    "delta_p90": 0.04941377311193576,
+    "delta_p90": 0.04730841958388682,
     "points": 100
   },
   "quality": {
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-09-18T00:28:08.981896+00:00"
+  "generated_at_utc": "2026-09-18T04:22:09.157259+00:00"
 }
