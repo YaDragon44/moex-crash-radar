@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-18T00:57:20.706956+00:00",
+  "generated_at": "2026-09-18T01:15:27.947954+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2632296401938.126,
-    "total_change_24h_pct": -1.9859939833889295,
-    "btc_dominance_pct": 58.13099866772289,
-    "btc_cap": 1530180186341.1697,
-    "alt_cap": 1102116215596.9563
+    "total_market_cap": 2638767596487.535,
+    "total_change_24h_pct": -1.8543436925977212,
+    "btc_dominance_pct": 58.13120981721978,
+    "btc_cap": 1533947528102.9766,
+    "alt_cap": 1104820068384.5586
   },
   "derivatives": {
-    "btc_price": 76529.8,
-    "price_change_24h_pct": 0.28,
-    "oi_usd": 5063492934.054,
-    "oi_change_24h_pct": 1.308424891544857,
-    "funding_pct": 0.0025,
-    "long_short_ratio": 1.5653656688139448
+    "btc_price": 76480.0,
+    "price_change_24h_pct": 0.34,
+    "oi_usd": 5076371194.20152,
+    "oi_change_24h_pct": 1.4400216343770644,
+    "funding_pct": 0.0034,
+    "long_short_ratio": 1.569839588377724
   },
   "context": {
-    "stablecoin_market_cap": 306112805611.0,
-    "stablecoin_market_cap_change_24h_pct": 0.1022648771488388,
+    "stablecoin_market_cap": 306167866885.0,
+    "stablecoin_market_cap_change_24h_pct": 0.12099788710946413,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -69,11 +69,11 @@
   "regime": {
     "model": "regime-v1-provisional",
     "provisional": true,
-    "status": "NEUTRAL",
+    "status": "DISTRIBUTION",
     "candidate": "DISTRIBUTION",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH NEUTRAL -> DISTRIBUTION · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> DISTRIBUTION",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,12 +82,12 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH NEUTRAL -> DISTRIBUTION · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> DISTRIBUTION",
+    "confirmed": true
   },
   "action_engine": {
-    "investor": "DO NOT CHASE",
-    "trader": "WAIT",
+    "investor": "REDUCE RISK",
+    "trader": "REDUCE EXPOSURE",
     "why": [
       "Long/Short extremity 85/100",
       "Price/OI leverage 55/100",
