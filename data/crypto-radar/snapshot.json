@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-19T08:12:23.599363+00:00",
+  "generated_at": "2026-09-19T08:28:51.584661+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,30 +14,30 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2783903470407.138,
-    "total_change_24h_pct": 1.0503382852333882,
-    "btc_dominance_pct": 58.36025046279385,
-    "btc_cap": 1624693037972.0159,
-    "alt_cap": 1159210432435.1223
+    "total_market_cap": 2794744264073.285,
+    "total_change_24h_pct": 1.3009929824468085,
+    "btc_dominance_pct": 58.319516709091666,
+    "btc_cap": 1629881348062.6003,
+    "alt_cap": 1164862916010.6848
   },
   "derivatives": {
-    "btc_price": 81183.4,
-    "price_change_24h_pct": 4.48,
+    "btc_price": 81238.7,
+    "price_change_24h_pct": 4.26,
     "oi_usd": 5322510219.563622,
     "oi_change_24h_pct": 4.051077203611708,
-    "funding_pct": 0.0083,
+    "funding_pct": 0.01,
     "long_short_ratio": 0.7390603887329799
   },
   "context": {
-    "stablecoin_market_cap": 306628453524.0,
-    "stablecoin_market_cap_change_24h_pct": 0.22669904469161395,
+    "stablecoin_market_cap": 306630492890.0,
+    "stablecoin_market_cap_change_24h_pct": 0.23054905959809524,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
     "model": "v2-provisional",
     "factors": {
       "oi_price": 80,
-      "funding": 50,
+      "funding": 75,
       "long_short": 15,
       "liquidation_risk": null,
       "news": null,
@@ -47,20 +47,20 @@
     "derivative_factor_count": 3,
     "external_context_present": true,
     "quality_passed": true,
-    "score": 58,
-    "state": "NEUTRAL",
-    "action": "WAIT"
+    "score": 65,
+    "state": "GREED",
+    "action": "REDUCE"
   },
   "risk": {
     "model": "risk-v1-provisional",
     "provisional": true,
     "coverage_pct": 100,
-    "score": 43,
-    "status": "MODERATE",
+    "score": 47,
+    "status": "ELEVATED",
     "components": {
       "market_stress": 25,
       "leverage": 70,
-      "funding_extreme": 20,
+      "funding_extreme": 45,
       "positioning_extreme": 65,
       "liquidity_context": 20
     },
@@ -70,10 +70,10 @@
     "model": "regime-v1-provisional",
     "provisional": true,
     "status": "RISK-ON",
-    "candidate": "RISK-ON",
-    "candidate_count": 23,
-    "confirmed": true,
-    "transition": "STABLE",
+    "candidate": "RISK-ON / OVERHEATED",
+    "candidate_count": 1,
+    "confirmed": false,
+    "transition": "WATCH RISK-ON -> RISK-ON / OVERHEATED · 1/2",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,16 +82,16 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "STABLE",
-    "confirmed": true
+    "status": "WATCH RISK-ON -> RISK-ON / OVERHEATED · 1/2",
+    "confirmed": false
   },
   "action_engine": {
-    "investor": "BUY GRADUALLY",
-    "trader": "LONG BIAS",
+    "investor": "DO NOT CHASE",
+    "trader": "SELECTIVE LONG",
     "why": [
       "Price/OI leverage 70/100",
       "Long/Short extremity 65/100",
-      "Market stress 25/100"
+      "Funding extremity 45/100"
     ],
     "provisional": true
   }
