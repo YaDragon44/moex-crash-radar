@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import json
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from moex_crash_radar.breadth import breadth_signal, calculate_breadth, index_vs_breadth_divergence
 from moex_crash_radar.context import calculate_context
@@ -17,8 +18,15 @@ from moex_crash_radar.positioning import build_positioning_snapshot, fetch_futoi
 from moex_crash_radar.rate_ofz import collect_rate_ofz
 
 BREADTH_UNIVERSE=("SBER","SBERP","LKOH","GAZP","YDEX","T","X5","GMKN","NVTK","ROSN","TATN","TATNP","PLZL","CHMF","NLMK","ALRS","MOEX","MTSS","PHOR","IRAO","HYDR","AFLT","VKCO","OZON")
-# FUTOI uses the two-character futures contract group code. For MOEX Index this is MX; MIX is the underlying/futures family code.
 POSITIONING_TICKER="MX"
+MOSCOW=ZoneInfo("Europe/Moscow")
+
+def source_as_of(value: str) -> str:
+    """Preserve MOEX candle time while making its Moscow timezone explicit."""
+    observed=datetime.fromisoformat(value.replace("Z","+00:00"))
+    if observed.tzinfo is None:
+        observed=observed.replace(tzinfo=MOSCOW)
+    return observed.isoformat()
 
 def main()->None:
     end=date.today(); start=end-timedelta(days=500)
@@ -41,7 +49,6 @@ def main()->None:
         distribution_payload={"usable_size":distribution.usable_size,"pct_down_rvol":distribution.pct_down_rvol,"pct_distribution_5d":distribution.pct_distribution_5d,"mean_down_up_volume_ratio":distribution.mean_down_up_volume_ratio}
         if distribution.usable_size>=12 and breadth_coverage>=.50: market_signals["volume_distribution"]=distribution_signal(distribution)
 
-    # Keep the validated EXIT gate market-only. R0.7 positioning is observational until incremental-value validation.
     crash=calculate_crash(market_signals)
     rate_ofz=collect_rate_ofz(as_of=end); oil_rub=collect_oil_rub(as_of=end)
     context_signals={}
@@ -50,7 +57,6 @@ def main()->None:
     context=calculate_context(context_signals)
 
     try:
-        # Anonymous FUTOI is currently delayed, so request enough history to receive the latest free observation.
         positioning_rows=fetch_futoi(POSITIONING_TICKER,start=(end-timedelta(days=45)).isoformat(),end=end.isoformat())
         positioning=build_positioning_snapshot(POSITIONING_TICKER,positioning_rows,today=end.isoformat()).to_dict()
         positioning["note"]="R0.7 observational layer. Anonymous MOEX FUTOI can be delayed; stale data never changes Crash Score or frozen EXIT Gate."
@@ -67,7 +73,7 @@ def main()->None:
     rate_group={"score":rate_ofz.signal.score if rate_ofz.signal else None,"quality":rate_ofz.signal.quality.value if rate_ofz.signal else "N/A","key_rate":rate_ofz.key_rate,"key_rate_day":rate_ofz.key_rate_day,"median_long_ofz_yield":rate_ofz.median_long_ofz_yield,"ofz_count":rate_ofz.ofz_count,"rgbi_return_5d":rate_ofz.rgbi_return_5d,"rgbi_return_20d":rate_ofz.rgbi_return_20d,"component_coverage":rate_ofz.component_coverage,"note":rate_ofz.note,"sources":["Bank of Russia","MOEX ISS TQOB","MOEX ISS RGBI"]}
     oil_group={"score":oil_rub.signal.score if oil_rub.signal else None,"quality":oil_rub.signal.quality.value if oil_rub.signal else "N/A","brent_secid":oil_rub.brent_secid,"brent_return_5d":oil_rub.brent_return_5d,"brent_return_20d":oil_rub.brent_return_20d,"cnyrub_return_5d":oil_rub.cnyrub_return_5d,"cnyrub_return_20d":oil_rub.cnyrub_return_20d,"component_coverage":oil_rub.component_coverage,"latest_day":oil_rub.latest_day,"note":oil_rub.note,"sources":["MOEX ISS FORTS Brent","MOEX ISS CNYRUB_TOM"]}
 
-    payload={"release":"R0.7 Positioning Data","as_of":index_candles[-1].begin,"source":"MOEX ISS","secid":"IMOEX","last_close":index_candles[-1].close,"data_quality":crash.quality.value,"signals":{k:{"score":v.score,"quality":v.quality.value} for k,v in display_signals.items()},"breadth":breadth_payload,"volume_distribution":distribution_payload,
+    payload={"release":"R0.7 Positioning Data","as_of":source_as_of(index_candles[-1].begin),"source":"MOEX ISS","secid":"IMOEX","last_close":index_candles[-1].close,"data_quality":crash.quality.value,"signals":{k:{"score":v.score,"quality":v.quality.value} for k,v in display_signals.items()},"breadth":breadth_payload,"volume_distribution":distribution_payload,
       "positioning":positioning,
       "context":{"score":context.score,"state":context.state.value,"quality":context.quality.value,"coverage":context.coverage,"available_groups":context.available_groups,"total_groups":context.total_groups,"groups":{"rate_ofz":rate_group,"oil_rub":oil_group,"macro_earnings":{"score":None,"quality":"N/A"},"news_geopolitics":{"score":None,"quality":"N/A"}},"note":"Independent external-risk layer. Context is not a probability and not Crowd Score."},
       "crash":{"score":crash.score,"state":crash.state.value,"available_weight":round(crash.available_weight,4),"critical_confirmations":crash.critical_confirmations,"raw_cash_signal":crash.cash_signal},"exit_gate":exit_gate,"crash_momentum":momentum,"crash_history":crash_history,"bottom":{"score":None,"state":"DATA_INSUFFICIENT","buy_back_signal":False},
