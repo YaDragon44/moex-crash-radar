@@ -29,6 +29,7 @@ def source_as_of(value: str) -> str:
     return observed.isoformat()
 
 def main()->None:
+    # Keep the published snapshot on the same fail-closed source path used by RADAR MK-E2.
     end=date.today(); start=end-timedelta(days=500)
     index_candles=fetch_index_candles("IMOEX",start=start.isoformat(),end=end.isoformat())
     if not index_candles: raise SystemExit("MOEX returned no IMOEX candles")
