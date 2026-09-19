@@ -6,13 +6,13 @@
   "sample_quality": "USABLE",
   "summary": {
     "1h": {
-      "closed": 25,
-      "open": 1,
-      "avg_btc_return_pct": 0.1689,
-      "positive_rate_pct": 72.0,
-      "negative_rate_pct": 28.0,
-      "directional_cases": 17,
-      "alignment_rate_pct": 52.9
+      "closed": 26,
+      "open": 0,
+      "avg_btc_return_pct": 0.1508,
+      "positive_rate_pct": 69.2,
+      "negative_rate_pct": 30.8,
+      "directional_cases": 18,
+      "alignment_rate_pct": 50.0
     },
     "4h": {
       "closed": 24,
@@ -818,11 +818,11 @@
       "trader_action": "LONG BIAS",
       "outcomes": {
         "1h": {
-          "status": "OPEN",
-          "observed_at": null,
-          "btc_price": null,
-          "btc_return_pct": null,
-          "alignment": null
+          "status": "CLOSED",
+          "observed_at": "2026-09-19T03:41:57.323111+00:00",
+          "btc_price": 81100.1,
+          "btc_return_pct": -0.3002,
+          "alignment": "NOT_ALIGNED"
         },
         "4h": {
           "status": "OPEN",
