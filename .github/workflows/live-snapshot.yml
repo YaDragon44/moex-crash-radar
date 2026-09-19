@@ -5,7 +5,7 @@ on:
   schedule:
     - cron: '15 7 * * 1-5'
   push:
-    branches: [r0.3-crash-engine]
+    branches: [main]
     paths:
       - 'src/**'
       - 'scripts/collect_snapshot.py'
