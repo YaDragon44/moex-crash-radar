@@ -6,11 +6,11 @@
   "sample_quality": "USABLE",
   "summary": {
     "1h": {
-      "closed": 24,
-      "open": 1,
-      "avg_btc_return_pct": 0.1704,
-      "positive_rate_pct": 70.8,
-      "negative_rate_pct": 29.2,
+      "closed": 25,
+      "open": 0,
+      "avg_btc_return_pct": 0.1689,
+      "positive_rate_pct": 72.0,
+      "negative_rate_pct": 28.0,
       "directional_cases": 17,
       "alignment_rate_pct": 52.9
     },
@@ -787,10 +787,10 @@
       "trader_action": "SELECTIVE LONG",
       "outcomes": {
         "1h": {
-          "status": "OPEN",
-          "observed_at": null,
-          "btc_price": null,
-          "btc_return_pct": null,
+          "status": "CLOSED",
+          "observed_at": "2026-09-19T01:53:14.885001+00:00",
+          "btc_price": 81342.8,
+          "btc_return_pct": 0.1321,
           "alignment": null
         },
         "4h": {
