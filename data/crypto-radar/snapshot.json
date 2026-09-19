@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-19T09:11:33.234750+00:00",
+  "generated_at": "2026-09-19T09:26:44.814791+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2793291178195.4546,
-    "total_change_24h_pct": 0.887783996588648,
-    "btc_dominance_pct": 58.32085015893905,
-    "btc_cap": 1629071162538.2344,
-    "alt_cap": 1164220015657.2202
+    "total_market_cap": 2800536850936.7876,
+    "total_change_24h_pct": 1.0587168961331657,
+    "btc_dominance_pct": 58.333536023736734,
+    "btc_cap": 1633652172799.2334,
+    "alt_cap": 1166884678137.5542
   },
   "derivatives": {
-    "btc_price": 81390.6,
-    "price_change_24h_pct": 3.95,
+    "btc_price": 81413.5,
+    "price_change_24h_pct": 4.12,
     "oi_usd": 5331385522.45006,
     "oi_change_24h_pct": 3.6608662449244767,
-    "funding_pct": 0.0086,
+    "funding_pct": 0.0091,
     "long_short_ratio": 0.7387316971497055
   },
   "context": {
-    "stablecoin_market_cap": 306611170079.0,
-    "stablecoin_market_cap_change_24h_pct": 0.22907259769011645,
+    "stablecoin_market_cap": 306615415497.0,
+    "stablecoin_market_cap_change_24h_pct": 0.22805455900731797,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -69,11 +69,11 @@
   "regime": {
     "model": "regime-v1-provisional",
     "provisional": true,
-    "status": "NEUTRAL",
-    "candidate": "NEUTRAL",
+    "status": "RISK-ON",
+    "candidate": "RISK-ON",
     "candidate_count": 1,
     "confirmed": false,
-    "transition": "WATCH NEUTRAL · 1/2",
+    "transition": "WATCH RISK-ON · 1/2",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,12 +82,12 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH NEUTRAL · 1/2",
+    "status": "WATCH RISK-ON · 1/2",
     "confirmed": false
   },
   "action_engine": {
-    "investor": "HOLD",
-    "trader": "WAIT",
+    "investor": "BUY GRADUALLY",
+    "trader": "LONG BIAS",
     "why": [
       "Long/Short extremity 65/100",
       "Price/OI leverage 55/100",
