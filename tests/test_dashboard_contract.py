@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from moex_crash_radar.dashboard_contract import validate_dashboard_snapshot
 
 def good_snapshot():
@@ -14,6 +16,9 @@ def good_snapshot():
       "bottom":{"score":None,"state":"DATA_INSUFFICIENT","buy_back_signal":False},"calibration":{"release":"R0.6.2","false_event_rate":.2222,"detected_episodes":"4/4","blind_precision":.75,"blind_false_alarm_rate":.25,"median_lead_days":28.5},"note":"Live MOEX market layer is active."}
 
 def test_valid_dashboard_contract_passes(): assert validate_dashboard_snapshot(good_snapshot())==[]
+def test_as_of_provenance_is_timezone_aware():
+    observed=datetime.fromisoformat(good_snapshot()["as_of"])
+    assert observed.tzinfo is not None and observed.utcoffset() is not None
 def test_missing_core_signal_fails():
     s=good_snapshot(); del s["signals"]["breadth"]; assert any("breadth" in e for e in validate_dashboard_snapshot(s))
 def test_rate_sources_required():
