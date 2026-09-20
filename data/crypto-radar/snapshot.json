@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-20T07:51:06.664525+00:00",
+  "generated_at": "2026-09-20T08:11:47.830454+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,30 +14,30 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2731926008762.938,
-    "total_change_24h_pct": -4.584185453532026,
-    "btc_dominance_pct": 58.93401709850929,
-    "btc_cap": 1610033741122.9722,
-    "alt_cap": 1121892267639.9658
+    "total_market_cap": 2736120347769.8047,
+    "total_change_24h_pct": -4.512710346138816,
+    "btc_dominance_pct": 58.94448476805339,
+    "btc_cap": 1612792041626.7822,
+    "alt_cap": 1123328306143.0225
   },
   "derivatives": {
-    "btc_price": 80312.1,
-    "price_change_24h_pct": -0.87,
-    "oi_usd": 5167507601.1482,
-    "oi_change_24h_pct": -2.9336362986938314,
-    "funding_pct": 0.01,
-    "long_short_ratio": 0.7792686135227572
+    "btc_price": 80405.1,
+    "price_change_24h_pct": -0.95,
+    "oi_usd": 5164614802.6561,
+    "oi_change_24h_pct": -3.0883858855304647,
+    "funding_pct": 0.0095,
+    "long_short_ratio": 0.7867460986925348
   },
   "context": {
-    "stablecoin_market_cap": 306620881588.0,
-    "stablecoin_market_cap_change_24h_pct": -0.013839817872907112,
+    "stablecoin_market_cap": 306615185365.0,
+    "stablecoin_market_cap_change_24h_pct": -0.017117641313935117,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
     "model": "v2-provisional",
     "factors": {
       "oi_price": 35,
-      "funding": 75,
+      "funding": 50,
       "long_short": 15,
       "liquidation_risk": null,
       "news": null,
@@ -47,20 +47,20 @@
     "derivative_factor_count": 3,
     "external_context_present": true,
     "quality_passed": true,
-    "score": 45,
-    "state": "NEUTRAL",
-    "action": "WAIT"
+    "score": 38,
+    "state": "FEAR",
+    "action": "WATCH"
   },
   "risk": {
     "model": "risk-v1-provisional",
     "provisional": true,
     "coverage_pct": 100,
-    "score": 54,
+    "score": 50,
     "status": "ELEVATED",
     "components": {
       "market_stress": 75,
       "leverage": 45,
-      "funding_extreme": 45,
+      "funding_extreme": 20,
       "positioning_extreme": 40,
       "liquidity_context": 55
     },
@@ -71,7 +71,7 @@
     "provisional": true,
     "status": "RISK-OFF",
     "candidate": "RISK-OFF",
-    "candidate_count": 45,
+    "candidate_count": 46,
     "confirmed": true,
     "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
