@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-20T10:39:57.683220+00:00",
+  "generated_at": "2026-09-20T10:51:30.596807+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2735690809677.1904,
-    "total_change_24h_pct": -4.7833791707942535,
-    "btc_dominance_pct": 58.91260177643706,
-    "btc_cap": 1611666632539.7097,
-    "alt_cap": 1124024177137.4807
+    "total_market_cap": 2730923072226.172,
+    "total_change_24h_pct": -4.887656037417985,
+    "btc_dominance_pct": 58.947910236311365,
+    "btc_cap": 1609822081238.6003,
+    "alt_cap": 1121100990987.5715
   },
   "derivatives": {
-    "btc_price": 80306.8,
-    "price_change_24h_pct": -1.09,
+    "btc_price": 80328.5,
+    "price_change_24h_pct": -1.12,
     "oi_usd": 5144255453.714904,
     "oi_change_24h_pct": -3.365893563477118,
-    "funding_pct": 0.0084,
+    "funding_pct": 0.0081,
     "long_short_ratio": 0.7943456933382562
   },
   "context": {
-    "stablecoin_market_cap": 306663227198.0,
-    "stablecoin_market_cap_change_24h_pct": 0.004921715839545371,
+    "stablecoin_market_cap": 306639304548.0,
+    "stablecoin_market_cap_change_24h_pct": -0.007145477143211121,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -55,14 +55,14 @@
     "model": "risk-v1-provisional",
     "provisional": true,
     "coverage_pct": 100,
-    "score": 48,
+    "score": 50,
     "status": "ELEVATED",
     "components": {
       "market_stress": 75,
       "leverage": 45,
       "funding_extreme": 20,
       "positioning_extreme": 40,
-      "liquidity_context": 35
+      "liquidity_context": 55
     },
     "reason": "Provisional composite; historical calibration required"
   },
@@ -71,7 +71,7 @@
     "provisional": true,
     "status": "RISK-OFF",
     "candidate": "RISK-OFF",
-    "candidate_count": 56,
+    "candidate_count": 57,
     "confirmed": true,
     "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
@@ -90,8 +90,8 @@
     "trader": "REDUCE EXPOSURE",
     "why": [
       "Market stress 75/100",
-      "Price/OI leverage 45/100",
-      "Long/Short extremity 40/100"
+      "Stablecoin liquidity 55/100",
+      "Price/OI leverage 45/100"
     ],
     "provisional": true
   }
