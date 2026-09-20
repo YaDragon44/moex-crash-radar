@@ -1,16 +1,51 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-20T22:00:00+03:00",
+  "generated_at": "2026-09-21T02:01:25+03:00",
   "data_quality": "PARTIAL",
-  "market": {"regime":"RECOVERY / HIGH-LEVEL CONSOLIDATION","btc_filter":"OPEN / CAUTION","action":"NO TRADE"},
-  "assets": {
-    "BTC":{"price_display":"~$80.0–81.0k","status":"WAIT","score":11,"score_max":19,"setup":"Breakout+Retest / Liquidity Sweep","trigger":"Hold >$82–83k with acceptance/retest OR sweep $80k + reclaim + 1H HL","invalidation":"Sustained < $80k weakens; < $78k invalidates recovery thesis"},
-    "GRAM":{"price_display":"DATA LIMITED","status":"WAIT","score":7,"score_max":19,"setup":"DATA LIMITED","trigger":"Fresh synchronized quote + confirmed structure","invalidation":"Not set"},
-    "DOT":{"price_display":"~$1.08 reference","status":"INVALID / WAIT","score":6,"score_max":19,"setup":"Failed Trend Pullback","trigger":"Reclaim $1.10–1.12 + HL; then $1.15/$1.20","invalidation":"Previous bullish pullback invalid"}
+  "market": {
+    "regime": "RECOVERY / HIGH-LEVEL CONSOLIDATION",
+    "btc_filter": "OPEN / CAUTION",
+    "action": "NO TRADE"
   },
-  "best_candidate":"BTC as market filter; no READY candidate",
-  "trade_plan":{"entry":null,"stop":null,"tp1":null,"tp2":null,"tp3":null,"rr":null},
-  "sources":"CoinMarketCap + CryptoRank + Hindustan Times/Farside reference + Reuters/Barron's",
-  "source_data_time":"2026-09-20 17:06 MSK BTC snapshot; supporting checks 21:58–22:00 MSK",
-  "note":"Authoritative state is produced by the 4H monitor. Dashboard must not calculate trading decisions."
+  "assets": {
+    "BTC": {
+      "price_display": "~$80.8k",
+      "status": "WAIT",
+      "score": 11,
+      "score_max": 19,
+      "setup": "Breakout+Retest / Liquidity Sweep watch",
+      "trigger": "Acceptance >$82.3k with retest OR sweep $80k + reclaim + confirmed 1H HL",
+      "invalidation": "Sustained loss of $80k weakens filter; <$78k invalidates current recovery thesis"
+    },
+    "GRAM": {
+      "price_display": "~$1.38",
+      "status": "WAIT",
+      "score": 8,
+      "score_max": 19,
+      "setup": "Range / breakout watch",
+      "trigger": "Confirmed break above $1.40 with structure/volume confirmation and BTC filter supportive",
+      "invalidation": "No canonical long trigger confirmed"
+    },
+    "DOT": {
+      "price_display": "~$1.11",
+      "status": "INVALID / WAIT",
+      "score": 6,
+      "score_max": 19,
+      "setup": "Failed Trend Pullback; reclaim watch",
+      "trigger": "Reclaim $1.10–1.12 + confirmed HL; then $1.15/$1.20",
+      "invalidation": "Previous bullish pullback remains invalid"
+    }
+  },
+  "best_candidate": "None — BTC filter has not confirmed breakout/retest and no asset passes FAST GATE",
+  "trade_plan": {
+    "entry": null,
+    "stop": null,
+    "tp1": null,
+    "tp2": null,
+    "tp3": null,
+    "rr": null
+  },
+  "sources": "CoinGecko + CoinMarketCap",
+  "source_data_time": "2026-09-21 02:01 MSK web verification; BTC current reference ~$80,833, GRAM CMC live ~$1.38, DOT CMC live ~$1.11",
+  "note": "Authoritative decision state produced only by the 4H Monitor. FAST GATE failed to produce a quality candidate, so DEEP CONFIRMATION was not expanded. Dashboard is READ ONLY; Telegram is transport only. Missing synchronized derivatives/order-flow data are not scored."
 }
