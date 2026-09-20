@@ -232,7 +232,13 @@ def fingerprint(x):
 
 def main():
     snap = json.loads(SNAPSHOT.read_text(encoding="utf-8"))
-    now = datetime.now(MSK)
+    # R0.9.2.3: make candle freshness deterministic for a persisted snapshot.
+    # A delayed GitHub runner must not change WAIT/READY/INVALID for the same current.json.
+    generated_at = snap.get("generated_at")
+    try:
+        now = datetime.fromisoformat(str(generated_at).replace("Z", "+00:00")).astimezone(MSK)
+    except (TypeError, ValueError):
+        now = datetime.now(MSK)
     if HISTORY.exists():
         doc = json.loads(HISTORY.read_text(encoding="utf-8"))
     else:
