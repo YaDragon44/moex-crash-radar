@@ -2,21 +2,21 @@
   "version": "1.6.2",
   "method": "confirmed regime transitions; forward BTC observation at 1h/4h/24h; no lookahead",
   "max_observation_lag_minutes": 30,
-  "event_count": 34,
+  "event_count": 35,
   "sample_quality": "USABLE",
   "summary": {
     "1h": {
-      "closed": 33,
+      "closed": 34,
       "open": 1,
-      "avg_btc_return_pct": 0.1068,
-      "positive_rate_pct": 63.6,
-      "negative_rate_pct": 36.4,
-      "directional_cases": 21,
-      "alignment_rate_pct": 47.6
+      "avg_btc_return_pct": 0.1079,
+      "positive_rate_pct": 64.7,
+      "negative_rate_pct": 35.3,
+      "directional_cases": 22,
+      "alignment_rate_pct": 45.5
     },
     "4h": {
       "closed": 32,
-      "open": 2,
+      "open": 3,
       "avg_btc_return_pct": 0.3657,
       "positive_rate_pct": 56.2,
       "negative_rate_pct": 43.8,
@@ -25,7 +25,7 @@
     },
     "24h": {
       "closed": 31,
-      "open": 3,
+      "open": 4,
       "avg_btc_return_pct": 1.1259,
       "positive_rate_pct": 64.5,
       "negative_rate_pct": 35.5,
@@ -1064,6 +1064,37 @@
       "btc_price_at_transition": 81140.5,
       "investor_action": "REDUCE RISK",
       "trader_action": "REDUCE EXPOSURE",
+      "outcomes": {
+        "1h": {
+          "status": "CLOSED",
+          "observed_at": "2026-09-20T18:30:18.282697+00:00",
+          "btc_price": 81256.7,
+          "btc_return_pct": 0.1432,
+          "alignment": "NOT_ALIGNED"
+        },
+        "4h": {
+          "status": "OPEN",
+          "observed_at": null,
+          "btc_price": null,
+          "btc_return_pct": null,
+          "alignment": null
+        },
+        "24h": {
+          "status": "OPEN",
+          "observed_at": null,
+          "btc_price": null,
+          "btc_return_pct": null,
+          "alignment": null
+        }
+      }
+    },
+    {
+      "generated_at": "2026-09-20T18:30:18.282697+00:00",
+      "from_regime": "RISK-OFF",
+      "to_regime": "NEUTRAL",
+      "btc_price_at_transition": 81256.7,
+      "investor_action": "HOLD",
+      "trader_action": "WAIT",
       "outcomes": {
         "1h": {
           "status": "OPEN",
