@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-20T22:00:00+03:00",
+  "data_quality": "PARTIAL",
+  "market": {"regime":"RECOVERY / HIGH-LEVEL CONSOLIDATION","btc_filter":"OPEN / CAUTION","action":"NO TRADE"},
+  "assets": {
+    "BTC":{"price_display":"~$80.0–81.0k","status":"WAIT","score":11,"score_max":19,"setup":"Breakout+Retest / Liquidity Sweep","trigger":"Hold >$82–83k with acceptance/retest OR sweep $80k + reclaim + 1H HL","invalidation":"Sustained < $80k weakens; < $78k invalidates recovery thesis"},
+    "GRAM":{"price_display":"DATA LIMITED","status":"WAIT","score":7,"score_max":19,"setup":"DATA LIMITED","trigger":"Fresh synchronized quote + confirmed structure","invalidation":"Not set"},
+    "DOT":{"price_display":"~$1.08 reference","status":"INVALID / WAIT","score":6,"score_max":19,"setup":"Failed Trend Pullback","trigger":"Reclaim $1.10–1.12 + HL; then $1.15/$1.20","invalidation":"Previous bullish pullback invalid"}
+  },
+  "best_candidate":"BTC as market filter; no READY candidate",
+  "trade_plan":{"entry":null,"stop":null,"tp1":null,"tp2":null,"tp3":null,"rr":null},
+  "sources":"CoinMarketCap + CryptoRank + Hindustan Times/Farside reference + Reuters/Barron's",
+  "source_data_time":"2026-09-20 17:06 MSK BTC snapshot; supporting checks 21:58–22:00 MSK",
+  "note":"Authoritative state is produced by the 4H monitor. Dashboard must not calculate trading decisions."
+}
