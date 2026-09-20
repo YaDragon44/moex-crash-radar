@@ -15,7 +15,7 @@ def _env_float(name: str) -> float | None:
     return value if value > 0 else None
 
 
-def build_trade_plan(signal: dict[str, Any], lot_size: int = 1) -> dict[str, Any]:
+def build_trade_plan(signal: dict[str, Any], lot_size: int | None = None) -> dict[str, Any]:
     entry = float(signal["entry"])
     stop = float(signal["stop"])
     if entry <= stop:
