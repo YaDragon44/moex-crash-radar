@@ -2,12 +2,12 @@
   "version": "1.6.2",
   "method": "confirmed regime transitions; forward BTC observation at 1h/4h/24h; no lookahead",
   "max_observation_lag_minutes": 30,
-  "event_count": 33,
+  "event_count": 34,
   "sample_quality": "USABLE",
   "summary": {
     "1h": {
       "closed": 32,
-      "open": 1,
+      "open": 2,
       "avg_btc_return_pct": 0.1168,
       "positive_rate_pct": 65.6,
       "negative_rate_pct": 34.4,
@@ -16,7 +16,7 @@
     },
     "4h": {
       "closed": 32,
-      "open": 1,
+      "open": 2,
       "avg_btc_return_pct": 0.3657,
       "positive_rate_pct": 56.2,
       "negative_rate_pct": 43.8,
@@ -25,7 +25,7 @@
     },
     "24h": {
       "closed": 31,
-      "open": 2,
+      "open": 3,
       "avg_btc_return_pct": 1.1259,
       "positive_rate_pct": 64.5,
       "negative_rate_pct": 35.5,
@@ -1033,6 +1033,37 @@
       "btc_price_at_transition": 81266.7,
       "investor_action": "HOLD",
       "trader_action": "WAIT",
+      "outcomes": {
+        "1h": {
+          "status": "OPEN",
+          "observed_at": null,
+          "btc_price": null,
+          "btc_return_pct": null,
+          "alignment": null
+        },
+        "4h": {
+          "status": "OPEN",
+          "observed_at": null,
+          "btc_price": null,
+          "btc_return_pct": null,
+          "alignment": null
+        },
+        "24h": {
+          "status": "OPEN",
+          "observed_at": null,
+          "btc_price": null,
+          "btc_return_pct": null,
+          "alignment": null
+        }
+      }
+    },
+    {
+      "generated_at": "2026-09-20T17:24:23.514657+00:00",
+      "from_regime": "NEUTRAL",
+      "to_regime": "RISK-OFF",
+      "btc_price_at_transition": 81140.5,
+      "investor_action": "REDUCE RISK",
+      "trader_action": "REDUCE EXPOSURE",
       "outcomes": {
         "1h": {
           "status": "OPEN",
