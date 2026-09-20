@@ -1,0 +1,32 @@
+{
+  "release": "R1.5.0",
+  "as_of": "2026-09-10",
+  "sources": {
+    "MOEX_ISS_MARKET": {
+      "role": "PRICE_CONTROL",
+      "access": "PUBLIC",
+      "quality_default": "DELAYED",
+      "notes": "Public MOEX ISS market/candle data; public market data may be delayed."
+    },
+    "MOEX_FUTOI": {
+      "role": "OI_AND_POSITIONING",
+      "access": "SUBSCRIPTION_AUTH_REQUIRED",
+      "frequency": "5_MIN",
+      "history_documented_from": "2020",
+      "endpoint": "https://iss.moex.com/iss/analyticalproducts/futoi/securities/",
+      "event_time_field": "MOMENT",
+      "available_time_field": "SYSTIME",
+      "participant_groups": ["FIZ", "YUR"],
+      "fields": ["TICKER", "CLGROUP", "POS", "POS_LONG", "POS_SHORT", "POS_LONG_NUM", "POS_SHORT_NUM", "MOMENT", "SYSTIME"],
+      "unauthenticated_quality": "BLOCKED_AUTH",
+      "daily_public_substitution_allowed": false
+    }
+  },
+  "ablation_readiness": {
+    "M0_PRICE": "READY_PUBLIC",
+    "M1_PRICE_OI": "BLOCKED_UNTIL_VALID_OI_HISTORY",
+    "M2_PRICE_POSITIONING": "BLOCKED_AUTH",
+    "M3_PRICE_OI_POSITIONING": "BLOCKED_AUTH",
+    "M4_PRICE_OI_POSITIONING_CONTEXT": "BLOCKED_AUTH_AND_CONTEXT_PIT"
+  }
+}

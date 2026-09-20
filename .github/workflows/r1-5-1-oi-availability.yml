@@ -1,0 +1,36 @@
+name: R1.5.1 OI Availability Audit
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/run_r1_5_1_oi_availability.py'
+      - 'config/r1_5_1_oi_availability_gate.json'
+      - 'docs/r1_5_1_oi_availability_incremental_value_pilot.md'
+      - '.github/workflows/r1-5-1-oi-availability.yml'
+jobs:
+  availability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Run public OI availability collector
+        working-directory: scripts
+        run: python run_r1_5_1_oi_availability.py
+      - name: Contract gate
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('scripts/artifacts/r1_5_1_oi_availability.json'))
+          assert p['release']=='R1.5.1'
+          assert p['production']=='NO-GO'
+          assert p['futoi_positioning']=='BLOCKED_AUTH'
+          assert p['gate']['status'] in ('DATA_READY','DATA_LIMITED')
+          if p['gate']['status']=='DATA_LIMITED': assert p['gate']['m1_backtest_allowed'] is False
+          print('R1.5.1 availability contract PASS',p['gate'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: r1-5-1-oi-availability
+          path: scripts/artifacts/r1_5_1_oi_availability.json

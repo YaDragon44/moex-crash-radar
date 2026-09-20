@@ -1,0 +1,24 @@
+{
+  "release": "R1.5.0",
+  "production": "NO-GO",
+  "quality_status": ["LIVE", "DELAYED", "STALE", "N/A", "BLOCKED_AUTH"],
+  "required_observation_fields": ["source", "event_time", "available_time", "decision_time", "quality"],
+  "rules": {
+    "no_forward_fill_participant_data": true,
+    "missing_is_neutral": false,
+    "fabrication_allowed": false,
+    "available_time_lte_decision_time": true,
+    "context_separate_from_crowd_score": true
+  },
+  "layers": {
+    "price_control": ["price_state", "return", "volatility"],
+    "oi": ["oi_total", "oi_delta", "oi_delta_pct", "oi_percentile", "price_oi_quadrant", "oi_persistence"],
+    "positioning": ["fiz_long", "fiz_short", "fiz_net", "yur_long", "yur_short", "yur_net", "delta_fiz_net", "delta_yur_net", "positioning_divergence"],
+    "context": ["imoex_state", "breadth", "rub", "ofz_yield", "oil", "macro_event"]
+  },
+  "ablation": ["M0_PRICE", "M1_PRICE_OI", "M2_PRICE_POSITIONING", "M3_PRICE_OI_POSITIONING", "M4_PRICE_OI_POSITIONING_CONTEXT"],
+  "notes": {
+    "futoi_history": "Authenticated/subscribed MOEX access required for historical intraday FUTOI; otherwise BLOCKED_AUTH.",
+    "thresholds": "OI +0.5% and P75 are unvalidated hypotheses, not production thresholds."
+  }
+}
