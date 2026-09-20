@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-20T17:24:23.514657+00:00",
+  "generated_at": "2026-09-20T17:38:27.740405+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2763997472772.4546,
-    "total_change_24h_pct": -4.145260268009809,
-    "btc_dominance_pct": 58.79650600587327,
-    "btc_cap": 1625133940080.8416,
-    "alt_cap": 1138863532691.613
+    "total_market_cap": 2769274833186.862,
+    "total_change_24h_pct": -4.221936890413117,
+    "btc_dominance_pct": 58.86005435460107,
+    "btc_cap": 1629996672042.075,
+    "alt_cap": 1139278161144.7869
   },
   "derivatives": {
-    "btc_price": 81140.5,
-    "price_change_24h_pct": -0.44,
+    "btc_price": 81327.4,
+    "price_change_24h_pct": -0.15,
     "oi_usd": 5169495293.4286,
     "oi_change_24h_pct": -5.413040327726959,
-    "funding_pct": 0.0007999999999999999,
+    "funding_pct": -0.00039999999999999996,
     "long_short_ratio": 0.811024894924022
   },
   "context": {
-    "stablecoin_market_cap": 306859392472.0,
-    "stablecoin_market_cap_change_24h_pct": 0.03981930597982686,
+    "stablecoin_market_cap": 306875634611.0,
+    "stablecoin_market_cap_change_24h_pct": 0.057421055464113024,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -41,13 +41,13 @@
       "long_short": 30,
       "liquidation_risk": null,
       "news": null,
-      "flows": 50
+      "flows": 65
     },
     "coverage_pct": 70,
     "derivative_factor_count": 3,
     "external_context_present": true,
     "quality_passed": true,
-    "score": 41,
+    "score": 45,
     "state": "NEUTRAL",
     "action": "WAIT"
   },
@@ -71,9 +71,9 @@
     "provisional": true,
     "status": "RISK-OFF",
     "candidate": "RISK-OFF",
-    "candidate_count": 2,
+    "candidate_count": 3,
     "confirmed": true,
-    "transition": "CONFIRMED -> RISK-OFF",
+    "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,7 +82,7 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "CONFIRMED -> RISK-OFF",
+    "status": "STABLE",
     "confirmed": true
   },
   "action_engine": {
