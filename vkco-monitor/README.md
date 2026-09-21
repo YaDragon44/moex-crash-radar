@@ -1,50 +1,68 @@
-# VKCO Monitor R1.0 Production
+# VKCO Monitor — Current Production Overview
 
-Минимальный облачный монитор без VPS и без включенного локального компьютера.
+A minimal cloud model/paper trading monitor for VKCO on MOEX.
 
-## Архитектура
+## Current state
+- Trading engine baseline: **R1.8**.
+- Dashboard source: **R0.6.4**.
+- Status: **PRODUCTION OBSERVATION / STRATEGY FREEZE**.
+- R1.8.1 Risk Safety Hotfix is **not released** until all relevant gates pass.
 
-GitHub Actions → MOEX ISS → `monitor.py` → Telegram Bot.
+Canonical documents:
+- `REQUIREMENTS.md` — current requirements.
+- `ARCHITECTURE.md` — current architecture.
+- `PROJECT_CHECKPOINT.md` — recovery/status checkpoint.
+- release documents — historical evidence, not the current requirements baseline.
 
-## Production scope
+## What it does
+```text
+MOEX M10
+ -> Adaptive Spring / Breakout
+ -> RVOL
+ -> IMOEX filter
+ -> VK IR Event Risk Lite
+ -> Trade Plan
+ -> Model Position
+ -> Journal
+ -> Telegram + sanitized Live State + read-only Dashboard
+```
 
-- реальные 10-минутные свечи `VKCO`, MOEX board `TQBR`;
-- setup `Wyckoff Spring / False Breakout` в зоне 127–130 ₽;
-- setup `Breakout + Hold` выше 141 ₽ (2 закрытия подряд);
-- статусы `WAIT` / `READY` в логах;
-- Telegram отправляется только при `READY`;
-- anti-duplicate по `signal_id` через GitHub Actions cache;
-- scheduled run каждые 10 минут в будни (UTC 06:00–20:59);
-- stale-data gate: старые данные не дают сигнал;
-- regression tests перед каждым production run;
-- ручной режим `run` и `test_telegram`.
+The system does **not** send broker orders.
 
-## GitHub Secrets (обязательный ручной шаг)
+## Strategy
+Fixed historical VKCO price zones from R1.0 are obsolete.
 
-Repository → Settings → Secrets and variables → Actions → New repository secret:
+Current production signals use adaptive support/resistance from completed M10 candles:
+- Adaptive Breakout + Hold with RVOL confirmation.
+- Adaptive Spring with reclaim/hold and RVOL confirmation.
+- IMOEX and Event Risk gates are mandatory for READY.
 
-1. `TELEGRAM_BOT_TOKEN` — новый токен BotFather, который никогда не публиковался.
-2. `TELEGRAM_CHAT_ID` — ваш Telegram chat id.
+Exact canonical rules are in `REQUIREMENTS.md` and `R1.2_SIGNAL_MODEL.md`.
 
-Секреты не должны храниться в коде, issue, README или Actions logs.
+## Risk
+Production risk configuration remains 0.5% per model trade.
 
-## Production validation
+R1.8.1 is being developed to harden sizing with:
+- official MOEX LOTSIZE;
+- available-capital/notional cap;
+- fail-closed invalid sizing metadata.
 
-После merge в `main`:
+Until that release passes all relevant gates and is merged, it must not be described as production.
 
-1. Actions → `VKCO Monitor R1.0` → Run workflow → `test_telegram`.
-2. Ожидаемый Telegram: `✅ VKCO R1.0 Production: Telegram test OK`.
-3. Run workflow → `run`.
-4. В логах должен быть либо `status=WAIT ...`, либо `status=READY sent=1 ...`.
-5. После этого scheduled workflow работает автоматически; локальный компьютер не нужен.
+## Operations
+GitHub Actions runs the monitor without a local computer or VPS. Scheduling is best-effort and intentionally offset from M10 candle boundaries.
 
-## Ограничения R1.0
+Required secrets/variables must be configured only in repository settings. Never store tokens in code, docs, issues, public state or logs.
 
-- GitHub Actions не является real-time/HFT инфраструктурой; возможна задержка scheduled run.
-- R1.0 предназначен для 10–15m/swing trigger monitoring.
-- Полный 19-факторный Confluence не рассчитывается: факторы, которых нет в MVP, считаются нулём и это явно отмечено в Telegram.
-- Новости/event-risk автоматически не блокируют вход; сообщение требует ручной проверки события перед сделкой.
+## Observation freeze
+Do not change signal thresholds, RVOL, IMOEX, event-risk, Stop/TP or risk percentage before evidence:
+- 10 closed model trades: diagnostic review;
+- prefer 20 closed model trades before strategy tuning.
 
-## Безопасность
+Safety/data/runtime defects may be hotfixed.
 
-Монитор read-only к MOEX и имеет только право отправлять сообщения через Telegram Bot API. Доступа к брокерскому счёту и права совершать сделки нет.
+## Dashboard
+The public dashboard is read-only and consumes sanitized VKCO Live State. It must fail visibly when data is unavailable and must never fabricate candles or status.
+
+## Simplicity
+No VPS, DB, Docker, Cloudflare, broker API, auto-trading, ML signal service or additional backend is required for the current scope.

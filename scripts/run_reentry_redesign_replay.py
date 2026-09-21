@@ -18,7 +18,7 @@ def pct(a: float, b: float) -> float:
 def main() -> None:
     payload = json.loads(SRC.read_text())
     rows = payload['daily_evidence']
-    event_days = set(payload['frozen_exit_event_days'])
+    event_days = set(payload.get('frozen_exit_validation', {}).get('event_days') or [])\n    if len(rows) < 500 or not event_days:\n        raise SystemExit('R1.1.3 requires PIT daily evidence and frozen EXIT event days')
     event_idx = [i for i, r in enumerate(rows) if r['day'] in event_days]
 
     # R1.1.3 redesign: accumulation requires broad internal healing, not only a

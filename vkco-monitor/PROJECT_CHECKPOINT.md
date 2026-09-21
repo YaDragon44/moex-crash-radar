@@ -1,6 +1,6 @@
 # VKCO PROJECT CHECKPOINT
 
-**Checkpoint date:** 2026-09-13 (Europe/Moscow)  
+**Checkpoint date:** 2026-09-21 (Europe/Moscow)  
 **Project:** VKCO Trade Monitor + Control Room  
 **Repository:** YaDragon44/moex-crash-radar  
 **Status:** PRODUCTION OBSERVATION / STRATEGY FREEZE
@@ -9,7 +9,7 @@
 
 Use this file as the canonical recovery point for the VKCO project. Do not reconstruct VKCO state from other dashboards/projects in this repository.
 
-Dashboard recovery commit: `2fb7ef2a3fd6859f8ad05ca532c502973ff27401` — **VKCO Dashboard R0.6.3 Critical UTF-8 UI Hotfix**.
+Dashboard accepted source release: **R0.6.4 UI Recovery Hotfix**, merged via PR #80, commit `61d68f1b7df5f7577dfcf77bb7acbfffd1fcac7a`.\n\nCanonical requirements: `vkco-monitor/REQUIREMENTS.md`. Canonical architecture: `vkco-monitor/ARCHITECTURE.md`.
 
 The repository may contain later automated/data-only commits. Preserve this recovery anchor for the dashboard implementation and inspect current `main` before making new changes.
 
@@ -22,12 +22,12 @@ Keep architecture minimal:
 No VPS, DB, Docker, Cloudflare, broker API or automatic broker orders.
 
 Production trading engine release: **R1.8**.  
-Dashboard release: **R0.6.3**.
+Dashboard source release: **R0.6.4**.
 
 ## 3. Production links
 
 - Dashboard: `https://yadragon44.github.io/moex-crash-radar/vkco-dashboard/`
-- Cache-bypass dashboard: `https://yadragon44.github.io/moex-crash-radar/vkco-dashboard/?v=r063`
+- Cache-bypass dashboard: `https://yadragon44.github.io/moex-crash-radar/vkco-dashboard/?v=r064`
 - VKCO monitor workflow: `https://github.com/YaDragon44/moex-crash-radar/actions/workflows/vkco-monitor.yml`
 - Production observation issue: `https://github.com/YaDragon44/moex-crash-radar/issues/61`
 - Source: `vkco-monitor/`
@@ -42,7 +42,7 @@ R0.6.2 changed the public Live State contract so `status.json` contains the late
 
 R0.6.3 rebuilt the dashboard as valid UTF-8 and removed the chart dependency on the large TA Market JSON. The dashboard now reads market/trade state and M10 candles from the single existing `vkco-live/status.json` source.
 
-R0.6.3 merge: PR #72, commit `2fb7ef2a3fd6859f8ad05ca532c502973ff27401`.
+R0.6.3 was superseded by **R0.6.4 UI Recovery Hotfix** (PR #80, commit `61d68f1b7df5f7577dfcf77bb7acbfffd1fcac7a`). R0.6.4 replaced the corrupted/mojibake dashboard source with clean UTF-8 while preserving the single Live State contract.
 
 Post-merge GitHub Pages run `34704730108` completed successfully:
 - build: PASS;
@@ -113,13 +113,13 @@ Scope is strictly limited to risk-sizing correctness before the first real READY
 - add regression tests for LOTSIZE rounding, tight-stop notional cap, missing/invalid metadata and no-position fallback;
 - do not change signal thresholds, adaptive levels, IMOEX filter, event-risk logic, stop/TP strategy or dashboard trading interpretation.
 
-After R1.8.1: return to **Production Observation** and collect model trades under issue #61. No strategy optimization before the evidence gate.
+Current development PR: **#81**. Do not merge or describe R1.8.1 as production until every relevant VKCO gate is green. The implementation work covers official MOEX LOTSIZE, available-capital/notional cap and fail-closed sizing metadata; specialized regression remains the release authority.\n\nAfter accepted R1.8.1: return to **Production Observation** and collect model trades under issue #61. No strategy optimization before the evidence gate.
 
 ## 10. Recovery instruction
 
 When recovering this project in a new chat:
 
-1. Read `vkco-monitor/PROJECT_CHECKPOINT.md` first.
+1. Read `vkco-monitor/PROJECT_CHECKPOINT.md`, `REQUIREMENTS.md` and `ARCHITECTURE.md` first.
 2. Inspect current `main` and confirm the recovery anchor/relevant later commits.
 3. Read the production files only as needed for the NEXT TASK.
 4. Do not reconstruct requirements from unrelated `moex-crash-radar` modules.
