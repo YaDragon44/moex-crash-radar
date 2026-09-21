@@ -2,11 +2,11 @@
   "version": "1.6",
   "cadence_minutes": 15,
   "retention_records": 2880,
-  "record_count": 775,
+  "record_count": 776,
   "first_generated_at": "2026-09-12T15:13:27.289827+00:00",
-  "last_generated_at": "2026-09-21T22:27:19.527483+00:00",
+  "last_generated_at": "2026-09-21T22:42:00.288387+00:00",
   "confirmed_transition_count": 33,
-  "regime_change_count": 46,
+  "regime_change_count": 47,
   "records": [
     {
       "generated_at": "2026-09-12T15:13:27.289827+00:00",
@@ -13957,6 +13957,24 @@
       "investor_action": "WAIT",
       "trader_action": "WAIT",
       "quality_ready": false
+    },
+    {
+      "generated_at": "2026-09-21T22:42:00.288387+00:00",
+      "btc_price": 86428.5,
+      "btc_change_24h_pct": 6.47,
+      "total_change_24h_pct": 3.743563140823091,
+      "crowd_score": 57,
+      "crowd_state": "NEUTRAL",
+      "risk_score": 45,
+      "risk_status": "ELEVATED",
+      "regime": "RISK-ON / OVERHEATED",
+      "regime_candidate": "RISK-ON / OVERHEATED",
+      "regime_confirmed": false,
+      "candidate_count": 1,
+      "transition": "WATCH RISK-ON / OVERHEATED · 1/2",
+      "investor_action": "HOLD",
+      "trader_action": "SELECTIVE LONG",
+      "quality_ready": true
     }
   ]
 }
