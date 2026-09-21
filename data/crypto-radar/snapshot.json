@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-21T11:44:54.539505+00:00",
+  "generated_at": "2026-09-21T11:56:25.152355+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2869755465399.832,
-    "total_change_24h_pct": 2.4201568468982257,
-    "btc_dominance_pct": 59.11198487703101,
-    "btc_cap": 1696369416714.9197,
-    "alt_cap": 1173386048684.9124
+    "total_market_cap": 2871206116720.0156,
+    "total_change_24h_pct": 2.4823787082811957,
+    "btc_dominance_pct": 59.104891394810174,
+    "btc_cap": 1697023257008.512,
+    "alt_cap": 1174182859711.5037
   },
   "derivatives": {
-    "btc_price": 84767.3,
-    "price_change_24h_pct": 5.41,
+    "btc_price": 84770.4,
+    "price_change_24h_pct": 5.38,
     "oi_usd": 5841579015.658508,
     "oi_change_24h_pct": 15.340306811505688,
-    "funding_pct": -0.0028,
+    "funding_pct": -0.0033000000000000004,
     "long_short_ratio": 0.7019022020055825
   },
   "context": {
-    "stablecoin_market_cap": 306671474448.0,
-    "stablecoin_market_cap_change_24h_pct": 0.055370238133489735,
+    "stablecoin_market_cap": 306640491383.0,
+    "stablecoin_market_cap_change_24h_pct": 0.049673143953277155,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -41,13 +41,13 @@
       "long_short": 15,
       "liquidation_risk": null,
       "news": null,
-      "flows": 65
+      "flows": 50
     },
     "coverage_pct": 70,
     "derivative_factor_count": 3,
     "external_context_present": true,
     "quality_passed": true,
-    "score": 57,
+    "score": 54,
     "state": "NEUTRAL",
     "action": "WAIT"
   },
@@ -71,7 +71,7 @@
     "provisional": true,
     "status": "RISK-ON / OVERHEATED",
     "candidate": "RISK-ON / OVERHEATED",
-    "candidate_count": 10,
+    "candidate_count": 11,
     "confirmed": true,
     "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
