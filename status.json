@@ -2,15 +2,35 @@
   "schema_version": 2,
   "release": "R1.8",
   "dashboard_release": "R0.6.2",
-  "generated_at": "2026-09-21T13:18:53.862733+03:00",
+  "generated_at": "2026-09-21T13:33:44.656772+03:00",
   "ticker": "VKCO",
   "mode": "run",
   "health": "OK",
   "trade": {
-    "status": "WAIT",
-    "reason": "NO_TRIGGER"
+    "status": "OPEN",
+    "reason": "OPEN",
+    "setup": "Adaptive Wyckoff Spring",
+    "score": 10
   },
-  "position": null,
+  "position": {
+    "ticker": "VKCO",
+    "direction": "LONG",
+    "status": "OPEN",
+    "signal_id": "VKCO:ADAPTIVE_SPRING:2026-09-21T13:09:59+03:00",
+    "opened_at": "2026-09-21T13:09:59+03:00",
+    "entry": 109.8,
+    "stop": 109.0,
+    "tp1": 112.3,
+    "tp2": 111.8,
+    "tp3": 113.0,
+    "shares": 6250,
+    "lots": 6250,
+    "initial_risk_rub": 5000.0,
+    "setup": "Adaptive Wyckoff Spring",
+    "score": 10,
+    "last_event": "OPEN",
+    "last_price": 109.8
+  },
   "journal": {
     "trades": 0,
     "wins": 0,
@@ -26,15 +46,6 @@
     "max_risk_rub": 5000.0
   },
   "candles": [
-    {
-      "t": "2026-09-20T13:10:00+03:00",
-      "end": "2026-09-20T13:19:59+03:00",
-      "o": 112.2,
-      "h": 112.25,
-      "l": 112.15,
-      "c": 112.15,
-      "v": 49.0
-    },
     {
       "t": "2026-09-20T13:20:00+03:00",
       "end": "2026-09-20T13:29:59+03:00",
@@ -673,16 +684,25 @@
       "l": 109.2,
       "c": 109.55,
       "v": 229066.0
+    },
+    {
+      "t": "2026-09-21T13:00:00+03:00",
+      "end": "2026-09-21T13:09:59+03:00",
+      "o": 109.55,
+      "h": 109.8,
+      "l": 109.5,
+      "c": 109.8,
+      "v": 76372.0
     }
   ],
   "market": {
-    "price": 109.55,
-    "candle_end": "2026-09-21T12:59:59+03:00",
-    "volume": 229066.0,
-    "age_min": 18,
+    "price": 109.8,
+    "candle_end": "2026-09-21T13:09:59+03:00",
+    "volume": 76372.0,
+    "age_min": 23,
     "fresh": true,
-    "support": 110.0,
-    "resistance": 112.4,
-    "avg_range": 0.3975
+    "support": 109.4,
+    "resistance": 112.3,
+    "avg_range": 0.43
   }
 }
