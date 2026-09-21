@@ -67,4 +67,4 @@ Report sample size, coverage, missing periods, failures and uncertainty. Metrics
 
 R1.5.3 Foundation is PASS only when public historical data feasibility and deterministic feature definitions are demonstrated with tests and a preregistered evidence plan. It does **not** authorize production publication.
 
-Next authorized task after this foundation: **R1.5.3-A public historical feasibility + preregistered event labels**. Its outcome must be `PASS`, `FAIL` or `INCONCLUSIVE`; only PASS with incremental evidence may request an owner decision for source projection into RADAR.
+R1.5.3-A has now locked public-data feasibility, event labels and deterministic feature definitions. The next authorized task is **R1.5.3-B — locked public historical replay and evidence report**. It must end `PASS`, `FAIL` or `INCONCLUSIVE`; only PASS with incremental evidence may request an owner decision for source projection into RADAR.
