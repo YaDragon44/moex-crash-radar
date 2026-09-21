@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-21T05:58:30+03:00",
-  "data_quality": "PARTIAL",
+  "generated_at": "2026-09-21T10:03:34+03:00",
+  "data_quality": "GOOD_SPOT_PARTIAL_DERIVATIVES",
   "market": {
     "regime": "RECOVERY / HIGH-LEVEL CONSOLIDATION",
     "btc_filter": "OPEN / CAUTION",
@@ -9,7 +9,7 @@
   },
   "assets": {
     "BTC": {
-      "price_display": "~$81.7k latest daily reference",
+      "price_display": "~$81.55k",
       "status": "WAIT",
       "score": 11,
       "score_max": 19,
@@ -18,25 +18,25 @@
       "invalidation": "Sustained loss of $80k weakens filter; <$78k invalidates current recovery thesis"
     },
     "GRAM": {
-      "price_display": "~$1.38",
+      "price_display": "~$1.39",
       "status": "WAIT",
       "score": 8,
       "score_max": 19,
-      "setup": "Range / breakout watch",
-      "trigger": "Confirmed break above $1.40 with structure/volume confirmation and BTC filter supportive",
+      "setup": "Range Breakout watch",
+      "trigger": "Confirmed break above $1.40 with structure/volume confirmation and supportive BTC filter",
       "invalidation": "No canonical long trigger confirmed"
     },
     "DOT": {
-      "price_display": "~$1.11–1.16 (fresh exact quote not synchronized)",
-      "status": "INVALID / WAIT",
-      "score": 6,
+      "price_display": "~$1.13–1.14",
+      "status": "WAIT",
+      "score": 7,
       "score_max": 19,
-      "setup": "Failed Trend Pullback; reclaim watch",
-      "trigger": "Reclaim/hold $1.10–1.12 + confirmed HL; then $1.15/$1.20",
-      "invalidation": "Previous bullish pullback remains invalid; no new canonical long trigger"
+      "setup": "Reclaim / Higher-Low watch",
+      "trigger": "Hold $1.10–1.12 + confirmed HL, then reclaim $1.15; $1.20 is next supply gate",
+      "invalidation": "Loss of $1.10–1.12 after reclaim attempt invalidates new long setup; previous bullish pullback remains invalid"
     }
   },
-  "best_candidate": "None — BTC remains below canonical $82.3k acceptance trigger and no asset passes FAST GATE",
+  "best_candidate": "None — DOT reclaimed the $1.10–1.12 zone but a confirmed HL/trigger is not established; BTC remains below canonical $82.3k acceptance trigger",
   "trade_plan": {
     "entry": null,
     "stop": null,
@@ -45,7 +45,7 @@
     "tp3": null,
     "rr": null
   },
-  "sources": "Bitget UEX Daily + CoinMarketCap + CoinGecko + Binance reference",
-  "source_data_time": "2026-09-21 05:58 MSK web verification; BTC latest daily reference ~$81.7k; GRAM CMC live ~$1.38; DOT fresh synchronized exact quote unavailable, recent references ~$1.11–1.16",
-  "note": "Authoritative decision state produced only by the 4H Monitor. FAST GATE did not produce a quality candidate, so DEEP CONFIRMATION was intentionally not expanded. Dashboard is READ ONLY; Telegram is transport only. Missing synchronized derivatives/order-flow data are not scored."
+  "sources": "CoinGecko + CoinMarketCap + KuCoin Daily Market Report + Reuters",
+  "source_data_time": "2026-09-21 10:03 MSK web verification; CoinGecko BTC ~$81,554.79, DOT ~$1.14; CoinMarketCap DOT ~$1.13 and GRAM ~$1.39",
+  "note": "Authoritative decision state produced only by the 4H Monitor. FAST GATE found no fully triggered quality candidate, so DEEP CONFIRMATION was intentionally not expanded. Dashboard is READ ONLY; Telegram is transport only. Missing synchronized OI/funding/liquidations/order-flow data are not scored. Morning presentation layer uses this same state and does not create another scoring engine."
 }
