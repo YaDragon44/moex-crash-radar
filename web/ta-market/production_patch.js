@@ -1,4 +1,4 @@
-// TA Market R0.9.2 production safety + execution risk + observation patch.
+// TA Market R0.9.2.3 production safety + execution risk + observation patch.
 // snapshot age ≤25m safety gate: implemented via age <= 25, snapshotFresh and STALE snapshot fallback.
 (function(){
   const originalAnalyze = window.analyze;
@@ -130,9 +130,9 @@
     render=window.render;
   }
 
-  document.title = 'TA Market Monitor · R0.9.2';
+  document.title = 'TA Market Monitor · R0.9.2.3';
   const badge = document.querySelector('.top h1 .ok');
-  if (badge) badge.textContent = 'R0.9.2';
+  if (badge) badge.textContent = 'R0.9.2.3';
   const footer = document.querySelector('.footer');
   if (footer) footer.innerHTML += '<br>R0.9.2: Sample Quality Gate prevents tuning on noise: <10 closed = INSUFFICIENT, 10–29 = PRELIMINARY, ≥30 = USABLE. Metrics are model quality, not actual account P/L.';
   setTimeout(function(){ if (window.J) { render(); drawRisk(); } ensurePerfBox(); loadPerf(); }, 500);
