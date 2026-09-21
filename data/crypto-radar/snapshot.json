@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-21T06:20:06.407463+00:00",
+  "generated_at": "2026-09-21T06:46:50.706737+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2812803917469.646,
-    "total_change_24h_pct": -0.04176079499988304,
-    "btc_dominance_pct": 58.2163128943047,
-    "btc_cap": 1637510729697.3894,
-    "alt_cap": 1175293187772.2566
+    "total_market_cap": 2815637286170.7056,
+    "total_change_24h_pct": 0.14948197671002206,
+    "btc_dominance_pct": 58.218510340013744,
+    "btc_cap": 1639222084586.5747,
+    "alt_cap": 1176415201584.1309
   },
   "derivatives": {
-    "btc_price": 81770.3,
-    "price_change_24h_pct": 1.62,
+    "btc_price": 81652.5,
+    "price_change_24h_pct": 1.59,
     "oi_usd": 5324774510.45826,
     "oi_change_24h_pct": 3.0305016366348525,
-    "funding_pct": 0.0063,
+    "funding_pct": 0.0055000000000000005,
     "long_short_ratio": 0.772812991094814
   },
   "context": {
-    "stablecoin_market_cap": 306754459801.0,
-    "stablecoin_market_cap_change_24h_pct": 0.025167599443753907,
+    "stablecoin_market_cap": 306654411830.0,
+    "stablecoin_market_cap_change_24h_pct": 0.03215074395779283,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -55,10 +55,10 @@
     "model": "risk-v1-provisional",
     "provisional": true,
     "coverage_pct": 100,
-    "score": 41,
+    "score": 36,
     "status": "MODERATE",
     "components": {
-      "market_stress": 40,
+      "market_stress": 25,
       "leverage": 55,
       "funding_extreme": 20,
       "positioning_extreme": 40,
@@ -71,7 +71,7 @@
     "provisional": true,
     "status": "NEUTRAL",
     "candidate": "NEUTRAL",
-    "candidate_count": 44,
+    "candidate_count": 45,
     "confirmed": true,
     "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
@@ -90,8 +90,8 @@
     "trader": "WAIT",
     "why": [
       "Price/OI leverage 55/100",
-      "Market stress 40/100",
-      "Long/Short extremity 40/100"
+      "Long/Short extremity 40/100",
+      "Stablecoin liquidity 35/100"
     ],
     "provisional": true
   }
