@@ -1,21 +1,21 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-21T10:03:34+03:00",
+  "generated_at": "2026-09-21T14:00:00+03:00",
   "data_quality": "GOOD_SPOT_PARTIAL_DERIVATIVES",
   "market": {
-    "regime": "RECOVERY / HIGH-LEVEL CONSOLIDATION",
-    "btc_filter": "OPEN / CAUTION",
+    "regime": "BULLISH BREAKOUT / RETEST PENDING",
+    "btc_filter": "OPEN / BREAKOUT CONFIRMATION PENDING",
     "action": "NO TRADE"
   },
   "assets": {
     "BTC": {
-      "price_display": "~$81.55k",
+      "price_display": "~$84.4–85.1k",
       "status": "WAIT",
-      "score": 11,
+      "score": 14,
       "score_max": 19,
-      "setup": "Breakout+Retest / Liquidity Sweep watch",
-      "trigger": "Acceptance >$82.3k with retest OR sweep $80k + reclaim + confirmed 1H HL",
-      "invalidation": "Sustained loss of $80k weakens filter; <$78k invalidates current recovery thesis"
+      "setup": "Breakout+Retest candidate / short-squeeze breakout",
+      "trigger": "Hold/acceptance above former $82.0–82.3k breakout zone followed by a clean retest/HL; stronger confirmation on sustained $84k+ acceptance",
+      "invalidation": "Loss of $82.0–82.3k after breakout/retest attempt invalidates the immediate breakout entry; <$80k materially weakens bullish filter"
     },
     "GRAM": {
       "price_display": "~$1.39",
@@ -27,16 +27,16 @@
       "invalidation": "No canonical long trigger confirmed"
     },
     "DOT": {
-      "price_display": "~$1.13–1.14",
+      "price_display": "~$1.14",
       "status": "WAIT",
       "score": 7,
       "score_max": 19,
       "setup": "Reclaim / Higher-Low watch",
-      "trigger": "Hold $1.10–1.12 + confirmed HL, then reclaim $1.15; $1.20 is next supply gate",
-      "invalidation": "Loss of $1.10–1.12 after reclaim attempt invalidates new long setup; previous bullish pullback remains invalid"
+      "trigger": "Hold $1.10–1.12 + confirmed HL, then reclaim/acceptance above $1.15; $1.20 is next supply gate",
+      "invalidation": "Loss of $1.10–1.12 after reclaim attempt invalidates new long setup"
     }
   },
-  "best_candidate": "None — DOT reclaimed the $1.10–1.12 zone but a confirmed HL/trigger is not established; BTC remains below canonical $82.3k acceptance trigger",
+  "best_candidate": "BTC — breakout above the canonical $82.3k gate is real, but the move included a large short squeeze and the required retest/HL confirmation is still pending",
   "trade_plan": {
     "entry": null,
     "stop": null,
@@ -45,7 +45,7 @@
     "tp3": null,
     "rr": null
   },
-  "sources": "CoinGecko + CoinMarketCap + KuCoin Daily Market Report + Reuters",
-  "source_data_time": "2026-09-21 10:03 MSK web verification; CoinGecko BTC ~$81,554.79, DOT ~$1.14; CoinMarketCap DOT ~$1.13 and GRAM ~$1.39",
-  "note": "Authoritative decision state produced only by the 4H Monitor. FAST GATE found no fully triggered quality candidate, so DEEP CONFIRMATION was intentionally not expanded. Dashboard is READ ONLY; Telegram is transport only. Missing synchronized OI/funding/liquidations/order-flow data are not scored. Morning presentation layer uses this same state and does not create another scoring engine."
+  "sources": "CoinGecko/market snapshots + CoinMarketCap + CoinGlass data reported by BeInCrypto + Glassnode references + The Block/Farside ETF data + Reuters/WSJ/MarketWatch",
+  "source_data_time": "2026-09-21 14:00 MSK verification; BTC fresh reports/snapshots ~$83.8k to $85.1k during 12:22–14:00 MSK window; GRAM ~$1.39; DOT ~$1.14",
+  "note": "Authoritative decision state produced only by the 4H Monitor. FAST GATE promoted BTC to candidate after clearing $82.3k. DEEP CONFIRMATION: breakout is supported by a weekly close above the 50-week MA and recent ETF inflows, but $262.3M shorts were liquidated in one hour, so part of the impulse is mechanical. Spot-CVD commentary is supportive; synchronized current OI/funding/order-flow for all assets is incomplete and receives no score. Triggered entry is not confirmed until acceptance/retest/HL, therefore trade plan remains NOT SET. Dashboard is READ ONLY; Telegram is transport only."
 }
