@@ -1,6 +1,6 @@
 # R1.5.3-A — Public Historical Feasibility and Preregistration
 
-**Status:** PREREGISTERED / EMPIRICAL VALIDATION NOT RUN  
+**Status:** PREREGISTERED / FEATURE DEFINITIONS LOCKED / EMPIRICAL VALIDATION NOT RUN  
 **Owner:** `YaDragon44/moex-crash-radar`  
 **Production:** NO-GO
 
@@ -32,6 +32,20 @@ The historical rows are split before review:
 - final holdout: 2024-01-01–2026-09-18.
 
 No label, horizon or split may be changed after seeing results.
+
+## Deterministic feature definitions for R1.5.3-B
+
+All comparisons use the existing point-in-time `DailyEvidence` fields for day *t*; no new collector, model, score or recalibration is introduced. A missing score, coverage below 70%, or `INSUFFICIENT_DATA` makes the relevant condition unavailable and cannot satisfy `DISTRIBUTION_WATCH`.
+
+| Condition | Locked definition |
+|---|---|
+| `PRICE_RESILIENT` | `market_structure_score < 50` **and** the prior five-session IMOEX return is greater than `-3%`. |
+| `BREADTH_DETERIORATING` | `breadth_score >= 40`. |
+| `VOLUME_WEAKENING` | `volume_distribution_score >= 40`. |
+| `VOLATILITY_RISING` | `volatility_liquidity_score >= 50`. |
+| `DISTRIBUTION_WATCH` | `PRICE_RESILIENT AND BREADTH_DETERIORATING AND (VOLUME_WEAKENING OR VOLATILITY_RISING)`. |
+
+The source formulas and historical windows are those already committed before this lock. Their thresholds, the 70% coverage gate, outcome, horizon, development/holdout split and M0–M4 comparison are frozen for the first replay. No metric review may alter them. Any needed future variant is a separate preregistered experiment and cannot overwrite this result.
 
 ## Locked candidate comparisons
 
