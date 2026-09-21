@@ -6,7 +6,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'scripts/run_historical_evidence.py'
+      - 'scripts/run_historical_evidence.py'\n      - 'scripts/run_r1_5_3b_transition_replay.py'
       - 'scripts/run_blind_crash_replay.py'
       - 'scripts/run_positioning_audit.py'
       - 'scripts/run_positioning_incremental_value.py'
@@ -54,7 +54,7 @@ jobs:
         run: python -m pip install -e .
       - name: Historical MOEX evidence run
         run: python scripts/run_historical_evidence.py
-      - name: Blind crash replay
+      - name: R1.5.3-B locked transition replay\n        run: python scripts/run_r1_5_3b_transition_replay.py\n      - name: Blind crash replay
         run: python scripts/run_blind_crash_replay.py
       - name: Historical positioning audit
         run: python scripts/run_positioning_audit.py
@@ -87,7 +87,7 @@ jobs:
         with:
           name: historical-evidence
           path: |
-            artifacts/historical_evidence.json
+            artifacts/historical_evidence.json\n            artifacts/r1_5_3b_transition_replay.json
             artifacts/blind_crash_replay.json
             artifacts/positioning_audit.json
             artifacts/positioning_incremental_value.json
