@@ -26,3 +26,9 @@ At the 2026-09-21 audit, signal_performance reports 0 READY and 0 closed, theref
 
 ## Next QA
 Add explicit session-state tests for market closed / last session versus genuine stale-data failure, without changing READY eligibility.
+
+## R0.9.2.4 acceptance
+- Outside the configured Moscow trading window, an old last candle is displayed as LAST SESSION, not as a data-quality incident.
+- During the trading window, an over-age candle remains STALE.
+- LAST SESSION does not make READY eligible: the existing fresh=false safety condition is unchanged.
+- Snapshot wall-clock freshness <=25m remains unchanged in production_patch.js.
