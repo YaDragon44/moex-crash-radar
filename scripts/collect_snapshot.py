@@ -66,7 +66,7 @@ def main()->None:
 
     evidence=build_daily_evidence(index_candles,universe,min_equity_coverage=.50,warmup=60); exit_gate=exit_gate_status(evidence)
     score_history=[x.score for x in evidence if x.score is not None]; momentum=crash_momentum(score_history,5) if len(score_history)>5 else None
-    crash_history=[{"day":x.day,"score":x.score,"state":x.state} for x in evidence[-120:] if x.score is not None]
+    crash_history=[{"day":x.day,"score":x.score,"state":x.state,"close":x.close} for x in evidence[-120:] if x.score is not None]
     display_signals=dict(market_signals)
     if rate_ofz.signal is not None: display_signals["rate_ofz"]=rate_ofz.signal
     if oil_rub.signal is not None: display_signals["oil_rub"]=oil_rub.signal
