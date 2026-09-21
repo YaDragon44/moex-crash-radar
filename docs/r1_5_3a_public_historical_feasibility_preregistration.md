@@ -64,3 +64,8 @@ A candidate observation is usable only after M4 is compared with M0 on the untou
 ## Next gate
 
 Run the locked historical replay and publish a reproducible evidence report with exactly one result: **PASS**, **FAIL** or **INCONCLUSIVE**. Only PASS with material incremental value may request a separate owner decision for source projection.
+
+
+## R1.5.3-B execution contract
+
+`scripts/run_r1_5_3b_transition_replay.py` is the reproducible research run. It reuses the existing historical MOEX ISS path and point-in-time constituent archive; it reports the frozen M0–M4 comparisons separately for development and untouched holdout. The output is `artifacts/r1_5_3b_transition_replay.json` and must retain an explicit research-only `PASS`, `FAIL` or `INCONCLUSIVE` status. It cannot modify production semantics.
