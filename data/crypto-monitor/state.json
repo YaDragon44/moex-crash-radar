@@ -1,42 +1,42 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-21T14:00:00+03:00",
-  "data_quality": "GOOD_SPOT_PARTIAL_DERIVATIVES",
+  "generated_at": "2026-09-21T18:00:00+03:00",
+  "data_quality": "GOOD_BTC_DOT_PARTIAL_GRAM_DERIVATIVES",
   "market": {
-    "regime": "BULLISH BREAKOUT / RETEST PENDING",
-    "btc_filter": "OPEN / BREAKOUT CONFIRMATION PENDING",
+    "regime": "BULLISH BREAKOUT / EXTENDED AFTER SHORT SQUEEZE",
+    "btc_filter": "OPEN / BULLISH, ENTRY R:R NOT YET ATTRACTIVE",
     "action": "NO TRADE"
   },
   "assets": {
     "BTC": {
-      "price_display": "~$84.4–85.1k",
+      "price_display": "~$85.6k",
       "status": "WAIT",
-      "score": 14,
+      "score": 15,
       "score_max": 19,
-      "setup": "Breakout+Retest candidate / short-squeeze breakout",
-      "trigger": "Hold/acceptance above former $82.0–82.3k breakout zone followed by a clean retest/HL; stronger confirmation on sustained $84k+ acceptance",
-      "invalidation": "Loss of $82.0–82.3k after breakout/retest attempt invalidates the immediate breakout entry; <$80k materially weakens bullish filter"
+      "setup": "Breakout+Retest / post-squeeze continuation watch",
+      "trigger": "Prefer pullback/retest that holds $84k or former $82.0–82.3k breakout zone and prints a confirmed HL; do not chase an extended move without acceptable R/R",
+      "invalidation": "Loss of $82.0–82.3k after breakout/retest materially weakens the immediate continuation setup; <$80k materially weakens bullish filter"
     },
     "GRAM": {
-      "price_display": "~$1.39",
+      "price_display": "fresh synchronized quote not confirmed; prior reference ~$1.39",
       "status": "WAIT",
       "score": 8,
       "score_max": 19,
-      "setup": "Range Breakout watch",
+      "setup": "Range Breakout watch / data limited",
       "trigger": "Confirmed break above $1.40 with structure/volume confirmation and supportive BTC filter",
       "invalidation": "No canonical long trigger confirmed"
     },
     "DOT": {
-      "price_display": "~$1.14",
+      "price_display": "~$1.18–1.19",
       "status": "WAIT",
-      "score": 7,
+      "score": 8,
       "score_max": 19,
-      "setup": "Reclaim / Higher-Low watch",
-      "trigger": "Hold $1.10–1.12 + confirmed HL, then reclaim/acceptance above $1.15; $1.20 is next supply gate",
-      "invalidation": "Loss of $1.10–1.12 after reclaim attempt invalidates new long setup"
+      "setup": "Reclaim continuation watch",
+      "trigger": "Hold above $1.15 and form a clean HL/retest; $1.20 remains the next nearby supply gate",
+      "invalidation": "Loss of $1.15 after reclaim weakens continuation; loss of $1.10–1.12 invalidates the recovery structure"
     }
   },
-  "best_candidate": "BTC — breakout above the canonical $82.3k gate is real, but the move included a large short squeeze and the required retest/HL confirmation is still pending",
+  "best_candidate": "BTC — breakout is confirmed and derivatives/flow are bullish, but price is extended after a large short squeeze and the current chase entry fails the R/R gate",
   "trade_plan": {
     "entry": null,
     "stop": null,
@@ -45,7 +45,7 @@
     "tp3": null,
     "rr": null
   },
-  "sources": "CoinGecko/market snapshots + CoinMarketCap + CoinGlass data reported by BeInCrypto + Glassnode references + The Block/Farside ETF data + Reuters/WSJ/MarketWatch",
-  "source_data_time": "2026-09-21 14:00 MSK verification; BTC fresh reports/snapshots ~$83.8k to $85.1k during 12:22–14:00 MSK window; GRAM ~$1.39; DOT ~$1.14",
-  "note": "Authoritative decision state produced only by the 4H Monitor. FAST GATE promoted BTC to candidate after clearing $82.3k. DEEP CONFIRMATION: breakout is supported by a weekly close above the 50-week MA and recent ETF inflows, but $262.3M shorts were liquidated in one hour, so part of the impulse is mechanical. Spot-CVD commentary is supportive; synchronized current OI/funding/order-flow for all assets is incomplete and receives no score. Triggered entry is not confirmed until acceptance/retest/HL, therefore trade plan remains NOT SET. Dashboard is READ ONLY; Telegram is transport only."
+  "sources": "CoinDesk/CoinGlass market data + CoinMarketCap + CoinGecko + Reuters",
+  "source_data_time": "2026-09-21 18:00 MSK verification; CoinDesk page showed BTC ~$85.6k; DOT live references ~$1.18–1.19; fresh synchronized GRAM quote not confirmed",
+  "note": "Authoritative decision state produced only by the 4H Monitor. FAST GATE: BTC filter OPEN; bullish breakout structure and level are confirmed, but a fresh entry at the extended price does not pass the R/R gate, so action remains NO TRADE. DEEP CONFIRMATION for BTC: 24h liquidations ~$746.6M with ~$647.9M shorts; market OI +7.59% to ~$156B; taker long-short volume ratio ~53% bullish; BTC futures OI above 700K BTC; BTC 24h CVD positive. Funding for BTC was not reliably quantified in the fresh source and receives no score. Macro is mixed-positive intraday: equities up, oil/yields eased, while Fed tightening and geopolitical risk remain. Dashboard is READ ONLY; Telegram is transport only."
 }
