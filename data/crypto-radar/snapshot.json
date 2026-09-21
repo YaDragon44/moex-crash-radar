@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-21T21:27:11.326996+00:00",
+  "generated_at": "2026-09-21T21:41:03.552036+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2940891422177.2427,
-    "total_change_24h_pct": 3.525339527315702,
-    "btc_dominance_pct": 58.96777558472978,
-    "btc_cap": 1734178254020.0444,
-    "alt_cap": 1206713168157.1982
+    "total_market_cap": 2949604206724.0874,
+    "total_change_24h_pct": 3.7386561622538927,
+    "btc_dominance_pct": 58.93491846328687,
+    "btc_cap": 1738346834222.5203,
+    "alt_cap": 1211257372501.5671
   },
   "derivatives": {
-    "btc_price": 86604.4,
-    "price_change_24h_pct": 7.15,
+    "btc_price": 86747.7,
+    "price_change_24h_pct": 7.27,
     "oi_usd": 5875543989.327474,
     "oi_change_24h_pct": 14.375124777696247,
-    "funding_pct": 0.0073999999999999995,
+    "funding_pct": 0.0081,
     "long_short_ratio": 0.6983001355720097
   },
   "context": {
-    "stablecoin_market_cap": 307343412141.0,
-    "stablecoin_market_cap_change_24h_pct": 0.1973016082798873,
+    "stablecoin_market_cap": 307339507363.0,
+    "stablecoin_market_cap_change_24h_pct": 0.19660730906814194,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -71,9 +71,9 @@
     "provisional": true,
     "status": "RISK-ON / OVERHEATED",
     "candidate": "RISK-ON / OVERHEATED",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH RISK-ON / OVERHEATED · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> RISK-ON / OVERHEATED",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,8 +82,8 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH RISK-ON / OVERHEATED · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> RISK-ON / OVERHEATED",
+    "confirmed": true
   },
   "action_engine": {
     "investor": "HOLD",
