@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-22T08:12:32.283073+00:00",
+  "generated_at": "2026-09-22T08:31:00.684579+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2909622721616.8574,
-    "total_change_24h_pct": 1.5415478330378154,
-    "btc_dominance_pct": 58.791942443592106,
-    "btc_cap": 1710623715818.661,
-    "alt_cap": 1198999005798.1965
+    "total_market_cap": 2903777724316.274,
+    "total_change_24h_pct": 1.4922771870536082,
+    "btc_dominance_pct": 58.845072551920005,
+    "btc_cap": 1708730108620.403,
+    "alt_cap": 1195047615695.8708
   },
   "derivatives": {
-    "btc_price": 85471.6,
-    "price_change_24h_pct": 4.38,
-    "oi_usd": 5462522868.6147,
-    "oi_change_24h_pct": -6.336825959939918,
+    "btc_price": 85355.1,
+    "price_change_24h_pct": 3.86,
+    "oi_usd": 5461464190.1673,
+    "oi_change_24h_pct": -6.3368260413904975,
     "funding_pct": 0.01,
     "long_short_ratio": 0.7576438160379766
   },
   "context": {
-    "stablecoin_market_cap": 307275411301.0,
-    "stablecoin_market_cap_change_24h_pct": 0.17601328272687233,
+    "stablecoin_market_cap": 307286427921.0,
+    "stablecoin_market_cap_change_24h_pct": 0.17310355494544183,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -69,11 +69,11 @@
   "regime": {
     "model": "regime-v1-provisional",
     "provisional": true,
-    "status": "NEUTRAL",
+    "status": "RISK-ON",
     "candidate": "RISK-ON",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH NEUTRAL -> RISK-ON · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> RISK-ON",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,12 +82,12 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH NEUTRAL -> RISK-ON · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> RISK-ON",
+    "confirmed": true
   },
   "action_engine": {
-    "investor": "HOLD",
-    "trader": "WAIT",
+    "investor": "BUY GRADUALLY",
+    "trader": "LONG BIAS",
     "why": [
       "Funding extremity 45/100",
       "Long/Short extremity 40/100",
