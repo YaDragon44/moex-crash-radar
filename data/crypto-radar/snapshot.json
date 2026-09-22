@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-22T17:51:26.208136+00:00",
+  "generated_at": "2026-09-22T18:15:25.144391+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2938344206072.675,
-    "total_change_24h_pct": -2.136366540593743,
-    "btc_dominance_pct": 58.908577602097,
-    "btc_cap": 1730936776851.0425,
-    "alt_cap": 1207407429221.6323
+    "total_market_cap": 2939407982374.4365,
+    "total_change_24h_pct": -1.8179853200941491,
+    "btc_dominance_pct": 58.90946496982229,
+    "btc_cap": 1731589515697.0288,
+    "alt_cap": 1207818466677.4077
   },
   "derivatives": {
-    "btc_price": 86407.5,
-    "price_change_24h_pct": 0.75,
-    "oi_usd": 5424779330.125,
-    "oi_change_24h_pct": -9.730903088320597,
-    "funding_pct": 0.00019999999999999998,
-    "long_short_ratio": 0.7746822572445348
+    "btc_price": 86525.7,
+    "price_change_24h_pct": 0.59,
+    "oi_usd": 5434926308.63276,
+    "oi_change_24h_pct": -9.979017965519276,
+    "funding_pct": -9.999999999999999e-05,
+    "long_short_ratio": 0.7576781481668264
   },
   "context": {
-    "stablecoin_market_cap": 307549088323.0,
-    "stablecoin_market_cap_change_24h_pct": 0.24344066220949312,
+    "stablecoin_market_cap": 307560487253.0,
+    "stablecoin_market_cap_change_24h_pct": 0.24615808006589468,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -55,10 +55,10 @@
     "model": "risk-v1-provisional",
     "provisional": true,
     "coverage_pct": 100,
-    "score": 36,
+    "score": 32,
     "status": "MODERATE",
     "components": {
-      "market_stress": 55,
+      "market_stress": 40,
       "leverage": 30,
       "funding_extreme": 20,
       "positioning_extreme": 40,
@@ -71,7 +71,7 @@
     "provisional": true,
     "status": "NEUTRAL",
     "candidate": "NEUTRAL",
-    "candidate_count": 31,
+    "candidate_count": 32,
     "confirmed": true,
     "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
@@ -89,7 +89,7 @@
     "investor": "HOLD",
     "trader": "WAIT",
     "why": [
-      "Market stress 55/100",
+      "Market stress 40/100",
       "Long/Short extremity 40/100",
       "Price/OI leverage 30/100"
     ],
