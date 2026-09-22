@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-22T01:13:35.171735+00:00",
+  "generated_at": "2026-09-22T01:28:57.273688+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2924841322308.8037,
-    "total_change_24h_pct": 1.0831014906517187,
-    "btc_dominance_pct": 58.818058709767726,
-    "btc_cap": 1720334886123.1387,
-    "alt_cap": 1204506436185.665
+    "total_market_cap": 2918616965899.4375,
+    "total_change_24h_pct": 0.9136703931286261,
+    "btc_dominance_pct": 58.78611118554612,
+    "btc_cap": 1715741414653.856,
+    "alt_cap": 1202875551245.5815
   },
   "derivatives": {
-    "btc_price": 85780.7,
-    "price_change_24h_pct": 4.93,
+    "btc_price": 85662.5,
+    "price_change_24h_pct": 5.06,
     "oi_usd": 5701253999.48416,
     "oi_change_24h_pct": 9.218304109944953,
-    "funding_pct": 0.0089,
+    "funding_pct": 0.0095,
     "long_short_ratio": 0.6826908464616787
   },
   "context": {
-    "stablecoin_market_cap": 307187248159.0,
-    "stablecoin_market_cap_change_24h_pct": 0.1768509312096711,
+    "stablecoin_market_cap": 307109422036.0,
+    "stablecoin_market_cap_change_24h_pct": 0.1675344504707521,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -70,10 +70,10 @@
     "model": "regime-v1-provisional",
     "provisional": true,
     "status": "RISK-ON / OVERHEATED",
-    "candidate": "RISK-ON / OVERHEATED",
-    "candidate_count": 10,
-    "confirmed": true,
-    "transition": "STABLE",
+    "candidate": "NEUTRAL",
+    "candidate_count": 1,
+    "confirmed": false,
+    "transition": "WATCH RISK-ON / OVERHEATED -> NEUTRAL · 1/2",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,8 +82,8 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "STABLE",
-    "confirmed": true
+    "status": "WATCH RISK-ON / OVERHEATED -> NEUTRAL · 1/2",
+    "confirmed": false
   },
   "action_engine": {
     "investor": "HOLD",
