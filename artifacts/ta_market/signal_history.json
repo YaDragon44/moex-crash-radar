@@ -1,6 +1,6 @@
 {
   "release": "R0.8.1 Signal History",
-  "updated_at": "2026-09-21T18:50:24+03:00",
+  "updated_at": "2026-09-22T10:15:08+03:00",
   "events": [
     {
       "ticker": "SBERP",
@@ -766,6 +766,45 @@
       "tp3": 41.1808,
       "rr": 0.1382,
       "time": "2026-09-21T10:16:16+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "H1",
+      "direction": "SHORT",
+      "status": "WAIT",
+      "reason": "STALE data",
+      "price": 278.18,
+      "entry": 276.14,
+      "stop": 279.9799,
+      "tp1": 276.0,
+      "tp2": 273.6608,
+      "tp3": 273.2525,
+      "rr": 0.6456,
+      "time": "2026-09-22T10:15:08+03:00"
+    },
+    {
+      "ticker": "VKCO",
+      "tf": "H1",
+      "direction": "SHORT",
+      "status": "WAIT",
+      "reason": "STALE data",
+      "price": 118.05,
+      "entry": 116.45,
+      "stop": 119.9108,
+      "tp1": null,
+      "tp2": null,
+      "tp3": null,
+      "rr": null,
+      "time": "2026-09-22T10:15:08+03:00"
+    },
+    {
+      "ticker": "OZPH",
+      "tf": "H1",
+      "direction": "NEUTRAL",
+      "status": "WAIT",
+      "reason": "Нет направленной структуры",
+      "price": 44.44,
+      "time": "2026-09-22T10:15:08+03:00"
     }
   ]
 }
