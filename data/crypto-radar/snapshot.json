@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-22T06:44:50.046907+00:00",
+  "generated_at": "2026-09-22T06:59:37.915916+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2910482856174.6343,
-    "total_change_24h_pct": 0.9342585515657263,
-    "btc_dominance_pct": 58.799034803492845,
-    "btc_cap": 1711335827551.816,
-    "alt_cap": 1199147028622.8184
+    "total_market_cap": 2905004337886.373,
+    "total_change_24h_pct": 0.8503490469283942,
+    "btc_dominance_pct": 58.78485307670497,
+    "btc_cap": 1707702531898.4104,
+    "alt_cap": 1197301805987.9626
   },
   "derivatives": {
-    "btc_price": 85460.6,
-    "price_change_24h_pct": 5.04,
-    "oi_usd": 5506070414.90192,
-    "oi_change_24h_pct": 2.6922894650839524,
+    "btc_price": 85363.2,
+    "price_change_24h_pct": 4.61,
+    "oi_usd": 5505163433.9442,
+    "oi_change_24h_pct": 2.692289566003603,
     "funding_pct": 0.01,
     "long_short_ratio": 0.7348195653280399
   },
   "context": {
-    "stablecoin_market_cap": 307309305217.0,
-    "stablecoin_market_cap_change_24h_pct": 0.2054438701262873,
+    "stablecoin_market_cap": 307309839482.0,
+    "stablecoin_market_cap_change_24h_pct": 0.20249976770987388,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -71,9 +71,9 @@
     "provisional": true,
     "status": "NEUTRAL",
     "candidate": "NEUTRAL",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH NEUTRAL · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> NEUTRAL",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,8 +82,8 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH NEUTRAL · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> NEUTRAL",
+    "confirmed": true
   },
   "action_engine": {
     "investor": "HOLD",
