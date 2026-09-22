@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-22T05:43:35.140631+00:00",
+  "generated_at": "2026-09-22T05:55:05.408438+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2904298585426.4004,
-    "total_change_24h_pct": 0.7099639627929846,
-    "btc_dominance_pct": 58.81295072539393,
-    "btc_cap": 1708103695965.1418,
-    "alt_cap": 1196194889461.2585
+    "total_market_cap": 2915384782732.7197,
+    "total_change_24h_pct": 1.1059048224304482,
+    "btc_dominance_pct": 58.79958002505737,
+    "btc_cap": 1714234008361.2703,
+    "alt_cap": 1201150774371.4495
   },
   "derivatives": {
-    "btc_price": 85373.4,
-    "price_change_24h_pct": 4.63,
-    "oi_usd": 5525054601.9273,
-    "oi_change_24h_pct": 3.897886774082604,
+    "btc_price": 85497.8,
+    "price_change_24h_pct": 4.87,
+    "oi_usd": 5524335148.1256,
+    "oi_change_24h_pct": 3.897886991340904,
     "funding_pct": 0.01,
     "long_short_ratio": 0.7266851805099722
   },
   "context": {
-    "stablecoin_market_cap": 307320004419.0,
-    "stablecoin_market_cap_change_24h_pct": 0.2030345055162197,
+    "stablecoin_market_cap": 307331439335.0,
+    "stablecoin_market_cap_change_24h_pct": 0.20333354074888454,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -70,10 +70,10 @@
     "model": "regime-v1-provisional",
     "provisional": true,
     "status": "NEUTRAL",
-    "candidate": "NEUTRAL",
-    "candidate_count": 5,
-    "confirmed": true,
-    "transition": "STABLE",
+    "candidate": "RISK-ON",
+    "candidate_count": 1,
+    "confirmed": false,
+    "transition": "WATCH NEUTRAL -> RISK-ON · 1/2",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,8 +82,8 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "STABLE",
-    "confirmed": true
+    "status": "WATCH NEUTRAL -> RISK-ON · 1/2",
+    "confirmed": false
   },
   "action_engine": {
     "investor": "HOLD",
