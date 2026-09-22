@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-22T15:43:03.463502+00:00",
+  "generated_at": "2026-09-22T15:54:36.637876+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2935408623545.2935,
-    "total_change_24h_pct": -2.125546895960811,
-    "btc_dominance_pct": 58.90410317268645,
-    "btc_cap": 1729076124153.0547,
-    "alt_cap": 1206332499392.2388
+    "total_market_cap": 2945204010742.758,
+    "total_change_24h_pct": -1.914151112109208,
+    "btc_dominance_pct": 58.90169835240495,
+    "btc_cap": 1734775182270.6316,
+    "alt_cap": 1210428828472.1262
   },
   "derivatives": {
-    "btc_price": 86388.5,
-    "price_change_24h_pct": 0.58,
-    "oi_usd": 5475461252.4537,
-    "oi_change_24h_pct": -9.864666040283998,
-    "funding_pct": 0.0021,
+    "btc_price": 86362.5,
+    "price_change_24h_pct": 0.53,
+    "oi_usd": 5474758708.632468,
+    "oi_change_24h_pct": -9.864665686824193,
+    "funding_pct": 0.002,
     "long_short_ratio": 0.788707859411825
   },
   "context": {
-    "stablecoin_market_cap": 307272029084.0,
-    "stablecoin_market_cap_change_24h_pct": 0.17757384156484868,
+    "stablecoin_market_cap": 307286936407.0,
+    "stablecoin_market_cap_change_24h_pct": 0.17301290681621673,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -55,10 +55,10 @@
     "model": "risk-v1-provisional",
     "provisional": true,
     "coverage_pct": 100,
-    "score": 38,
+    "score": 34,
     "status": "MODERATE",
     "components": {
-      "market_stress": 55,
+      "market_stress": 40,
       "leverage": 30,
       "funding_extreme": 20,
       "positioning_extreme": 40,
@@ -71,7 +71,7 @@
     "provisional": true,
     "status": "NEUTRAL",
     "candidate": "NEUTRAL",
-    "candidate_count": 23,
+    "candidate_count": 24,
     "confirmed": true,
     "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
@@ -89,7 +89,7 @@
     "investor": "HOLD",
     "trader": "WAIT",
     "why": [
-      "Market stress 55/100",
+      "Market stress 40/100",
       "Long/Short extremity 40/100",
       "Stablecoin liquidity 35/100"
     ],
