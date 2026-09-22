@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-22T05:55:05.408438+00:00",
+  "generated_at": "2026-09-22T06:44:50.046907+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2915384782732.7197,
-    "total_change_24h_pct": 1.1059048224304482,
-    "btc_dominance_pct": 58.79958002505737,
-    "btc_cap": 1714234008361.2703,
-    "alt_cap": 1201150774371.4495
+    "total_market_cap": 2910482856174.6343,
+    "total_change_24h_pct": 0.9342585515657263,
+    "btc_dominance_pct": 58.799034803492845,
+    "btc_cap": 1711335827551.816,
+    "alt_cap": 1199147028622.8184
   },
   "derivatives": {
-    "btc_price": 85497.8,
-    "price_change_24h_pct": 4.87,
-    "oi_usd": 5524335148.1256,
-    "oi_change_24h_pct": 3.897886991340904,
+    "btc_price": 85460.6,
+    "price_change_24h_pct": 5.04,
+    "oi_usd": 5506070414.90192,
+    "oi_change_24h_pct": 2.6922894650839524,
     "funding_pct": 0.01,
-    "long_short_ratio": 0.7266851805099722
+    "long_short_ratio": 0.7348195653280399
   },
   "context": {
-    "stablecoin_market_cap": 307331439335.0,
-    "stablecoin_market_cap_change_24h_pct": 0.20333354074888454,
+    "stablecoin_market_cap": 307309305217.0,
+    "stablecoin_market_cap_change_24h_pct": 0.2054438701262873,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -70,10 +70,10 @@
     "model": "regime-v1-provisional",
     "provisional": true,
     "status": "NEUTRAL",
-    "candidate": "RISK-ON",
+    "candidate": "NEUTRAL",
     "candidate_count": 1,
     "confirmed": false,
-    "transition": "WATCH NEUTRAL -> RISK-ON · 1/2",
+    "transition": "WATCH NEUTRAL · 1/2",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,7 +82,7 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH NEUTRAL -> RISK-ON · 1/2",
+    "status": "WATCH NEUTRAL · 1/2",
     "confirmed": false
   },
   "action_engine": {
