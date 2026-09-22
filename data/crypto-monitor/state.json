@@ -1,15 +1,15 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-22T22:03:00+03:00",
-  "data_quality": "PARTIAL_FRESH; BTC_SAME_DAY_REFERENCE; GRAM_DOT_FRESH_AGGREGATOR_REFERENCES; DOT_CROSS_SOURCE_DISPERSION; ORDER_FLOW_LIMITED",
+  "generated_at": "2026-09-23T01:58:00+03:00",
+  "data_quality": "PARTIAL_FRESH; BTC_FRESH_SAME_DAY_REFERENCE; GRAM_DOT_NO_NEW_SYNCHRONIZED_QUOTE; ORDER_FLOW_LIMITED",
   "market": {
-    "regime": "BULLISH BREAKOUT / EXTENDED CONSOLIDATION, CANONICAL RETEST NOT CONFIRMED",
+    "regime": "BULLISH BREAKOUT / CONSOLIDATION ABOVE 86K, CANONICAL RETEST NOT CONFIRMED",
     "btc_filter": "OPEN / BULLISH, ENTRY R:R NOT CONFIRMED",
     "action": "NO TRADE"
   },
   "assets": {
     "BTC": {
-      "price_display": "~$86.5k same-day reference; 24h high ~$87.36k",
+      "price_display": "~$86k; holding above $86k after ~$87.37k local high",
       "status": "WAIT",
       "score": 15,
       "score_max": 19,
@@ -18,16 +18,16 @@
       "invalidation": "Loss of $82.0–82.8k after retest weakens continuation; weekly close below ~$78.8k invalidates broader breakout regime"
     },
     "GRAM": {
-      "price_display": "~$1.44–1.45 fresh aggregator reference; 24h range ~$1.38–1.48",
+      "price_display": "NO NEW SYNCHRONIZED QUOTE; prior verified reference ~$1.44–1.45",
       "status": "WAIT",
       "score": 9,
       "score_max": 19,
       "setup": "Range Breakout watch / event-risk constrained",
-      "trigger": "Sustained hold above $1.40 with structure/volume confirmation after event-risk absorption and supportive BTC filter; then validate R/R",
+      "trigger": "Sustained hold above $1.40 with structure/volume confirmation and supportive BTC filter; then validate R/R",
       "invalidation": "Failure back below $1.40 without recovery invalidates breakout watch"
     },
     "DOT": {
-      "price_display": "~$1.16–1.20 fresh aggregator references; cross-source dispersion remains",
+      "price_display": "NO NEW SYNCHRONIZED QUOTE; prior verified references ~$1.16–1.20",
       "status": "WAIT",
       "score": 9,
       "score_max": 19,
@@ -36,9 +36,9 @@
       "invalidation": "Loss of $1.15 weakens continuation; loss of $1.10 invalidates recovery structure"
     }
   },
-  "best_candidate": "BTC — bullish breakout intact, but no canonical retest/Higher Low with acceptable R/R is confirmed",
+  "best_candidate": "BTC — bullish breakout intact and ~$86k is attempting to become support, but canonical retest/Higher Low plus acceptable R/R is not confirmed",
   "trade_plan": {"entry": null, "stop": null, "tp1": null, "tp2": null, "tp3": null, "rr": null},
-  "sources": "CoinGecko + CoinMarketCap + CryptoSlate + CryptoTicker + CryptoRank + spot BTC ETF reporting",
-  "source_data_time": "2026-09-22 22:03 MSK verification; BTC same-day reference ~$86.5k; GRAM ~$1.44–1.45; DOT ~$1.16–1.20 with cross-source dispersion",
-  "note": "Authoritative decision produced only by 4H Monitor. FAST GATE: BTC FILTER OPEN; structure and breakout level confirmed, but canonical retest/HL trigger and acceptable R/R remain unconfirmed, therefore NO TRADE. BTC spot demand has improved, while rebuilt futures exposure and broadly positive funding keep chase/liquidation risk elevated. GRAM trades above $1.40 on fresh aggregator references, but no canonical structure/volume confirmation plus acceptable R/R was verified, so status remains WAIT. DOT references disagree around $1.16–1.20; no clean $1.20 hold and $1.25 break is confirmed. No synchronized live order-flow/CVD snapshot was verified; no extra score awarded. Dashboard remains READ ONLY; Telegram transport only."
+  "sources": "Cointelegraph/TradingView + Bitcoin.com/CoinGlass-derived market data + CryptoTicker",
+  "source_data_time": "2026-09-23 01:58 MSK verification; BTC fresh same-day references around $86k; GRAM/DOT lacked new synchronized reliable quotes in this cycle",
+  "note": "Authoritative decision produced only by 4H Monitor. FAST GATE: BTC FILTER OPEN; bullish structure and breakout level remain confirmed, but canonical retest/HL trigger and acceptable R/R are not confirmed, therefore NO TRADE. Fresh reporting shows BTC stabilizing around/above $86k after a ~$87.37k local high, while total crypto OI exceeded ~$159B and leverage remains elevated. Liquidations cooled versus the squeeze session, but positive funding/rebuilt OI preserve chase risk. No new synchronized GRAM/DOT quotes or live order-flow/CVD snapshot were verified; no extra score awarded. Dashboard remains READ ONLY; Telegram transport only."
 }
