@@ -2,20 +2,18 @@
   "schema_version": 2,
   "release": "R1.8",
   "dashboard_release": "R0.6.2",
-  "generated_at": "2026-09-22T10:52:08.416142+03:00",
+  "generated_at": "2026-09-22T11:05:30.946424+03:00",
   "ticker": "VKCO",
   "mode": "run",
   "health": "OK",
   "trade": {
-    "status": "TRAILING",
-    "reason": "TP2",
-    "setup": "Adaptive Wyckoff Spring",
-    "score": 10
+    "status": "WAIT",
+    "reason": "NO_TRIGGER"
   },
   "position": {
     "ticker": "VKCO",
     "direction": "LONG",
-    "status": "TRAILING",
+    "status": "CLOSED_STOP",
     "signal_id": "VKCO:ADAPTIVE_SPRING:2026-09-21T13:09:59+03:00",
     "opened_at": "2026-09-21T13:09:59+03:00",
     "entry": 109.8,
@@ -28,17 +26,17 @@
     "initial_risk_rub": 5000.0,
     "setup": "Adaptive Wyckoff Spring",
     "score": 10,
-    "last_event": "TP2",
-    "last_price": 112.2
+    "last_event": "CLOSED_STOP",
+    "last_price": 111.75
   },
   "journal": {
-    "trades": 0,
-    "wins": 0,
+    "trades": 1,
+    "wins": 1,
     "losses": 0,
-    "win_rate": null,
-    "avg_r": null,
+    "win_rate": 100.0,
+    "avg_r": 3.125,
     "profit_factor": null,
-    "expectancy_r": null
+    "expectancy_r": 3.125
   },
   "risk": {
     "capital_rub": 1000000.0,
@@ -46,24 +44,6 @@
     "max_risk_rub": 5000.0
   },
   "candles": [
-    {
-      "t": "2026-09-21T15:30:00+03:00",
-      "end": "2026-09-21T15:39:59+03:00",
-      "o": 110.1,
-      "h": 110.25,
-      "l": 110.0,
-      "c": 110.2,
-      "v": 34863.0
-    },
-    {
-      "t": "2026-09-21T15:40:00+03:00",
-      "end": "2026-09-21T15:49:59+03:00",
-      "o": 110.15,
-      "h": 110.3,
-      "l": 110.1,
-      "c": 110.3,
-      "v": 13097.0
-    },
     {
       "t": "2026-09-21T15:50:00+03:00",
       "end": "2026-09-21T15:59:59+03:00",
@@ -693,16 +673,34 @@
       "l": 111.4,
       "c": 112.2,
       "v": 441290.0
+    },
+    {
+      "t": "2026-09-22T10:30:00+03:00",
+      "end": "2026-09-22T10:39:59+03:00",
+      "o": 112.2,
+      "h": 112.5,
+      "l": 111.85,
+      "c": 112.15,
+      "v": 151367.0
+    },
+    {
+      "t": "2026-09-22T10:40:00+03:00",
+      "end": "2026-09-22T10:49:59+03:00",
+      "o": 112.15,
+      "h": 112.25,
+      "l": 111.5,
+      "c": 111.75,
+      "v": 146920.0
     }
   ],
   "market": {
-    "price": 112.2,
-    "candle_end": "2026-09-22T10:29:59+03:00",
-    "volume": 441290.0,
-    "age_min": 22,
+    "price": 111.75,
+    "candle_end": "2026-09-22T10:49:59+03:00",
+    "volume": 146920.0,
+    "age_min": 15,
     "fresh": true,
-    "support": 109.5,
+    "support": 109.55,
     "resistance": 112.15,
-    "avg_range": 0.523
+    "avg_range": 0.5475
   }
 }
