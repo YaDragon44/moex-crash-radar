@@ -1,33 +1,33 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-22T10:03:00+03:00",
-  "data_quality": "PARTIAL_FRESH_BTC_GRAM_DOT; BTC_DERIVATIVES_TIMESTAMPED; ORDER_FLOW_LIMITED",
+  "generated_at": "2026-09-22T13:58:00+03:00",
+  "data_quality": "PARTIAL_FRESH_BTC; GRAM_DOT_REFERENCES_NOT_FULLY_SYNCHRONIZED; ORDER_FLOW_LIMITED",
   "market": {
-    "regime": "BULLISH BREAKOUT / FIRST PULLBACK, RETEST NOT YET CONFIRMED",
+    "regime": "BULLISH BREAKOUT / CONSOLIDATION BELOW $87K, CANONICAL RETEST NOT YET CONFIRMED",
     "btc_filter": "OPEN / BULLISH, ENTRY R:R NOT CONFIRMED",
     "action": "NO TRADE"
   },
   "assets": {
     "BTC": {
-      "price_display": "$85,631 latest explicit timestamped quote; intraday high $87,281",
+      "price_display": "~$85.8k fresh page reference; prior high ~$87.3k",
       "status": "WAIT",
       "score": 15,
       "score_max": 19,
-      "setup": "Breakout+Retest / post-squeeze pullback watch",
-      "trigger": "Confirmed retest/Higher Low holding $84k or former $82.0–82.8k breakout zone with acceptable R/R",
-      "invalidation": "Loss of $82.0–82.8k after retest weakens continuation; <$80k materially weakens bullish filter"
+      "setup": "Breakout+Retest / consolidation watch",
+      "trigger": "Confirmed retest/Higher Low holding ~$84.9k/$84k or former $82.0–82.8k breakout zone with acceptable R/R",
+      "invalidation": "Loss of $82.0–82.8k after retest weakens continuation; weekly close below ~$78.8k invalidates the broader breakout regime"
     },
     "GRAM": {
-      "price_display": "~$1.44 latest available CryptoRank page quote",
+      "price_display": "~$1.43–1.44 available reference, not fully synchronized",
       "status": "WAIT",
       "score": 9,
       "score_max": 19,
       "setup": "Range Breakout watch / event-risk constrained",
-      "trigger": "Sustained hold above $1.40 with structure/volume confirmation after today's token-unlock risk is absorbed and BTC filter remains supportive",
+      "trigger": "Sustained hold above $1.40 with structure/volume confirmation after today's token unlock is absorbed and BTC filter remains supportive",
       "invalidation": "Failure back below $1.40 without recovery invalidates the breakout watch"
     },
     "DOT": {
-      "price_display": "~$1.20 current CoinMarketCap/CoinStats reference",
+      "price_display": "~$1.17–1.20 latest available references, not fully synchronized",
       "status": "WAIT",
       "score": 9,
       "score_max": 19,
@@ -36,7 +36,7 @@
       "invalidation": "Loss of $1.15 weakens continuation; loss of $1.10 invalidates the recovery structure"
     }
   },
-  "best_candidate": "BTC — breakout remains confirmed and price has started pulling back from $87,281, but no canonical retest/Higher Low at $84k or $82.0–82.8k with acceptable R/R is confirmed",
+  "best_candidate": "BTC — breakout regime remains bullish, but price is consolidating near $86k rather than delivering the canonical retest/Higher Low with acceptable R/R",
   "trade_plan": {
     "entry": null,
     "stop": null,
@@ -45,7 +45,7 @@
     "tp3": null,
     "rr": null
   },
-  "sources": "Moneycontrol market snapshot + CryptoTicker/CoinGecko/CoinDesk derivatives cross-check + CryptoRank GRAM + CoinMarketCap/CoinStats DOT + Bloomberg/Straits Times macro/options context",
-  "source_data_time": "2026-09-22 10:03 MSK verification; BTC explicit quote $85,631.47 at 09:46 IST (07:16 MSK), intraday high $87,281; BTC derivatives snapshot 2026-09-22 00:56 MSK; GRAM page quote ~$1.44 checked 10:03 MSK; DOT ~$1.20 checked 10:03 MSK",
-  "note": "Authoritative decision state produced only by the 4H Monitor. FAST GATE: BTC filter OPEN; structure and breakout confirmed; first pullback from $87,281 is underway, but canonical retest/HL and acceptable R/R are not confirmed, therefore NO TRADE. DEEP CONFIRMATION for BTC: market liquidations exceeded $1B during the rally; prior short liquidations were about $648M; BTC perpetual OI aggregation was about $81.1B at 21:56 UTC Sep 21; funding was positive on 24/25 largest BTC perpetuals with median 0.00594% per settlement, showing longs paying and leverage rebuilt after the squeeze. Options positioning was call-heavy (272k+ calls vs 154k+ puts on Deribit). Missing synchronized live CVD/order-flow receives no additional score. GRAM has specific Event Risk today: scheduled 36.58M-token unlock worth about $52.68M (~1.3% circulating supply), so its move above $1.40 is not promoted to READY without post-event structure/volume confirmation. DOT is around $1.20 and improving but still needs a sustained break above $1.25. Dashboard is READ ONLY; Telegram is transport only."
+  "sources": "TradingKey BTC live page + CoinPedia BTC market update + The Block ETF flows + Investing.com technical update + CryptoRank GRAM unlock + CryptoRank/TechBullion DOT context",
+  "source_data_time": "2026-09-22 13:58 MSK verification; BTC live page reference ~$85.8k; BTC same-day market reports ~$85.5k–86.4k; GRAM/DOT references checked 13:58 MSK but not fully synchronized",
+  "note": "Authoritative decision state produced only by the 4H Monitor. FAST GATE: BTC filter OPEN; bullish structure and breakout remain confirmed, but the required retest/HL and acceptable R/R are not confirmed, therefore NO TRADE. BTC has cooled from ~$87.3k and is consolidating around $86k; TradingKey identifies ~$84.9k as near-term support and $87.6k/$88.2k as upside references. Same-day reporting shows strong spot ETF demand (~$999M Monday net inflow), while prior derivatives evidence showed a large short squeeze and rebuilding OI; synchronized live CVD/order-flow/funding was not available in this cycle and receives no extra score. GRAM retains event risk from today's scheduled 36.58M-token unlock (~$52.68M, ~1.3% circulating supply). DOT remains an improving watch but lacks a synchronized fresh quote and confirmed >$1.25 breakout. Dashboard is READ ONLY; Telegram is transport only."
 }
