@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-22T02:11:39.776707+00:00",
+  "generated_at": "2026-09-22T02:28:30.679785+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2918957603189.023,
-    "total_change_24h_pct": 1.7272219758612966,
-    "btc_dominance_pct": 58.783189977965414,
-    "btc_cap": 1715856393258.8691,
-    "alt_cap": 1203101209930.1538
+    "total_market_cap": 2921804586244.139,
+    "total_change_24h_pct": 1.71405995807608,
+    "btc_dominance_pct": 58.803941221797594,
+    "btc_cap": 1718136251510.79,
+    "alt_cap": 1203668334733.349
   },
   "derivatives": {
-    "btc_price": 85479.1,
-    "price_change_24h_pct": 5.18,
+    "btc_price": 85809.5,
+    "price_change_24h_pct": 5.41,
     "oi_usd": 5581045845.43354,
     "oi_change_24h_pct": 6.166304417080193,
     "funding_pct": 0.01,
     "long_short_ratio": 0.6889978764283547
   },
   "context": {
-    "stablecoin_market_cap": 307100540342.0,
-    "stablecoin_market_cap_change_24h_pct": 0.15311182776853727,
+    "stablecoin_market_cap": 307103334428.0,
+    "stablecoin_market_cap_change_24h_pct": 0.15810387637167356,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -71,9 +71,9 @@
     "provisional": true,
     "status": "RISK-ON / OVERHEATED",
     "candidate": "RISK-ON / OVERHEATED",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH RISK-ON / OVERHEATED · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> RISK-ON / OVERHEATED",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,8 +82,8 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH RISK-ON / OVERHEATED · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> RISK-ON / OVERHEATED",
+    "confirmed": true
   },
   "action_engine": {
     "investor": "DO NOT CHASE",
