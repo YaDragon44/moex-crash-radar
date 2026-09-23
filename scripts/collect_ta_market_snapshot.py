@@ -45,18 +45,24 @@ def table(payload: dict, name: str) -> list[dict]:
 
 def candles(secid: str, interval: int, days: int) -> list[dict]:
     start = (datetime.now(MSK).date() - timedelta(days=days)).isoformat()
-    p = get_json(
-        f"/engines/stock/markets/shares/securities/{secid}/candles.json",
-        {"iss.meta": "off", "interval": interval, "from": start,
-         "candles.columns": "begin,end,open,close,high,low,value,volume"},
-    )
     out = []
-    for x in table(p, "candles"):
-        if x.get("close") is None:
-            continue
-        out.append({"t": x.get("begin"), "end": x.get("end"), "o": x.get("open"),
-                    "h": x.get("high"), "l": x.get("low"), "c": x.get("close"),
-                    "v": x.get("volume"), "value": x.get("value")})
+    offset = 0
+    while True:
+        p = get_json(
+            f"/engines/stock/markets/shares/securities/{secid}/candles.json",
+            {"iss.meta": "off", "interval": interval, "from": start, "start": offset,
+             "candles.columns": "begin,end,open,close,high,low,value,volume"},
+        )
+        rows = table(p, "candles")
+        for x in rows:
+            if x.get("close") is None:
+                continue
+            out.append({"t": x.get("begin"), "end": x.get("end"), "o": x.get("open"),
+                        "h": x.get("high"), "l": x.get("low"), "c": x.get("close"),
+                        "v": x.get("volume"), "value": x.get("value")})
+        if len(rows) < 500:
+            break
+        offset += len(rows)
     return out
 
 
