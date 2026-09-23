@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Collect SBERP VKCO OZPH snapshot
+      - name: Collect SBERP VKCO OZPH NMTP snapshot
         run: python scripts/collect_ta_market_snapshot.py
       - name: Validate production snapshot
         shell: bash
@@ -38,7 +38,7 @@ jobs:
           from pathlib import Path
           p=Path('artifacts/ta_market/current.json')
           j=json.loads(p.read_text(encoding='utf-8'))
-          required=('SBERP','VKCO','OZPH')
+          required=('SBERP','VKCO','OZPH','NMTP')
           missing=[x for x in required if x not in j.get('securities',{})]
           if missing: raise SystemExit(f'missing securities: {missing}')
           if j.get('quality') != 'OK': raise SystemExit(f"quality must be OK, got {j.get('quality')}")
