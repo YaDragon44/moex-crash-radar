@@ -6,13 +6,13 @@
   "sample_quality": "USABLE",
   "summary": {
     "1h": {
-      "closed": 38,
-      "open": 3,
-      "avg_btc_return_pct": 0.1106,
-      "positive_rate_pct": 60.5,
-      "negative_rate_pct": 39.5,
-      "directional_cases": 23,
-      "alignment_rate_pct": 47.8
+      "closed": 39,
+      "open": 2,
+      "avg_btc_return_pct": 0.107,
+      "positive_rate_pct": 59.0,
+      "negative_rate_pct": 41.0,
+      "directional_cases": 24,
+      "alignment_rate_pct": 50.0
     },
     "4h": {
       "closed": 39,
@@ -1252,11 +1252,11 @@
       "trader_action": "REDUCE EXPOSURE",
       "outcomes": {
         "1h": {
-          "status": "OPEN",
-          "observed_at": null,
-          "btc_price": null,
-          "btc_return_pct": null,
-          "alignment": null
+          "status": "CLOSED",
+          "observed_at": "2026-09-23T10:41:12.639999+00:00",
+          "btc_price": 85848.8,
+          "btc_return_pct": -0.0264,
+          "alignment": "ALIGNED"
         },
         "4h": {
           "status": "OPEN",
