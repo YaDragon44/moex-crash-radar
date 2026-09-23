@@ -10,14 +10,14 @@ try {
   page.on('requestfailed',r=>failed.push(`${r.url()} :: ${r.failure()?.errorText||'failed'}`));
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});
 
-  await page.waitForFunction(()=>document.querySelectorAll('#cards .card').length===4,{timeout:15000});
+  await page.waitForFunction(()=>document.querySelectorAll('#cards .card').length===7,{timeout:15000});
   await page.waitForFunction(()=>{
     const gate=(document.querySelector('#gate')?.textContent||'').trim();
     return gate && !gate.includes('Загрузка MOEX');
   },{timeout:45000});
 
   const tickers=await page.$$eval('#cards .card .ticker',els=>els.map(e=>e.textContent?.trim()));
-  const expected=['SBER','YDEX','X5','MOEX'];
+  const expected=['SBER','YDEX','X5','MOEX','VKCO','AFLT','GAZP'];
   if(JSON.stringify(tickers)!==JSON.stringify(expected)) throw new Error(`unexpected cards: ${JSON.stringify(tickers)}`);
   if(pageErrors.length) throw new Error('pageerror: '+pageErrors.join(' | '));
 
@@ -46,7 +46,7 @@ try {
   if(sber.text.includes('verified_fundamentals')) throw new Error('SBER verified fundamentals integration regression');
   if(!/Auto historical P\/E3/.test(sber.text)) throw new Error('SBER historical P/E registry/runtime integration did not produce 3 observations: '+sber.text);
 
-  console.log('Investor Radar R1.8.54 SBER fundamentals production snapshot: PASS');
+  console.log('Investor Radar R1.8.54 seven-ticker production snapshot: PASS');
   console.log('FINAL GATE:',gate);
   for(const card of cards) console.log('CARD:',JSON.stringify(card));
   console.log('FAILED REQUESTS:',failed.length,failed);
