@@ -1,15 +1,15 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-23T10:02:56+03:00",
-  "data_quality": "PARTIAL_FRESH; BTC_AND_DOT_FRESH_PUBLIC_REFERENCES; GRAM_FRESH_REFERENCE_NOT_EXCHANGE_SYNCHRONIZED; ORDER_FLOW_LIMITED",
+  "generated_at": "2026-09-23T14:02:08+03:00",
+  "data_quality": "PARTIAL_FRESH; BTC_GRAM_DOT_FRESH_PUBLIC_REFERENCES; DERIVATIVES_NOT_SYNCHRONIZED_TO_THIS_CYCLE; ORDER_FLOW_NOT_VERIFIED",
   "market": {
-    "regime": "BULLISH BREAKOUT / CONSOLIDATION NEAR 87K, CANONICAL RETEST NOT CONFIRMED",
+    "regime": "BULLISH BREAKOUT / PULLBACK FROM 87K; CANONICAL RETEST TRIGGER NOT CONFIRMED",
     "btc_filter": "OPEN / BULLISH, ENTRY R:R NOT CONFIRMED",
     "action": "NO TRADE"
   },
   "assets": {
     "BTC": {
-      "price_display": "~$86.5–86.9k; 24h range ~$85.15–87.27k",
+      "price_display": "~$85.85k CoinGecko fresh reference",
       "status": "WAIT",
       "score": 15,
       "score_max": 19,
@@ -18,7 +18,7 @@
       "invalidation": "Loss of $82.0–82.8k after retest weakens continuation; weekly close below ~$78.8k invalidates broader breakout regime"
     },
     "GRAM": {
-      "price_display": "~$1.47 public reference; not synchronized to exchange-grade BTC timestamp",
+      "price_display": "~$1.45 CoinMarketCap fresh reference; +2.16%/24h",
       "status": "WAIT",
       "score": 9,
       "score_max": 19,
@@ -27,18 +27,25 @@
       "invalidation": "Failure back below $1.40 without recovery invalidates breakout watch"
     },
     "DOT": {
-      "price_display": "~$1.19–1.21 live public references; still below $1.25 continuation gate",
+      "price_display": "~$1.16 CoinGecko/CoinMarketCap fresh references; below $1.20 reclaim and $1.25 continuation gates",
       "status": "WAIT",
       "score": 9,
       "score_max": 19,
       "setup": "Reclaim continuation / range breakout watch",
-      "trigger": "Clean hold/reclaim of $1.20 and sustained break above $1.25 with structure confirmation; then validate R/R",
+      "trigger": "Clean reclaim/hold of $1.20 and sustained break above $1.25 with structure confirmation; then validate R/R",
       "invalidation": "Loss of $1.15 weakens continuation; loss of $1.10 invalidates recovery structure"
     }
   },
-  "best_candidate": "BTC — bullish breakout intact near $87k, but canonical retest/Higher Low plus acceptable R/R is not confirmed",
-  "trade_plan": {"entry": null, "stop": null, "tp1": null, "tp2": null, "tp3": null, "rr": null},
-  "sources": "CoinMarketCap + CoinGecko + CryptoTicker/CoinGlass-derived data + TradersUnion GRAM reference",
-  "source_data_time": "2026-09-23 10:02 MSK verification; BTC ~$86.5–86.9k; DOT ~$1.19–1.21; GRAM ~$1.47 public reference with lower synchronization confidence",
-  "note": "Authoritative decision produced only by 4H Monitor. FAST GATE: BTC FILTER OPEN; structure and breakout level confirmed, but canonical retest/HL trigger and acceptable R/R are not confirmed, therefore NO TRADE. BTC public live references cluster around $86.5–86.9k with 24h high near $87.27k. Deep confirmation for BTC: recent short squeeze liquidated about $648M shorts while OI rebuilt and funding was positive on 24/25 large BTC perpetuals, supporting bullish pressure but preserving leverage/chase risk. Fresh live CVD/order-flow and synchronized exchange-grade GRAM data were not verified; no score awarded for missing inputs. DOT remains around $1.19–1.21 and below the $1.25 continuation gate. Dashboard remains READ ONLY; Telegram transport only."
+  "best_candidate": "BTC — closest to canonical retest zone, but Higher Low trigger and acceptable R/R are not confirmed",
+  "trade_plan": {
+    "entry": null,
+    "stop": null,
+    "tp1": null,
+    "tp2": null,
+    "tp3": null,
+    "rr": null
+  },
+  "sources": "CoinGecko + CoinMarketCap + InvestingLive/CoinGlass-derived derivatives context + CryptoTicker",
+  "source_data_time": "2026-09-23 14:02 MSK verification; BTC ~$85.85k; GRAM ~$1.45; DOT ~$1.16",
+  "note": "Authoritative decision produced only by 4H Monitor. FAST GATE: BTC FILTER OPEN; bullish breakout structure remains, price has pulled back from the ~$87k area toward ~$85.85k, but the canonical ~$84.9k/$84k retest plus confirmed Higher Low trigger is not yet present and R/R is therefore not set. NO TRADE. GRAM remains above $1.40 but structure/volume confirmation for its trigger was not verified. DOT has slipped to ~$1.16 and is below both the $1.20 reclaim and $1.25 continuation gates. Because FAST GATE produced no quality triggered candidate, no new deep-confirmation scoring was manufactured. Fresh synchronized OI/funding/liquidation/order-flow data were not verified in this cycle and receive no score. Dashboard remains READ ONLY; Telegram transport only."
 }
