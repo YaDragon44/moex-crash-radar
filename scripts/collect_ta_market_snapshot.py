@@ -9,7 +9,7 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 ISS_BASE = "https://iss.moex.com/iss"
-SECURITIES = ("SBERP", "VKCO", "OZPH")
+SECURITIES = ("SBERP", "VKCO", "OZPH", "NMTP")
 MSK = timezone(timedelta(hours=3))
 MONTH_CODES = {1: "F", 2: "G", 3: "H", 4: "J", 5: "K", 6: "M", 7: "N", 8: "Q", 9: "U", 10: "V", 11: "X", 12: "Z"}
 
