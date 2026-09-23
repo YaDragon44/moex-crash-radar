@@ -29,7 +29,7 @@ jobs:
             tr_code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/transition.json -w '%{http_code}' --connect-timeout 10 --max-time 20 "${RAW}/data/transition.json?v=${bust}" || true)
             perf_code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/performance.json -w '%{http_code}' --connect-timeout 10 --max-time 20 "${RAW}/data/performance.json?v=${bust}" || true)
             old_code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/legacy.html -w '%{http_code}' --connect-timeout 10 --max-time 20 "${RAW}/old/index.html?v=${bust}" || true)
-            if [ "$html_code" = '200' ] && [ "$cur_code" = '200' ] && [ "$tr_code" = '200' ] && [ "$perf_code" = '200' ] && [ "$old_code" = '200' ] && grep -q 'BTC Entry Radar R1.4.8.2' /tmp/btc.html && grep -q 'RAW_EVIDENCE_BASE' /tmp/btc.html && grep -q '?legacy=1' /tmp/btc.html && grep -q 'BTC Entry Radar' /tmp/legacy.html && python - <<'PY'
+            if [ "$html_code" = '200' ] && [ "$cur_code" = '200' ] && [ "$tr_code" = '200' ] && [ "$perf_code" = '200' ] && [ "$old_code" = '200' ] && grep -q 'BTC Entry Radar' /tmp/btc.html && grep -q 'RAW_EVIDENCE_BASE' /tmp/btc.html && grep -q '?legacy=1' /tmp/btc.html && grep -q 'BTC NOW · OKX' /tmp/btc.html && grep -q '4H close used by model:' /tmp/btc.html && grep -q 'id="refreshBtn"' /tmp/btc.html && grep -q 'id="tradeLog"' /tmp/btc.html && grep -q 'BTC Entry Radar' /tmp/legacy.html && python - <<'PY'
           import json
           cur=json.load(open('/tmp/current.json', encoding='utf-8'))
           tr=json.load(open('/tmp/transition.json', encoding='utf-8'))
