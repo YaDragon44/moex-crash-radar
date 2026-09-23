@@ -6,7 +6,10 @@ const REGISTRY={
  SBER:{sector:'BANKS',status:'APPROVED_UNIVERSE',peers:['VTBR','T'],metric:'P/E',note:'Российские публичные банки/финансовые группы. Не смешивать с non-financial issuers.'},
  YDEX:{sector:'INTERNET_TECH',status:'APPROVED_UNIVERSE',peers:['VKCO','OZON'],metric:'P/E',note:'Российские публичные internet/tech/platform peers. P/E применим только при положительной сопоставимой прибыли.'},
  X5:{sector:'FOOD_RETAIL',status:'APPROVED_UNIVERSE',peers:['MGNT','LENT'],metric:'P/E',note:'Российский food retail. Проверять сопоставимость IFRS16 и структуры прибыли.'},
- MOEX:{sector:'EXCHANGE_INFRASTRUCTURE',status:'LIMITED_UNIVERSE',peers:[],metric:'P/E',note:'На MOEX нет двух очевидных прямых российских публичных аналогов. Нельзя искусственно подмешивать банки; peer gate остаётся LOCK до утверждения сопоставимого внешнего universe.'}
+ MOEX:{sector:'EXCHANGE_INFRASTRUCTURE',status:'LIMITED_UNIVERSE',peers:[],metric:'P/E',note:'На MOEX нет двух очевидных прямых российских публичных аналогов. Нельзя искусственно подмешивать банки; peer gate остаётся LOCK до утверждения сопоставимого внешнего universe.'},
+ VKCO:{sector:'INTERNET_MEDIA_TECH',status:'LIMITED_UNIVERSE',peers:[],metric:'P/E',note:'P/E valuation неприменима при отрицательном EPS VKCO; peer universe не должен искусственно разблокировать valuation.'},
+ AFLT:{sector:'AIRLINES',status:'LIMITED_UNIVERSE',peers:[],metric:'P/E',note:'На MOEX нет двух прямых публичных российских airline peers с сопоставимой IFRS/EPS базой; peer P/E остаётся LOCK.'},
+ GAZP:{sector:'INTEGRATED_GAS',status:'LIMITED_UNIVERSE',peers:[],metric:'P/E',note:'Российские нефтяные компании не считаются автоматически прямыми peers интегрированного газового бизнеса GAZP; требуется отдельно утверждённый сопоставимый universe.'}
 };
 function get(t){return REGISTRY[t]||{sector:'UNKNOWN',status:'LOCK',peers:[],metric:null,note:'Peer universe не определён.'};}
 function validate(t){const x=get(t);const unique=[...new Set(x.peers||[])];return {ticker:t,sector:x.sector,status:x.status,peers:unique,eligible:x.status==='APPROVED_UNIVERSE'&&unique.length>=2,metric:x.metric,note:x.note};}
