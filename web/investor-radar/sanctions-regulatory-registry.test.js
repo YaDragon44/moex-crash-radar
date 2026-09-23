@@ -17,8 +17,10 @@ assert.equal(r.critical,undefined);
 r=S.get('YDEX');
 assert.equal(r.verified,false);
 assert.equal(r.status,'LOCK');
-assert.equal(r.material,false);
-assert.equal(r.designated,false);
+assert.equal(r.material,null);
+assert.equal(r.designated,null);
+r=S.get('X5');
+assert.equal(r.verified,false);assert.equal(r.status,'LOCK');assert.equal(r.material,null);assert.equal(r.designated,null);
 
 let v=S.validate({verified:true,material:true,designated:true,status:'DESIGNATED'});
 assert.equal(v.ok,true);
