@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-23T09:11:37.601783+00:00",
+  "generated_at": "2026-09-23T09:28:45.460546+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2936916264116.4565,
-    "total_change_24h_pct": -2.6463799143290516,
-    "btc_dominance_pct": 58.68216394587006,
-    "btc_cap": 1723446017061.7412,
-    "alt_cap": 1213470247054.7153
+    "total_market_cap": 2932786012508.0586,
+    "total_change_24h_pct": -2.591797887691718,
+    "btc_dominance_pct": 58.6553870953911,
+    "btc_cap": 1720236988316.087,
+    "alt_cap": 1212549024191.9717
   },
   "derivatives": {
-    "btc_price": 85965.5,
-    "price_change_24h_pct": 0.1,
-    "oi_usd": 5519502606.072472,
-    "oi_change_24h_pct": 1.4504545996655072,
+    "btc_price": 85871.5,
+    "price_change_24h_pct": 0.01,
+    "oi_usd": 5518470691.199046,
+    "oi_change_24h_pct": 1.4504545393184909,
     "funding_pct": 0.01,
     "long_short_ratio": 0.7842363054778089
   },
   "context": {
-    "stablecoin_market_cap": 308037698288.0,
-    "stablecoin_market_cap_change_24h_pct": 0.22344419756146205,
+    "stablecoin_market_cap": 308033444573.0,
+    "stablecoin_market_cap_change_24h_pct": 0.22423792877157567,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -69,11 +69,11 @@
   "regime": {
     "model": "regime-v1-provisional",
     "provisional": true,
-    "status": "NEUTRAL",
+    "status": "DISTRIBUTION",
     "candidate": "DISTRIBUTION",
-    "candidate_count": 1,
-    "confirmed": false,
-    "transition": "WATCH NEUTRAL -> DISTRIBUTION · 1/2",
+    "candidate_count": 2,
+    "confirmed": true,
+    "transition": "CONFIRMED -> DISTRIBUTION",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,12 +82,12 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH NEUTRAL -> DISTRIBUTION · 1/2",
-    "confirmed": false
+    "status": "CONFIRMED -> DISTRIBUTION",
+    "confirmed": true
   },
   "action_engine": {
-    "investor": "DO NOT CHASE",
-    "trader": "WAIT",
+    "investor": "REDUCE RISK",
+    "trader": "REDUCE EXPOSURE",
     "why": [
       "Market stress 55/100",
       "Price/OI leverage 55/100",

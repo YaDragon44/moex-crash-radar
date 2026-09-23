@@ -2,12 +2,12 @@
   "version": "1.6.2",
   "method": "confirmed regime transitions; forward BTC observation at 1h/4h/24h; no lookahead",
   "max_observation_lag_minutes": 30,
-  "event_count": 39,
+  "event_count": 40,
   "sample_quality": "USABLE",
   "summary": {
     "1h": {
       "closed": 38,
-      "open": 1,
+      "open": 2,
       "avg_btc_return_pct": 0.1106,
       "positive_rate_pct": 60.5,
       "negative_rate_pct": 39.5,
@@ -16,7 +16,7 @@
     },
     "4h": {
       "closed": 39,
-      "open": 0,
+      "open": 1,
       "avg_btc_return_pct": 0.3256,
       "positive_rate_pct": 56.4,
       "negative_rate_pct": 43.6,
@@ -24,11 +24,11 @@
       "alignment_rate_pct": 60.9
     },
     "24h": {
-      "closed": 38,
+      "closed": 39,
       "open": 1,
-      "avg_btc_return_pct": 1.4749,
-      "positive_rate_pct": 68.4,
-      "negative_rate_pct": 31.6,
+      "avg_btc_return_pct": 1.4376,
+      "positive_rate_pct": 69.2,
+      "negative_rate_pct": 30.8,
       "directional_cases": 23,
       "alignment_rate_pct": 34.8
     }
@@ -1232,6 +1232,37 @@
           "observed_at": "2026-09-22T13:32:39.283499+00:00",
           "btc_price": 85884.8,
           "btc_return_pct": 0.0362,
+          "alignment": null
+        },
+        "24h": {
+          "status": "CLOSED",
+          "observed_at": "2026-09-23T09:28:45.460546+00:00",
+          "btc_price": 85871.5,
+          "btc_return_pct": 0.0207,
+          "alignment": null
+        }
+      }
+    },
+    {
+      "generated_at": "2026-09-23T09:28:45.460546+00:00",
+      "from_regime": "NEUTRAL",
+      "to_regime": "DISTRIBUTION",
+      "btc_price_at_transition": 85871.5,
+      "investor_action": "REDUCE RISK",
+      "trader_action": "REDUCE EXPOSURE",
+      "outcomes": {
+        "1h": {
+          "status": "OPEN",
+          "observed_at": null,
+          "btc_price": null,
+          "btc_return_pct": null,
+          "alignment": null
+        },
+        "4h": {
+          "status": "OPEN",
+          "observed_at": null,
+          "btc_price": null,
+          "btc_return_pct": null,
           "alignment": null
         },
         "24h": {
