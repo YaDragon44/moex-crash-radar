@@ -33,5 +33,11 @@ x=base();delete x.risk.issuerProvenance;r=E.decide(x);assert.equal(r.action,'Н�
 x=sberBase();x.valuationCompleteness={status:'VERIFIED',verified:true};x.risk.issuerProvenance={verified:true,derivedBy:'FAKE_GATE'};r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert(r.gate.missing.includes('issuer_sector_gate_mismatch'));
 x=base();delete x.risk.issuerProvenance;x.risk.thesisBroken=true;r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.gate.hardStop,false);assert.notEqual(r.action,'ПРОДАВАТЬ');
 
+// Seven-ticker provenance bindings must be exact.
+for(const [ticker,gate] of Object.entries({SBER:'BANK_ISSUER_RISK_GATE_R1.8.28',YDEX:'TECH_ISSUER_RISK_GATE_R1.8.32',X5:'RETAIL_ISSUER_RISK_GATE_R1.8.29',MOEX:'EXCHANGE_ISSUER_RISK_GATE_R1.8.30',VKCO:'TECH_ISSUER_RISK_GATE_R1.8.56',AFLT:'AIRLINE_ISSUER_RISK_GATE_R1.8.57',GAZP:'ENERGY_ISSUER_RISK_GATE_R1.8.58'})){
+  x=base();x.ticker=ticker;x.risk.issuerProvenance={verified:true,derivedBy:gate};if(ticker==='SBER')x.valuationCompleteness={status:'VERIFIED',verified:true};r=E.decide(x);assert(!r.gate.missing.includes('issuer_sector_gate_mismatch'),ticker+' exact provenance must pass');
+  x.risk.issuerProvenance.derivedBy='WRONG_GATE';r=E.decide(x);assert(r.gate.missing.includes('issuer_sector_gate_mismatch'),ticker+' wrong provenance must lock');
+}
+
 assert.equal(E.valuationZone(99,100,120),'ATTRACTIVE');assert.equal(E.valuationZone(110,100,120),'FAIR');assert.equal(E.valuationZone(121,100,120),'EXPENSIVE');
 console.log('R1.8.34 recommendation + issuer provenance + portfolio + sanctions tests: PASS');
