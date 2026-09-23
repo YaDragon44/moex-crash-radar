@@ -16,14 +16,14 @@ try {
     return gate && !gate.includes('Загрузка MOEX');
   },{timeout:45000});
 
-  const matrixHeaders=await page.$eval('#matrix thead th',els=>els.map(e=>(e.textContent||'').trim()));
+  const matrixHeaders=await page.$$eval('#matrix thead th',els=>els.map(e=>(e.textContent||'').trim()));
   if(matrixHeaders[0]!=='Ticker'||matrixHeaders[1]!=='Текущая цена') throw new Error('primary matrix current-price column missing: '+JSON.stringify(matrixHeaders));
-  const matrixTickers=await page.$eval('#matrix tbody tr .tk',els=>els.map(e=>(e.textContent||'').trim()));
-  const matrixPrices=await page.$eval('#matrix tbody tr td:nth-child(2)',els=>els.map(e=>(e.textContent||'').trim()));
+  const matrixTickers=await page.$$eval('#matrix tbody tr .tk',els=>els.map(e=>(e.textContent||'').trim()));
+  const matrixPrices=await page.$$eval('#matrix tbody tr td:nth-child(2)',els=>els.map(e=>(e.textContent||'').trim()));
   if(matrixTickers.length!==7) throw new Error('primary matrix must contain 7 tickers: '+JSON.stringify(matrixTickers));
   if(matrixPrices.some(x=>!x||x.includes('загрузка'))) throw new Error('primary matrix has unresolved live price: '+JSON.stringify(matrixPrices));
 
-  const tickers=await page.$eval('#cards .card .ticker',els=>els.map(e=>e.textContent?.trim()));
+  const tickers=await page.$$eval('#cards .card .ticker',els=>els.map(e=>e.textContent?.trim()));
   const expected=['SBER','YDEX','X5','MOEX','VKCO','AFLT','GAZP'];
   if(JSON.stringify(tickers)!==JSON.stringify(expected)) throw new Error(`unexpected cards: ${JSON.stringify(tickers)}`);
   if(pageErrors.length) throw new Error('pageerror: '+pageErrors.join(' | '));
