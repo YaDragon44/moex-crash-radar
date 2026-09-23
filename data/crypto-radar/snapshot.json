@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-09-23T06:59:03.744217+00:00",
+  "generated_at": "2026-09-23T07:19:15.416245+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,23 +14,23 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2949023550656.6675,
-    "total_change_24h_pct": -1.267434968123923,
-    "btc_dominance_pct": 58.65361457572346,
-    "btc_cap": 1729708907149.4766,
-    "alt_cap": 1219314643507.191
+    "total_market_cap": 2948764480464.645,
+    "total_change_24h_pct": -1.3196919863523175,
+    "btc_dominance_pct": 58.67812955756189,
+    "btc_cap": 1730279842194.4111,
+    "alt_cap": 1218484638270.234
   },
   "derivatives": {
-    "btc_price": 86471.2,
-    "price_change_24h_pct": 1.33,
-    "oi_usd": 5553011450.206,
-    "oi_change_24h_pct": 1.8903764859382166,
+    "btc_price": 86408.2,
+    "price_change_24h_pct": 1.29,
+    "oi_usd": 5551949723.465164,
+    "oi_change_24h_pct": 3.304349540588891,
     "funding_pct": 0.0034999999999999996,
-    "long_short_ratio": 0.7449863827680119
+    "long_short_ratio": 0.7618811881188119
   },
   "context": {
-    "stablecoin_market_cap": 308089394201.0,
-    "stablecoin_market_cap_change_24h_pct": 0.22315031432893484,
+    "stablecoin_market_cap": 308101555390.0,
+    "stablecoin_market_cap_change_24h_pct": 0.22510354127907028,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
@@ -55,13 +55,13 @@
     "model": "risk-v1-provisional",
     "provisional": true,
     "coverage_pct": 100,
-    "score": 43,
+    "score": 40,
     "status": "MODERATE",
     "components": {
       "market_stress": 40,
       "leverage": 55,
       "funding_extreme": 20,
-      "positioning_extreme": 65,
+      "positioning_extreme": 40,
       "liquidity_context": 20
     },
     "reason": "Provisional composite; historical calibration required"
@@ -71,7 +71,7 @@
     "provisional": true,
     "status": "NEUTRAL",
     "candidate": "NEUTRAL",
-    "candidate_count": 77,
+    "candidate_count": 78,
     "confirmed": true,
     "transition": "STABLE",
     "confirmation_rule": "2 consecutive observations"
@@ -89,9 +89,9 @@
     "investor": "HOLD",
     "trader": "WAIT",
     "why": [
-      "Long/Short extremity 65/100",
       "Price/OI leverage 55/100",
-      "Market stress 40/100"
+      "Market stress 40/100",
+      "Long/Short extremity 40/100"
     ],
     "provisional": true
   }
