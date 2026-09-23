@@ -7,7 +7,7 @@ const positive=x=>finite(x)&&Number(x)>0;
 function yearOf(x){const d=String(x||'').slice(0,4),y=Number(d);return Number.isInteger(y)&&y>1900?y:null;}
 function normalizeCandles(candles){return (Array.isArray(candles)?candles:[]).map(x=>({date:x?.date||x?.begin,close:Number(x?.close)})).filter(x=>/^\d{4}-\d{2}-\d{2}/.test(String(x.date))&&positive(x.close)).sort((a,b)=>String(a.date).localeCompare(String(b.date)));}
 function yearEndPrices(candles){const out={};for(const x of normalizeCandles(candles)){const y=yearOf(x.date);if(y)out[y]=x;}return out;}
-function normalizeEPS(series){return (Array.isArray(series)?series:[]).map(x=>Array.isArray(x)?{year:Number(x[0]),eps:Number(x[1]),verified:true}:{year:Number(x?.year),eps:Number(x?.eps),verified:x?.verified===true,source:x?.source||null,asOf:x?.asOf||null}).filter(x=>Number.isInteger(x.year)&&positive(x.eps));}
+function normalizeEPS(series){return (Array.isArray(series)?series:[]).map(x=>Array.isArray(x)?{year:Number(x[0]),eps:Number(x[1]),verified:false,source:null,asOf:null}:{year:Number(x?.year),eps:Number(x?.eps),verified:x?.verified===true&&!!x?.source&&!!x?.asOf,source:x?.source||null,asOf:x?.asOf||null}).filter(x=>Number.isInteger(x.year)&&positive(x.eps));}
 function historicalPE(input){
  const eps=normalizeEPS(input?.epsSeries),prices=yearEndPrices(input?.candles),points=[],missing=[];
  for(const e of eps){if(e.verified!==true){missing.push(`eps_${e.year}_unverified`);continue;}const p=prices[e.year];if(!p){missing.push(`price_${e.year}_missing`);continue;}points.push({year:e.year,date:p.date,price:p.close,eps:e.eps,pe:p.close/e.eps,priceSource:input?.priceSource||'MOEX ISS',epsSource:e.source||input?.epsSource||null,epsAsOf:e.asOf||null});}
