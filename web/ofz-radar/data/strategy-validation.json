@@ -15,14 +15,14 @@
         8.0,
         5.0
       ],
-      "buyHoldTerminal": 3160007.87396511,
-      "activeTerminal": 2088031.4993268424,
-      "deltaTerminal": -1071976.3746382678,
-      "deltaCagr": -0.10010759350565124,
-      "buyHoldMaxDrawdown": -0.012053928884672716,
-      "activeMaxDrawdown": -0.012053928884672716,
+      "buyHoldTerminal": 3159496.3976783897,
+      "activeTerminal": 2087470.9681224616,
+      "deltaTerminal": -1072025.429555928,
+      "deltaCagr": -0.1001290568012041,
+      "buyHoldMaxDrawdown": -0.012329428884672589,
+      "activeMaxDrawdown": -0.012329428884672589,
       "drawdownImprovement": 0.0,
-      "activeTurnoverPct": 1.8102257938675883,
+      "activeTurnoverPct": 1.8078360377792826,
       "activeActions": [
         {
           "date": "2028-09-23",
@@ -38,7 +38,7 @@
           "regime": "E",
           "action": "ROTATE",
           "targetExposure": 0.25,
-          "amount": 681418.6211628125
+          "amount": 680234.240920123
         },
         {
           "date": "2029-11-21",
@@ -97,12 +97,20 @@
           "amount": 4437.648814835251
         },
         {
+          "date": "2031-05-28",
+          "yield": 5.961643835616439,
+          "regime": "E",
+          "action": "ROTATE",
+          "targetExposure": 0.25,
+          "amount": 1514.0911553612052
+        },
+        {
           "date": "2031-09-23",
           "yield": 5.0,
           "regime": "E",
           "action": "ROTATE",
           "targetExposure": 0.25,
-          "amount": 28411.313627243908
+          "amount": 26778.489068229184
         }
       ],
       "returnWinner": "BUY_HOLD",
@@ -118,14 +126,14 @@
         14.5,
         14.0
       ],
-      "buyHoldTerminal": 2280477.3289883924,
-      "activeTerminal": 2280477.3289883924,
+      "buyHoldTerminal": 2279962.6665554726,
+      "activeTerminal": 2279962.6665554726,
       "deltaTerminal": 0.0,
       "deltaCagr": 0.0,
-      "buyHoldMaxDrawdown": -0.019874422160835126,
-      "activeMaxDrawdown": -0.019874422160835126,
+      "buyHoldMaxDrawdown": -0.02014992216083511,
+      "activeMaxDrawdown": -0.02014992216083511,
       "drawdownImprovement": 0.0,
-      "activeTurnoverPct": 1.0217055764028802,
+      "activeTurnoverPct": 1.0206828673562915,
       "activeActions": [],
       "returnWinner": "TIE",
       "riskWinner": "TIE"
@@ -140,14 +148,14 @@
         12.0,
         16.0
       ],
-      "buyHoldTerminal": 1886588.0156920368,
-      "activeTerminal": 1684663.2788755875,
-      "deltaTerminal": -201924.73681644932,
-      "deltaCagr": -0.025416798789135386,
-      "buyHoldMaxDrawdown": -0.1176469738431698,
-      "activeMaxDrawdown": -0.08003474646307451,
-      "drawdownImprovement": 0.03761222738009529,
-      "activeTurnoverPct": 3.267148495128429,
+      "buyHoldTerminal": 1886226.5656231209,
+      "activeTerminal": 1684299.6200850545,
+      "deltaTerminal": -201926.94553806633,
+      "deltaCagr": -0.025421214491279542,
+      "buyHoldMaxDrawdown": -0.11765245879284314,
+      "activeMaxDrawdown": -0.08004139699486301,
+      "drawdownImprovement": 0.03761106179798013,
+      "activeTurnoverPct": 3.262812838460816,
       "activeActions": [
         {
           "date": "2028-05-24",
@@ -155,7 +163,7 @@
           "regime": "D",
           "action": "REDUCE",
           "targetExposure": 0.6,
-          "amount": 612600.7648802446
+          "amount": 610453.6771511721
         },
         {
           "date": "2028-09-23",
@@ -203,14 +211,14 @@
         18.0,
         17.0
       ],
-      "buyHoldTerminal": 2178987.6991761117,
-      "activeTerminal": 2178987.6991761117,
+      "buyHoldTerminal": 2178231.4512579404,
+      "activeTerminal": 2178231.4512579404,
       "deltaTerminal": 0.0,
       "deltaCagr": 0.0,
-      "buyHoldMaxDrawdown": -0.023744384876708713,
-      "activeMaxDrawdown": -0.023744384876708713,
+      "buyHoldMaxDrawdown": -0.024019884876708586,
+      "activeMaxDrawdown": -0.024019884876708586,
       "drawdownImprovement": 0.0,
-      "activeTurnoverPct": 1.0567680728342668,
+      "activeTurnoverPct": 1.0560494688106945,
       "activeActions": [],
       "returnWinner": "TIE",
       "riskWinner": "TIE"
