@@ -5,7 +5,10 @@ const expected={
   YDEX:'TECH_ISSUER_RISK_GATE_R1.8.32',
   SBER:'BANK_ISSUER_RISK_GATE_R1.8.28',
   X5:'RETAIL_ISSUER_RISK_GATE_R1.8.29',
-  MOEX:'EXCHANGE_ISSUER_RISK_GATE_R1.8.30'
+  MOEX:'EXCHANGE_ISSUER_RISK_GATE_R1.8.30',
+  VKCO:'TECH_ISSUER_RISK_GATE_R1.8.56',
+  AFLT:'AIRLINE_ISSUER_RISK_GATE_R1.8.57',
+  GAZP:'ENERGY_ISSUER_RISK_GATE_R1.8.58'
 };
 
 for(const t of Object.keys(expected)){
@@ -31,7 +34,7 @@ assert.equal(R.get('YDEX').issuer.coverage,'TECH_GROWTH_MARGIN_LEVERAGE_LIQUIDIT
 
 const all=R.auditAll();
 assert.equal(all.ok,true);
-assert.equal(all.coverage,'4/4');
+assert.equal(all.coverage,'7/7');
 assert.deepEqual(all.errors,[]);
 assert.equal(all.rows.every(x=>x.riskVerified),true);
 
@@ -51,4 +54,4 @@ assert.equal(a.riskVerified,false);
 assert.equal(a.reason,'sector_gate_binding_missing');
 R.REGISTRY.X5.issuer.derivedBy=original;
 
-console.log('R1.8.33 issuer sector gate coverage audit 4/4: PASS');
+console.log('issuer sector gate coverage audit 7/7: PASS');
