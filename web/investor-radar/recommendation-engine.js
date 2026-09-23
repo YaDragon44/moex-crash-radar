@@ -5,7 +5,7 @@
   'use strict';
   const ACTIONS=Object.freeze({BUY:'ПОКУПАТЬ',ADD:'ДОБИРАТЬ',HOLD:'ДЕРЖАТЬ',NO_ADD:'НЕ ДОБИРАТЬ',REDUCE:'СОКРАЩАТЬ',SELL:'ПРОДАВАТЬ',WATCH:'НАБЛЮДАТЬ',LOCK:'LOCK'});
   const LIGHT=Object.freeze({GREEN:'ЗЕЛЁНЫЙ',YELLOW:'ЖЁЛТЫЙ',RED:'КРАСНЫЙ',GRAY:'СЕРЫЙ'});
-  const ISSUER_GATES=Object.freeze({YDEX:'TECH_ISSUER_RISK_GATE_R1.8.32',X5:'RETAIL_ISSUER_RISK_GATE_R1.8.29',MOEX:'EXCHANGE_ISSUER_RISK_GATE_R1.8.30',SBER:'BANK_ISSUER_RISK_GATE_R1.8.28'});
+  const ISSUER_GATES=Object.freeze({YDEX:'TECH_ISSUER_RISK_GATE_R1.8.32',X5:'RETAIL_ISSUER_RISK_GATE_R1.8.29',MOEX:'EXCHANGE_ISSUER_RISK_GATE_R1.8.30',SBER:'BANK_ISSUER_RISK_GATE_R1.8.28',VKCO:'TECH_ISSUER_RISK_GATE_R1.8.56',AFLT:'AIRLINE_ISSUER_RISK_GATE_R1.8.57',GAZP:'ENERGY_ISSUER_RISK_GATE_R1.8.58'});
   const finite=x=>Number.isFinite(Number(x));
   const arr=x=>Array.isArray(x)?x:[];
   const portfolioKnown=input=>typeof input?.portfolio?.held==='boolean';
