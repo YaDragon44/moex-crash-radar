@@ -33,14 +33,10 @@ DECISION READINESS: PARTIAL / WAIT
 
 ## Active mandatory tasks
 
-### IR-C1 — Peer price runtime defect — READY
-Production evidence still reports:
-- SBER: VTBR = verified_price_missing; T = verified_price_missing;
-- X5: LENT = verified_price_missing.
+### IR-C1 — Peer price runtime defect — DONE
+Explicit TQBR endpoint closed the runtime defect. Production smoke confirms SBER peer P/E VERIFIED with 2 usable peers (VTBR, T); X5 receives 1 usable peer (LENT), while MGNT remains correctly excluded for negative EPS. No hardcoded prices or weakened gates.
 
-The TQBR-row selection patch did not close the production gap. Inspect actual MOEX payload and add a regression assertion.
-
-### IR-C2 — X5 historical continuity — READY after C1
+### IR-C2 — X5 historical continuity — READY
 Production currently builds only 1 X5 historical P/E observation despite 3 verified EPS periods. Determine exact share/instrument continuity and either close with comparable evidence or document objective insufficiency.
 
 ### IR-C3 — YDEX/X5 sanctions evidence — READY after C2
@@ -63,6 +59,6 @@ Run only after C1–C4 are resolved or classified as objective limitations/block
 
 ## Next task
 
-**IR-C1 — diagnose and close peer-price runtime defect.**
+**IR-C2 — diagnose X5 historical price/share-basis continuity.**
 
 Do not open new feature scope while this mandatory completion sequence is active.
