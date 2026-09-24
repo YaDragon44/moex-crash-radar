@@ -45,6 +45,7 @@ jobs:
       JOURNAL_JSONL: vkco-monitor/state/trade_journal.jsonl
       JOURNAL_CSV: vkco-monitor/state/trade_journal.csv
       PUBLIC_STATUS_FILE: vkco-monitor/state/public_status.json
+      DECISION_AUDIT_JSONL: vkco-monitor/state/decision_audit.jsonl
       MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || github.event.schedule == '0 7 * * 1-5' && 'heartbeat' || 'run' }}
 
     steps:

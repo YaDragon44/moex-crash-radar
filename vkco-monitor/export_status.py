@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 import monitor
+from decision_audit import append_if_changed
 from position_manager import has_active_position, load_state_file
 from trade_journal import load_records, stats
 
@@ -160,6 +161,42 @@ def build_status() -> dict[str, Any]:
     return payload
 
 
+def _audit_snapshot(payload: dict[str, Any]) -> dict[str, Any]:
+    trade = payload.get("trade") or {}
+    market = payload.get("market") or {}
+    imoex = payload.get("imoex") or {}
+    event = payload.get("event_risk")
+    return {
+        "timestamp": payload.get("generated_at"),
+        "candle": market.get("candle_end"),
+        "status": trade.get("status"),
+        "reason": trade.get("reason"),
+        "setup": trade.get("setup"),
+        "support": trade.get("support", market.get("support")),
+        "resistance": trade.get("resistance", market.get("resistance")),
+        "rvol": trade.get("rvol"),
+        "trigger": trade.get("reason") not in {"NO_TRIGGER", "STALE_OR_MARKET_CLOSED", "NO_DATA"},
+        "imoex": {
+            "ok": imoex.get("ok"),
+            "close": imoex.get("close"),
+            "sma20": imoex.get("sma20"),
+            "return_1h_pct": imoex.get("return_1h_pct"),
+        } if imoex else None,
+        "event_risk": {
+            "ok": event.get("ok"),
+            "window_days": event.get("window_days"),
+            "error": event.get("error"),
+        } if isinstance(event, dict) else None,
+        "score": trade.get("score"),
+        "entry": trade.get("entry"),
+        "stop": trade.get("stop"),
+        "tp1": trade.get("tp1"),
+        "tp2": trade.get("tp2"),
+        "tp3": trade.get("tp3"),
+        "signal_id": trade.get("signal_id"),
+    }
+
+
 def export_status(path: Path = OUTPUT) -> dict[str, Any]:
     try:
         payload = build_status()
@@ -176,6 +213,9 @@ def export_status(path: Path = OUTPUT) -> dict[str, Any]:
             "candles": [],
             "error": type(exc).__name__,
         }
+    # Evidence-only side effect: persist the evaluated decision after the complete
+    # production pipeline has built it. This does not feed back into signal logic.
+    append_if_changed(_audit_snapshot(payload))
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     return payload
