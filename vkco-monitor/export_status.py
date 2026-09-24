@@ -12,6 +12,7 @@ from position_manager import has_active_position, load_state_file
 from trade_journal import load_records, stats
 from yandex_consensus import fetch_consensus
 import strategy2_ema
+import strategy3_value_rsi
 
 OUTPUT = Path(os.getenv("PUBLIC_STATUS_FILE", "vkco-monitor/state/public_status.json"))
 JOURNAL_JSONL = Path(os.getenv("JOURNAL_JSONL", "vkco-monitor/state/trade_journal.jsonl"))
@@ -81,6 +82,10 @@ def build_status() -> dict[str, Any]:
 
     candles = monitor.fetch_candles()
     payload["candles"] = _public_candles(candles)
+    try:
+        payload["strategy3"] = strategy3_value_rsi.public_snapshot(candles, payload["analyst_consensus"])
+    except Exception as exc:
+        payload["strategy3"] = {"strategy":"S3_VALUE_RSI_EMA200_M10","mode":"SHADOW","status":"DATA_UNAVAILABLE","error":type(exc).__name__}
     try:
         payload["strategy2"] = strategy2_ema.public_snapshot(candles)
     except Exception as exc:
