@@ -15,6 +15,7 @@ import strategy2_ema
 import strategy3_value_rsi
 import fundamental_snapshot
 import latest_news
+import strategy4_h1
 
 OUTPUT = Path(os.getenv("PUBLIC_STATUS_FILE", "vkco-monitor/state/public_status.json"))
 JOURNAL_JSONL = Path(os.getenv("JOURNAL_JSONL", "vkco-monitor/state/trade_journal.jsonl"))
@@ -85,6 +86,13 @@ def build_status() -> dict[str, Any]:
 
     candles = monitor.fetch_candles()
     payload["candles"] = _public_candles(candles)
+    try:
+        h1 = strategy4_h1.fetch_h1()
+        payload["strategy4"] = strategy4_h1.public_snapshot(h1)
+        payload["candles_h1"] = _public_candles(h1, limit=72)
+    except Exception as exc:
+        payload["strategy4"] = {"strategy":"S4_ADAPTIVE_H1","timeframe":"H1","mode":"SHADOW","status":"DATA_UNAVAILABLE","error":type(exc).__name__}
+        payload["candles_h1"] = []
     try:
         payload["strategy3"] = strategy3_value_rsi.public_snapshot(candles, payload["analyst_consensus"])
     except Exception as exc:
