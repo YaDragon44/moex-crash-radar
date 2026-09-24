@@ -13,7 +13,7 @@ DATA COMPLETENESS: PARTIAL
 PORTFOLIO CONTEXT: UNKNOWN IN PUBLIC UI / PERSONAL ACTIONS LOCKED  
 INVESTOR DECISION READINESS: PARTIAL / WAIT
 TRADER DECISION LAYER: R1.9.0 LIVE / CLOSED
-PORTFOLIO UI CLEANUP: R1.9.2 LIVE / VALIDATION PENDING
+PORTFOLIO UI CLEANUP: R1.9.2 LIVE / CLOSED
 
 ## Completed
 
@@ -77,6 +77,6 @@ Final baseline review completed in `FINAL_COMPLETENESS_REVIEW.md`. No remaining 
 
 ## Next task
 
-**R1.9.2 — REMOVE VISIBLE PORTFOLIO CONTEXT UI — VALIDATION PENDING.**
+**NONE — R1.9.2 is deployed and validated.**
 
 Do not open new feature scope without a new owner decision. Preserve fail-closed gates and refresh source evidence when it becomes stale.

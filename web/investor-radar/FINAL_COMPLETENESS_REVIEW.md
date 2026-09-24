@@ -64,6 +64,6 @@ These counts are not release-failure counts. They reflect the strict current met
 
 ## Next task
 
-R1.9.2 — REMOVE VISIBLE PORTFOLIO CONTEXT UI — VALIDATION PENDING.
+NONE — R1.9.2 is deployed and validated.
 
 Any alternative valuation methodology, new peer universe, new portfolio integration, new ticker, weakened threshold, or new feature requires a separate owner decision. Routine evidence freshness maintenance does not change the baseline.
