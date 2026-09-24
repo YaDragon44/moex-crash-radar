@@ -3,7 +3,7 @@ name: TA Market snapshot
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/10 7-15 * * 1-5'
+    - cron: '5,35 7-15 * * 1-5'
   push:
     branches: [main]
     paths:
