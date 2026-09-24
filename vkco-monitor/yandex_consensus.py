@@ -40,7 +40,8 @@ def parse_consensus(html: str, observed_at: str | None = None) -> dict[str, Any]
         "buy": buy,
         "hold": hold,
         "sell": sell,
-        "analyst_count": buy + hold + sell,\n        "analysts": analysts,
+        "analyst_count": buy + hold + sell,
+        "analysts": analysts,
     }
     if range_m:
         out["target_low"] = _num(range_m.group(1))
