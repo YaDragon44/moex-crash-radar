@@ -289,15 +289,15 @@ jobs:
         run: |
           set -euo pipefail
           BASE="https://yadragon44.github.io/moex-crash-radar/investor-radar"
-          assets=(recommendation-engine.js trader-decision.js risk-layer.js issuer-risk-registry.js sanctions-regulatory-registry.js valuation-engine.js multiples-registry.js multiples-data-factory.js peer-universe-registry.js peer-earnings-registry.js peer-pe-data-factory.js)
+          assets=(recommendation-engine.js trader-decision.js capital-allocation.js risk-layer.js issuer-risk-registry.js sanctions-regulatory-registry.js valuation-engine.js multiples-registry.js multiples-data-factory.js peer-universe-registry.js peer-earnings-registry.js peer-pe-data-factory.js)
           for attempt in {1..12}; do
             code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/investor-radar.html -w "%{http_code}" --connect-timeout 10 --max-time 20 "${BASE}/index.html?v=${attempt}" || true)
             ok=true
-            if [ "$code" != "200" ] || ! grep -q "Investor Radar R1.9" /tmp/investor-radar.html; then ok=false; fi
+            if [ "$code" != "200" ] || ! grep -q "Investor Radar R2.0" /tmp/investor-radar.html; then ok=false; fi
             for ticker in SBER YDEX X5 MOEX VKCO AFLT GAZP; do
               if ! grep -q "'${ticker}'" /tmp/investor-radar.html; then ok=false; break; fi
             done
-            if ! grep -q "ИТОГ АНАЛИЗА" /tmp/investor-radar.html; then ok=false; fi
+            if ! grep -q "ИТОГ АНАЛИЗА" /tmp/investor-radar.html || ! grep -q "CAPITAL ALLOCATION" /tmp/investor-radar.html || ! grep -q "new-capital" /tmp/investor-radar.html; then ok=false; fi
             for asset in "${assets[@]}"; do
               asset_code=$(curl -L -sS -H 'Cache-Control: no-cache' -o "/tmp/${asset}" -w "%{http_code}" --connect-timeout 10 --max-time 20 "${BASE}/${asset}?v=${attempt}" || true)
               if [ "$asset_code" != "200" ] || [ ! -s "/tmp/${asset}" ]; then ok=false; break; fi
