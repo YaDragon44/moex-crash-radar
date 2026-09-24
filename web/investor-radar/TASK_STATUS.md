@@ -14,7 +14,7 @@ PORTFOLIO CONTEXT: UNKNOWN IN PUBLIC UI / PERSONAL ACTIONS LOCKED
 INVESTOR DECISION READINESS: PARTIAL / WAIT
 TRADER DECISION LAYER: R1.9.0 LIVE / CLOSED
 PORTFOLIO UI CLEANUP: R1.9.2 LIVE / CLOSED  
-CAPITAL ALLOCATION: R2.0 IMPLEMENTATION / VALIDATION PENDING
+CAPITAL ALLOCATION: R2.0 LIVE / CLOSED
 
 ## Completed
 
@@ -78,7 +78,7 @@ Final baseline review completed in `FINAL_COMPLETENESS_REVIEW.md`. No remaining 
 
 ## Next task
 
-**R2.0 — CAPITAL ALLOCATION & PORTFOLIO FIT — VALIDATION PENDING.**
+**NONE — R2.0 is deployed and validated.**
 
 Do not open new feature scope without a new owner decision. Preserve fail-closed gates and refresh source evidence when it becomes stale.
 
@@ -89,3 +89,4 @@ Do not open new feature scope without a new owner decision. Preserve fail-closed
 - New Capital is user-entered; no amount is hardcoded as a recommendation.
 - Deployment is allowed only for verified attractive opportunity + Trader READY; otherwise capital is truthfully reserved or not allocated.
 - Portfolio Fit is UNKNOWN / INSUFFICIENT in the public view without inventing holdings or concentration.
+- Production validation CLOSED: CI PASS; Deploy Dashboard + Public Health PASS; post-deploy browser smoke PASS.

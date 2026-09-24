@@ -64,10 +64,10 @@ These counts are not release-failure counts. They reflect the strict current met
 
 ## R2.0 authorization
 
-R2.0 Capital Allocation & Portfolio Fit is owner-authorized. It is limited to a thin policy/presentation layer over existing verified outputs; no new data or analytical engine is authorized.
+R2.0 Capital Allocation & Portfolio Fit is owner-authorized and CLOSED after production validation. It is a thin policy/presentation layer over existing verified outputs; no new data or analytical engine was added. Allocation is truthfully 0 when no verified attractive Trader READY candidate exists; public Portfolio Fit remains UNKNOWN / INSUFFICIENT without portfolio evidence.
 
 ## Next task
 
-R2.0 — CAPITAL ALLOCATION & PORTFOLIO FIT — VALIDATION PENDING.
+NONE — R2.0 is deployed and validated.
 
 Any alternative valuation methodology, new peer universe, new portfolio integration, new ticker, weakened threshold, or new feature requires a separate owner decision. Routine evidence freshness maintenance does not change the baseline.
