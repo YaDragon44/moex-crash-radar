@@ -289,7 +289,7 @@ jobs:
         run: |
           set -euo pipefail
           BASE="https://yadragon44.github.io/moex-crash-radar/investor-radar"
-          assets=(recommendation-engine.js risk-layer.js issuer-risk-registry.js sanctions-regulatory-registry.js valuation-engine.js multiples-registry.js multiples-data-factory.js peer-universe-registry.js peer-earnings-registry.js peer-pe-data-factory.js)
+          assets=(recommendation-engine.js trader-decision.js risk-layer.js issuer-risk-registry.js sanctions-regulatory-registry.js valuation-engine.js multiples-registry.js multiples-data-factory.js peer-universe-registry.js peer-earnings-registry.js peer-pe-data-factory.js)
           for attempt in {1..12}; do
             code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/investor-radar.html -w "%{http_code}" --connect-timeout 10 --max-time 20 "${BASE}/index.html?v=${attempt}" || true)
             ok=true
