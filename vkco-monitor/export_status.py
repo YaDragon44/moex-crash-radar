@@ -11,6 +11,7 @@ from decision_audit import append_if_changed
 from position_manager import has_active_position, load_state_file
 from trade_journal import load_records, stats
 from yandex_consensus import fetch_consensus
+import strategy2_ema
 
 OUTPUT = Path(os.getenv("PUBLIC_STATUS_FILE", "vkco-monitor/state/public_status.json"))
 JOURNAL_JSONL = Path(os.getenv("JOURNAL_JSONL", "vkco-monitor/state/trade_journal.jsonl"))
@@ -80,6 +81,10 @@ def build_status() -> dict[str, Any]:
 
     candles = monitor.fetch_candles()
     payload["candles"] = _public_candles(candles)
+    try:
+        payload["strategy2"] = strategy2_ema.public_snapshot(candles)
+    except Exception as exc:
+        payload["strategy2"] = {"strategy": "S2_EMA50_200_M10", "mode": "SHADOW", "status": "DATA_UNAVAILABLE", "error": type(exc).__name__}
     latest = candles[-1]
     age_min = int((now - latest.end).total_seconds() // 60)
     fresh = latest.end.date() == now.date() and now - latest.end <= monitor.timedelta(minutes=45)
