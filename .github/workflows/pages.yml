@@ -293,7 +293,7 @@ jobs:
           for attempt in {1..12}; do
             code=$(curl -L -sS -H 'Cache-Control: no-cache' -o /tmp/investor-radar.html -w "%{http_code}" --connect-timeout 10 --max-time 20 "${BASE}/index.html?v=${attempt}" || true)
             ok=true
-            if [ "$code" != "200" ] || ! grep -q "Investor Radar R1.8" /tmp/investor-radar.html; then ok=false; fi
+            if [ "$code" != "200" ] || ! grep -q "Investor Radar R1.9" /tmp/investor-radar.html; then ok=false; fi
             for ticker in SBER YDEX X5 MOEX VKCO AFLT GAZP; do
               if ! grep -q "'${ticker}'" /tmp/investor-radar.html; then ok=false; break; fi
             done
