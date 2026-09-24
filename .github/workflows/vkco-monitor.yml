@@ -50,6 +50,8 @@ jobs:
       STRATEGY2_JOURNAL_JSONL: vkco-monitor/state/strategy2_ema_journal.jsonl
       STRATEGY3_STATE_FILE: vkco-monitor/state/strategy3_value_rsi_state.json
       STRATEGY3_JOURNAL_JSONL: vkco-monitor/state/strategy3_value_rsi_journal.jsonl
+      STRATEGY4_STATE_FILE: vkco-monitor/state/strategy4_h1_state.json
+      STRATEGY4_JOURNAL_JSONL: vkco-monitor/state/strategy4_h1_journal.jsonl
       MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || github.event.schedule == '0 7 * * 1-5' && 'heartbeat' || 'run' }}
 
     steps:
