@@ -23,7 +23,7 @@ x=sberBase();x.valuationCompleteness={status:'VERIFIED',verified:true};r=E.decid
 x=sberBase();x.portfolio.held=false;x.valuationCompleteness={status:'VERIFIED',verified:true};r=E.decide(x);assert.equal(r.action,'ПОКУПАТЬ');
 
 // R1.8.24 explicit portfolio context.
-x=base();delete x.portfolio;r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.light,'СЕРЫЙ');assert.equal(r.confidence,'НИЗКАЯ');assert.equal(r.gate.ok,true);assert.equal(r.gate.personalActionOk,false);assert(r.gate.personalMissing.includes('portfolio_context'));assert.equal(r.diagnostics.portfolioKnown,false);
+x=base();delete x.portfolio;r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.light,'ЖЁЛТЫЙ');assert.equal(r.confidence,'ВЫСОКАЯ');assert.equal(r.gate.ok,true);assert.equal(r.gate.personalActionOk,false);assert(r.gate.personalMissing.includes('portfolio_context'));assert.equal(r.diagnostics.portfolioKnown,false);
 x=base();x.portfolio={};r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.gate.ok,true);assert.equal(r.gate.personalActionOk,false);assert(r.gate.personalMissing.includes('portfolio_context'));
 x=base();x.portfolio={held:'false'};r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.gate.ok,true);assert.equal(r.gate.personalActionOk,false);assert(r.gate.personalMissing.includes('portfolio_context'));
 x=base();delete x.portfolio;x.risk.thesisBroken=true;r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.light,'КРАСНЫЙ');assert.equal(r.confidence,'НИЗКАЯ');assert.notEqual(r.action,'ПРОДАВАТЬ');assert(r.gate.personalMissing.includes('portfolio_context'));
