@@ -146,8 +146,8 @@ Production capability:
 - Historical P/E: PARTIAL
 - Peer P/E: PARTIAL
 - sanctions completeness: PARTIAL
-- portfolio context: LOCK
-- verified full valuation: PARTIAL / blocked by data completeness
+- portfolio input mechanism: DONE; context remains explicit/unknown until the user selects held/not-held
+- verified full valuation: PARTIAL by evidence availability; SBER VERIFIED
+- completion sequence IR-C1…IR-C5: CLOSED
 
-Execution priority:
-IR-C1 → IR-C2 → IR-C3 → IR-C4 → IR-C5.
+Final baseline result: no remaining mandatory implementation defect. See `FINAL_COMPLETENESS_REVIEW.md`.
