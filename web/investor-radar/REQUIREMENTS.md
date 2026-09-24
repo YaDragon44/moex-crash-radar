@@ -160,8 +160,9 @@ The product MUST expose two independent decisions per ticker.
 ### INVESTOR
 Purpose: months/years capital-allocation decision.
 - Uses verified fundamentals, valuation, issuer/full risk and sanctions/regulatory evidence.
-- Uses explicit `portfolio_context`.
+- Uses the already established owner portfolio context; production UI MUST NOT ask the owner to re-enter per-ticker holdings.
 - Actions: BUY / ADD / HOLD / NO_ADD / REDUCE / SELL / WATCH.
+- Current owner context for the seven-ticker scope is fixed from prior explicit input: held SBER/YDEX/X5/VKCO/AFLT; not held MOEX/GAZP. Changes require a new explicit owner update, not UI inference.
 - Existing fail-closed valuation/risk/recommendation gates remain unchanged.
 
 ### TRADER
