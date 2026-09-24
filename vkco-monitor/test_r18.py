@@ -21,7 +21,9 @@ def _candles(minutes_old: int):
 
 
 def test_r18_heartbeat_ok_for_fresh_data():
-    with patch.object(monitor, "fetch_candles", return_value=_candles(10)), patch.object(monitor, "send_telegram") as send:
+    fixed = monitor.datetime(2026, 9, 24, 15, 0, tzinfo=monitor.MOSCOW)
+    fresh = [monitor.Candle(fixed-monitor.timedelta(minutes=20), fixed-monitor.timedelta(minutes=10),118,118.2,118.4,117.9,1000) for _ in range(25)]
+    with patch.object(monitor, "fetch_candles", return_value=fresh), patch.object(run_r18.monitor.datetime, "now", return_value=fixed), patch.object(monitor, "send_telegram") as send:
         assert run_r18.heartbeat() == 0
         send.assert_called_once()
         assert "HEARTBEAT OK" in send.call_args.args[0]
