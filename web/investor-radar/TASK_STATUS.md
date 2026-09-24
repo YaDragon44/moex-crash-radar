@@ -36,10 +36,10 @@ DECISION READINESS: PARTIAL / WAIT
 ### IR-C1 — Peer price runtime defect — DONE
 Explicit TQBR endpoint closed the runtime defect. Production smoke confirms SBER peer P/E VERIFIED with 2 usable peers (VTBR, T); X5 receives 1 usable peer (LENT), while MGNT remains correctly excluded for negative EPS. No hardcoded prices or weakened gates.
 
-### IR-C2 — X5 historical continuity — READY
-Production currently builds only 1 X5 historical P/E observation despite 3 verified EPS periods. Determine exact share/instrument continuity and either close with comparable evidence or document objective insufficiency.
+### IR-C2 — X5 historical continuity — DONE / OBJECTIVE LIMITATION
+Primary MOEX/X5 evidence confirms current ordinary share X5 (ISIN RU000A108X38) began trading on 2025-01-09. 2023–2024 exchange history belongs to FIVE GDR (ISIN US98387E2054), a different security/legal instrument. It is not silently substituted into current-share Historical P/E. Result: X5 Historical P/E remains truthfully INSUFFICIENT (1/3). Evidence: `X5_HISTORICAL_CONTINUITY_EVIDENCE.md`.
 
-### IR-C3 — YDEX/X5 sanctions evidence — READY after C2
+### IR-C3 — YDEX/X5 sanctions evidence — READY
 Both remain LOCK/UNKNOWN pending sufficient current entity-specific authoritative evidence.
 
 ### IR-C4 — Portfolio context — DECISION/INTEGRATION REQUIRED
@@ -59,6 +59,6 @@ Run only after C1–C4 are resolved or classified as objective limitations/block
 
 ## Next task
 
-**IR-C2 — diagnose X5 historical price/share-basis continuity.**
+**IR-C3 — verify YDEX/X5 entity-specific sanctions/regulatory evidence.**
 
 Do not open new feature scope while this mandatory completion sequence is active.
