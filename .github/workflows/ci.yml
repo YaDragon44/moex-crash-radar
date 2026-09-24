@@ -23,3 +23,6 @@ jobs:
           pip install -e . pytest
       - name: Unit tests
         run: pytest
+      - name: Investor Radar JavaScript tests
+        run: |
+          for f in web/investor-radar/*.test.js; do node "$f"; done
