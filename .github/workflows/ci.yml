@@ -3,6 +3,11 @@ name: CI
 on:
   push:
     branches: [main, r0.3-crash-engine]
+    paths-ignore:
+      - 'artifacts/**'
+      - 'evidence/**'
+      - 'docs/**'
+      - '*.md'
   pull_request:
     branches: [main]
 
