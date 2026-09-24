@@ -11,7 +11,8 @@ ENGINE: READY
 INFRASTRUCTURE: GREEN  
 DATA COMPLETENESS: PARTIAL  
 PORTFOLIO INPUT: READY / EXPLICIT PER TICKER  
-DECISION READINESS: PARTIAL / WAIT
+INVESTOR DECISION READINESS: PARTIAL / WAIT
+TRADER DECISION LAYER: R1.9.0 IMPLEMENTED / VALIDATION PENDING
 
 ## Completed
 
@@ -48,6 +49,15 @@ Production UI now provides explicit per-ticker `держу / не держу / �
 ### IR-C5 — Final completeness review — DONE
 Final baseline review completed in `FINAL_COMPLETENESS_REVIEW.md`. No remaining mandatory implementation defect was identified; remaining red/yellow states are documented data/methodology limitations or require future fresh evidence.
 
+## R1.9.0 — Investor / Trader separation
+
+- Investor decision remains portfolio-aware and uses the existing verified fundamental/valuation/risk gates.
+- Trader decision is portfolio-independent and consumes MOEX D1/H1 OHLCV plus IMOEX D1; H4 is derived from H1.
+- Trader outputs LONG/SHORT/WAIT/NO_TRADE with Entry, Trigger, Stop/Invalidation, TP1/TP2/TP3, R/R and Confluence /19.
+- READY is fail-closed: H1 trigger + Score >=13/19 + R/R >=2.
+- Wyckoff/Elliott are not inferred by the minimal layer and contribute 0 unless separately evidenced.
+- Production CI/deploy/browser smoke must be green before status becomes CLOSED.
+
 ## Current objective limitations
 
 - VKCO P/E: N/A while EPS < 0.
@@ -59,6 +69,6 @@ Final baseline review completed in `FINAL_COMPLETENESS_REVIEW.md`. No remaining 
 
 ## Next task
 
-**NONE — approved completion scope is closed.**
+**R1.9.0 validation — close only after CI + deploy + post-deploy browser smoke PASS.**
 
 Do not open new feature scope without a new owner decision. Preserve fail-closed gates and refresh source evidence when it becomes stale.
