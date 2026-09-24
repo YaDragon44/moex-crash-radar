@@ -16,7 +16,11 @@ try {
     return gate && !gate.includes('Загрузка MOEX');
   },{timeout:45000});
 
-  const matrixHeaders=await page.$$eval('#matrix thead th',els=>els.map(e=>(e.textContent||'').trim()));
+  const portfolioControls=await page.$eval('#portfolio select[data-portfolio]',els=>els.map(e=>({ticker:e.getAttribute('data-portfolio'),value:e.value})));
+  if(portfolioControls.length!==7) throw new Error('portfolio context controls must contain 7 tickers: '+JSON.stringify(portfolioControls));
+  if(portfolioControls.some(x=>x.value!=='')) throw new Error('portfolio context must default to unknown, never inferred: '+JSON.stringify(portfolioControls));
+
+  const matrixHeaders=await page.$eval('#matrix thead th',els=>els.map(e=>(e.textContent||'').trim()));
   if(matrixHeaders[0]!=='Ticker'||matrixHeaders[1]!=='Текущая цена') throw new Error('primary matrix current-price column missing: '+JSON.stringify(matrixHeaders));
   const matrixTickers=await page.$$eval('#matrix tbody tr .tk',els=>els.map(e=>(e.textContent||'').trim()));
   const matrixPrices=await page.$$eval('#matrix tbody tr td:nth-child(2)',els=>els.map(e=>(e.textContent||'').trim()));
