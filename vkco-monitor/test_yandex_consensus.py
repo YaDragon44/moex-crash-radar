@@ -6,6 +6,9 @@ def test_parse_yandex_consensus_aggregate():
     <div>255,03 ₽ +124,99%</div><div>От 160 ₽</div><div>Макс 345 ₽</div>
     <div>Мнения аналитиков: Держать</div>
     <div>0 Продавать 4 Держать 4 Покупать</div>
+    <div>Газпромбанк Инвестиции Прогноз до 22 сентября 2027 Держать 160 ₽ +41,41%</div>
+    <div>БКС Мир инвестиций Прогноз до 21 сентября 2027 Покупать 200 ₽ +76,76%</div>
+    <div>Freedom Finance Global Прогноз до 21 сентября 2027 Держать 345 ₽ +204,90%</div>
     </body></html>"""
     x=parse_consensus(html, observed_at="2026-09-24T14:00:00+03:00")
     assert x["status"]=="OK"
@@ -13,6 +16,10 @@ def test_parse_yandex_consensus_aggregate():
     assert x["target_low"]==160
     assert x["target_high"]==345
     assert (x["sell"],x["hold"],x["buy"],x["analyst_count"])==(0,4,4,8)
+    assert len(x["analysts"])==3
+    assert x["analysts"][0]["name"]=="Газпромбанк Инвестиции"
+    assert x["analysts"][1]["target"]==200
+    assert x["analysts"][2]["upside_pct"]==204.90
 
 def test_fail_closed_when_consensus_absent():
     try:
