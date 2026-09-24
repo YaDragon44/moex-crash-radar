@@ -47,7 +47,7 @@ def main() -> int:
         return 0
     try:
         s2 = strategy2_ema.run_shadow(monitor.fetch_candles())
-        print(f"strategy2={s2[\'signal\']} ema50={s2[\'ema50\']} ema200={s2[\'ema200\']} journal_appended={int(s2[\'journal_appended\'])}")
+        print("strategy2={} ema50={} ema200={} journal_appended={}".format(s2['signal'], s2['ema50'], s2['ema200'], int(s2['journal_appended'])))
     except Exception as exc:
         print(f"strategy2=DEGRADED error={type(exc).__name__}: {exc}")
     if run_r16.manage_existing_position_r16():
