@@ -1,6 +1,7 @@
 import { chromium } from 'playwright';
 
-const url='https://yadragon44.github.io/moex-crash-radar/investor-radar/index.html?v='+Date.now();
+const baseUrl='https://yadragon44.github.io/moex-crash-radar/investor-radar/index.html';
+const expectedTitle='Investor Radar R1.9.2';
 const browser=await chromium.launch({headless:true});
 try {
   const page=await browser.newPage();
@@ -8,7 +9,14 @@ try {
   const failed=[];
   page.on('pageerror',e=>pageErrors.push(String(e)));
   page.on('requestfailed',r=>failed.push(`${r.url()} :: ${r.failure()?.errorText||'failed'}`));
-  await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});
+  let title='';
+  for(let attempt=1;attempt<=18;attempt++){
+    await page.goto(`${baseUrl}?v=${Date.now()}-${attempt}`,{waitUntil:'domcontentloaded',timeout:30000});
+    title=((await page.locator('h1').textContent())||'').trim();
+    if(title===expectedTitle) break;
+    await page.waitForTimeout(10000);
+  }
+  if(title!==expectedTitle) throw new Error(`unexpected production version after Pages propagation: ${title||'missing'}`);
 
   await page.waitForFunction(()=>document.querySelectorAll('#cards .card').length===7,null,{timeout:30000});
   await page.waitForFunction(()=>{
@@ -39,9 +47,6 @@ try {
   if(JSON.stringify(tickers)!==JSON.stringify(expected)) throw new Error(`unexpected cards: ${JSON.stringify(tickers)}`);
   if(pageErrors.length) throw new Error('pageerror: '+pageErrors.join(' | '));
 
-  const title=(await page.locator('h1').textContent())?.trim()||'';
-  if(title!=='Investor Radar R1.9.2') throw new Error('unexpected production version: '+title);
-
   const gate=(await page.locator('#gate').textContent())?.trim()||'';
   if(!gate.includes('MOEX quotes:')||!gate.includes('Trader READY:')) throw new Error('final gate summary missing trader status: '+gate);
 
@@ -65,7 +70,7 @@ try {
   if(sber.text.includes('verified_fundamentals')) throw new Error('SBER verified fundamentals integration regression');
   if(!/Auto historical P\/E3/.test(sber.text)) throw new Error('SBER historical P/E registry/runtime integration did not produce 3 observations: '+sber.text);
 
-  console.log('Investor Radar R1.9.1 owner-context production snapshot: PASS');
+  console.log('Investor Radar R1.9.2 public-boundary production snapshot: PASS');
   console.log('FINAL GATE:',gate);
   for(const card of cards) console.log('CARD:',JSON.stringify(card));
   console.log('FAILED REQUESTS:',failed.length,failed);
