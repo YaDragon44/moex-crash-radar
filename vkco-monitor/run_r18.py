@@ -5,6 +5,8 @@ import os
 import monitor
 import run_r16
 import strategy2_ema
+import strategy3_value_rsi
+from yandex_consensus import fetch_consensus
 
 
 def heartbeat() -> int:
@@ -50,6 +52,11 @@ def main() -> int:
         print("strategy2={} ema50={} ema200={} journal_appended={}".format(s2['signal'], s2['ema50'], s2['ema200'], int(s2['journal_appended'])))
     except Exception as exc:
         print(f"strategy2=DEGRADED error={type(exc).__name__}: {exc}")
+    try:
+        s3 = strategy3_value_rsi.run_shadow(monitor.fetch_candles(), fetch_consensus())
+        print("strategy3={} rsi14={} gap={} trend={} journal_appended={}".format(s3['decision'],s3['rsi14'],s3['valuation_gap_pct'],s3['trend'],int(s3['journal_appended'])))
+    except Exception as exc:
+        print(f"strategy3=DEGRADED error={type(exc).__name__}: {exc}")
     if run_r16.manage_existing_position_r16():
         return 0
     return monitor.run()
