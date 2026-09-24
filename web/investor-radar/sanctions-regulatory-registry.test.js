@@ -15,10 +15,11 @@ assert.equal(r.designated,true);
 assert.equal(r.critical,undefined);
 
 r=S.get('YDEX');
-assert.equal(r.verified,false);
-assert.equal(r.status,'LOCK');
-assert.equal(r.material,null);
-assert.equal(r.designated,null);
+assert.equal(r.verified,true);
+assert.equal(r.status,'SUBSIDIARY_RESTRICTED');
+assert.equal(r.material,true);
+assert.equal(r.designated,false);
+assert.equal(r.level,'HIGH');
 r=S.get('X5');
 assert.equal(r.verified,false);assert.equal(r.status,'LOCK');assert.equal(r.material,null);assert.equal(r.designated,null);
 
