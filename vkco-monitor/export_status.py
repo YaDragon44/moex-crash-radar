@@ -61,7 +61,7 @@ def build_status() -> dict[str, Any]:
         "trade": {"status": "WAIT", "reason": "NO_DATA"},
         "position": _safe_position(state),
         "journal": journal,
-        "risk": {
+        "entry_log": [\n            {k: r.get(k) for k in ("signal_id", "opened_at", "closed_at", "status", "entry", "exit", "result_r", "setup", "score", "reason")}\n            for r in records[-20:]\n            if r.get("opened_at") and r.get("setup")\n        ],\n        "risk": {
             "capital_rub": float(os.getenv("TRADING_CAPITAL_RUB", "1000000") or 1000000),
             "risk_pct": float(os.getenv("RISK_PCT", "0.5") or 0.5),
         },
