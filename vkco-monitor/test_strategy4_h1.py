@@ -12,3 +12,14 @@ def candles(n=30):
 def test_wait(): assert s.evaluate(candles())["decision"]=="WAIT"
 def test_contract():
     x=s.evaluate(candles());assert x["strategy"]=="S4_ADAPTIVE_H1";assert x["timeframe"]=="H1";assert x["mode"]=="SHADOW"
+
+def test_h1_market_filter():
+    c=candles()
+    x=s.h1_market_filter(c)
+    assert "ok" in x and "return_1h_pct" in x
+
+def test_decision_wait_does_not_fetch_gates(monkeypatch):
+    monkeypatch.setattr(s,"fetch_h1",lambda *a,**k: (_ for _ in ()).throw(AssertionError("gate should not run")))
+    x=s.decision_snapshot(candles())
+    assert x["decision"]=="WAIT"
+    assert x["imoex"] is None
