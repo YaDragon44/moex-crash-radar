@@ -21,7 +21,8 @@ def _candles(minutes_old: int):
 
 
 def test_r18_heartbeat_ok_for_fresh_data():
-    with patch.object(monitor, "fetch_candles", return_value=_candles(10)), patch.object(monitor, "send_telegram") as send:
+    fresh = _candles(0)
+    with patch.object(monitor, "fetch_candles", return_value=fresh), patch.object(monitor, "send_telegram") as send:
         assert run_r18.heartbeat() == 0
         send.assert_called_once()
         assert "HEARTBEAT OK" in send.call_args.args[0]
