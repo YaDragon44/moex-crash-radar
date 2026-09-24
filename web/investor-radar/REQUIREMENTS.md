@@ -151,3 +151,28 @@ Production capability:
 - completion sequence IR-C1…IR-C5: CLOSED
 
 Final baseline result: no remaining mandatory implementation defect. See `FINAL_COMPLETENESS_REVIEW.md`.
+
+
+## 11. Owner-authorized Investor / Trader separation — 2026-09-24
+
+The product MUST expose two independent decisions per ticker.
+
+### INVESTOR
+Purpose: months/years capital-allocation decision.
+- Uses verified fundamentals, valuation, issuer/full risk and sanctions/regulatory evidence.
+- Uses explicit `portfolio_context`.
+- Actions: BUY / ADD / HOLD / NO_ADD / REDUCE / SELL / WATCH.
+- Existing fail-closed valuation/risk/recommendation gates remain unchanged.
+
+### TRADER
+Purpose: short-/medium-term buy/sell setup.
+- MUST NOT be blocked or altered by `portfolio_context`.
+- Uses live MOEX ISS OHLCV: D1 and H1; H4 is derived deterministically from H1.
+- Uses IMOEX D1 as market context.
+- Output: LONG / SHORT / WAIT / NO_TRADE; Observation/Entry zone; Trigger; Stop/Invalidation; TP1/TP2/TP3; R/R; Confluence Score /19; READY/WAIT/INVALID where applicable.
+- Current minimal confluence implementation may score only evidence actually calculated. Wyckoff/Elliott MUST score zero unless separately evidenced; they MUST NOT be inferred merely to raise the score.
+- READY requires an executed H1 trigger, Confluence >=13/19 and R/R >=2.
+- Missing D1/H1/IMOEX/ATR data MUST fail closed.
+- PASS continues to mean evidence/data gate quality; READY means an executable trading setup.
+
+This authorization permits the thin `trader-decision.js` layer inside the existing Investor Radar UI. It does not authorize a new platform, service, database, ticker universe or weaker investment gates.
