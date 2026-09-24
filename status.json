@@ -2,7 +2,7 @@
   "schema_version": 2,
   "release": "R1.8",
   "dashboard_release": "R0.6.2",
-  "generated_at": "2026-09-24T23:12:18.655781+03:00",
+  "generated_at": "2026-09-24T23:35:16.051687+03:00",
   "ticker": "VKCO",
   "mode": "run",
   "health": "OK",
@@ -42,13 +42,38 @@
     "status": "OK",
     "source": "Yandex Finance",
     "source_url": "https://yandex.ru/finance/quote/moex/vkco",
-    "observed_at": "2026-09-24T23:12:20.522030+03:00",
-    "consensus_target": 257.0,
+    "observed_at": "2026-09-24T23:35:17.841572+03:00",
+    "consensus_target": 255.0,
     "buy": 4,
     "hold": 4,
     "sell": 0,
     "analyst_count": 8,
     "analysts": []
+  },
+  "latest_news": {
+    "status": "OK",
+    "source": "VK IR",
+    "source_url": "https://vk.company.ru/ru/investors/info/",
+    "items": [
+      {
+        "date": "22 сентября 2026",
+        "text": "VK успешно разместила биржевые облигации объемом 5 млрд рублей",
+        "source": "VK IR",
+        "source_url": "https://vk.company.ru/ru/investors/info/"
+      },
+      {
+        "date": "15 сентября 2026",
+        "text": "VK погасила выпуск облигаций серии 001P-01 объемом 15 млрд рублей",
+        "source": "VK IR",
+        "source_url": "https://vk.company.ru/ru/investors/info/"
+      },
+      {
+        "date": "11 сентября 2026",
+        "text": "VK продолжает работу над снижением долговой нагрузки",
+        "source": "VK IR",
+        "source_url": "https://vk.company.ru/ru/investors/info/"
+      }
+    ]
   },
   "entry_log": [
     {
@@ -70,33 +95,6 @@
     "max_risk_rub": 5000.0
   },
   "candles": [
-    {
-      "t": "2026-09-24T10:50:00+03:00",
-      "end": "2026-09-24T10:59:59+03:00",
-      "o": 114.35,
-      "h": 115.8,
-      "l": 114.35,
-      "c": 114.95,
-      "v": 835711.0
-    },
-    {
-      "t": "2026-09-24T11:00:00+03:00",
-      "end": "2026-09-24T11:09:59+03:00",
-      "o": 114.95,
-      "h": 115.2,
-      "l": 114.15,
-      "c": 114.25,
-      "v": 214466.0
-    },
-    {
-      "t": "2026-09-24T11:10:00+03:00",
-      "end": "2026-09-24T11:19:59+03:00",
-      "o": 114.35,
-      "h": 114.7,
-      "l": 114.2,
-      "c": 114.6,
-      "v": 80493.0
-    },
     {
       "t": "2026-09-24T11:20:00+03:00",
       "end": "2026-09-24T11:29:59+03:00",
@@ -717,18 +715,45 @@
       "l": 113.45,
       "c": 113.5,
       "v": 2547.0
+    },
+    {
+      "t": "2026-09-24T22:50:00+03:00",
+      "end": "2026-09-24T22:59:59+03:00",
+      "o": 113.4,
+      "h": 113.6,
+      "l": 113.4,
+      "c": 113.6,
+      "v": 26946.0
+    },
+    {
+      "t": "2026-09-24T23:00:00+03:00",
+      "end": "2026-09-24T23:09:59+03:00",
+      "o": 113.6,
+      "h": 113.6,
+      "l": 113.4,
+      "c": 113.5,
+      "v": 11372.0
+    },
+    {
+      "t": "2026-09-24T23:10:00+03:00",
+      "end": "2026-09-24T23:19:59+03:00",
+      "o": 113.5,
+      "h": 113.6,
+      "l": 113.35,
+      "c": 113.4,
+      "v": 14858.0
     }
   ],
   "strategy3": {
     "strategy": "S3_VALUE_RSI_EMA200_M10",
-    "candle": "2026-09-24T22:49:59+03:00",
-    "price": 113.5,
-    "rsi14": 40.74,
-    "fair_value": 257.0,
+    "candle": "2026-09-24T23:19:59+03:00",
+    "price": 113.4,
+    "rsi14": 36.84,
+    "fair_value": 255.0,
     "fair_low": null,
     "fair_high": null,
-    "valuation_gap_pct": 126.43,
-    "ema200": 113.3463,
+    "valuation_gap_pct": 124.87,
+    "ema200": 113.3509,
     "trend": "ABOVE_EMA200",
     "decision": "WATCH",
     "mode": "SHADOW",
@@ -739,10 +764,10 @@
   },
   "strategy2": {
     "strategy": "S2_EMA50_200_M10",
-    "candle": "2026-09-24T22:49:59+03:00",
-    "price": 113.5,
-    "ema50": 113.6305,
-    "ema200": 113.3463,
+    "candle": "2026-09-24T23:19:59+03:00",
+    "price": 113.4,
+    "ema50": 113.6155,
+    "ema200": 113.3509,
     "signal": "NONE",
     "mode": "SHADOW",
     "position": null,
@@ -752,14 +777,14 @@
     "journal": []
   },
   "market": {
-    "price": 113.5,
-    "candle_end": "2026-09-24T22:49:59+03:00",
-    "volume": 2547.0,
-    "age_min": 22,
+    "price": 113.4,
+    "candle_end": "2026-09-24T23:19:59+03:00",
+    "volume": 14858.0,
+    "age_min": 15,
     "fresh": true,
     "support": 113.3,
-    "resistance": 114.0,
-    "avg_range": 0.2275
+    "resistance": 113.85,
+    "avg_range": 0.1875
   },
   "fundamentals": {
     "status": "OK",
@@ -770,7 +795,7 @@
     "lot_size": 1,
     "isin": "RU000A106YF0",
     "list_level": 1,
-    "market_cap_rub": 65024624430.0,
+    "market_cap_rub": 64967334012.0,
     "market_cap_basis": "latest VKCO market price × MOEX issue size"
   }
 }
