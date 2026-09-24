@@ -13,6 +13,7 @@ from trade_journal import load_records, stats
 from yandex_consensus import fetch_consensus
 import strategy2_ema
 import strategy3_value_rsi
+import fundamental_snapshot
 
 OUTPUT = Path(os.getenv("PUBLIC_STATUS_FILE", "vkco-monitor/state/public_status.json"))
 JOURNAL_JSONL = Path(os.getenv("JOURNAL_JSONL", "vkco-monitor/state/trade_journal.jsonl"))
@@ -104,6 +105,7 @@ def build_status() -> dict[str, Any]:
         "resistance": round(levels["resistance"], 2),
         "avg_range": round(levels["avg_range"], 4),
     }
+    payload["fundamentals"] = fundamental_snapshot.fetch_snapshot(price=latest.close)
 
     if has_active_position(state):
         p = state["position"]
