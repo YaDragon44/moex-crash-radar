@@ -20,6 +20,13 @@ try {
   if(portfolioControls.length!==7) throw new Error('portfolio context controls must contain 7 tickers: '+JSON.stringify(portfolioControls));
   if(portfolioControls.some(x=>x.value!=='')) throw new Error('portfolio context must default to unknown, never inferred: '+JSON.stringify(portfolioControls));
 
+  await page.locator('#portfolio select[data-portfolio="SBER"]').selectOption('false');
+  await page.waitForFunction(()=>{
+    const card=document.querySelector('#cards .card[data-ticker="SBER"]');
+    return card && (card.textContent||'').includes('Recommendation gate: PASS') && !(card.textContent||'').includes('portfolio_context');
+  },null,{timeout:15000});
+
+
   const matrixHeaders=await page.locator('#matrix thead th').evaluateAll(els=>els.map(e=>(e.textContent||'').trim()));
   if(matrixHeaders[0]!=='Ticker'||matrixHeaders[1]!=='Текущая цена') throw new Error('primary matrix current-price column missing: '+JSON.stringify(matrixHeaders));
   const matrixTickers=await page.$$eval('#matrix tbody tr .tk',els=>els.map(e=>(e.textContent||'').trim()));
