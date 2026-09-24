@@ -23,6 +23,8 @@ jobs:
           pip install -e . pytest
       - name: Unit tests
         run: pytest
-      - name: Investor Radar JavaScript tests
+      - name: Investor Radar R1.9.0 JavaScript tests
         run: |
-          for f in web/investor-radar/*.test.js; do node "$f"; done
+          node web/investor-radar/trader-decision.test.js
+          node web/investor-radar/recommendation-engine.test.js
+          node web/investor-radar/sanctions-regulatory-registry.test.js
