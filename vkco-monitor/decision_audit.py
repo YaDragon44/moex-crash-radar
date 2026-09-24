@@ -14,6 +14,12 @@ def _fingerprint(snapshot: dict[str, Any]) -> str:
     return json.dumps(stable, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
 
+def _record_count(path: Path) -> int:
+    if not path.exists():
+        return 0
+    return sum(1 for line in path.read_text(encoding="utf-8").splitlines() if line.strip())
+
+
 def append_if_changed(snapshot: dict[str, Any], path: Path = AUDIT_JSONL) -> bool:
     path.parent.mkdir(parents=True, exist_ok=True)
     previous: dict[str, Any] | None = None
@@ -25,7 +31,9 @@ def append_if_changed(snapshot: dict[str, Any], path: Path = AUDIT_JSONL) -> boo
             except (json.JSONDecodeError, TypeError):
                 previous = None
     if previous is not None and _fingerprint(previous) == _fingerprint(snapshot):
+        print(f"decision_audit=UNCHANGED records={_record_count(path)}")
         return False
     with path.open("a", encoding="utf-8") as fh:
         fh.write(json.dumps(snapshot, ensure_ascii=False, sort_keys=True) + "\n")
+    print(f"decision_audit=APPENDED records={_record_count(path)}")
     return True
