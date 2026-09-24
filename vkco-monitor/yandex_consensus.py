@@ -23,7 +23,7 @@ def _plain(html: str) -> str:
 def parse_consensus(html: str, observed_at: str | None = None) -> dict[str, Any]:
     text = _plain(html)
     # Yandex Finance Russian labels. Fail closed if the aggregate target or vote split is absent.
-    target_m = re.search(r"(?:Прогноз(?:ная)? цена|Прогноз цены)[^0-9]{0,80}([0-9][0-9\s]*(?:[,.][0-9]+)?)\s*₽", text, re.I)
+    target_m = re.search(r"([0-9][0-9\\s]*(?:[,.][0-9]+)?)\\s*₽\\s*[+-]?[0-9]+(?:[,.][0-9]+)?%", text, re.I)
     votes_m = re.search(r"(\d+)\s*Продавать\s+(\d+)\s*Держать\s+(\d+)\s*Покупать", text, re.I)
     if not target_m or not votes_m:
         raise ValueError("YANDEX_CONSENSUS_NOT_FOUND")
