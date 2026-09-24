@@ -9,7 +9,7 @@
 
 This file is the canonical recovery point for the VKCO-only workstream. Always inspect fresh `main` before acting.
 
-Production engine: **R1.8**. Dashboard accepted source baseline: **R0.6.4**, with later UI/log hotfixes.
+Production engine: **R1.8**. Dashboard accepted source baseline: **R0.6.4**, with later UI/log hotfixes.\n\nStrategy #2 is an independent **SHADOW benchmark**: EMA50/EMA200 crossover on completed M10 VKCO candles. BUY opens a shadow LONG; SELL closes it. It has separate state/journal and does not affect Strategy #1 signals, gates, risk, Telegram decisions or positions.
 
 ## Architecture
 
@@ -90,7 +90,7 @@ Issue #61 governs the freeze:
 
 Current public journal contains only **1 completed model trade**.
 
-## QA / release policy
+## Strategy #2 — EMA50/EMA200 shadow\n\n- Timeframe: completed VKCO M10 candles.\n- BUY: EMA50 crosses EMA200 from below to above.\n- SELL: EMA50 crosses EMA200 from above to below; SELL closes shadow LONG only (no short position).\n- No RVOL, Wyckoff, S/R, IMOEX, Event Risk or Confluence inputs.\n- Separate persisted files: `strategy2_ema_state.json` and `strategy2_ema_journal.jsonl`.\n- History begins from real snapshots captured after deployment; no backfill is invented.\n- Public dashboard exposes current EMA50/EMA200, crossover state, shadow position state and captured journal.\n\n## QA / release policy
 
 For every material change:
 1. dedicated branch;
