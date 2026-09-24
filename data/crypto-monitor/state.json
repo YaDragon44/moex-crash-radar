@@ -1,33 +1,33 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-24T01:58:40+03:00",
-  "data_quality": "PARTIAL_FRESH; BTC_FRESH_23:00_UTC_REFERENCE; DOT_FRESH_CMC_COINGECKO; GRAM_CURRENT_PRICE_NOT_RELIABLY_VERIFIED; DERIVATIVES_FRESH_CONTEXT_BUT_NOT_FULL_ORDER_FLOW",
+  "generated_at": "2026-09-24T05:59:40+03:00",
+  "data_quality": "PARTIAL_FRESH; BTC_FRESH_BINANCE_02:06_UTC; GRAM_FRESH_CMC_DAILY_REFERENCE; DOT_CURRENT_PRICE_NOT_RELIABLY_VERIFIED_THIS_CYCLE; DERIVATIVES_FRESH_SEP23_CONTEXT_BUT_NO_LIVE_ORDER_FLOW",
   "market": {
-    "regime": "BTC PULLBACK INTO CANONICAL RETEST ZONE; HOLD/HIGHER-LOW TRIGGER NOT CONFIRMED",
-    "btc_filter": "OPEN / CAUTION; LEVEL TESTING, TRIGGER AND R:R NOT CONFIRMED",
+    "regime": "BTC FIRST RETEST ZONE FAILED TO HOLD; PRICE BELOW $84K; NEXT CANONICAL WATCH ZONE $82.0K-$82.8K",
+    "btc_filter": "CAUTION / NOT OPEN FOR LONG; FIRST-ZONE HOLD TRIGGER FAILED, NEXT LEVEL NOT YET TESTED",
     "action": "NO TRADE"
   },
   "assets": {
     "BTC": {
-      "price_display": "~$84.53k at 23:00 UTC reference; canonical $84.9k-$84k retest zone is being tested",
+      "price_display": "$83,964.81 Binance reference at 02:06 UTC; below first $84.9K-$84K retest zone",
       "status": "WAIT",
-      "score": 15,
+      "score": 13,
       "score_max": 19,
-      "setup": "Breakout+Retest watch",
-      "trigger": "Hold/reclaim of ~$84.9k/$84k followed by confirmed Higher Low and acceptable R/R; otherwise watch $82.0-$82.8k",
-      "invalidation": "Failure to hold/reclaim $84k cancels first-zone trigger attempt; loss of $82.0-$82.8k weakens continuation; weekly close below ~$78.8k invalidates broader breakout regime"
+      "setup": "Breakout+Retest watch shifted to second support zone",
+      "trigger": "NOT SET — require test of $82.0K-$82.8K, hold/reclaim, confirmed Higher Low, then acceptable R/R",
+      "invalidation": "First-zone trigger attempt invalidated by loss below $84K; loss of $82.0K-$82.8K weakens continuation; weekly close below ~$78.8K invalidates broader breakout regime"
     },
     "GRAM": {
-      "price_display": "CURRENT PRICE NOT RELIABLY VERIFIED; latest accessible MEXC reference $1.417 from Sep 21",
+      "price_display": "~$1.4095 CMC Sep 24 daily reference; above $1.40 but fresh intraday structure/volume not verified",
       "status": "WAIT",
       "score": 9,
       "score_max": 19,
       "setup": "Range Breakout watch / confirmation constrained",
-      "trigger": "Sustained hold above $1.40 with fresh structure/volume confirmation and supportive BTC filter; then validate R/R",
-      "invalidation": "Fresh failure below $1.40 without recovery would invalidate breakout watch"
+      "trigger": "Sustained hold above $1.40 with fresh intraday structure/volume confirmation and supportive BTC filter; then validate R/R",
+      "invalidation": "Fresh failure below $1.40 without recovery invalidates breakout watch"
     },
     "DOT": {
-      "price_display": "~$1.09-$1.10 fresh CoinMarketCap/CoinGecko reference; down ~6.6%-8.9%/24h",
+      "price_display": "CURRENT PRICE NOT RELIABLY VERIFIED THIS CYCLE; prior recovery setup remains invalidated",
       "status": "INVALID",
       "score": 9,
       "score_max": 19,
@@ -36,7 +36,7 @@
       "invalidation": "Prior recovery setup invalidated by loss/test below $1.10"
     }
   },
-  "best_candidate": "BTC — price has reached the canonical ~$84.9k-$84k retest zone, but hold/reclaim plus Higher Low is not yet confirmed; no trade trigger yet",
+  "best_candidate": "BTC — closest actionable asset, but first $84.9K-$84K retest failed to hold; wait for $82.0K-$82.8K test plus hold/reclaim and Higher Low",
   "trade_plan": {
     "entry": null,
     "stop": null,
@@ -45,7 +45,7 @@
     "tp3": null,
     "rr": null
   },
-  "sources": "InvestingNews BTC market recap; Bitcoin.com/CoinGlass-derived derivatives data; CoinMarketCap DOT; CoinGecko DOT; MEXC GRAM reference",
-  "source_data_time": "2026-09-24 01:58 MSK verification; BTC $84,525.59 at 23:00 UTC Sep 23 recap; DOT ~$1.09-$1.10 live pages; GRAM fresh current price not reliably verified",
-  "note": "Authoritative decision produced only by 4H Monitor. FAST GATE: BTC FILTER OPEN/CAUTION -> structure remains broader bullish breakout -> canonical $84.9k-$84k level is now being tested -> required hold/reclaim plus Higher Low trigger NOT CONFIRMED -> R/R NOT SET -> NO TRADE. Because no quality triggered candidate exists, analysis stops at FAST GATE and no missing deep-confirmation inputs receive points. Fresh derivatives context shows BTC futures OI near $60B, predominantly positive funding, and leverage trimming across several venues after the move above $87k; this is context only and does not create a trigger. DOT prior recovery setup is INVALID around $1.09-$1.10 after loss/test of the $1.10 invalidation level. GRAM current price could not be reliably verified this cycle, so no fresh relative-strength calculation or score increment is made. Dashboard remains READ ONLY; Telegram transport only."
+  "sources": "Binance Market Data; CoinMarketCap GRAM; Bitcoin.com/CoinGlass-derived derivatives context",
+  "source_data_time": "2026-09-24 05:59 MSK verification; BTC $83,964.8125 at 02:06 UTC; GRAM CMC Sep 24 reference $1.4095; DOT current price not reliably verified this cycle",
+  "note": "Authoritative decision produced only by 4H Monitor. FAST GATE: BTC FILTER CAUTION -> broader breakout structure remains but short-term structure weakened -> first canonical $84.9K-$84K level failed to hold -> required hold/reclaim plus Higher Low trigger NOT CONFIRMED -> R/R NOT SET -> NO TRADE. Next canonical watch zone is $82.0K-$82.8K. Because no quality triggered candidate exists, analysis stops at FAST GATE and no missing deep-confirmation inputs receive points. Sep 23 derivatives context: BTC futures OI near $60B, predominantly positive funding and recent leverage trimming; context only, no live order-flow confirmation. GRAM remains just above $1.40 on CMC daily reference but intraday confirmation is unavailable. DOT prior setup remains INVALID and fresh current price was not reliably verified this cycle. Dashboard READ ONLY; Telegram transport only."
 }
