@@ -22,7 +22,7 @@ on:
           - test_telegram
           - heartbeat
   schedule:
-    - cron: "3,13,23,33,43,53 6-20 * * 1-5"
+    - cron: "3,33 6-20 * * 1-5"
     - cron: "0 7 * * 1-5"
 
 permissions:
@@ -30,7 +30,7 @@ permissions:
 
 concurrency:
   group: vkco-monitor-${{ github.event_name }}-${{ github.event.schedule || 'manual' }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   monitor:
