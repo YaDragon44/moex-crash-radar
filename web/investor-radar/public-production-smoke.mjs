@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 
 const baseUrl='https://yadragon44.github.io/moex-crash-radar/investor-radar/index.html';
-const expectedTitle='Investor Radar R2.0';
+const expectedTitle='Investor Radar R2.0.1';
 const browser=await chromium.launch({headless:true});
 try {
   const page=await browser.newPage();
@@ -18,7 +18,7 @@ try {
   }
   if(title!==expectedTitle) throw new Error(`unexpected production version after Pages propagation: ${title||'missing'}`);
 
-  await page.waitForFunction(()=>document.querySelectorAll('#cards .card').length===7&&document.querySelector('#allocation'),null,{timeout:30000});
+  await page.waitForFunction(()=>document.querySelectorAll('#cards .card').length===7,null,{timeout:30000});
   await page.waitForFunction(()=>{
     const gate=(document.querySelector('#gate')?.textContent||'').trim();
     return gate && !gate.includes('Загрузка MOEX');
@@ -35,9 +35,6 @@ try {
   const pageSource=await page.content();
   for(const forbidden of ['SBER:true','YDEX:true','X5:true','VKCO:true','AFLT:true','MOEX:false','GAZP:false','localStorage']) if(pageSource.includes(forbidden)) throw new Error('public source must not contain portfolio state: '+forbidden);
 
-  const allocationText=(await page.locator('#allocation').textContent())||'';
-  for(const label of ['New Capital','Deploy Now','Reserved / Waiting','Unallocated','UNKNOWN / INSUFFICIENT']) if(!allocationText.includes(label)) throw new Error('capital allocation label missing: '+label);
-  if(await page.locator('#new-capital').inputValue()!=='0') throw new Error('new capital must start in safe zero state');
 
   const matrixHeaders=await page.locator('#matrix thead th').evaluateAll(els=>els.map(e=>(e.textContent||'').trim()));
   if(matrixHeaders[0]!=='Ticker'||matrixHeaders[1]!=='Текущая цена') throw new Error('primary matrix current-price column missing: '+JSON.stringify(matrixHeaders));
@@ -74,7 +71,7 @@ try {
   if(sber.text.includes('verified_fundamentals')) throw new Error('SBER verified fundamentals integration regression');
   if(!/Auto historical P\/E3/.test(sber.text)) throw new Error('SBER historical P/E registry/runtime integration did not produce 3 observations: '+sber.text);
 
-  console.log('Investor Radar R2.0 capital allocation production snapshot: PASS');
+  console.log('Investor Radar R2.0.1 public-boundary production snapshot: PASS');
   console.log('FINAL GATE:',gate);
   for(const card of cards) console.log('CARD:',JSON.stringify(card));
   console.log('FAILED REQUESTS:',failed.length,failed);
