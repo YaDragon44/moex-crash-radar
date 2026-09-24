@@ -31,6 +31,24 @@ def parse_consensus(html: str, observed_at: str | None = None) -> dict[str, Any]
     target = _num(target_m.group(1))
     range_m = re.search(r"От\s*([0-9][0-9\s]*(?:[,.][0-9]+)?)\s*₽.*?Макс\s*([0-9][0-9\s]*(?:[,.][0-9]+)?)\s*₽", text, re.I)
     updated_m = re.search(r"Обновлено\s+([^|]{3,40}?)(?=\s+(?:Мнения аналитиков|Сейчас|От\s|$))", text, re.I)
+    analyst_re = re.compile(
+        r"([А-ЯA-ZЁ][А-Яа-яA-Za-zЁё0-9 .&+\\-]{1,70}?)\\s+"
+        r"Прогноз до ([0-9]{1,2} [А-Яа-яё]+ [0-9]{4})\\s+"
+        r"(Покупать|Держать|Продавать)\\s+"
+        r"([0-9]{1,4}(?:[,.][0-9]+)?)\\s*₽\\s*"
+        r"([+-][0-9]+(?:[,.][0-9]+)?%)",
+        re.I,
+    )
+    analysts = [
+        {
+            "name": m.group(1).strip(),
+            "forecast_to": m.group(2).strip(),
+            "recommendation": m.group(3).capitalize(),
+            "target": _num(m.group(4)),
+            "upside_pct": _num(m.group(5)),
+        }
+        for m in analyst_re.finditer(text)
+    ]
     out: dict[str, Any] = {
         "status": "OK",
         "source": "Yandex Finance",
