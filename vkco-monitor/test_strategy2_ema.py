@@ -17,16 +17,25 @@ def test_ema_constant_series():
     assert xs[-1] == 100.0
 
 
+def crossing_values(direction):
+    values = [100.0] * 200
+    values += ([80.0] * 100 if direction == "BUY" else [120.0] * 100)
+    step = 200.0 if direction == "BUY" else 20.0
+    for _ in range(100):
+        values.append(step)
+        if s2.evaluate(candles(values))["signal"] == direction:
+            return values
+    raise AssertionError(f"{direction} crossover not produced")
+
+
 def test_buy_cross():
-    values = [100.0] * 200 + [80.0] * 100 + [200.0] * 2
-    r = s2.evaluate(candles(values))
+    r = s2.evaluate(candles(crossing_values("BUY")))
     assert r["signal"] == "BUY"
     assert r["ema50"] > r["ema200"]
 
 
 def test_sell_cross():
-    values = [100.0] * 200 + [120.0] * 100 + [20.0] * 2
-    r = s2.evaluate(candles(values))
+    r = s2.evaluate(candles(crossing_values("SELL")))
     assert r["signal"] == "SELL"
     assert r["ema50"] < r["ema200"]
 
@@ -34,11 +43,11 @@ def test_sell_cross():
 def test_shadow_buy_then_sell_journal(tmp_path, monkeypatch):
     monkeypatch.setattr(s2, "STATE_FILE", tmp_path / "state.json")
     monkeypatch.setattr(s2, "JOURNAL_FILE", tmp_path / "journal.jsonl")
-    buy = [100.0] * 200 + [80.0] * 100 + [200.0] * 2
+    buy = crossing_values("BUY")
     rb = s2.run_shadow(candles(buy))
     assert rb["journal_appended"] is True
-    assert s2._load_state()["position"]["entry"] == 200.0
-    sell = [100.0] * 200 + [120.0] * 100 + [20.0] * 2
+    assert s2._load_state()["position"]["entry"] == buy[-1]
+    sell = crossing_values("SELL")
     rs = s2.run_shadow(candles(sell))
     assert rs["journal_appended"] is True
     assert s2._load_state()["position"] is None
