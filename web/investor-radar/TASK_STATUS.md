@@ -1,6 +1,6 @@
 # Investor Radar — Task Status
 
-Date: 2026-09-23  
+Date: 2026-09-24  
 Requirements: `web/investor-radar/REQUIREMENTS.md`
 
 ## Overall
@@ -10,7 +10,7 @@ ENGINE: READY
 7-TICKER COVERAGE: LIVE  
 INFRASTRUCTURE: GREEN  
 DATA COMPLETENESS: PARTIAL  
-PORTFOLIO CONTEXT: LOCK  
+PORTFOLIO INPUT: READY / EXPLICIT PER TICKER  
 DECISION READINESS: PARTIAL / WAIT
 
 ## Completed
@@ -39,14 +39,14 @@ Explicit TQBR endpoint closed the runtime defect. Production smoke confirms SBER
 ### IR-C2 — X5 historical continuity — DONE / OBJECTIVE LIMITATION
 Primary MOEX/X5 evidence confirms current ordinary share X5 (ISIN RU000A108X38) began trading on 2025-01-09. 2023–2024 exchange history belongs to FIVE GDR (ISIN US98387E2054), a different security/legal instrument. It is not silently substituted into current-share Historical P/E. Result: X5 Historical P/E remains truthfully INSUFFICIENT (1/3). Evidence: `X5_HISTORICAL_CONTINUITY_EVIDENCE.md`.
 
-### IR-C3 — YDEX/X5 sanctions evidence — READY
-Both remain LOCK/UNKNOWN pending sufficient current entity-specific authoritative evidence.
+### IR-C3 — YDEX/X5 sanctions evidence — DONE
+YDEX now has verified material group exposure: EU transaction restrictions and UK RUS3621 apply to Yandex Bank, while the issuer itself is not falsely marked designated. YDEX Full Risk now passes. X5 remains truthfully LOCK/UNKNOWN because current ownership/control attribution is not sufficiently established after restructuring. Evidence: `YDEX_X5_SANCTIONS_EVIDENCE.md`.
 
-### IR-C4 — Portfolio context — DECISION/INTEGRATION REQUIRED
-Recommendation engine correctly fails closed because no real portfolio source is wired. Do not infer holdings.
+### IR-C4 — Portfolio context — DONE
+Production UI now provides explicit per-ticker `держу / не держу / не задано` input persisted only in browser localStorage. Default is unknown; no holding is inferred. Production browser smoke verifies seven controls default to unknown and that explicit SBER `не держу` removes the portfolio blocker and unlocks its recommendation gate.
 
-### IR-C5 — Final completeness review — WAITING
-Run only after C1–C4 are resolved or classified as objective limitations/blockers.
+### IR-C5 — Final completeness review — DONE
+Final baseline review completed in `FINAL_COMPLETENESS_REVIEW.md`. No remaining mandatory implementation defect was identified; remaining red/yellow states are documented data/methodology limitations or require future fresh evidence.
 
 ## Current objective limitations
 
@@ -59,6 +59,6 @@ Run only after C1–C4 are resolved or classified as objective limitations/block
 
 ## Next task
 
-**IR-C3 — verify YDEX/X5 entity-specific sanctions/regulatory evidence.**
+**NONE — approved completion scope is closed.**
 
-Do not open new feature scope while this mandatory completion sequence is active.
+Do not open new feature scope without a new owner decision. Preserve fail-closed gates and refresh source evidence when it becomes stale.
