@@ -1,24 +1,24 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-24T05:59:40+03:00",
-  "data_quality": "PARTIAL_FRESH; BTC_FRESH_BINANCE_02:06_UTC; GRAM_FRESH_CMC_DAILY_REFERENCE; DOT_CURRENT_PRICE_NOT_RELIABLY_VERIFIED_THIS_CYCLE; DERIVATIVES_FRESH_SEP23_CONTEXT_BUT_NO_LIVE_ORDER_FLOW",
+  "generated_at": "2026-09-24T10:01:24+03:00",
+  "data_quality": "PARTIAL_FRESH; BTC_FRESH_MEXC_SEP24_REFERENCE; GRAM_FRESH_CMC; DOT_FRESH_CMC_COINGECKO; DERIVATIVES_SEP23_FRESH_CONTEXT; NO_LIVE_ORDER_FLOW",
   "market": {
-    "regime": "BTC FIRST RETEST ZONE FAILED TO HOLD; PRICE BELOW $84K; NEXT CANONICAL WATCH ZONE $82.0K-$82.8K",
-    "btc_filter": "CAUTION / NOT OPEN FOR LONG; FIRST-ZONE HOLD TRIGGER FAILED, NEXT LEVEL NOT YET TESTED",
+    "regime": "BTC BELOW FAILED $84.9K-$84K FIRST RETEST ZONE; APPROACHING BUT NOT YET TESTING $82.0K-$82.8K SECOND CANONICAL WATCH ZONE",
+    "btc_filter": "CAUTION / LONG FILTER CLOSED; SECOND SUPPORT LEVEL NOT YET TESTED AND NO HOLD/RECLAIM HIGHER-LOW TRIGGER",
     "action": "NO TRADE"
   },
   "assets": {
     "BTC": {
-      "price_display": "$83,964.81 Binance reference at 02:06 UTC; below first $84.9K-$84K retest zone",
+      "price_display": "~$83,800 fresh Sep 24 MEXC market reference; below failed first zone and above $82.0K-$82.8K second watch zone",
       "status": "WAIT",
       "score": 13,
       "score_max": 19,
       "setup": "Breakout+Retest watch shifted to second support zone",
       "trigger": "NOT SET — require test of $82.0K-$82.8K, hold/reclaim, confirmed Higher Low, then acceptable R/R",
-      "invalidation": "First-zone trigger attempt invalidated by loss below $84K; loss of $82.0K-$82.8K weakens continuation; weekly close below ~$78.8K invalidates broader breakout regime"
+      "invalidation": "First-zone trigger invalidated below $84K; loss of $82.0K-$82.8K weakens continuation; weekly close below ~$78.8K invalidates broader breakout regime"
     },
     "GRAM": {
-      "price_display": "~$1.4095 CMC Sep 24 daily reference; above $1.40 but fresh intraday structure/volume not verified",
+      "price_display": "$1.41-$1.42 CMC live reference; 24h low $1.40, high $1.47, down ~3.65%",
       "status": "WAIT",
       "score": 9,
       "score_max": 19,
@@ -27,7 +27,7 @@
       "invalidation": "Fresh failure below $1.40 without recovery invalidates breakout watch"
     },
     "DOT": {
-      "price_display": "CURRENT PRICE NOT RELIABLY VERIFIED THIS CYCLE; prior recovery setup remains invalidated",
+      "price_display": "~$1.09-$1.12 fresh CMC/CoinGecko references; 24h range $1.08-$1.22; down roughly 7%-9%",
       "status": "INVALID",
       "score": 9,
       "score_max": 19,
@@ -36,7 +36,7 @@
       "invalidation": "Prior recovery setup invalidated by loss/test below $1.10"
     }
   },
-  "best_candidate": "BTC — closest actionable asset, but first $84.9K-$84K retest failed to hold; wait for $82.0K-$82.8K test plus hold/reclaim and Higher Low",
+  "best_candidate": "BTC — closest actionable asset, but no triggered candidate: wait for $82.0K-$82.8K test plus hold/reclaim and Higher Low",
   "trade_plan": {
     "entry": null,
     "stop": null,
@@ -45,7 +45,7 @@
     "tp3": null,
     "rr": null
   },
-  "sources": "Binance Market Data; CoinMarketCap GRAM; Bitcoin.com/CoinGlass-derived derivatives context",
-  "source_data_time": "2026-09-24 05:59 MSK verification; BTC $83,964.8125 at 02:06 UTC; GRAM CMC Sep 24 reference $1.4095; DOT current price not reliably verified this cycle",
-  "note": "Authoritative decision produced only by 4H Monitor. FAST GATE: BTC FILTER CAUTION -> broader breakout structure remains but short-term structure weakened -> first canonical $84.9K-$84K level failed to hold -> required hold/reclaim plus Higher Low trigger NOT CONFIRMED -> R/R NOT SET -> NO TRADE. Next canonical watch zone is $82.0K-$82.8K. Because no quality triggered candidate exists, analysis stops at FAST GATE and no missing deep-confirmation inputs receive points. Sep 23 derivatives context: BTC futures OI near $60B, predominantly positive funding and recent leverage trimming; context only, no live order-flow confirmation. GRAM remains just above $1.40 on CMC daily reference but intraday confirmation is unavailable. DOT prior setup remains INVALID and fresh current price was not reliably verified this cycle. Dashboard READ ONLY; Telegram transport only."
+  "sources": "MEXC Alpha Trader Sep 24 market brief; CoinMarketCap GRAM; CoinMarketCap DOT; CoinGecko DOT; Bitcoin.com/CoinGlass-derived derivatives context",
+  "source_data_time": "2026-09-24 10:01 MSK verification; BTC MEXC Sep 24 reference ~$83,800; GRAM CMC live ~$1.42; DOT CMC/CoinGecko ~$1.09-$1.12; derivatives context checked from Sep 23",
+  "note": "Authoritative decision produced only by 4H Monitor. FAST GATE: BTC FILTER CAUTION/CLOSED -> broader breakout structure remains but short-term structure weakened -> first $84.9K-$84K level failed -> second $82.0K-$82.8K level NOT YET TESTED -> required hold/reclaim plus Higher Low trigger NOT CONFIRMED -> R/R NOT SET -> NO TRADE. No quality triggered candidate exists, so analysis stops at FAST GATE; missing deep-confirmation inputs receive no points. Derivatives context: BTC futures OI near $60B, predominantly positive funding, leverage trimming after the $87K peak, and increased downside hedging into Sep 25 options expiry; no live order-flow confirmation. GRAM remains just above $1.40 but lacks verified intraday trigger confirmation. DOT is fresh around $1.09-$1.12 and prior setup remains INVALID. Dashboard READ ONLY; Telegram transport only. Morning presentation layer derives from this state and does not create another scoring engine."
 }
