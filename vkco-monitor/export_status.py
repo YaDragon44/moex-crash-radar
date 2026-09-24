@@ -14,6 +14,7 @@ from yandex_consensus import fetch_consensus
 import strategy2_ema
 import strategy3_value_rsi
 import fundamental_snapshot
+import latest_news
 
 OUTPUT = Path(os.getenv("PUBLIC_STATUS_FILE", "vkco-monitor/state/public_status.json"))
 JOURNAL_JSONL = Path(os.getenv("JOURNAL_JSONL", "vkco-monitor/state/trade_journal.jsonl"))
@@ -67,6 +68,7 @@ def build_status() -> dict[str, Any]:
         "position": _safe_position(state),
         "journal": journal,
         "analyst_consensus": fetch_consensus(),
+        "latest_news": latest_news.fetch_latest(),
         "entry_log": [
             {k: r.get(k) for k in ("signal_id", "opened_at", "closed_at", "status", "entry", "exit", "result_r", "setup", "score", "reason")}
             for r in records[-20:]
