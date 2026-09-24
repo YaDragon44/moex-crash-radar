@@ -11,11 +11,14 @@ on:
       - 'scripts/collect_snapshot.py'
       - 'scripts/validate_dashboard_snapshot.py'
       - 'tests/test_dashboard_contract.py'
-      - 'web/**'
       - '.github/workflows/live-snapshot.yml'
 
 permissions:
   contents: read
+
+concurrency:
+  group: live-moex-snapshot
+  cancel-in-progress: true
 
 jobs:
   snapshot:
