@@ -62,8 +62,12 @@ These counts are not release-failure counts. They reflect the strict current met
 - MOEX/AFLT/GAZP peer universes: LIMITED until defensible comparable universes are approved.
 - AFLT/GAZP historical P/E: insufficient positive comparable observations.
 
+## R2.0 authorization
+
+R2.0 Capital Allocation & Portfolio Fit is owner-authorized. It is limited to a thin policy/presentation layer over existing verified outputs; no new data or analytical engine is authorized.
+
 ## Next task
 
-NONE — R1.9.2 is deployed and validated.
+R2.0 — CAPITAL ALLOCATION & PORTFOLIO FIT — VALIDATION PENDING.
 
 Any alternative valuation methodology, new peer universe, new portfolio integration, new ticker, weakened threshold, or new feature requires a separate owner decision. Routine evidence freshness maintenance does not change the baseline.

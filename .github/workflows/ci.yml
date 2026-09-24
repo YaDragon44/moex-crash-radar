@@ -23,9 +23,10 @@ jobs:
           pip install -e . pytest
       - name: Unit tests
         run: pytest
-      - name: Investor Radar R1.9.2 JavaScript tests
+      - name: Investor Radar R2.0 JavaScript tests
         run: |
           node web/investor-radar/trader-decision.test.js
           node web/investor-radar/recommendation-engine.test.js
+          node web/investor-radar/capital-allocation.test.js
           node web/investor-radar/public-ui-contract.test.js
           node web/investor-radar/sanctions-regulatory-registry.test.js

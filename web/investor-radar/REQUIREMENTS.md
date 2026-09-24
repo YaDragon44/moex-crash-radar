@@ -177,3 +177,19 @@ Purpose: short-/medium-term buy/sell setup.
 - PASS continues to mean evidence/data gate quality; READY means an executable trading setup.
 
 This authorization permits the thin `trader-decision.js` layer inside the existing Investor Radar UI. It does not authorize a new platform, service, database, ticker universe or weaker investment gates.
+
+
+## 12. Owner-authorized R2.0 — Capital Allocation & Portfolio Fit — 2026-09-24
+
+R2.0 is a thin presentation/decision policy over existing verified Investor, valuation, risk and Trader outputs. It MUST NOT create a new market-data, valuation, fundamental or risk engine.
+
+- The user enters non-negative New Capital; no production amount is prefilled as a recommendation.
+- Output always shows Deploy Now, Reserved / Waiting and Unallocated.
+- Deploy Now may truthfully be 0 RUB; the radar MUST NOT force deployment.
+- ALLOCATE requires: existing objective recommendation gate PASS, valuation.status=VERIFIED, verified Full Risk, objective valuation ПРИВЛЕКАТЕЛЬНО, and Trader READY under its unchanged gate.
+- An objectively eligible paper with Trader WAIT or NO TRADE is RESERVE, not immediate deployment.
+- Any failed/missing valuation or risk evidence is NO ALLOCATION; no fair value or allocation may be fabricated.
+- Public Portfolio Fit is UNKNOWN / INSUFFICIENT without trusted portfolio evidence. It is neither a negative fit nor a holding inference.
+- Multiple eligible READY candidates split current New Capital equally; this is transparent minimal policy, not optimized weighting.
+
+Acceptance: unit cases cover no opportunity, WAIT, READY, valuation LOCK, unknown holding/portfolio fit, NO TRADE, and zero/invalid capital; production smoke verifies all seven tickers, allocation panel and absence of portfolio inference.
