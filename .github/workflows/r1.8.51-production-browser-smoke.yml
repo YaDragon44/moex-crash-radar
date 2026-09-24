@@ -1,11 +1,6 @@
 name: R1.8.51 Production Browser Smoke
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'web/investor-radar/**'
-      - '.github/workflows/r1.8.51-production-browser-smoke.yml'
   workflow_run:
     workflows: ["Deploy Dashboard"]
     types: [completed]
@@ -16,7 +11,7 @@ permissions:
 
 jobs:
   production-browser-smoke:
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
