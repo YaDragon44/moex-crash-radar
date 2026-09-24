@@ -22,7 +22,7 @@ No remaining mandatory implementation defect was identified after production val
 | Sanctions/regulatory | Yes, fail-closed | registry + IR-C3 evidence | X5 current ownership/control conclusion remains insufficient | OBJECTIVE EVIDENCE LIMITATION |
 | Full Risk | Yes | production: 6/7 verified after YDEX evidence update | X5 blocked by sanctions/regulatory evidence | OBJECTIVE EVIDENCE LIMITATION |
 | Recommendation engine | Yes | fail-closed engine | active decision depends on each ticker's verified inputs | EXPECTED BEHAVIOR |
-| Portfolio context | Yes | explicit per-ticker local input; default unknown | user must explicitly choose held/not-held | EXPECTED USER INPUT |
+| Portfolio context | Yes, public boundary | public page contains no portfolio UI, localStorage or embedded holdings | personal actions stay neutral WATCH until a separate trusted personalized source exists | CLOSED / NOT AUTHORIZED IN PUBLIC UI |
 | Per-ticker analysis summary | Yes | production cards | none | CLOSED |
 | CI | Yes | latest CI success | none | CLOSED |
 | Production browser smoke | Yes | post-deploy smoke success; explicit portfolio input tested | none | CLOSED |
@@ -40,7 +40,7 @@ Validated after completion work:
 - SBER: valuation VERIFIED
 - YDEX: Full Risk VERIFIED; valuation remains blocked by fundamental/history/peer evidence
 - X5: Full Risk remains PARTIAL because sanctions/regulatory ownership/control evidence is insufficient
-- portfolio controls: 7/7, default unknown; explicit SBER context removes `portfolio_context` blocker
+- public portfolio controls: absent by design; unknown holding does not infer `held=false` and locks personal actions only
 
 These counts are not release-failure counts. They reflect the strict current methodology and available comparable evidence.
 
@@ -49,7 +49,7 @@ These counts are not release-failure counts. They reflect the strict current met
 - IR-C1: peer-price runtime defect — CLOSED.
 - IR-C2: X5 historical continuity — CLOSED as objective instrument-history limitation.
 - IR-C3: YDEX/X5 sanctions evidence — CLOSED; YDEX verified material group exposure, X5 truthful LOCK.
-- IR-C4: explicit portfolio context — CLOSED and production-tested.
+- IR-C4: public portfolio boundary — replaced by R1.9.2; no portfolio input or owner holdings are published.
 - IR-C5: final completeness review — CLOSED.
 
 ## Remaining states that must not be force-cleared
@@ -64,6 +64,6 @@ These counts are not release-failure counts. They reflect the strict current met
 
 ## Next task
 
-NONE.
+R1.9.2 — REMOVE VISIBLE PORTFOLIO CONTEXT UI — VALIDATION PENDING.
 
 Any alternative valuation methodology, new peer universe, new portfolio integration, new ticker, weakened threshold, or new feature requires a separate owner decision. Routine evidence freshness maintenance does not change the baseline.

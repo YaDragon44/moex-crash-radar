@@ -160,9 +160,9 @@ The product MUST expose two independent decisions per ticker.
 ### INVESTOR
 Purpose: months/years capital-allocation decision.
 - Uses verified fundamentals, valuation, issuer/full risk and sanctions/regulatory evidence.
-- Uses the already established owner portfolio context; production UI MUST NOT ask the owner to re-enter per-ticker holdings.
+- Public Investor Radar MUST NOT request, persist, infer or publish personal holdings.
 - Actions: BUY / ADD / HOLD / NO_ADD / REDUCE / SELL / WATCH.
-- Current owner context for the seven-ticker scope is fixed from prior explicit input: held SBER/YDEX/X5/VKCO/AFLT; not held MOEX/GAZP. Changes require a new explicit owner update, not UI inference.
+- Objective fundamental/valuation/risk assessment remains visible when holding status is unknown. Personal actions require an explicit trusted portfolio context in a separate personalized portfolio-management layer; otherwise the public action is neutral WATCH.
 - Existing fail-closed valuation/risk/recommendation gates remain unchanged.
 
 ### TRADER

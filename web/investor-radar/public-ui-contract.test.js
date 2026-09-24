@@ -1,0 +1,11 @@
+const assert=require('assert');
+const fs=require('fs');
+const html=fs.readFileSync('web/investor-radar/index.html','utf8');
+const recommendation=fs.readFileSync('web/investor-radar/recommendation-engine.js','utf8');
+const trader=fs.readFileSync('web/investor-radar/trader-decision.js','utf8');
+for(const forbidden of ['id="portfolio"','data-portfolio','localStorage','const PORTFOLIO','SBER:true','YDEX:true','X5:true','VKCO:true','AFLT:true','MOEX:false','GAZP:false']) assert(!html.includes(forbidden),`public UI must not contain ${forbidden}`);
+assert(html.includes('Investor Radar R1.9.2'));
+assert(recommendation.includes('personalActionOk'));
+assert(recommendation.includes('personalMissing'));
+assert(trader.includes('portfolioIndependent:true'));
+console.log('Investor Radar public portfolio boundary contract: PASS');

@@ -10,10 +10,10 @@ ENGINE: READY
 7-TICKER COVERAGE: LIVE  
 INFRASTRUCTURE: GREEN  
 DATA COMPLETENESS: PARTIAL  
-PORTFOLIO CONTEXT: OWNER INPUT FIXED / UI ROW REMOVED  
+PORTFOLIO CONTEXT: UNKNOWN IN PUBLIC UI / PERSONAL ACTIONS LOCKED  
 INVESTOR DECISION READINESS: PARTIAL / WAIT
 TRADER DECISION LAYER: R1.9.0 LIVE / CLOSED
-PORTFOLIO UI CLEANUP: R1.9.1 LIVE / CLOSED
+PORTFOLIO UI CLEANUP: R1.9.2 LIVE / VALIDATION PENDING
 
 ## Completed
 
@@ -44,8 +44,8 @@ Primary MOEX/X5 evidence confirms current ordinary share X5 (ISIN RU000A108X38) 
 ### IR-C3 — YDEX/X5 sanctions evidence — DONE
 YDEX now has verified material group exposure: EU transaction restrictions and UK RUS3621 apply to Yandex Bank, while the issuer itself is not falsely marked designated. YDEX Full Risk now passes. X5 remains truthfully LOCK/UNKNOWN because current ownership/control attribution is not sufficiently established after restructuring. Evidence: `YDEX_X5_SANCTIONS_EVIDENCE.md`.
 
-### IR-C4 — Portfolio context — DONE
-Production UI now provides explicit per-ticker `держу / не держу / не задано` input persisted only in browser localStorage. Default is unknown; no holding is inferred. Production browser smoke verifies seven controls default to unknown and that explicit SBER `не держу` removes the portfolio blocker and unlocks its recommendation gate.
+### IR-C4 — Portfolio context — REPLACED BY R1.9.2 PUBLIC-UI BOUNDARY
+Public Investor Radar has no portfolio controls, localStorage or embedded owner holdings. Unknown context remains fail-closed for BUY/ADD/HOLD/NO_ADD/REDUCE/SELL, while objective evidence PASS remains visible as neutral WATCH. Personal context belongs only to a separate personalized portfolio-management layer.
 
 ### IR-C5 — Final completeness review — DONE
 Final baseline review completed in `FINAL_COMPLETENESS_REVIEW.md`. No remaining mandatory implementation defect was identified; remaining red/yellow states are documented data/methodology limitations or require future fresh evidence.
@@ -59,6 +59,13 @@ Final baseline review completed in `FINAL_COMPLETENESS_REVIEW.md`. No remaining 
 - Wyckoff/Elliott are not inferred by the minimal layer and contribute 0 unless separately evidenced.
 - Production validation CLOSED: CI PASS; Deploy Dashboard + public health PASS; post-deploy browser smoke PASS. Production snapshot: quotes 7/7, trader runtime 7/7, READY 0/7 at validation time.
 
+## R1.9.2 — Remove Visible Portfolio Context UI
+
+- Removed residual hardcoded portfolio state from the public page.
+- Removed unused portfolio CSS and all portfolio-input semantics from the public UI.
+- Investor objective PASS is now distinct from personal-action authorization: unknown holding produces neutral WATCH with `PERSONAL ACTIONS LOCKED`, never inferred `held=false`.
+- Trader remains independent of portfolio context.
+
 ## Current objective limitations
 
 - VKCO P/E: N/A while EPS < 0.
@@ -70,6 +77,6 @@ Final baseline review completed in `FINAL_COMPLETENESS_REVIEW.md`. No remaining 
 
 ## Next task
 
-**NONE — R1.9.1 is deployed and validated.**
+**R1.9.2 — REMOVE VISIBLE PORTFOLIO CONTEXT UI — VALIDATION PENDING.**
 
 Do not open new feature scope without a new owner decision. Preserve fail-closed gates and refresh source evidence when it becomes stale.

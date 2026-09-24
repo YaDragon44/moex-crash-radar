@@ -26,13 +26,14 @@
     if(input?.risk?.verified!==true) missing.push('verified_risk');
     if(!finite(input?.risk?.score)) missing.push('risk_score');
     const pg=provenanceGate(input); if(!pg.ok) missing.push(pg.reason);
-    if(!portfolioKnown(input)) missing.push('portfolio_context');
+    const personalMissing=[];
+    if(!portfolioKnown(input)) personalMissing.push('portfolio_context');
     if(String(input?.ticker||'').toUpperCase()==='SBER'){
       const c=input?.valuationCompleteness;
       if(c?.status!=='VERIFIED'||c?.verified!==true) missing.push('sber_full_valuation_completeness');
     }
     const thesisBrokenTrusted=pg.ok&&input?.risk?.thesisBroken===true;
-    return {ok:missing.length===0&&!thesisBrokenTrusted,hardStop:thesisBrokenTrusted,missing,reason:thesisBrokenTrusted?'thesis_broken':missing.length?'insufficient_data':'ok',issuerProvenance:pg};
+    return {ok:missing.length===0&&!thesisBrokenTrusted,personalActionOk:missing.length===0&&!thesisBrokenTrusted&&personalMissing.length===0,hardStop:thesisBrokenTrusted,missing,personalMissing,reason:thesisBrokenTrusted?'thesis_broken':missing.length?'insufficient_data':'ok',issuerProvenance:pg};
   }
   function valuationZone(price,low,high){if(!finite(price)||!finite(low)||!finite(high)||low<=0||high<=0||low>high)return 'UNKNOWN';if(price<low)return 'ATTRACTIVE';if(price>high)return 'EXPENSIVE';return 'FAIR';}
   function confidence(input,gate){if(!gate.ok)return 'НИЗКАЯ';let n=0;if(input?.valuation?.status==='VERIFIED')n++;if(finite(input?.hiddenValue?.gap))n++;if(input?.risk?.verified===true&&finite(input?.risk?.score)&&gate?.issuerProvenance?.ok)n++;if(arr(input?.facts).length>=2)n++;return n>=3?'ВЫСОКАЯ':'СРЕДНЯЯ';}
@@ -41,12 +42,12 @@
     if(gate.hardStop){return {ticker,light:LIGHT.RED,action:known&&held?ACTIONS.SELL:ACTIONS.WATCH,confidence:known?'СРЕДНЯЯ':'НИЗКАЯ',valuation:'НЕ ОПРЕДЕЛЕНА',why:[known?'Подтверждено разрушение инвестиционного тезиса секторно-верифицированным issuer-risk gate.':'Подтверждено разрушение инвестиционного тезиса, но статус позиции в портфеле не подтверждён.'],facts:arr(input?.facts),risks:arr(input?.risk?.items),trigger:known?'Повторная проверка тезиса после изменения критического фундаментального риска.':'Подтвердить наличие позиции; без portfolio.held=true продажа не рекомендуется.',gate};}
     if(!gate.ok){
       const sberBlocked=gate.missing.includes('sber_full_valuation_completeness');
-      const portfolioBlocked=gate.missing.includes('portfolio_context');
       const provenanceBlocked=gate.missing.includes('issuer_risk_provenance_missing')||gate.missing.includes('issuer_sector_gate_mismatch');
-      const detail=provenanceBlocked?'Issuer-risk не имеет подтверждённого секторного provenance: активная рекомендация заблокирована.':sberBlocked?'Для SBER не пройден полный bank valuation gate: P/E + P/B + bank quality + common equity/share basis должны быть VERIFIED.':portfolioBlocked?'Не подтверждён статус позиции: portfolio.held должен быть явно true или false; BUY/ADD/HOLD/REDUCE/SELL без этого заблокированы.':'Не пройдены критические data gates: '+gate.missing.join(', ')+'.';
+      const detail=provenanceBlocked?'Issuer-risk не имеет подтверждённого секторного provenance: активная рекомендация заблокирована.':sberBlocked?'Для SBER не пройден полный bank valuation gate: P/E + P/B + bank quality + common equity/share basis должны быть VERIFIED.':'Не пройдены критические data gates: '+gate.missing.join(', ')+'.';
       return {ticker,light:LIGHT.GRAY,action:ACTIONS.WATCH,confidence:'НИЗКАЯ',valuation:'НЕ ОПРЕДЕЛЕНА',why:['Недостаточно данных для обоснованного вывода.',detail],facts:arr(input?.facts),risks:arr(input?.risk?.items),trigger:'Появление недостающих подтверждённых данных.',gate};
     }
     const zone=valuationZone(+input.price,+input.valuation.low,+input.valuation.high),growth=+input.fundamental.growthCagr,riskScore=+input.risk.score;
+    if(!gate.personalActionOk){return {ticker,light:LIGHT.YELLOW,action:ACTIONS.WATCH,confidence:confidence(input,gate),valuation:zone==='ATTRACTIVE'?'ПРИВЛЕКАТЕЛЬНО':zone==='FAIR'?'СПРАВЕДЛИВО':zone==='EXPENSIVE'?'ДОРОГО':'НЕ ОПРЕДЕЛЕНА',why:['Объективная фундаментальная, valuation и risk-оценка показаны по подтверждённым данным.','Статус позиции неизвестен: персональные действия BUY/ADD/HOLD/REDUCE/SELL заблокированы.'],facts:arr(input?.facts),risks:arr(input?.risk?.items),trigger:'Подтвердить позицию только в персональном контуре; публичный Radar не хранит holdings.',gate,diagnostics:{zone,growthCagr:growth,riskScore,portfolioKnown:false,held:false}};}
     const sanctions=input?.risk?.sanctions||{};
     const sanctionsMaterialHigh=sanctions.verified===true&&sanctions.material===true&&sanctions.level==='HIGH';
     const sanctionsDesignated=sanctions.verified===true&&sanctions.designated===true;

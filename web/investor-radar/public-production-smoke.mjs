@@ -21,8 +21,11 @@ try {
   if(await page.locator('#portfolio').count()) throw new Error('portfolio container must be removed');
   await page.waitForFunction(()=>{
     const card=document.querySelector('#cards .card[data-ticker="SBER"]');
-    return card && (card.textContent||'').includes('Recommendation gate: PASS') && !(card.textContent||'').includes('portfolio_context');
+    return card && (card.textContent||'').includes('Recommendation gate: PASS') && (card.textContent||'').includes('PERSONAL ACTIONS LOCKED');
   },null,{timeout:15000});
+
+  const pageSource=await page.content();
+  for(const forbidden of ['SBER:true','YDEX:true','X5:true','VKCO:true','AFLT:true','MOEX:false','GAZP:false','localStorage']) if(pageSource.includes(forbidden)) throw new Error('public source must not contain portfolio state: '+forbidden);
 
   const matrixHeaders=await page.locator('#matrix thead th').evaluateAll(els=>els.map(e=>(e.textContent||'').trim()));
   if(matrixHeaders[0]!=='Ticker'||matrixHeaders[1]!=='Текущая цена') throw new Error('primary matrix current-price column missing: '+JSON.stringify(matrixHeaders));
@@ -37,7 +40,7 @@ try {
   if(pageErrors.length) throw new Error('pageerror: '+pageErrors.join(' | '));
 
   const title=(await page.locator('h1').textContent())?.trim()||'';
-  if(title!=='Investor Radar R1.9.1') throw new Error('unexpected production version: '+title);
+  if(title!=='Investor Radar R1.9.2') throw new Error('unexpected production version: '+title);
 
   const gate=(await page.locator('#gate').textContent())?.trim()||'';
   if(!gate.includes('MOEX quotes:')||!gate.includes('Trader READY:')) throw new Error('final gate summary missing trader status: '+gate);

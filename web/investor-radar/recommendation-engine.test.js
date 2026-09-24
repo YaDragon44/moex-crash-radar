@@ -23,10 +23,10 @@ x=sberBase();x.valuationCompleteness={status:'VERIFIED',verified:true};r=E.decid
 x=sberBase();x.portfolio.held=false;x.valuationCompleteness={status:'VERIFIED',verified:true};r=E.decide(x);assert.equal(r.action,'ПОКУПАТЬ');
 
 // R1.8.24 explicit portfolio context.
-x=base();delete x.portfolio;r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.light,'СЕРЫЙ');assert.equal(r.confidence,'НИЗКАЯ');assert(r.gate.missing.includes('portfolio_context'));assert.equal(r.diagnostics,undefined);
-x=base();x.portfolio={};r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert(r.gate.missing.includes('portfolio_context'));
-x=base();x.portfolio={held:'false'};r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert(r.gate.missing.includes('portfolio_context'));
-x=base();delete x.portfolio;x.risk.thesisBroken=true;r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.light,'КРАСНЫЙ');assert.equal(r.confidence,'НИЗКАЯ');assert.notEqual(r.action,'ПРОДАВАТЬ');assert(r.gate.missing.includes('portfolio_context'));
+x=base();delete x.portfolio;r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.light,'СЕРЫЙ');assert.equal(r.confidence,'НИЗКАЯ');assert.equal(r.gate.ok,true);assert.equal(r.gate.personalActionOk,false);assert(r.gate.personalMissing.includes('portfolio_context'));assert.equal(r.diagnostics.portfolioKnown,false);
+x=base();x.portfolio={};r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.gate.ok,true);assert.equal(r.gate.personalActionOk,false);assert(r.gate.personalMissing.includes('portfolio_context'));
+x=base();x.portfolio={held:'false'};r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.gate.ok,true);assert.equal(r.gate.personalActionOk,false);assert(r.gate.personalMissing.includes('portfolio_context'));
+x=base();delete x.portfolio;x.risk.thesisBroken=true;r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.light,'КРАСНЫЙ');assert.equal(r.confidence,'НИЗКАЯ');assert.notEqual(r.action,'ПРОДАВАТЬ');assert(r.gate.personalMissing.includes('portfolio_context'));
 
 // R1.8.34: manual risk.verified cannot bypass exact sector provenance.
 x=base();delete x.risk.issuerProvenance;r=E.decide(x);assert.equal(r.action,'НАБЛЮДАТЬ');assert.equal(r.light,'СЕРЫЙ');assert(r.gate.missing.includes('issuer_risk_provenance_missing'));
