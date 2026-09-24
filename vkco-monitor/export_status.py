@@ -10,6 +10,7 @@ import monitor
 from decision_audit import append_if_changed
 from position_manager import has_active_position, load_state_file
 from trade_journal import load_records, stats
+from yandex_consensus import fetch_consensus
 
 OUTPUT = Path(os.getenv("PUBLIC_STATUS_FILE", "vkco-monitor/state/public_status.json"))
 JOURNAL_JSONL = Path(os.getenv("JOURNAL_JSONL", "vkco-monitor/state/trade_journal.jsonl"))
@@ -62,6 +63,7 @@ def build_status() -> dict[str, Any]:
         "trade": {"status": "WAIT", "reason": "NO_DATA"},
         "position": _safe_position(state),
         "journal": journal,
+        "analyst_consensus": fetch_consensus(),
         "entry_log": [
             {k: r.get(k) for k in ("signal_id", "opened_at", "closed_at", "status", "entry", "exit", "result_r", "setup", "score", "reason")}
             for r in records[-20:]
