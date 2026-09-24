@@ -3,8 +3,7 @@ name: R1.4 Entry Radar Release Gate
 on:
   push:
     branches: [r1.4-simple-entry-radar-release]
-  pull_request:
-    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
