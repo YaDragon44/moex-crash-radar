@@ -1,127 +1,120 @@
 # VKCO PROJECT CHECKPOINT
 
-**Checkpoint date:** 2026-09-13 (Europe/Moscow)  
+**Checkpoint date:** 2026-09-24 (Europe/Moscow)  
 **Project:** VKCO Trade Monitor + Control Room  
 **Repository:** YaDragon44/moex-crash-radar  
 **Status:** PRODUCTION OBSERVATION / STRATEGY FREEZE
 
-## 1. Recovery anchor
+## Recovery anchor
 
-Use this file as the canonical recovery point for the VKCO project. Do not reconstruct VKCO state from other dashboards/projects in this repository.
+This file is the canonical recovery point for the VKCO-only workstream. Always inspect fresh `main` before acting.
 
-Dashboard recovery commit: `2fb7ef2a3fd6859f8ad05ca532c502973ff27401` — **VKCO Dashboard R0.6.3 Critical UTF-8 UI Hotfix**.
+Production engine: **R1.8**. Dashboard accepted source baseline: **R0.6.4**, with later UI/log hotfixes.
 
-The repository may contain later automated/data-only commits. Preserve this recovery anchor for the dashboard implementation and inspect current `main` before making new changes.
+## Architecture
 
-## 2. Production architecture
+`GitHub Actions -> MOEX ISS -> adaptive VKCO trigger -> IMOEX filter -> official VK IR event-risk -> trade plan -> model position manager -> journal -> Telegram + sanitized vkco-live/status.json -> GitHub Pages dashboard`
 
-Keep architecture minimal:
+No broker API/orders, VPS, DB, Redis, Docker, Cloudflare or ML.
 
-`GitHub Actions -> MOEX ISS -> VKCO adaptive trigger -> IMOEX filter -> VK official IR event-risk -> trade plan -> model position management -> trade journal -> Telegram -> sanitized public Live State -> GitHub Pages dashboard`
+## Production paths
 
-No VPS, DB, Docker, Cloudflare, broker API or automatic broker orders.
+- Dashboard: `web/vkco-dashboard/index.html`
+- Monitor: `vkco-monitor/monitor.py`
+- Runtime: `vkco-monitor/run_r18.py`
+- Trade plan: `vkco-monitor/trade_plan.py`
+- Position lifecycle: `vkco-monitor/position_manager.py`
+- Journal: `vkco-monitor/trade_journal.py`
+- Public exporter: `vkco-monitor/export_status.py`
+- Live branch/file: `vkco-live/status.json`
+- Workflow: `.github/workflows/vkco-monitor.yml`
+- Observation issue: #61
 
-Production trading engine release: **R1.8**.  
-Dashboard release: **R0.6.3**.
+## Current production facts
 
-## 3. Production links
+- Trading strategy is frozen during Production Observation.
+- Authorized LONG setups only: **Adaptive Wyckoff Spring** and **Adaptive Breakout + Hold**.
+- Adaptive levels: previous 20 completed M10 candles, excluding the latest 3 trigger candles.
+- RVOL threshold: breakout >= 1.20; spring >= 1.30.
+- IMOEX market filter and official VK IR Event Risk Lite remain mandatory.
+- Production risk setting remains 0.5%.
+- Model/paper positions are not broker executions.
+- Dashboard is read-only and consumes the sanitized live state.
 
-- Dashboard: `https://yadragon44.github.io/moex-crash-radar/vkco-dashboard/`
-- Cache-bypass dashboard: `https://yadragon44.github.io/moex-crash-radar/vkco-dashboard/?v=r063`
-- VKCO monitor workflow: `https://github.com/YaDragon44/moex-crash-radar/actions/workflows/vkco-monitor.yml`
-- Production observation issue: `https://github.com/YaDragon44/moex-crash-radar/issues/61`
-- Source: `vkco-monitor/`
-- Dashboard source: `web/vkco-dashboard/index.html`
-- Public state: `https://raw.githubusercontent.com/YaDragon44/moex-crash-radar/vkco-live/status.json`
+## Dashboard / entry-log state
 
-## 4. Accepted production state
+Dashboard recovery R0.6.4 is accepted and uses only `vkco-live/status.json` for VKCO live state and the 72 completed M10 candles.
 
-R1.8 production audit is accepted. Regular monitor runs are offset from M10 candle boundaries; heartbeat validates data freshness instead of returning unconditional OK. Stable position/journal logic remains unchanged.
+2026-09-24 additions:
+- PR #93 added bottom block **Entry setup & indicator log**.
+- Public exporter now exposes a sanitized `entry_log` for up to 20 persisted model entries.
+- Existing historical journal records show setup, opened/closed time, entry/exit, score, status and Result R.
+- Historical RVOL, Support/Resistance, IMOEX filter and Event Risk snapshots were not persisted for the existing trade; UI must show them as **not saved**, never reconstruct/invent them.
+- PR #94 removed the stray literal `\\n` visible between the entry-log and current-action cards.
 
-R0.6.2 changed the public Live State contract so `status.json` contains the latest **72 completed VKCO M10 candles**. The monitor regression reached **40/40 PASS** when this contract was introduced.
+Known persisted model trade at this checkpoint:
+- setup: Adaptive Wyckoff Spring;
+- opened: 2026-09-21T13:09:59+03:00;
+- entry: 109.80;
+- score: 10/19;
+- journal result: +3.125R;
+- stored terminal status: CLOSED_STOP.
 
-R0.6.3 rebuilt the dashboard as valid UTF-8 and removed the chart dependency on the large TA Market JSON. The dashboard now reads market/trade state and M10 candles from the single existing `vkco-live/status.json` source.
+The combination of profitable result with terminal label CLOSED_STOP and the persisted moved stop above entry requires lifecycle semantics inspection before interpreting it as a defect.
 
-R0.6.3 merge: PR #72, commit `2fb7ef2a3fd6859f8ad05ca532c502973ff27401`.
+## Observability gap
 
-Post-merge GitHub Pages run `34704730108` completed successfully:
-- build: PASS;
-- deploy: PASS;
-- public-health-check: PASS.
+The current journal persists completed model positions, not a complete decision history. Therefore it cannot prove how many candidate/blocked entry points existed.
 
-The dashboard includes Price + Volume, 72 M10 candles, Support/Resistance, adaptive trade levels, VSA context, Wyckoff context, model lifecycle, risk, journal and health indicators.
+Recommended next product slice is a minimal **Decision Audit Log** that persists future decision snapshots without changing strategy:
+`timestamp -> candle -> WAIT/READY/BLOCKED -> reason -> setup -> support/resistance -> RVOL -> trigger facts -> IMOEX/SMA20/1h -> Event Risk -> score -> Entry/Stop/TP -> signal_id`.
 
-## 5. Trading state / freeze
+Deduplicate unchanged states; do not log every identical heartbeat.
 
-Production observation issue #61 is the governing freeze:
-- do not change adaptive levels, RVOL thresholds, IMOEX filter, event-risk logic, stop/TP rules or risk percentage before sufficient model evidence;
-- at **10 closed model trades** perform diagnostic review only;
-- prefer **20 closed model trades** before evidence-based strategy tuning;
-- runtime, data-integrity, duplicate/state-transition and risk-safety defects may be hotfixed immediately.
+## Risk safety
 
-Current position semantics are **MODEL/PAPER**, not broker-confirmed execution. No automatic orders are sent.
+R1.8.1 work exists separately and must remain safety-only:
+- official current MOEX LOTSIZE;
+- risk-budget sizing plus capital/notional cap;
+- fail closed on missing/invalid metadata;
+- no changes to signal thresholds or trading strategy.
 
-## 6. Known limitations / safety backlog
+Do not call R1.8.1 released unless its specialized gates are green and the relevant PR is merged.
 
-These items are not permission to expand scope unnecessarily.
+## Production observation gate
 
-1. **VKCO LOTSIZE correctness:** trade sizing must use current official MOEX LOTSIZE; do not rely blindly on default `lot_size=1`.
-2. **Capital/notional cap:** for no-leverage sizing, shares must be capped by available capital as well as risk budget so a tight stop cannot create notional above capital.
-3. Event-risk parser uses official VK IR only and is not comprehensive general-news/sanctions monitoring.
-4. Model position opens from READY without broker fill confirmation; always label it model/paper.
-5. Journal partial TP handling is simplified; actual manual partial exits are not reconstructed automatically.
-6. Cache-backed journal/state is intentionally minimal and is not a durable database.
+Issue #61 governs the freeze:
+- 10 closed model trades -> diagnostic review only;
+- prefer 20 closed model trades before strategy tuning;
+- runtime/data-integrity/state-transition/risk-safety defects may be fixed immediately.
 
-Items 1–2 are **risk-safety correctness** and may be implemented as `R1.8.1 Risk Safety Hotfix` without violating the strategy freeze.
+Current public journal contains only **1 completed model trade**.
 
-## 7. Dashboard invariants
-
-Do not claim chart/live data is available unless the public Live State actually contains valid candles.
-
-Dashboard must:
-- use `vkco-live/status.json` as the single VKCO live-state/chart source;
-- show `M10 DATA UNAVAILABLE` / degraded state rather than fabricate data;
-- show actual candle count (`N / 72`);
-- clearly distinguish WAIT / READY / OPEN / TP1 / TP2 / TRAILING / CLOSED;
-- clearly label model/paper position;
-- never expose Telegram/GitHub secrets or raw secret environment values;
-- remain read-only.
-
-## 8. Release / QA policy
+## QA / release policy
 
 For every material change:
-1. create a dedicated branch;
-2. make the smallest scoped change;
-3. run targeted tests + repository CI;
-4. open PR with release notes;
-5. merge only on green relevant gates;
-6. verify production workflow/Pages deployment;
-7. for dashboard changes verify the real public URL and public Live State, not only repository files;
-8. remove temporary smoke/debug workflows after validation;
-9. update this checkpoint after an important accepted release.
+1. dedicated branch;
+2. smallest scoped change;
+3. targeted regression + repository CI;
+4. PR;
+5. merge only after relevant gates;
+6. production workflow/Pages verification;
+7. UI changes require real public-page verification;
+8. no invented data;
+9. update this checkpoint after accepted material changes.
 
-Do not report `FIXED` or `PRODUCTION READY` based only on source inspection. Public/UI issues require a public production gate.
+## Current transition state
 
-## 9. NEXT TASK
+PR #93 is merged; merge commit `a62f47127687dbcdfc5faab866faed7de35d793d`. Its push runs for CI, VKCO Monitor, Live MOEX snapshot and Deploy Dashboard completed successfully.
 
-**R1.8.1 — Risk Safety Hotfix**
+PR #94 is merged; merge commit `579c0cc01006ed52fc025b2c4522a4e80f7e514e`. It is a presentation-only fix for the visible literal newline. At the moment of this checkpoint its post-merge CI/Deploy runs had just been queued; fresh status must be checked in the new chat before declaring the hotfix fully production-verified.
 
-Scope is strictly limited to risk-sizing correctness before the first real READY:
-- fetch/verify official VKCO `LOTSIZE` from MOEX ISS;
-- size position using both risk budget and available-capital/notional cap;
-- preserve 0.5% production risk setting;
-- add regression tests for LOTSIZE rounding, tight-stop notional cap, missing/invalid metadata and no-position fallback;
-- do not change signal thresholds, adaptive levels, IMOEX filter, event-risk logic, stop/TP strategy or dashboard trading interpretation.
+## New-chat recovery instruction
 
-After R1.8.1: return to **Production Observation** and collect model trades under issue #61. No strategy optimization before the evidence gate.
-
-## 10. Recovery instruction
-
-When recovering this project in a new chat:
-
-1. Read `vkco-monitor/PROJECT_CHECKPOINT.md` first.
-2. Inspect current `main` and confirm the recovery anchor/relevant later commits.
-3. Read the production files only as needed for the NEXT TASK.
-4. Do not reconstruct requirements from unrelated `moex-crash-radar` modules.
-5. Execute only the NEXT TASK unless a production/risk-safety defect requires an immediate hotfix.
-6. Preserve the principle: **maximum simplicity, capital preservation, no invented data, no strategy changes during the observation freeze.**
+1. Read this file first.
+2. Fetch fresh `main` and current Actions status.
+3. Verify PR #94 deployment/public page if not already green.
+4. Inspect current `vkco-live/status.json`.
+5. Preserve strategy freeze.
+6. Then continue the authorized next work only; do not reconstruct state from unrelated repository modules.
+7. Principle: **maximum simplicity, capital preservation, no invented data, evidence before release claims.**
