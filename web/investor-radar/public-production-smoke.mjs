@@ -20,12 +20,14 @@ try {
   if(portfolioControls.length!==7) throw new Error('portfolio context controls must contain 7 tickers: '+JSON.stringify(portfolioControls));
   if(portfolioControls.some(x=>x.value!=='')) throw new Error('portfolio context must default to unknown, never inferred: '+JSON.stringify(portfolioControls));
 
+  const sberTraderBefore=(await page.locator('#cards .card[data-ticker="SBER"] .trader').textContent())?.replace(/\s+/g,' ').trim()||'';
   await page.locator('#portfolio select[data-portfolio="SBER"]').selectOption('false');
   await page.waitForFunction(()=>{
     const card=document.querySelector('#cards .card[data-ticker="SBER"]');
     return card && (card.textContent||'').includes('Recommendation gate: PASS') && !(card.textContent||'').includes('portfolio_context');
   },null,{timeout:15000});
-
+  const sberTraderAfter=(await page.locator('#cards .card[data-ticker="SBER"] .trader').textContent())?.replace(/\s+/g,' ').trim()||'';
+  if(!sberTraderBefore||sberTraderBefore!==sberTraderAfter) throw new Error('trader decision must be independent from portfolio_context');
 
   const matrixHeaders=await page.locator('#matrix thead th').evaluateAll(els=>els.map(e=>(e.textContent||'').trim()));
   if(matrixHeaders[0]!=='Ticker'||matrixHeaders[1]!=='Текущая цена') throw new Error('primary matrix current-price column missing: '+JSON.stringify(matrixHeaders));
@@ -40,10 +42,10 @@ try {
   if(pageErrors.length) throw new Error('pageerror: '+pageErrors.join(' | '));
 
   const title=(await page.locator('h1').textContent())?.trim()||'';
-  if(title!=='Investor Radar R1.8.54') throw new Error('unexpected production version: '+title);
+  if(title!=='Investor Radar R1.9.0') throw new Error('unexpected production version: '+title);
 
   const gate=(await page.locator('#gate').textContent())?.trim()||'';
-  if(!gate.includes('MOEX quotes:')) throw new Error('final gate summary missing: '+gate);
+  if(!gate.includes('MOEX quotes:')||!gate.includes('Trader READY:')) throw new Error('final gate summary missing trader status: '+gate);
 
   const cards=await page.$$eval('#cards .card',els=>els.map(el=>({
     ticker:el.getAttribute('data-ticker'),
@@ -54,6 +56,7 @@ try {
     if(!card.text.includes('Recommendation gate:')) throw new Error(`${card.ticker}: recommendation gate missing`);
     if(!card.text.includes('Full risk gate')) throw new Error(`${card.ticker}: risk gate missing`);
     if(!card.text.includes('Valuation gate')) throw new Error(`${card.ticker}: valuation gate missing`);
+    if(!card.text.includes('ТРЕЙДЕР ·')) throw new Error(`${card.ticker}: trader decision block missing`);
     if(card.text.includes('issuer_risk_provenance_missing')) throw new Error(`${card.ticker}: issuer provenance wiring regression`);
     const locked=card.text.includes('Recommendation gate: LOCK');
     if(locked && !card.text.includes('НАБЛЮДАТЬ')) throw new Error(`${card.ticker}: fail-closed violation`);
@@ -64,7 +67,7 @@ try {
   if(sber.text.includes('verified_fundamentals')) throw new Error('SBER verified fundamentals integration regression');
   if(!/Auto historical P\/E3/.test(sber.text)) throw new Error('SBER historical P/E registry/runtime integration did not produce 3 observations: '+sber.text);
 
-  console.log('Investor Radar R1.8.54 seven-ticker production snapshot: PASS');
+  console.log('Investor Radar R1.9.0 investor/trader production snapshot: PASS');
   console.log('FINAL GATE:',gate);
   for(const card of cards) console.log('CARD:',JSON.stringify(card));
   console.log('FAILED REQUESTS:',failed.length,failed);
