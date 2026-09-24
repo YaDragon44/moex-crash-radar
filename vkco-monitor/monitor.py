@@ -234,7 +234,7 @@ def _signal(kind: str, setup: str, c: Candle, rvol: float, stop: float,
         "tp1": round(targets[0], 2), "tp2": round(targets[1], 2), "tp3": round(targets[2], 2),
         "rr_tp2": round(rr2, 2), "rvol": round(rvol, 2), "score": score,
         "support": round(support, 2), "resistance": round(resistance, 2),
-        "score_note": "Confluence /19: структура, уровень, объем, Wyckoff, momentum, R/R, рынок",
+        "score_note": "Confluence score (diagnostic only): структура, уровень, объем, Wyckoff, momentum, R/R, рынок",
     }
 
 
@@ -273,7 +273,7 @@ def format_signal(s: dict[str, Any]) -> str:
         f"RVOL: {s['rvol']}x\nIMOEX: {m['close']:.2f}; 1ч {m['return_1h_pct']:+.2f}%\n\n"
         f"Entry: ~{s['entry']:.2f} ₽\nStop: {s['stop']:.2f} ₽\n"
         f"TP1: {s['tp1']:.2f} ₽\nTP2: {s['tp2']:.2f} ₽\nTP3: {s['tp3']:.2f} ₽\n"
-        f"R/R до TP2: {s['rr_tp2']}\nConfluence: {s['score']}/19\n"
+        f"R/R до TP2: {s['rr_tp2']}\nConfluence score: {s['score']} (diagnostic only)\n"
         "Event Risk: ✅ официальный VK IR проверен\n\n"
         "Статус: READY"
     )
