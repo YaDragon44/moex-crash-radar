@@ -6,6 +6,7 @@ import monitor
 import run_r16
 import strategy2_ema
 import strategy3_value_rsi
+import strategy4_h1
 from yandex_consensus import fetch_consensus
 
 
@@ -57,6 +58,11 @@ def main() -> int:
         print("strategy3={} rsi14={} gap={} trend={} journal_appended={}".format(s3['decision'],s3['rsi14'],s3['valuation_gap_pct'],s3['trend'],int(s3['journal_appended'])))
     except Exception as exc:
         print(f"strategy3=DEGRADED error={type(exc).__name__}: {exc}")
+    try:
+        s4 = strategy4_h1.run_shadow(strategy4_h1.fetch_h1())
+        print("strategy4={} H1 support={} resistance={} journal_appended={}".format(s4['decision'],s4['support'],s4['resistance'],int(s4['journal_appended'])))
+    except Exception as exc:
+        print(f"strategy4=DEGRADED error={type(exc).__name__}: {exc}")
     if run_r16.manage_existing_position_r16():
         return 0
     return monitor.run()
