@@ -10,11 +10,11 @@ try {
   page.on('requestfailed',r=>failed.push(`${r.url()} :: ${r.failure()?.errorText||'failed'}`));
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});
 
-  await page.waitForFunction(()=>document.querySelectorAll('#cards .card').length===7,{timeout:15000});
+  await page.waitForFunction(()=>document.querySelectorAll('#cards .card').length===7,null,{timeout:30000});
   await page.waitForFunction(()=>{
     const gate=(document.querySelector('#gate')?.textContent||'').trim();
     return gate && !gate.includes('Загрузка MOEX');
-  },{timeout:45000});
+  },null,{timeout:90000});
 
   const portfolioControls=await page.locator('#portfolio select[data-portfolio]').evaluateAll(els=>els.map(e=>({ticker:e.getAttribute('data-portfolio'),value:e.value})));
   if(portfolioControls.length!==7) throw new Error('portfolio context controls must contain 7 tickers: '+JSON.stringify(portfolioControls));
