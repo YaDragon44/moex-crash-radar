@@ -13,7 +13,7 @@ DATA COMPLETENESS: PARTIAL
 PORTFOLIO CONTEXT: OWNER INPUT FIXED / UI ROW REMOVED  
 INVESTOR DECISION READINESS: PARTIAL / WAIT
 TRADER DECISION LAYER: R1.9.0 LIVE / CLOSED
-PORTFOLIO UI CLEANUP: R1.9.1 IMPLEMENTED / VALIDATION PENDING
+PORTFOLIO UI CLEANUP: R1.9.1 LIVE / CLOSED
 
 ## Completed
 
@@ -70,6 +70,6 @@ Final baseline review completed in `FINAL_COMPLETENESS_REVIEW.md`. No remaining 
 
 ## Next task
 
-**R1.9.1 validation — close after CI + deploy + post-deploy browser smoke PASS.**
+**NONE — R1.9.1 is deployed and validated.**
 
 Do not open new feature scope without a new owner decision. Preserve fail-closed gates and refresh source evidence when it becomes stale.
