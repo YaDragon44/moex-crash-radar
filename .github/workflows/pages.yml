@@ -297,7 +297,7 @@ jobs:
             if [ "$code" = "200" ] && [ "$live_code" = "200" ] && grep -q "VKCO Control Room" /tmp/vkco-dashboard.html && grep -q "Strategy #3" /tmp/vkco-dashboard.html && python - <<'PY'
           import json
           j=json.load(open('/tmp/vkco-status.json',encoding='utf-8'))
-          ok=(j.get('ticker')=='VKCO' and bool(j.get('market')) and bool(j.get('strategy2')) and bool(j.get('strategy3')))
+          ok=(j.get('ticker')=='VKCO' and bool(j.get('market')) and bool(j.get('strategy2')) and bool(j.get('strategy3')) and bool(j.get('strategy4')) and j.get('strategy4',{}).get('timeframe')=='H1' and isinstance(j.get('candles_h1'),list) and len(j.get('candles_h1'))>=2)
           raise SystemExit(0 if ok else 1)
           PY
             then echo "VKCO CONTROL ROOM PUBLIC HTML + LIVE DATA GATE: PASS"; exit 0; fi
