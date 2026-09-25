@@ -69,7 +69,18 @@ def evaluate(c:list[Any])->dict[str,Any]:
         struct=structural_levels(c)
     except ValueError:
         struct={"status":"INSUFFICIENT_HISTORY","lookback_h1":len(c),"support_zone":None,"resistance_zone":None,"method":"repeated H1 pivot reactions","read_only":True}
-    return {"strategy":"S4_ADAPTIVE_H1","timeframe":"H1","mode":"SHADOW","candle":z.end.isoformat(),"price":z.close,"support":round(lv["support"],2),"resistance":round(lv["resistance"],2),"local_levels":{"support":round(lv["support"],2),"resistance":round(lv["resistance"],2),"lookback_h1":20},"structural_levels":struct,"avg_range":round(lv["avg_range"],4),"decision":"READY" if signal else "WAIT","reason":"TRIGGER_CONFIRMED" if signal else "NO_TRIGGER","signal":signal}
+    return {"strategy":"S4_ADAPTIVE_H1","timeframe":"H1","mode":"SHADOW","trend_context":trend_context(c),"candle":z.end.isoformat(),"price":z.close,"support":round(lv["support"],2),"resistance":round(lv["resistance"],2),"local_levels":{"support":round(lv["support"],2),"resistance":round(lv["resistance"],2),"lookback_h1":20},"structural_levels":struct,"avg_range":round(lv["avg_range"],4),"decision":"READY" if signal else "WAIT","reason":"TRIGGER_CONFIRMED" if signal else "NO_TRIGGER","signal":signal}
+
+def trend_context(c:list[Any])->dict[str,Any]:
+    """Read-only H1 simple moving averages for trend context."""
+    if len(c)<200: return {"status":"INSUFFICIENT_HISTORY","timeframe":"H1","ma50":None,"ma200":None,"read_only":True}
+    ma50=sum(float(x.close) for x in c[-50:])/50.0
+    ma200=sum(float(x.close) for x in c[-200:])/200.0
+    price=float(c[-1].close)
+    if price>ma50>ma200: regime="BULLISH"
+    elif price<ma50<ma200: regime="BEARISH"
+    else: regime="MIXED"
+    return {"status":"OK","timeframe":"H1","ma50":round(ma50,2),"ma200":round(ma200,2),"price":round(price,2),"regime":regime,"read_only":True}
 
 def h1_market_filter(c:list[Any])->dict[str,Any]:
     if len(c)<21: raise ValueError("Need at least 21 completed IMOEX H1 candles")
