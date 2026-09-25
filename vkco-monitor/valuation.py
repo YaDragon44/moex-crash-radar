@@ -23,8 +23,8 @@ def build(price:float, fundamentals:dict[str,Any], analysis:dict[str,Any])->dict
         scenarios.append({"name":name,"ev_ebitda_assumption":multiple,"equity_value_rub":round(equity),
                           "value_per_share":round(fair,2),"upside_pct":round(upside,1)})
     base=scenarios[1];mos=base["upside_pct"]
-    if mos>=20: state,light="UNDERVALUED","GREEN"
-    elif mos<=-20: state,light="OVERVALUED","RED"
+    if mos>=20: state,light="POTENTIALLY_UNDERVALUED","YELLOW"
+    elif mos<=-20: state,light="POTENTIALLY_OVERVALUED","YELLOW"
     else: state,light="FAIR_RANGE","YELLOW"
     return {"status":"OK","price":round(price,2),"market_cap_rub":round(market_cap),"net_debt_rub":round(net_debt),
             "enterprise_value_rub":round(ev),"ebitda_basis_rub":round(ebitda),"ebitda_basis":"VK 2026 guidance >24bn RUB; conservative floor uses 24bn",
