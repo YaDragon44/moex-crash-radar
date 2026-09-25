@@ -4,6 +4,9 @@ from pathlib import Path
 from typing import Any
 import requests
 import monitor
+import position_manager
+import trade_journal
+import trade_plan
 
 STATE_FILE=Path(os.getenv("STRATEGY4_STATE_FILE","vkco-monitor/state/strategy4_h1_state.json"))
 JOURNAL_FILE=Path(os.getenv("STRATEGY4_JOURNAL_JSONL","vkco-monitor/state/strategy4_h1_journal.jsonl"))
@@ -27,9 +30,9 @@ def evaluate(c:list[Any])->dict[str,Any]:
     lv=monitor.adaptive_levels(c);a,b,z=c[-3],c[-2],c[-1];av=lv["avg_volume"];rb=b.volume/av;rz=z.volume/av
     signal=None
     if a.close<=lv["resistance"] and b.close>lv["resistance"] and z.close>lv["resistance"] and rb>=1.20:
-        stop=lv["resistance"]-max(lv["avg_range"]*.60,.30);risk=max(z.close-stop,.01);signal={"kind":"ADAPTIVE_BREAKOUT","setup":"Adaptive Breakout + Hold","entry":z.close,"stop":round(stop,2),"tp1":round(z.close+1.5*risk,2),"tp2":round(z.close+2.5*risk,2),"tp3":round(z.close+4*risk,2),"rvol":round(max(rb,rz),2)}
+        stop=lv["resistance"]-max(lv["avg_range"]*.60,.30);risk=max(z.close-stop,.01);signal={"kind":"ADAPTIVE_BREAKOUT","setup":"Adaptive Breakout + Hold","entry":z.close,"price":z.close,"time":z.end.isoformat(),"signal_id":f"S4:H1:ADAPTIVE_BREAKOUT:{z.end.isoformat()}","score":None,"stop":round(stop,2),"tp1":round(z.close+1.5*risk,2),"tp2":round(z.close+2.5*risk,2),"tp3":round(z.close+4*risk,2),"rvol":round(max(rb,rz),2)}
     elif b.low<lv["support"] and b.close>lv["support"] and z.low>=lv["support"] and z.close>=b.close and rb>=1.30:
-        stop=b.low-max(lv["avg_range"]*.25,.20);risk=max(z.close-stop,.01);signal={"kind":"ADAPTIVE_SPRING","setup":"Adaptive Wyckoff Spring","entry":z.close,"stop":round(stop,2),"tp1":round(max(lv["resistance"],z.close+1.5*risk),2),"tp2":round(z.close+2.5*risk,2),"tp3":round(z.close+4*risk,2),"rvol":round(max(rb,rz),2)}
+        stop=b.low-max(lv["avg_range"]*.25,.20);risk=max(z.close-stop,.01);signal={"kind":"ADAPTIVE_SPRING","setup":"Adaptive Wyckoff Spring","entry":z.close,"price":z.close,"time":z.end.isoformat(),"signal_id":f"S4:H1:ADAPTIVE_SPRING:{z.end.isoformat()}","score":None,"stop":round(stop,2),"tp1":round(max(lv["resistance"],z.close+1.5*risk),2),"tp2":round(z.close+2.5*risk,2),"tp3":round(z.close+4*risk,2),"rvol":round(max(rb,rz),2)}
     return {"strategy":"S4_ADAPTIVE_H1","timeframe":"H1","mode":"SHADOW","candle":z.end.isoformat(),"price":z.close,"support":round(lv["support"],2),"resistance":round(lv["resistance"],2),"avg_range":round(lv["avg_range"],4),"decision":"READY" if signal else "WAIT","reason":"TRIGGER_CONFIRMED" if signal else "NO_TRIGGER","signal":signal}
 
 def h1_market_filter(c:list[Any])->dict[str,Any]:
@@ -51,26 +54,44 @@ def decision_snapshot(c:list[Any])->dict[str,Any]:
     return {**s,"imoex":imo,"event_risk":evp}
 
 def _load():
-    try:return json.loads(STATE_FILE.read_text()) if STATE_FILE.exists() else {}
-    except:return {}
+    return position_manager.load_state_file(STATE_FILE)
+
 def journal():
-    if not JOURNAL_FILE.exists():return []
-    out=[]
-    for x in JOURNAL_FILE.read_text().splitlines():
-        try:out.append(json.loads(x))
-        except:pass
-    return out
+    return trade_journal.load_records(JOURNAL_FILE)
+
+def _manage_active(c:list[Any], state:dict[str,Any])->tuple[dict[str,Any],str|None]:
+    p=state.get("position")
+    if not p or not position_manager.has_active_position(state):
+        return state,None
+    lv=monitor.adaptive_levels(c)
+    updated,event=position_manager.manage_position(p,c[-1],lv["avg_range"])
+    state={**state,"position":updated}
+    if event in {"CLOSED_PROFIT","CLOSED_STOP"}:
+        trade_journal.append_record_once(JOURNAL_FILE,updated)
+    position_manager.save_state_file(STATE_FILE,state)
+    return state,event
+
 def run_shadow(c:list[Any])->dict[str,Any]:
-    s=decision_snapshot(c);state=_load();changed=False
+    state=_load()
+    if position_manager.has_active_position(state):
+        state,event=_manage_active(c,state)
+        snap=evaluate(c)
+        return {**snap,"decision":"HOLD" if position_manager.has_active_position(state) else "WAIT",
+                "reason":event or "MODEL_POSITION_ACTIVE","position":state.get("position"),
+                "journal_appended":event in {"CLOSED_PROFIT","CLOSED_STOP"}}
+    s=decision_snapshot(c);changed=False
     if s["decision"]=="READY":
-        eid=f"S4:{s['signal']['kind']}:{s['candle']}"
-        if state.get("last_event_id")!=eid:
-            JOURNAL_FILE.parent.mkdir(parents=True,exist_ok=True)
-            rec={**s,"event_id":eid}; 
-            with JOURNAL_FILE.open("a",encoding="utf-8") as f:f.write(json.dumps(rec,ensure_ascii=False)+"\n")
-            STATE_FILE.write_text(json.dumps({"last_event_id":eid},ensure_ascii=False),encoding="utf-8");changed=True
-    return {**s,"journal_appended":changed}
+        sig=s["signal"];plan=trade_plan.build_trade_plan(sig)
+        pos=position_manager.open_position(sig,plan)
+        state={"position":pos,"last_signal_id":sig["signal_id"]}
+        position_manager.save_state_file(STATE_FILE,state);changed=True
+    return {**s,"position":state.get("position"),"journal_appended":changed}
 
 def public_snapshot(c:list[Any])->dict[str,Any]:
-    s=decision_snapshot(c);rows=journal()
-    return {**s,"journal":rows[-20:],"signals":len(rows)}
+    s=decision_snapshot(c);state=_load();rows=journal();st=trade_journal.stats(rows)
+    if position_manager.has_active_position(state):
+        s={**s,"decision":"HOLD","reason":"MODEL_POSITION_ACTIVE"}
+    return {**s,"position":state.get("position"),"journal":rows[-20:],"signals":len(rows),
+            "closed_trades":st["trades"],"wins":st["wins"],"losses":st["losses"],
+            "win_rate":st["win_rate"],"avg_r":st["avg_r"],"profit_factor":st["profit_factor"],
+            "expectancy_r":st["expectancy_r"]}
