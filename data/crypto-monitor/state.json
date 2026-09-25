@@ -1,42 +1,42 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-24T17:58:00+03:00",
-  "data_quality": "PARTIAL_FRESH; BTC_FRESH_CMC_COINBASE; GRAM_TODAY_CMC_REFERENCE; DOT_FRESH_CMC; NO_VERIFIED_LIVE_ORDER_FLOW_OR_SYNCHRONOUS_DERIVATIVES",
+  "generated_at": "2026-09-25T06:02:47+03:00",
+  "data_quality": "PARTIAL_FRESH; BTC_FRESH_CF_BENCHMARKS_DERIVED_PREDICTION_MARKET_REFERENCE; GRAM_NO_RELIABLE_SYNCHRONOUS_QUOTE; DOT_NO_RELIABLE_SYNCHRONOUS_QUOTE; NO_VERIFIED_LIVE_ORDER_FLOW_OR_SYNCHRONOUS_DERIVATIVES",
   "market": {
-    "regime": "BTC BELOW FAILED $84.9K-$84K FIRST RETEST ZONE; 24H LOW $82.906K APPROACHED BUT DID NOT ENTER $82.0K-$82.8K SECOND CANONICAL WATCH ZONE",
-    "btc_filter": "CAUTION / LONG FILTER CLOSED; SECOND SUPPORT LEVEL NOT YET TESTED AND NO HOLD/RECLAIM HIGHER-LOW TRIGGER",
+    "regime": "BTC REBOUNDED ABOVE FAILED $84.9K-$84K FIRST ZONE WITHOUT A CONFIRMED $82.0K-$82.8K TEST-HOLD-RECLAIM-HIGHER-LOW SEQUENCE",
+    "btc_filter": "CAUTION / LONG FILTER CLOSED; PRICE RECOVERY ALONE DOES NOT CONFIRM THE REQUIRED TRIGGER",
     "action": "NO TRADE"
   },
   "assets": {
     "BTC": {
-      "price_display": "~$83.4K-$84.2K fresh CMC/Coinbase references; 24h low ~$82.906K, just above second watch zone",
+      "price_display": "~$85.2K late-24-Sep EDT reference; fresh evidence places BTC back above $84.9K",
       "status": "WAIT",
       "score": 13,
       "score_max": 19,
-      "setup": "Breakout+Retest watch shifted to second support zone",
-      "trigger": "NOT SET — require actual test of $82.0K-$82.8K, hold/reclaim, confirmed Higher Low, then acceptable R/R",
-      "invalidation": "First-zone trigger invalidated below $84K; loss of $82.0K-$82.8K weakens continuation; weekly close below ~$78.8K invalidates broader breakout regime"
+      "setup": "Second-support retest watch; do not chase rebound",
+      "trigger": "NOT SET — require confirmed canonical level interaction plus hold/reclaim, Higher Low and acceptable R/R",
+      "invalidation": "No valid long trigger exists; loss of $82.0K-$82.8K would weaken continuation further"
     },
     "GRAM": {
-      "price_display": "~$1.41 latest same-day CoinMarketCap reference; fresh synchronous intraday quote not verified",
+      "price_display": "NOT VERIFIED — no reliable synchronous GRAM quote in this cycle",
       "status": "WAIT",
       "score": 9,
       "score_max": 19,
       "setup": "Range Breakout watch / confirmation constrained",
-      "trigger": "Sustained hold above $1.40 with fresh intraday structure/volume confirmation and supportive BTC filter; then validate R/R",
-      "invalidation": "Fresh failure below $1.40 without recovery invalidates breakout watch"
+      "trigger": "NOT SET — require fresh price, structure/volume confirmation and supportive BTC filter",
+      "invalidation": "Fresh failure below canonical $1.40 without recovery would invalidate breakout watch"
     },
     "DOT": {
-      "price_display": "~$1.11-$1.13 fresh CoinMarketCap references; down roughly 3%-4% over 24h",
+      "price_display": "NOT VERIFIED — no reliable synchronous DOT quote in this cycle",
       "status": "INVALID",
       "score": 9,
       "score_max": 19,
       "setup": "Prior reclaim-continuation setup invalidated; new structure required",
       "trigger": "NOT SET — require a new structure before defining a new trigger",
-      "invalidation": "Prior recovery setup invalidated by loss/test below $1.10"
+      "invalidation": "Prior recovery setup remains invalidated"
     }
   },
-  "best_candidate": "BTC — closest actionable asset, but no triggered candidate: 24h low approached second zone without entering it; wait for $82.0K-$82.8K test plus hold/reclaim and Higher Low",
+  "best_candidate": "BTC — still closest actionable asset, but rebound occurred without the required canonical trigger sequence",
   "trade_plan": {
     "entry": null,
     "stop": null,
@@ -45,7 +45,7 @@
     "tp3": null,
     "rr": null
   },
-  "sources": "CoinMarketCap BTC; Coinbase BTC; CoinMarketCap GRAM same-day reference; CoinMarketCap DOT",
-  "source_data_time": "2026-09-24 17:58 MSK verification; BTC CMC ~$83.41K-$83.50K and 24h low ~$82.906K, Coinbase ~$84.23K; GRAM latest same-day CMC story ~$1.41; DOT CMC ~$1.11-$1.13",
-  "note": "Authoritative decision produced only by 4H Monitor. FAST GATE: BTC FILTER CAUTION/CLOSED -> short-term structure weakened -> first $84.9K-$84K level failed -> 24h low $82.906K approached but did not enter second $82.0K-$82.8K canonical zone -> required hold/reclaim plus Higher Low trigger NOT CONFIRMED -> R/R NOT SET -> NO TRADE. No quality triggered candidate exists, so analysis stops at FAST GATE; deep-confirmation inputs are not invoked and missing data receive no points. GRAM lacks fresh synchronous structure/volume confirmation. DOT prior setup remains INVALID and needs new structure. Dashboard READ ONLY; Telegram transport only."
+  "sources": "Robinhood prediction market using CF Benchmarks BRTI reference; Coinbase prediction market context; public web search",
+  "source_data_time": "2026-09-25 06:02 MSK verification; late Sep 24 EDT BTC reference around $85.2K; GRAM/DOT synchronous quotes not verified",
+  "note": "Authoritative decision produced only by 4H Monitor. FAST GATE: BTC FILTER CAUTION/CLOSED -> structure recovering but not canonically confirmed -> required level/trigger sequence absent -> R/R NOT SET -> NO TRADE. No quality triggered candidate exists, so analysis stops at FAST GATE. Missing GRAM/DOT synchronous data and unavailable deep-confirmation inputs receive no points. Dashboard READ ONLY; Telegram transport only."
 }
