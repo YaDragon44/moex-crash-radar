@@ -43,3 +43,24 @@ def test_public_snapshot_exposes_trade_stats(monkeypatch,tmp_path):
     x=s.public_snapshot(candles())
     assert x["closed_trades"]==0
     assert x["expectancy_r"] is None
+
+def test_structural_levels_are_zones_and_read_only():
+    c=candles(90)
+    # repeated structural reactions around 95 and 110
+    for i in (10,30,50):
+        c[i]=monitor.Candle(c[i].begin,c[i].end,100,100,101,95,1000)
+    for i in (20,40,60):
+        c[i]=monitor.Candle(c[i].begin,c[i].end,100,100,110,99,1000)
+    x=s.structural_levels(c)
+    assert x["read_only"] is True
+    assert x["lookback_h1"]==90
+    assert x["support_zone"] is not None
+    assert x["resistance_zone"] is not None
+    assert x["support_zone"]["low"] <= x["support_zone"]["high"]
+    assert x["resistance_zone"]["touches"] >= 2
+
+def test_evaluate_keeps_local_levels_and_adds_structural():
+    x=s.evaluate(candles(90))
+    assert x["local_levels"]["lookback_h1"]==20
+    assert x["support"]==x["local_levels"]["support"]
+    assert "structural_levels" in x
