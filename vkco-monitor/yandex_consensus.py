@@ -23,12 +23,24 @@ def _plain(html: str) -> str:
 def parse_consensus(html: str, observed_at: str | None = None) -> dict[str, Any]:
     text = _plain(html)
     # Yandex Finance Russian labels. Fail closed if the aggregate target or vote split is absent.
-    target_m = re.search(r"(\d{1,3}(?:[,.]\d+)?)\s*₽\s*[+-]?[0-9]+(?:[,.][0-9]+)?%", text, re.I)
     votes_m = re.search(r"(\d+)\s*Продавать\s+(\d+)\s*Держать\s+(\d+)\s*Покупать", text, re.I)
-    if not target_m or not votes_m:
+    if not votes_m:
         raise ValueError("YANDEX_CONSENSUS_NOT_FOUND")
+    # Anchor target extraction to the analyst-consensus neighborhood, never to
+    # an arbitrary RUB amount elsewhere on the dynamic quote page.
+    start=max(0, votes_m.start()-700)
+    neighborhood=text[start:votes_m.end()+250]
+    candidates=list(re.finditer(r"(\d{2,4}(?:[,.]\d+)?)\s*₽\s*([+-][0-9]+(?:[,.][0-9]+)?)%", neighborhood, re.I))
+    if not candidates:
+        raise ValueError("YANDEX_CONSENSUS_TARGET_NOT_FOUND")
+    target_m=candidates[-1]
     sell, hold, buy = map(int, votes_m.groups())
     target = _num(target_m.group(1))
+    upside = _num(target_m.group(2))
+    # Sanity-check the pair. A broken/dynamic page must fail closed rather than
+    # publish a plausible-looking but wrong analyst target.
+    if target <= 0 or abs(upside) > 1000:
+        raise ValueError("YANDEX_CONSENSUS_TARGET_INVALID")
     range_m = re.search(r"От\s*([0-9][0-9\s]*(?:[,.][0-9]+)?)\s*₽.*?Макс\s*([0-9][0-9\s]*(?:[,.][0-9]+)?)\s*₽", text, re.I)
     updated_m = re.search(r"Обновлено\s+([^|]{3,40}?)(?=\s+(?:Мнения аналитиков|Сейчас|От\s|$))", text, re.I)
     analyst_text = text[votes_m.end():]
@@ -56,6 +68,7 @@ def parse_consensus(html: str, observed_at: str | None = None) -> dict[str, Any]
         "source_url": SOURCE_URL,
         "observed_at": observed_at or datetime.now(MOSCOW).isoformat(),
         "consensus_target": target,
+        "consensus_upside_pct": upside,
         "buy": buy,
         "hold": hold,
         "sell": sell,
