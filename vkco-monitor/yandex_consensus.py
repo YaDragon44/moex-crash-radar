@@ -9,6 +9,7 @@ from typing import Any
 from zoneinfo import ZoneInfo
 
 SOURCE_URL = "https://yandex.ru/finance/quote/moex/vkco"
+FALLBACK_URL = "https://etpinvest.ru/quote/vkco/forecast/"
 MOSCOW = ZoneInfo("Europe/Moscow")
 
 def _num(value: str) -> float:
@@ -85,26 +86,35 @@ def parse_consensus(html: str, observed_at: str | None = None) -> dict[str, Any]
         out["source_updated_label"] = updated_m.group(1).strip()
     return out
 
+def parse_etpinvest(html: str, observed_at: str | None = None) -> dict[str, Any]:
+    text=_plain(html)
+    target_m=re.search(r"средняя целевая цена\s*₽?\s*([0-9]{2,4}(?:[,.][0-9]+)?)",text,re.I)
+    votes_m=re.search(r"Из\s+([0-9]+)\s+аналитиков:\s*([0-9]+)\s+покупать,\s*([0-9]+)\s+держать,\s*([0-9]+)\s+продавать",text,re.I)
+    range_m=re.search(r"Диапазон прогнозов:\s*от\s*₽?\s*([0-9]{2,4}(?:[,.][0-9]+)?).*?до\s*₽?\s*([0-9]{2,4}(?:[,.][0-9]+)?)",text,re.I)
+    if not target_m or not votes_m: raise ValueError("ETPINVEST_CONSENSUS_NOT_FOUND")
+    total,buy,hold,sell=map(int,votes_m.groups())
+    if total != buy+hold+sell: raise ValueError("ETPINVEST_CONSENSUS_INCONSISTENT")
+    out={"status":"OK","source":"ETP Invest","source_url":FALLBACK_URL,"observed_at":observed_at or datetime.now(MOSCOW).isoformat(),"consensus_target":_num(target_m.group(1)),"buy":buy,"hold":hold,"sell":sell,"analyst_count":total,"analysts":[],"source_mode":"fallback"}
+    if range_m: out.update(target_low=_num(range_m.group(1)),target_high=_num(range_m.group(2)))
+    return out
+
+def _fetch(url: str, timeout: int) -> str:
+    req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 (compatible; VKCO-Control-Room/1.0)","Accept-Language":"ru-RU,ru;q=0.9"})
+    with urllib.request.urlopen(req,timeout=timeout) as response:
+        return response.read().decode("utf-8",errors="replace")
+
 def fetch_consensus(timeout: int = 15) -> dict[str, Any]:
-    req = urllib.request.Request(
-        SOURCE_URL,
-        headers={
-            "User-Agent": "Mozilla/5.0 (compatible; VKCO-Control-Room/1.0)",
-            "Accept-Language": "ru-RU,ru;q=0.9",
-        },
-    )
+    yandex_error=None
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as response:
-            html = response.read().decode("utf-8", errors="replace")
-        return parse_consensus(html)
+        return parse_consensus(_fetch(SOURCE_URL,timeout))
     except Exception as exc:
-        return {
-            "status": "DATA_UNAVAILABLE",
-            "source": "Yandex Finance",
-            "source_url": SOURCE_URL,
-            "observed_at": datetime.now(MOSCOW).isoformat(),
-            "error": type(exc).__name__,
-        }
+        yandex_error=type(exc).__name__
+    try:
+        out=parse_etpinvest(_fetch(FALLBACK_URL,timeout))
+        out.update(primary_source="Yandex Finance",primary_source_url=SOURCE_URL,primary_source_status="DATA_UNAVAILABLE",primary_source_error=yandex_error)
+        return out
+    except Exception as exc:
+        return {"status":"DATA_UNAVAILABLE","source":"Analyst consensus","source_url":SOURCE_URL,"fallback_url":FALLBACK_URL,"observed_at":datetime.now(MOSCOW).isoformat(),"error":type(exc).__name__,"primary_source_error":yandex_error}
 
 if __name__ == "__main__":
     print(json.dumps(fetch_consensus(), ensure_ascii=False, sort_keys=True))

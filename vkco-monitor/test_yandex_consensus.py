@@ -34,3 +34,11 @@ def test_parser_ignores_unrelated_ruble_price():
     x=parse_consensus(html)
     assert x["consensus_target"]==255.03
     assert x["consensus_upside_pct"]==124.99
+
+def test_parse_etpinvest_fallback():
+    from yandex_consensus import parse_etpinvest
+    html="""<body>Консенсус аналитиков по акциям ВК МКПАО : «Покупать». средняя целевая цена ₽297,29 (потенциал роста 161,0%). 7 аналитиков покрывают акцию. Диапазон прогнозов: от ₽200,00 до ₽345,00. Из 7 аналитиков: 4 покупать, 3 держать, 0 продавать.</body>"""
+    x=parse_etpinvest(html, observed_at="2026-09-25T15:00:00+03:00")
+    assert x["consensus_target"]==297.29
+    assert (x["buy"],x["hold"],x["sell"],x["analyst_count"])==(4,3,0,7)
+    assert (x["target_low"],x["target_high"])==(200,345)
