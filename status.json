@@ -2,7 +2,7 @@
   "schema_version": 2,
   "release": "R1.8",
   "dashboard_release": "R0.6.2",
-  "generated_at": "2026-09-25T14:42:07.438952+03:00",
+  "generated_at": "2026-09-25T15:21:11.215329+03:00",
   "ticker": "VKCO",
   "mode": "run",
   "health": "OK",
@@ -42,8 +42,8 @@
     "status": "OK",
     "source": "Yandex Finance",
     "source_url": "https://yandex.ru/finance/quote/moex/vkco",
-    "observed_at": "2026-09-25T14:42:09.884935+03:00",
-    "consensus_target": 29.0,
+    "observed_at": "2026-09-25T15:21:13.120965+03:00",
+    "consensus_target": 11.0,
     "buy": 4,
     "hold": 1,
     "sell": 0,
@@ -95,42 +95,6 @@
     "max_risk_rub": 5000.0
   },
   "candles": [
-    {
-      "t": "2026-09-24T19:20:00+03:00",
-      "end": "2026-09-24T19:29:59+03:00",
-      "o": 113.5,
-      "h": 113.8,
-      "l": 113.3,
-      "c": 113.7,
-      "v": 32414.0
-    },
-    {
-      "t": "2026-09-24T19:30:00+03:00",
-      "end": "2026-09-24T19:39:59+03:00",
-      "o": 113.7,
-      "h": 113.7,
-      "l": 113.4,
-      "c": 113.5,
-      "v": 15084.0
-    },
-    {
-      "t": "2026-09-24T19:40:00+03:00",
-      "end": "2026-09-24T19:49:59+03:00",
-      "o": 113.5,
-      "h": 113.65,
-      "l": 113.45,
-      "c": 113.65,
-      "v": 14357.0
-    },
-    {
-      "t": "2026-09-24T19:50:00+03:00",
-      "end": "2026-09-24T19:59:59+03:00",
-      "o": 113.65,
-      "h": 113.75,
-      "l": 113.6,
-      "c": 113.6,
-      "v": 5593.0
-    },
     {
       "t": "2026-09-24T20:00:00+03:00",
       "end": "2026-09-24T20:09:59+03:00",
@@ -742,14 +706,50 @@
       "l": 113.3,
       "c": 113.3,
       "v": 9435.0
+    },
+    {
+      "t": "2026-09-25T14:20:00+03:00",
+      "end": "2026-09-25T14:29:59+03:00",
+      "o": 113.4,
+      "h": 113.4,
+      "l": 113.05,
+      "c": 113.1,
+      "v": 24716.0
+    },
+    {
+      "t": "2026-09-25T14:30:00+03:00",
+      "end": "2026-09-25T14:39:59+03:00",
+      "o": 113.15,
+      "h": 113.3,
+      "l": 113.15,
+      "c": 113.15,
+      "v": 12074.0
+    },
+    {
+      "t": "2026-09-25T14:40:00+03:00",
+      "end": "2026-09-25T14:49:59+03:00",
+      "o": 113.2,
+      "h": 113.25,
+      "l": 112.85,
+      "c": 113.05,
+      "v": 62283.0
+    },
+    {
+      "t": "2026-09-25T14:50:00+03:00",
+      "end": "2026-09-25T14:59:59+03:00",
+      "o": 113.05,
+      "h": 113.1,
+      "l": 112.75,
+      "c": 112.75,
+      "v": 55123.0
     }
   ],
   "strategy4": {
     "strategy": "S4_ADAPTIVE_H1",
     "timeframe": "H1",
     "mode": "SHADOW",
-    "candle": "2026-09-25T13:59:59+03:00",
-    "price": 113.35,
+    "candle": "2026-09-25T14:59:59+03:00",
+    "price": 112.75,
     "support": 112.1,
     "resistance": 115.8,
     "local_levels": {
@@ -767,15 +767,15 @@
         "touches": 2
       },
       "resistance_zone": {
-        "low": 114.38,
-        "high": 114.92,
-        "center": 114.65,
-        "touches": 2
+        "low": 113.33,
+        "high": 114.52,
+        "center": 113.84,
+        "touches": 6
       },
       "method": "repeated H1 pivot reactions",
       "read_only": true
     },
-    "avg_range": 0.793,
+    "avg_range": 0.7955,
     "decision": "WAIT",
     "reason": "NO_TRIGGER",
     "signal": null,
@@ -793,15 +793,6 @@
     "expectancy_r": null
   },
   "candles_h1": [
-    {
-      "t": "2026-09-21T14:00:00+03:00",
-      "end": "2026-09-21T14:59:59+03:00",
-      "o": 109.65,
-      "h": 110.75,
-      "l": 109.6,
-      "c": 110.5,
-      "v": 578630.0
-    },
     {
       "t": "2026-09-21T15:00:00+03:00",
       "end": "2026-09-21T15:59:59+03:00",
@@ -1440,19 +1431,28 @@
       "l": 112.9,
       "c": 113.35,
       "v": 442380.0
+    },
+    {
+      "t": "2026-09-25T14:00:00+03:00",
+      "end": "2026-09-25T14:59:59+03:00",
+      "o": 113.35,
+      "h": 113.6,
+      "l": 112.75,
+      "c": 112.75,
+      "v": 198910.0
     }
   ],
   "strategy3": {
     "strategy": "S3_VALUE_RSI_EMA200_M10",
-    "candle": "2026-09-25T14:19:59+03:00",
-    "price": 113.3,
-    "rsi14": 53.85,
-    "fair_value": 29.0,
+    "candle": "2026-09-25T14:59:59+03:00",
+    "price": 112.75,
+    "rsi14": 50.0,
+    "fair_value": 11.0,
     "fair_low": null,
     "fair_high": null,
-    "valuation_gap_pct": -74.4,
-    "ema200": 113.2586,
-    "trend": "ABOVE_EMA200",
+    "valuation_gap_pct": -90.24,
+    "ema200": 113.2489,
+    "trend": "BELOW_EMA200",
     "decision": "WAIT",
     "mode": "SHADOW",
     "position": null,
@@ -1462,10 +1462,10 @@
   },
   "strategy2": {
     "strategy": "S2_EMA50_200_M10",
-    "candle": "2026-09-25T14:19:59+03:00",
-    "price": 113.3,
-    "ema50": 113.2237,
-    "ema200": 113.2586,
+    "candle": "2026-09-25T14:59:59+03:00",
+    "price": 112.75,
+    "ema50": 113.1916,
+    "ema200": 113.2489,
     "signal": "NONE",
     "mode": "SHADOW",
     "position": null,
@@ -1475,14 +1475,14 @@
     "journal": []
   },
   "market": {
-    "price": 113.3,
-    "candle_end": "2026-09-25T14:19:59+03:00",
-    "volume": 9435.0,
-    "age_min": 22,
+    "price": 112.75,
+    "candle_end": "2026-09-25T14:59:59+03:00",
+    "volume": 55123.0,
+    "age_min": 21,
     "fresh": true,
     "support": 112.5,
     "resistance": 114.0,
-    "avg_range": 0.395
+    "avg_range": 0.3925
   },
   "fundamentals": {
     "status": "OK",
@@ -1493,7 +1493,7 @@
     "lot_size": 1,
     "isin": "RU000A106YF0",
     "list_level": 1,
-    "market_cap_rub": 64910043594.0,
+    "market_cap_rub": 64594946295.0,
     "market_cap_basis": "latest VKCO market price × MOEX issue size"
   },
   "fundamental_analysis": {
@@ -1573,45 +1573,71 @@
   },
   "valuation": {
     "status": "OK",
-    "price": 113.3,
-    "market_cap_rub": 64910043594,
+    "price": 112.75,
+    "market_cap_rub": 64594946295,
     "net_debt_rub": 60200000000,
-    "enterprise_value_rub": 125110043594,
+    "enterprise_value_rub": 124794946295,
     "ebitda_basis_rub": 24000000000,
     "ebitda_basis": "VK 2026 guidance >24bn RUB; conservative floor uses 24bn",
-    "current_ev_ebitda": 5.21,
+    "current_ev_ebitda": 5.2,
     "scenarios": [
       {
         "name": "BEAR",
         "ev_ebitda_assumption": 4.0,
         "equity_value_rub": 35800000000,
         "value_per_share": 62.49,
-        "upside_pct": -44.8
+        "upside_pct": -44.6
       },
       {
         "name": "BASE",
         "ev_ebitda_assumption": 6.0,
         "equity_value_rub": 83800000000,
         "value_per_share": 146.27,
-        "upside_pct": 29.1
+        "upside_pct": 29.7
       },
       {
         "name": "BULL",
         "ev_ebitda_assumption": 8.0,
         "equity_value_rub": 131800000000,
         "value_per_share": 230.06,
-        "upside_pct": 103.1
+        "upside_pct": 104.0
       }
     ],
     "base_value_per_share": 146.27,
-    "margin_of_safety_pct": 29.1,
+    "margin_of_safety_pct": 29.7,
     "valuation_state": "POTENTIALLY_UNDERVALUED",
     "light": "YELLOW",
     "method": "EV/EBITDA scenario valuation",
-    "confidence": "LOW",
-    "confidence_reason": "Scenario multiples are not yet validated against comparable-company or VK historical trading multiples.",
+    "confidence": "MEDIUM",
+    "confidence_reason": "6x base is bracketed by public 2026 sector evidence: HEAD 5.58x, YDEX 4.83x, VKCO 6.60x; T-Investments separately estimated VKCO around 7.6x. Comparability is imperfect, so evidence is context rather than a mechanical peer target.",
+    "market_evidence": {
+      "as_of": "2026-09",
+      "vkco_q2_ev_ebitda": 6.6,
+      "peers": [
+        {
+          "ticker": "HEAD",
+          "ev_ebitda": 5.58
+        },
+        {
+          "ticker": "YDEX",
+          "ev_ebitda": 4.83
+        }
+      ],
+      "peer_median": 5.205,
+      "external_forward_vkco": 7.6,
+      "sources": [
+        {
+          "name": "Smart-Lab IT sector EV/EBITDA table",
+          "url": "https://smart-lab.ru/q/shares_fundamental6/?field=ev_ebitda&sector_id%5B%5D=25"
+        },
+        {
+          "name": "T-Investments VK valuation note",
+          "url": "https://www.tbank.ru/invest/social/profile/T-Investments/vk-spaset-li-vk-tech-ot-zamedleniya-viruchki/"
+        }
+      ]
+    },
     "assumption_note": "4x/6x/8x are explicit Bear/Base/Bull analytical assumptions, not observed peer multiples or analyst targets.",
-    "conclusion": "At 113.30 RUB, implied EV/EBITDA is 5.21x. Base 6x scenario gives 146.27 RUB/share (+29.1%).",
+    "conclusion": "At 112.75 RUB, implied EV/EBITDA is 5.20x. Base 6x scenario gives 146.27 RUB/share (+29.7%).",
     "read_only": true
   }
 }
