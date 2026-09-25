@@ -64,3 +64,8 @@ def test_evaluate_keeps_local_levels_and_adds_structural():
     assert x["local_levels"]["lookback_h1"]==20
     assert x["support"]==x["local_levels"]["support"]
     assert "structural_levels" in x
+
+def test_structural_zone_sides_do_not_cross_price():
+    c=candles(90);x=s.structural_levels(c);p=c[-1].close
+    if x["support_zone"]: assert x["support_zone"]["high"] < p
+    if x["resistance_zone"]: assert x["resistance_zone"]["low"] > p
