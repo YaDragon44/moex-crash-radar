@@ -26,6 +26,38 @@ def fetch_h1(days:int=45,secid:str=monitor.TICKER,market:str="shares",board:str|
     if len(out)<25:raise ValueError("Need at least 25 completed H1 candles")
     return out
 
+def structural_levels(c:list[Any], lookback:int=240, pivot_span:int=2)->dict[str,Any]:
+    """Read-only H1 structural S/R zones from repeated pivot reactions."""
+    if len(c)<60: raise ValueError("Need at least 60 completed H1 candles for structural levels")
+    w=c[-min(len(c),lookback):]; price=float(w[-1].close)
+    avg_range=sum(float(x.high)-float(x.low) for x in w)/len(w)
+    tol=max(avg_range*.75, price*.004, .30)
+    piv=[]
+    for i in range(pivot_span,len(w)-pivot_span):
+        x=w[i]; left=w[i-pivot_span:i]; right=w[i+1:i+pivot_span+1]
+        if x.low<=min(y.low for y in left+right): piv.append(("S",float(x.low),x.end))
+        if x.high>=max(y.high for y in left+right): piv.append(("R",float(x.high),x.end))
+    def zones(kind):
+        pts=[p for k,p,t in piv if k==kind]; groups=[]
+        for p in sorted(pts):
+            hit=None
+            for g in groups:
+                if abs(p-g["center"])<=tol:
+                    g["prices"].append(p);g["center"]=sum(g["prices"])/len(g["prices"]);hit=g;break
+            if hit is None: groups.append({"center":p,"prices":[p]})
+        out=[]
+        for g in groups:
+            if len(g["prices"])>=2:
+                out.append({"low":round(min(g["prices"])-tol*.25,2),"high":round(max(g["prices"])+tol*.25,2),
+                            "center":round(g["center"],2),"touches":len(g["prices"])})
+        return out
+    ss=zones("S");rr=zones("R")
+    below=[z for z in ss if z["center"]<=price+tol];above=[z for z in rr if z["center"]>=price-tol]
+    support=max(below,key=lambda z:z["center"]) if below else None
+    resistance=min(above,key=lambda z:z["center"]) if above else None
+    return {"lookback_h1":len(w),"zone_tolerance":round(tol,2),"support_zone":support,"resistance_zone":resistance,
+            "method":"repeated H1 pivot reactions","read_only":True}
+
 def evaluate(c:list[Any])->dict[str,Any]:
     lv=monitor.adaptive_levels(c);a,b,z=c[-3],c[-2],c[-1];av=lv["avg_volume"];rb=b.volume/av;rz=z.volume/av
     signal=None
@@ -33,7 +65,11 @@ def evaluate(c:list[Any])->dict[str,Any]:
         stop=lv["resistance"]-max(lv["avg_range"]*.60,.30);risk=max(z.close-stop,.01);signal={"kind":"ADAPTIVE_BREAKOUT","setup":"Adaptive Breakout + Hold","entry":z.close,"price":z.close,"time":z.end.isoformat(),"signal_id":f"S4:H1:ADAPTIVE_BREAKOUT:{z.end.isoformat()}","score":None,"stop":round(stop,2),"tp1":round(z.close+1.5*risk,2),"tp2":round(z.close+2.5*risk,2),"tp3":round(z.close+4*risk,2),"rvol":round(max(rb,rz),2)}
     elif b.low<lv["support"] and b.close>lv["support"] and z.low>=lv["support"] and z.close>=b.close and rb>=1.30:
         stop=b.low-max(lv["avg_range"]*.25,.20);risk=max(z.close-stop,.01);signal={"kind":"ADAPTIVE_SPRING","setup":"Adaptive Wyckoff Spring","entry":z.close,"price":z.close,"time":z.end.isoformat(),"signal_id":f"S4:H1:ADAPTIVE_SPRING:{z.end.isoformat()}","score":None,"stop":round(stop,2),"tp1":round(max(lv["resistance"],z.close+1.5*risk),2),"tp2":round(z.close+2.5*risk,2),"tp3":round(z.close+4*risk,2),"rvol":round(max(rb,rz),2)}
-    return {"strategy":"S4_ADAPTIVE_H1","timeframe":"H1","mode":"SHADOW","candle":z.end.isoformat(),"price":z.close,"support":round(lv["support"],2),"resistance":round(lv["resistance"],2),"avg_range":round(lv["avg_range"],4),"decision":"READY" if signal else "WAIT","reason":"TRIGGER_CONFIRMED" if signal else "NO_TRIGGER","signal":signal}
+    try:
+        struct=structural_levels(c)
+    except ValueError:
+        struct={"status":"INSUFFICIENT_HISTORY","lookback_h1":len(c),"support_zone":None,"resistance_zone":None,"method":"repeated H1 pivot reactions","read_only":True}
+    return {"strategy":"S4_ADAPTIVE_H1","timeframe":"H1","mode":"SHADOW","candle":z.end.isoformat(),"price":z.close,"support":round(lv["support"],2),"resistance":round(lv["resistance"],2),"local_levels":{"support":round(lv["support"],2),"resistance":round(lv["resistance"],2),"lookback_h1":20},"structural_levels":struct,"avg_range":round(lv["avg_range"],4),"decision":"READY" if signal else "WAIT","reason":"TRIGGER_CONFIRMED" if signal else "NO_TRIGGER","signal":signal}
 
 def h1_market_filter(c:list[Any])->dict[str,Any]:
     if len(c)<21: raise ValueError("Need at least 21 completed IMOEX H1 candles")
