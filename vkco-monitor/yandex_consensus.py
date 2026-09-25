@@ -28,12 +28,15 @@ def parse_consensus(html: str, observed_at: str | None = None) -> dict[str, Any]
         raise ValueError("YANDEX_CONSENSUS_NOT_FOUND")
     # Anchor target extraction to the analyst-consensus neighborhood, never to
     # an arbitrary RUB amount elsewhere on the dynamic quote page.
-    start=max(0, votes_m.start()-700)
-    neighborhood=text[start:votes_m.end()+250]
-    candidates=list(re.finditer(r"(\d{2,4}(?:[,.]\d+)?)\s*₽\s*([+-][0-9]+(?:[,.][0-9]+)?)%", neighborhood, re.I))
-    if not candidates:
+    # Aggregate target belongs before the vote split; analyst rows belong after it.
+    # Prefer an explicit forecast heading when present, otherwise use the last
+    # price/upside pair before the votes.
+    before=text[max(0, votes_m.start()-1200):votes_m.start()]
+    headed=re.search(r"(?:Прогноз цены|Средняя цена|Консенсус[^0-9]{0,80})(\d{2,4}(?:[,.]\d+)?)\s*₽\s*([+-][0-9]+(?:[,.][0-9]+)?)%", before, re.I)
+    candidates=list(re.finditer(r"(\d{2,4}(?:[,.]\d+)?)\s*₽\s*([+-][0-9]+(?:[,.][0-9]+)?)%", before, re.I))
+    target_m=headed or (candidates[-1] if candidates else None)
+    if target_m is None:
         raise ValueError("YANDEX_CONSENSUS_TARGET_NOT_FOUND")
-    target_m=candidates[-1]
     sell, hold, buy = map(int, votes_m.groups())
     target = _num(target_m.group(1))
     upside = _num(target_m.group(2))
