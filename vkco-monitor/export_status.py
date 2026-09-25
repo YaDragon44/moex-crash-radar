@@ -15,6 +15,7 @@ import strategy2_ema
 import strategy3_value_rsi
 import fundamental_snapshot
 import fundamental_analysis
+import valuation
 import latest_news
 import strategy4_h1
 
@@ -118,6 +119,7 @@ def build_status() -> dict[str, Any]:
     }
     payload["fundamentals"] = fundamental_snapshot.fetch_snapshot(price=latest.close)
     payload["fundamental_analysis"] = fundamental_analysis.fetch_analysis()
+    payload["valuation"] = valuation.build(latest.close, payload["fundamentals"], payload["fundamental_analysis"])
 
     if has_active_position(state):
         p = state["position"]
