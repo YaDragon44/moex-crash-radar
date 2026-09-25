@@ -12,4 +12,8 @@ def test_unvalidated_scenario_is_not_green():
     assert x["confidence"]=="MEDIUM"
     assert x["light"]=="YELLOW"
     assert x["valuation_state"].startswith("POTENTIALLY_") or x["valuation_state"]=="FAIR_RANGE"
-\ndef test_market_evidence_is_context_only():\n    x=valuation.build(113.55,{"issue_size":572904180},{"facts":{"net_debt_bln":60.2,"guidance_ebitda_2026_bln":24}})\n    assert x["market_evidence"]["peer_median"]==5.205\n    assert x["scenarios"][1]["ev_ebitda_assumption"]==6.0\n
+
+def test_market_evidence_is_context_only():
+    x=valuation.build(113.55,{"issue_size":572904180},{"facts":{"net_debt_bln":60.2,"guidance_ebitda_2026_bln":24}})
+    assert x["market_evidence"]["peer_median"]==5.205
+    assert x["scenarios"][1]["ev_ebitda_assumption"]==6.0
