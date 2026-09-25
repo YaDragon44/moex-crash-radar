@@ -52,7 +52,7 @@ def structural_levels(c:list[Any], lookback:int=240, pivot_span:int=2)->dict[str
                             "center":round(g["center"],2),"touches":len(g["prices"])})
         return out
     ss=zones("S");rr=zones("R")
-    below=[z for z in ss if z["center"]<=price+tol];above=[z for z in rr if z["center"]>=price-tol]
+    below=[z for z in ss if z["high"]<price];above=[z for z in rr if z["low"]>price]
     support=max(below,key=lambda z:z["center"]) if below else None
     resistance=min(above,key=lambda z:z["center"]) if above else None
     return {"lookback_h1":len(w),"zone_tolerance":round(tol,2),"support_zone":support,"resistance_zone":resistance,
