@@ -2,7 +2,8 @@ from __future__ import annotations
 from typing import Any
 
 # Transparent scenario assumptions, not market-consensus targets.
-# Scenario multiples remain explicit assumptions until comparable-company evidence is available.\nSCENARIOS=(("BEAR",4.0),("BASE",6.0),("BULL",8.0))
+# Scenario multiples remain explicit assumptions until comparable-company evidence is available.
+SCENARIOS=(("BEAR",4.0),("BASE",6.0),("BULL",8.0))
 
 def build(price:float, fundamentals:dict[str,Any], analysis:dict[str,Any])->dict[str,Any]:
     try:
