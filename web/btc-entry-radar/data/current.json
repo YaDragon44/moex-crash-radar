@@ -2,9 +2,9 @@
   "input": {
     "fgi": 71.0,
     "price_confirm_4h": false,
-    "new_local_low_4h": true,
+    "new_local_low_4h": false,
     "oi_regime": "STABLE",
-    "stop_atr": 0.9224855882681583,
+    "stop_atr": 1.2893834349846387,
     "data_ready": true,
     "position_open": false
   },
@@ -20,31 +20,31 @@
     "invalidation": "F&G returns to <=35 and full Quality Gate is restored"
   },
   "market": {
-    "price": 83800.0,
-    "timestamp": "2026-09-25T12:00:00+00:00",
-    "age_h": 7.996310323888888,
+    "price": 84013.2,
+    "timestamp": "2026-09-25T16:00:00+00:00",
+    "age_h": 7.277763826388889,
     "fresh": true,
     "price_confirm_4h": false,
-    "new_local_low_4h": true,
-    "atr14_4h": 1086.664285714287,
-    "swing_low_4h": 83340.9,
-    "stop_price": 82797.56785714286,
-    "stop_atr": 0.9224855882681583
+    "new_local_low_4h": false,
+    "atr14_4h": 1062.221428571431,
+    "swing_low_4h": 83174.7,
+    "stop_price": 82643.58928571428,
+    "stop_atr": 1.2893834349846387
   },
   "crowd": {
     "value": 71.0,
     "classification": "Greed",
     "timestamp": "2026-09-25T00:00:00+00:00",
-    "age_h": 19.99631032388889,
+    "age_h": 23.277763826388888,
     "fresh": true
   },
   "open_interest": {
     "regime": "STABLE",
-    "timestamp": "2026-09-25T16:00:00+00:00",
-    "age_h": 3.996310323888889,
+    "timestamp": "2026-09-25T20:00:00+00:00",
+    "age_h": 3.2777638263888886,
     "fresh": true,
-    "oi_value": 2858480.970000011,
-    "delta_24h": 0.0006842891709719634,
+    "oi_value": 2837695.880000011,
+    "delta_24h": -0.0020592768999012634,
     "delta_p10": -0.049441178142633005,
     "delta_p90": 0.04950513492836631,
     "points": 100
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-09-25T19:59:46.717166+00:00"
+  "generated_at_utc": "2026-09-25T23:16:39.949775+00:00"
 }
