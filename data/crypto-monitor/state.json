@@ -1,15 +1,15 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-25T17:57:52+03:00",
-  "data_quality": "PARTIAL_FRESH; BTC_FRESH_COINMARKETCAP_REFERENCES; DOT_FRESH_PUBLIC_REFERENCE; GRAM_NO_RELIABLE_SYNCHRONOUS_QUOTE; NO_VERIFIED_4H_HOLD_RECLAIM_HIGHER_LOW_TRIGGER; NO_VERIFIED_LIVE_ORDER_FLOW_OR_SYNCHRONOUS_DERIVATIVES",
+  "generated_at": "2026-09-25T21:58:54+03:00",
+  "data_quality": "PARTIAL_FRESH; BTC_CURRENT_REFERENCE_FROM_COINBASE_PREDICTION_MARKET_BRTI_THRESHOLDS; DOT_FRESH_COINMARKETCAP_COINGECKO; GRAM_NO_RELIABLE_SYNCHRONOUS_QUOTE; NO_VERIFIED_4H_HOLD_RECLAIM_HIGHER_LOW_TRIGGER; NO_VERIFIED_LIVE_ORDER_FLOW_OR_SYNCHRONOUS_DERIVATIVES",
   "market": {
-    "regime": "BTC RANGE/RECOVERY ATTEMPT ABOVE PRIOR $82.906K LOW; CANONICAL LONG TRIGGER NOT CONFIRMED",
+    "regime": "BTC RECOVERY/RANGE NEAR $84K; CANONICAL LONG TRIGGER NOT CONFIRMED",
     "btc_filter": "CAUTION / LONG FILTER CLOSED; REQUIRED STRUCTURE-LEVEL-TRIGGER-RR SEQUENCE NOT CONFIRMED",
     "action": "NO TRADE"
   },
   "assets": {
     "BTC": {
-      "price_display": "~$84.0K-$84.7K (fresh CoinMarketCap references)",
+      "price_display": "~$83.5K-$84.0K threshold area (fresh Coinbase/BRTI market reference)",
       "status": "WAIT",
       "score": 13,
       "score_max": 19,
@@ -27,7 +27,7 @@
       "invalidation": "Failure below canonical $1.40 without recovery invalidates breakout watch"
     },
     "DOT": {
-      "price_display": "~$1.18 (fresh public reference), +0.68%/24h",
+      "price_display": "~$1.19 (fresh CoinMarketCap/CoinGecko), +~2.1%-2.3%/24h",
       "status": "INVALID",
       "score": 9,
       "score_max": 19,
@@ -38,7 +38,7 @@
   },
   "best_candidate": "BTC — closest potential candidate, but FAST GATE trigger is absent",
   "trade_plan": {"entry": null, "stop": null, "tp1": null, "tp2": null, "tp3": null, "rr": null},
-  "sources": "CoinMarketCap BTC; Goodreturns DOT; public web verification",
-  "source_data_time": "2026-09-25 17:57 MSK",
+  "sources": "Coinbase/CF Benchmarks BRTI threshold reference; CoinMarketCap DOT; CoinGecko DOT; public web verification",
+  "source_data_time": "2026-09-25 21:58 MSK",
   "note": "Authoritative decision produced only by 4H Monitor. FAST GATE: BTC FILTER CAUTION/CLOSED -> structure/recovery insufficient -> canonical level/trigger sequence absent -> R/R NOT SET -> NO TRADE. No quality triggered candidate, so DEEP CONFIRMATION is not run and missing inputs receive no points. Dashboard READ ONLY; Telegram transport only."
 }
