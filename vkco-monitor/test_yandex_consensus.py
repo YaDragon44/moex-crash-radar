@@ -28,3 +28,9 @@ def test_fail_closed_when_consensus_absent():
         assert str(exc)=="YANDEX_CONSENSUS_NOT_FOUND"
     else:
         raise AssertionError("must fail closed")
+
+def test_parser_ignores_unrelated_ruble_price():
+    html="""<html><body><div>15 ₽ +2%</div><div>Прогноз цены 255,03 ₽ +124,99%</div><div>0 Продавать 4 Держать 4 Покупать</div></body></html>"""
+    x=parse_consensus(html)
+    assert x["consensus_target"]==255.03
+    assert x["consensus_upside_pct"]==124.99
