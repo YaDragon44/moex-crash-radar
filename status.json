@@ -2,9 +2,9 @@
   "schema_version": 2,
   "release": "R1.8",
   "dashboard_release": "R0.6.2",
-  "generated_at": "2026-09-25T15:28:40.619811+03:00",
+  "generated_at": "2026-09-25T15:31:49.874161+03:00",
   "ticker": "VKCO",
-  "mode": "heartbeat",
+  "mode": "run",
   "health": "OK",
   "trade": {
     "status": "WAIT",
@@ -42,7 +42,7 @@
     "status": "OK",
     "source": "Yandex Finance",
     "source_url": "https://yandex.ru/finance/quote/moex/vkco",
-    "observed_at": "2026-09-25T15:28:42.893191+03:00",
+    "observed_at": "2026-09-25T15:31:52.162742+03:00",
     "consensus_target": 15.0,
     "buy": 4,
     "hold": 1,
@@ -1478,7 +1478,7 @@
     "price": 112.9,
     "candle_end": "2026-09-25T15:09:59+03:00",
     "volume": 125288.0,
-    "age_min": 18,
+    "age_min": 21,
     "fresh": true,
     "support": 112.55,
     "resistance": 114.0,
@@ -1601,6 +1601,98 @@
         "equity_value_rub": 131800000000,
         "value_per_share": 230.06,
         "upside_pct": 103.8
+      }
+    ],
+    "sensitivity": [
+      {
+        "ebitda_bln": 24.0,
+        "values": [
+          {
+            "multiple": 4.0,
+            "value_per_share": 62.49,
+            "upside_pct": -44.7
+          },
+          {
+            "multiple": 5.0,
+            "value_per_share": 104.38,
+            "upside_pct": -7.5
+          },
+          {
+            "multiple": 6.0,
+            "value_per_share": 146.27,
+            "upside_pct": 29.6
+          },
+          {
+            "multiple": 7.0,
+            "value_per_share": 188.16,
+            "upside_pct": 66.7
+          },
+          {
+            "multiple": 8.0,
+            "value_per_share": 230.06,
+            "upside_pct": 103.8
+          }
+        ]
+      },
+      {
+        "ebitda_bln": 26.0,
+        "values": [
+          {
+            "multiple": 4.0,
+            "value_per_share": 76.45,
+            "upside_pct": -32.3
+          },
+          {
+            "multiple": 5.0,
+            "value_per_share": 121.84,
+            "upside_pct": 7.9
+          },
+          {
+            "multiple": 6.0,
+            "value_per_share": 167.22,
+            "upside_pct": 48.1
+          },
+          {
+            "multiple": 7.0,
+            "value_per_share": 212.6,
+            "upside_pct": 88.3
+          },
+          {
+            "multiple": 8.0,
+            "value_per_share": 257.98,
+            "upside_pct": 128.5
+          }
+        ]
+      },
+      {
+        "ebitda_bln": 28.0,
+        "values": [
+          {
+            "multiple": 4.0,
+            "value_per_share": 90.42,
+            "upside_pct": -19.9
+          },
+          {
+            "multiple": 5.0,
+            "value_per_share": 139.29,
+            "upside_pct": 23.4
+          },
+          {
+            "multiple": 6.0,
+            "value_per_share": 188.16,
+            "upside_pct": 66.7
+          },
+          {
+            "multiple": 7.0,
+            "value_per_share": 237.04,
+            "upside_pct": 110.0
+          },
+          {
+            "multiple": 8.0,
+            "value_per_share": 285.91,
+            "upside_pct": 153.2
+          }
+        ]
       }
     ],
     "base_value_per_share": 146.27,
