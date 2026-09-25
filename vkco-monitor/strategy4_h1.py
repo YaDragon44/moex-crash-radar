@@ -65,7 +65,11 @@ def evaluate(c:list[Any])->dict[str,Any]:
         stop=lv["resistance"]-max(lv["avg_range"]*.60,.30);risk=max(z.close-stop,.01);signal={"kind":"ADAPTIVE_BREAKOUT","setup":"Adaptive Breakout + Hold","entry":z.close,"price":z.close,"time":z.end.isoformat(),"signal_id":f"S4:H1:ADAPTIVE_BREAKOUT:{z.end.isoformat()}","score":None,"stop":round(stop,2),"tp1":round(z.close+1.5*risk,2),"tp2":round(z.close+2.5*risk,2),"tp3":round(z.close+4*risk,2),"rvol":round(max(rb,rz),2)}
     elif b.low<lv["support"] and b.close>lv["support"] and z.low>=lv["support"] and z.close>=b.close and rb>=1.30:
         stop=b.low-max(lv["avg_range"]*.25,.20);risk=max(z.close-stop,.01);signal={"kind":"ADAPTIVE_SPRING","setup":"Adaptive Wyckoff Spring","entry":z.close,"price":z.close,"time":z.end.isoformat(),"signal_id":f"S4:H1:ADAPTIVE_SPRING:{z.end.isoformat()}","score":None,"stop":round(stop,2),"tp1":round(max(lv["resistance"],z.close+1.5*risk),2),"tp2":round(z.close+2.5*risk,2),"tp3":round(z.close+4*risk,2),"rvol":round(max(rb,rz),2)}
-    try: struct=structural_levels(c)\n    except ValueError: struct={"status":"INSUFFICIENT_HISTORY","lookback_h1":len(c),"support_zone":None,"resistance_zone":None,"method":"repeated H1 pivot reactions","read_only":True}\n    return {"strategy":"S4_ADAPTIVE_H1","timeframe":"H1","mode":"SHADOW","candle":z.end.isoformat(),"price":z.close,"support":round(lv["support"],2),"resistance":round(lv["resistance"],2),"local_levels":{"support":round(lv["support"],2),"resistance":round(lv["resistance"],2),"lookback_h1":20},"structural_levels":struct,"avg_range":round(lv["avg_range"],4),"decision":"READY" if signal else "WAIT","reason":"TRIGGER_CONFIRMED" if signal else "NO_TRIGGER","signal":signal}
+    try:
+        struct=structural_levels(c)
+    except ValueError:
+        struct={"status":"INSUFFICIENT_HISTORY","lookback_h1":len(c),"support_zone":None,"resistance_zone":None,"method":"repeated H1 pivot reactions","read_only":True}
+    return {"strategy":"S4_ADAPTIVE_H1","timeframe":"H1","mode":"SHADOW","candle":z.end.isoformat(),"price":z.close,"support":round(lv["support"],2),"resistance":round(lv["resistance"],2),"local_levels":{"support":round(lv["support"],2),"resistance":round(lv["resistance"],2),"lookback_h1":20},"structural_levels":struct,"avg_range":round(lv["avg_range"],4),"decision":"READY" if signal else "WAIT","reason":"TRIGGER_CONFIRMED" if signal else "NO_TRIGGER","signal":signal}
 
 def h1_market_filter(c:list[Any])->dict[str,Any]:
     if len(c)<21: raise ValueError("Need at least 21 completed IMOEX H1 candles")
