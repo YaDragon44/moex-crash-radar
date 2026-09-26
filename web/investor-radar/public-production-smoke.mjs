@@ -24,6 +24,14 @@ try {
     return gate && !gate.includes('Загрузка MOEX');
   },null,{timeout:90000});
 
+  if(await page.locator('#allocation').count()!==1) throw new Error('R2.0 capital allocation panel missing');
+  if(await page.locator('#new-capital').count()!==1) throw new Error('New Capital input missing');
+  await page.locator('#new-capital').fill('100000');
+  await page.waitForFunction(()=>{
+    const text=(document.querySelector('#allocation')?.textContent||'').replace(/\s+/g,' ');
+    return text.includes('New Capital') && text.includes('Deploy Now') && text.includes('Reserved / Waiting') && text.includes('Unallocated') && text.includes('UNKNOWN / INSUFFICIENT');
+  },null,{timeout:5000});
+
   const portfolioControls=await page.locator('#portfolio select[data-portfolio]').count();
   if(portfolioControls!==0) throw new Error('portfolio input row must not be rendered');
   if(await page.locator('#portfolio').count()) throw new Error('portfolio container must be removed');
