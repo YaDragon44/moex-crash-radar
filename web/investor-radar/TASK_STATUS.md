@@ -1,6 +1,6 @@
 # Investor Radar — Task Status
 
-Date: 2026-09-24  
+Date: 2026-09-26  
 Requirements: `web/investor-radar/REQUIREMENTS.md`
 
 ## Overall
@@ -14,7 +14,7 @@ PORTFOLIO CONTEXT: UNKNOWN IN PUBLIC UI / PERSONAL ACTIONS LOCKED
 INVESTOR DECISION READINESS: PARTIAL / WAIT
 TRADER DECISION LAYER: R1.9.0 LIVE / CLOSED
 PORTFOLIO UI CLEANUP: R1.9.2 LIVE / CLOSED  
-CAPITAL ALLOCATION: R2.0 LIVE / CLOSED
+CAPITAL ALLOCATION: R2.0.1 LIVE / CLOSED
 
 ## Completed
 
@@ -67,6 +67,13 @@ Final baseline review completed in `FINAL_COMPLETENESS_REVIEW.md`. No remaining 
 - Investor objective PASS is now distinct from personal-action authorization: unknown holding produces neutral WATCH with `PERSONAL ACTIONS LOCKED`, never inferred `held=false`.
 - Trader remains independent of portfolio context.
 
+## R2.0.1 — Capital Allocation UI Reconciliation
+
+- Restored the owner-authorized Capital Allocation panel after a later UI-only removal had drifted from the R2.0 requirements.
+- Public UI still contains no personal holdings, portfolio dropdowns or localStorage state.
+- Capital allocation policy and all Investor/Trader/valuation/risk gates are unchanged.
+- CI PASS; latest Deploy Dashboard PASS; post-deploy Production Browser Smoke PASS.
+
 ## Current objective limitations
 
 - VKCO P/E: N/A while EPS < 0.
@@ -78,7 +85,7 @@ Final baseline review completed in `FINAL_COMPLETENESS_REVIEW.md`. No remaining 
 
 ## Next task
 
-**NONE — R2.0 is deployed and validated.**
+**NONE — R2.0.1 is deployed and validated.**
 
 Do not open new feature scope without a new owner decision. Preserve fail-closed gates and refresh source evidence when it becomes stale.
 
