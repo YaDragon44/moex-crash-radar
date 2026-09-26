@@ -1,15 +1,15 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-26T22:00:39+03:00",
-  "data_quality": "PARTIAL_FRESH; BTC_FRESH_CONTEXT_NEAR_$84K; DOT_FRESH_+6%_24H; GRAM_CURRENT_PRICE_NOT_VERIFIED; NO_VERIFIED_4H_HOLD_RECLAIM_HIGHER_LOW_TRIGGER; NO_VERIFIED_SYNCHRONOUS_OI_FUNDING_LIQUIDATIONS_OR_ORDER_FLOW",
+  "generated_at": "2026-09-27T02:01:11+03:00",
+  "data_quality": "PARTIAL_FRESH; BTC_FRESH_REFERENCE_$84316; GRAM_FRESH_$1.58_+9.11%_24H; DOT_EXACT_SYNCHRONOUS_PRICE_NOT_VERIFIED; NO_VERIFIED_4H_HOLD_RECLAIM_HIGHER_LOW_TRIGGER; NO_VERIFIED_SYNCHRONOUS_OI_FUNDING_LIQUIDATIONS_OR_ORDER_FLOW",
   "market": {
-    "regime": "BTC CONSOLIDATION/RECOVERY NEAR $84K; CANONICAL LONG TRIGGER NOT CONFIRMED",
+    "regime": "BTC CONSOLIDATION/RECOVERY NEAR $84.3K; CANONICAL LONG TRIGGER NOT CONFIRMED",
     "btc_filter": "CAUTION / LONG FILTER CLOSED; REQUIRED STRUCTURE-LEVEL-TRIGGER-RR SEQUENCE NOT CONFIRMED",
     "action": "NO TRADE"
   },
   "assets": {
     "BTC": {
-      "price_display": "~$84K fresh market context",
+      "price_display": "~$84,316 fresh reference",
       "status": "WAIT",
       "score": 13,
       "score_max": 19,
@@ -18,16 +18,16 @@
       "invalidation": "No valid long trigger exists; renewed sustained loss of $82.0K-$82.8K would weaken continuation further"
     },
     "GRAM": {
-      "price_display": "NOT VERIFIED in this cycle",
+      "price_display": "~$1.58; +9.11%/24h fresh CoinMarketCap reference",
       "status": "WAIT",
       "score": 9,
       "score_max": 19,
-      "setup": "Range-breakout watch; BTC filter not supportive",
+      "setup": "Strong upside move, but BTC filter not supportive; do not chase",
       "trigger": "NOT SET — require fresh structure/volume confirmation and supportive BTC filter",
       "invalidation": "Failure below canonical $1.40 without recovery invalidates breakout watch"
     },
     "DOT": {
-      "price_display": "fresh source confirms ~+6%/24h; exact synchronous price NOT VERIFIED",
+      "price_display": "exact synchronous price NOT VERIFIED",
       "status": "INVALID",
       "score": 9,
       "score_max": 19,
@@ -38,7 +38,7 @@
   },
   "best_candidate": "BTC — closest potential candidate, but FAST GATE trigger is absent",
   "trade_plan": {"entry": null, "stop": null, "tp1": null, "tp2": null, "tp3": null, "rr": null},
-  "sources": "MarketWatch BTC fresh context; CoinMarketCap DOT fresh market story; public web verification",
-  "source_data_time": "2026-09-26 22:00 MSK",
-  "note": "Authoritative decision produced only by 4H Monitor. FAST GATE: BTC FILTER CAUTION/CLOSED -> structure/recovery insufficient -> canonical level/trigger sequence absent -> R/R NOT SET -> NO TRADE. No quality triggered candidate, so DEEP CONFIRMATION is not run and missing inputs receive no points. Dashboard READ ONLY; Telegram transport only."
+  "sources": "CoinGecko BTC; CoinMarketCap GRAM; public web verification",
+  "source_data_time": "2026-09-27 02:01 MSK",
+  "note": "Authoritative decision produced only by 4H Monitor. FAST GATE: BTC FILTER CAUTION/CLOSED -> structure/level/trigger sequence not verified -> R/R NOT SET -> NO TRADE. No quality triggered candidate, so DEEP CONFIRMATION is not run and missing inputs receive no points. Dashboard READ ONLY; Telegram transport only."
 }
