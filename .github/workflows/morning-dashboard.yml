@@ -3,7 +3,15 @@ name: Morning Dashboard MVP
 on:
   workflow_dispatch:
   schedule:
-    - cron: '1 5 * * *' # 08:01 Europe/Moscow (UTC+3)
+    # GitHub scheduled workflows can be delayed under load. Two nearby triggers
+    # provide a self-healing retry window; the delivery script remains the
+    # single source of truth for the Telegram message.
+    - cron: '1 5 * * *'   # 08:01 Europe/Moscow (UTC+3)
+    - cron: '16 5 * * *'  # 08:16 Europe/Moscow fallback
+
+concurrency:
+  group: morning-dashboard-daily
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -11,6 +19,7 @@ permissions:
 jobs:
   deliver:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
