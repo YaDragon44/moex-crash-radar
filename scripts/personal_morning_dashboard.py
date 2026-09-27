@@ -14,6 +14,26 @@ NAKHIMOVSKY = (55.6626, 37.6055)
 GISMETEO_MOSCOW_DAY = "https://www.gismeteo.ru/weather-moscow-4368/"
 
 
+WEEKDAYS_RU = ("ПОНЕДЕЛЬНИК", "ВТОРНИК", "СРЕДА", "ЧЕТВЕРГ", "ПЯТНИЦА", "СУББОТА", "ВОСКРЕСЕНЬЕ")
+MONTHS_RU = ("", "ЯНВАРЯ", "ФЕВРАЛЯ", "МАРТА", "АПРЕЛЯ", "МАЯ", "ИЮНЯ", "ИЮЛЯ", "АВГУСТА", "СЕНТЯБРЯ", "ОКТЯБРЯ", "НОЯБРЯ", "ДЕКАБРЯ")
+SYNODIC_MONTH = 29.530588853
+# Reference new moon: 2000-01-06 18:14 UTC (Meeus-style epoch approximation).
+NEW_MOON_EPOCH = datetime(2000, 1, 6, 18, 14, tzinfo=ZoneInfo("UTC"))
+
+
+def morning_header(now: datetime | None = None) -> str:
+    now = now or datetime.now(MSK)
+    utc_now = now.astimezone(ZoneInfo("UTC"))
+    age = ((utc_now - NEW_MOON_EPOCH).total_seconds() / 86400.0) % SYNODIC_MONTH
+    lunar_day = min(30, int(age) + 1)
+    waxing = age < (SYNODIC_MONTH / 2)
+    phase = "🌒 растущая" if waxing else "🌘 убывающая"
+    return (
+        f"📅 {WEEKDAYS_RU[now.weekday()]} · {now.day} {MONTHS_RU[now.month]} {now.year}\n"
+        f"🌙 Луна: {lunar_day}-е лунные сутки · {phase}"
+    )
+
+
 def get_json(url: str, params=None):
     r = requests.get(url, params=params, timeout=30, headers={"User-Agent": "morning-dashboard/1.0"})
     r.raise_for_status()
@@ -172,7 +192,7 @@ def send_gismeteo(token: str, chat_id: str) -> None:
 def main() -> int:
     token = os.getenv("TELEGRAM_BOT_TOKEN"); raw_ids = os.getenv("TELEGRAM_CHAT_ID")
     if not token or not raw_ids: raise SystemExit("Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID")
-    text = weather_block() + "\n\n" + finance_block(); failures = 0
+    text = morning_header() + "\n\n" + weather_block() + "\n\n" + finance_block(); failures = 0
     for chat_id in parse_chat_ids(raw_ids):
         try:
             telegram_send(token, chat_id, text); send_gismeteo(token, chat_id); print(f"PASS personal-morning recipient={chat_id}")
