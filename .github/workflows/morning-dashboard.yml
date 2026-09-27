@@ -7,7 +7,7 @@ on:
     # provide a self-healing retry window; the delivery script remains the
     # single source of truth for the Telegram message.
     - cron: '1 5 * * *'   # 08:01 Europe/Moscow (UTC+3)
-    - cron: '16 5 * * *'  # 08:16 Europe/Moscow fallback
+    - cron: '25 5 * * *'  # TEST 2026-09-27: 08:25 Europe/Moscow; revert after test
 
 concurrency:
   group: morning-dashboard-daily
