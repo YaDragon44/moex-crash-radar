@@ -2,16 +2,14 @@ from __future__ import annotations
 
 import os
 from datetime import datetime, timedelta
-from pathlib import Path
 from zoneinfo import ZoneInfo
 import xml.etree.ElementTree as ET
 
 import requests
 
 MSK = ZoneInfo("Europe/Moscow")
-MOSCOW = (55.7558, 37.6176)
+ZYUZINO = (55.6557, 37.5763)
 NAKHIMOVSKY = (55.6626, 37.6055)
-GISMETEO_MOSCOW_DAY = "https://www.gismeteo.ru/weather-moscow-4368/"
 
 
 WEEKDAYS_RU = ("ПОНЕДЕЛЬНИК", "ВТОРНИК", "СРЕДА", "ЧЕТВЕРГ", "ПЯТНИЦА", "СУББОТА", "ВОСКРЕСЕНЬЕ")
@@ -40,19 +38,9 @@ def get_json(url: str, params=None):
     return r.json()
 
 
-def telegram_send(token: str, chat_id: str, text: str, preview: bool = False) -> None:
-    payload = {"chat_id": chat_id, "text": text}
-    if preview:
-        payload["link_preview_options"] = '{"is_disabled":false,"url":"' + GISMETEO_MOSCOW_DAY + '","prefer_large_media":true,"show_above_text":false}'
-    else:
-        payload["disable_web_page_preview"] = "true"
+def telegram_send(token: str, chat_id: str, text: str) -> None:
+    payload = {"chat_id": chat_id, "text": text, "disable_web_page_preview": "true"}
     r = requests.post(f"https://api.telegram.org/bot{token}/sendMessage", data=payload, timeout=30)
-    r.raise_for_status()
-
-
-def telegram_send_photo(token: str, chat_id: str, image_path: Path, caption: str) -> None:
-    with image_path.open("rb") as fh:
-        r = requests.post(f"https://api.telegram.org/bot{token}/sendPhoto", data={"chat_id": chat_id, "caption": caption}, files={"photo": fh}, timeout=60)
     r.raise_for_status()
 
 
@@ -95,7 +83,7 @@ def rain_timing(hourly: dict) -> str:
 
 
 def weather_block() -> str:
-    lat, lon = MOSCOW
+    lat, lon = ZYUZINO
     data = get_json("https://api.open-meteo.com/v1/forecast", {
         "latitude": lat, "longitude": lon, "timezone": "Europe/Moscow",
         "current": "temperature_2m,precipitation,wind_speed_10m",
@@ -127,7 +115,7 @@ def weather_block() -> str:
     else: clothes = "футболка/рубашка, лёгкий верх на утро"
 
     return (
-        "🌤 ПОГОДА · МОСКВА\n"
+        "🌤 ЗЮЗИНО · МОСКВА\n"
         f"🌡 Сейчас  {t_now:+d}°   ↕️ день {t_min:+d}…{t_max:+d}°\n"
         f"🌧 Осадки  до {pop}%   💨 ветер {wind:.1f} м/с\n"
         f"{rain_line}\n\n"
@@ -181,29 +169,13 @@ def finance_block() -> str:
     return ("💰 ФИНАНСЫ\n" f"USD/RUB   {usd}\n" f"BTC/USD   {btc}   -   ETH/USD   {eth}\n" f"SBERP     {sber}   -   VKCO      {vkco}\n" f"ПОСЛЕДНЕЕ ЗАКРЫТИЕ · {sber_src.split(' · ')[1] if ' · ' in sber_src else 'дата недоступна'} · MOEX ISS\n\n" f"🕒 {stamp}\n" f"Источники: {usd_src}; {btc_src}; {eth_src}\n" "🙂 Bitcoin работает без выходных. Сбер хотя бы умеет выключать терминал.")
 
 
-def make_gismeteo_card() -> Path:
-    from playwright.sync_api import sync_playwright
-    out = Path("artifacts/gismeteo_moscow.png"); out.parent.mkdir(parents=True, exist_ok=True)
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True); page = browser.new_page(viewport={"width": 900, "height": 720}, device_scale_factor=1.5)
-        page.goto(GISMETEO_MOSCOW_DAY, wait_until="domcontentloaded", timeout=45000); page.wait_for_timeout(5000); page.screenshot(path=str(out), full_page=False); browser.close()
-    return out
-
-
-def send_gismeteo(token: str, chat_id: str) -> None:
-    caption = "🌦 GISMETEO · МОСКВА · ПРОГНОЗ НА ДЕНЬ\n" + GISMETEO_MOSCOW_DAY
-    try: telegram_send_photo(token, chat_id, make_gismeteo_card(), caption)
-    except Exception as exc:
-        print(f"WARN gismeteo-card fallback recipient={chat_id}: {exc}"); telegram_send(token, chat_id, caption, preview=True)
-
-
 def main() -> int:
     token = os.getenv("TELEGRAM_BOT_TOKEN"); raw_ids = os.getenv("TELEGRAM_CHAT_ID")
     if not token or not raw_ids: raise SystemExit("Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID")
     text = morning_header() + "\n\n" + weather_block() + "\n\n" + finance_block(); failures = 0
     for chat_id in parse_chat_ids(raw_ids):
         try:
-            telegram_send(token, chat_id, text); send_gismeteo(token, chat_id); print(f"PASS personal-morning recipient={chat_id}")
+            telegram_send(token, chat_id, text); print(f"PASS personal-morning recipient={chat_id}")
         except Exception as exc:
             failures += 1; print(f"FAIL personal-morning recipient={chat_id}: {exc}")
     return 1 if failures else 0
