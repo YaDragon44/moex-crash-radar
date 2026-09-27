@@ -1,15 +1,15 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-27T09:59:00+03:00",
-  "data_quality": "PARTIAL_FRESH; BTC/GRAM/DOT_FRESH_COINMARKETCAP; NO_VERIFIED_4H_HOLD_RECLAIM_HIGHER_LOW_TRIGGER; SYNCHRONOUS_OI_FUNDING_LIQUIDATIONS_ORDER_FLOW_NOT_VERIFIED",
+  "generated_at": "2026-09-27T22:02:30+03:00",
+  "data_quality": "PARTIAL_FRESH; BTC/DOT_FRESH_COINGECKO; GRAM_FRESH_BREAKOUT_CONTEXT_CMC_BUT_EXACT_SYNCHRONOUS_PRICE_NOT_VERIFIED; NO_VERIFIED_BTC_4H_HOLD_RECLAIM_HIGHER_LOW_TRIGGER; SYNCHRONOUS_ORDER_FLOW_NOT_VERIFIED",
   "market": {
-    "regime": "BTC CONSOLIDATION NEAR $84.5K; ALTS FIRM; CANONICAL LONG TRIGGER NOT CONFIRMED",
+    "regime": "BTC CONSOLIDATION NEAR $84.7K; GRAM BREAKOUT MOMENTUM; DOT FIRM; CANONICAL BTC LONG TRIGGER NOT CONFIRMED",
     "btc_filter": "CAUTION / LONG FILTER CLOSED; STRUCTURE → LEVEL → TRIGGER → R/R SEQUENCE NOT CONFIRMED",
     "action": "NO TRADE"
   },
   "assets": {
     "BTC": {
-      "price_display": "~$84,512; +0.71%/24h",
+      "price_display": "~$84,739; +0.90%/24h",
       "status": "WAIT",
       "score": 13,
       "score_max": 19,
@@ -18,16 +18,16 @@
       "invalidation": "No valid long trigger exists; renewed sustained loss of $82.0K-$82.8K weakens continuation"
     },
     "GRAM": {
-      "price_display": "~$1.59; +10.08%/24h",
+      "price_display": "exact synchronized price NOT VERIFIED; fresh CMC breakout context reports hold above ~$1.54-$1.55",
       "status": "WAIT",
       "score": 9,
       "score_max": 19,
-      "setup": "Strong upside impulse but BTC filter remains closed; do not chase",
-      "trigger": "NOT SET — require fresh structure/volume confirmation and supportive BTC filter",
-      "invalidation": "Failure below canonical $1.40 without recovery invalidates breakout watch"
+      "setup": "Breakout/momentum watch; BTC filter remains closed; do not chase",
+      "trigger": "NOT SET — require supportive BTC filter plus fresh canonical structure/level/trigger/RR sequence",
+      "invalidation": "Loss of breakout structure requires reassessment; no active trade to invalidate"
     },
     "DOT": {
-      "price_display": "~$1.26; +2.86%/24h",
+      "price_display": "~$1.26; +0.60%/24h",
       "status": "INVALID",
       "score": 9,
       "score_max": 19,
@@ -45,7 +45,7 @@
     "tp3": null,
     "rr": null
   },
-  "sources": "CoinMarketCap BTC/GRAM/DOT; public web verification",
-  "source_data_time": "2026-09-27 09:59 MSK",
-  "note": "Authoritative decision produced only by 4H Monitor. FAST GATE failed before trigger/RR, therefore NO TRADE and DEEP CONFIRMATION was not run; missing derivatives/order-flow inputs receive no points. Dashboard READ ONLY; Telegram transport only. Morning presentation layer: MARKET PULSE=BTC consolidation with alt strength; TREND POWER=insufficient for canonical entry; FLOW PRESSURE=NOT VERIFIED; ENTRY RADAR=BTC closest but WAIT; LIQUIDITY RADAR=no confirmed canonical level reaction; TRADE QUALITY=insufficient; ACTION=NO TRADE."
+  "sources": "CoinGecko BTC/DOT; CoinMarketCap GRAM breakout context",
+  "source_data_time": "2026-09-27 22:02 MSK",
+  "note": "Authoritative decision produced only by 4H Monitor. FAST GATE failed at BTC filter/trigger sequence, therefore NO TRADE and DEEP CONFIRMATION was not run. GRAM fresh reporting notes rising OI and slightly positive funding, but because FAST GATE did not produce a candidate these data do not add score. Missing data receive no points. Dashboard READ ONLY; Telegram transport only."
 }
