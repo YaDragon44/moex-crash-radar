@@ -88,7 +88,7 @@ def weather_block() -> str:
         "current": "temperature_2m,apparent_temperature,precipitation,wind_speed_10m",
         "daily": "temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum",
         "hourly": "precipitation_probability,precipitation",
-        "wind_speed_unit": "ms", "forecast_days": 7,
+        "wind_speed_unit": "ms", "forecast_days": 10,
     })
     cur, day = data["current"], data["daily"]
     rain_line = rain_timing(data["hourly"])
@@ -116,7 +116,7 @@ def weather_block() -> str:
         f"🌧 Осадки до {pop:.0f}% · 💨 ветер {wind:.1f} м/с\n"
         f"{rain_line}\n"
         f"👕 {clothes}\n\n"
-        "📆 ПРОГНОЗ НА НЕДЕЛЮ\n" + "\n".join(forecast)
+        "📆 ПРОГНОЗ НА 10 ДНЕЙ\n" + "\n".join(forecast)
     )
 
 def usd_rub() -> tuple[str, str]:
