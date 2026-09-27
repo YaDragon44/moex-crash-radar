@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import json
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 import xml.etree.ElementTree as ET
@@ -37,9 +38,16 @@ def get_json(url: str, params=None):
     return r.json()
 
 
-def telegram_send(token: str, chat_id: str, text: str) -> None:
+def telegram_send(token: str, chat_id: str, text: str) -> int:
     payload = {"chat_id": chat_id, "text": text, "disable_web_page_preview": "true"}
     r = requests.post(f"https://api.telegram.org/bot{token}/sendMessage", data=payload, timeout=30)
+    r.raise_for_status()
+    return int(r.json()["result"]["message_id"])
+
+
+def telegram_delete(token: str, chat_id: str, message_id: int) -> None:
+    r = requests.post(f"https://api.telegram.org/bot{token}/deleteMessage",
+                      data={"chat_id": chat_id, "message_id": message_id}, timeout=30)
     r.raise_for_status()
 
 
@@ -165,11 +173,27 @@ def main() -> int:
     token = os.getenv("TELEGRAM_BOT_TOKEN"); raw_ids = os.getenv("TELEGRAM_CHAT_ID")
     if not token or not raw_ids: raise SystemExit("Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID")
     text = morning_header() + "\n\n" + weather_block() + "\n\n" + finance_block(); failures = 0
+    state_path = "artifacts/morning_dashboard_state.json"
+    try:
+        with open(state_path, "r", encoding="utf-8") as fh: state = json.load(fh)
+    except (FileNotFoundError, json.JSONDecodeError):
+        state = {}
     for chat_id in parse_chat_ids(raw_ids):
         try:
-            telegram_send(token, chat_id, text); print(f"PASS personal-morning recipient={chat_id}")
+            old_id = state.get(chat_id)
+            if old_id:
+                try:
+                    telegram_delete(token, chat_id, int(old_id))
+                    print(f"PASS delete-previous recipient={chat_id}")
+                except Exception as exc:
+                    print(f"WARN delete-previous recipient={chat_id}: {exc}")
+            new_id = telegram_send(token, chat_id, text)
+            state[chat_id] = new_id
+            print(f"PASS personal-morning recipient={chat_id}")
         except Exception as exc:
             failures += 1; print(f"FAIL personal-morning recipient={chat_id}: {exc}")
+    os.makedirs(os.path.dirname(state_path), exist_ok=True)
+    with open(state_path, "w", encoding="utf-8") as fh: json.dump(state, fh)
     return 1 if failures else 0
 
 
