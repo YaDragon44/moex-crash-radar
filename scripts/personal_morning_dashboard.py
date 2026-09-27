@@ -9,7 +9,6 @@ import requests
 
 MSK = ZoneInfo("Europe/Moscow")
 ZYUZINO = (55.6557, 37.5763)
-NAKHIMOVSKY = (55.6626, 37.6055)
 
 
 WEEKDAYS_RU = ("ПОНЕДЕЛЬНИК", "ВТОРНИК", "СРЕДА", "ЧЕТВЕРГ", "ПЯТНИЦА", "СУББОТА", "ВОСКРЕСЕНЬЕ")
@@ -86,46 +85,39 @@ def weather_block() -> str:
     lat, lon = ZYUZINO
     data = get_json("https://api.open-meteo.com/v1/forecast", {
         "latitude": lat, "longitude": lon, "timezone": "Europe/Moscow",
-        "current": "temperature_2m,precipitation,wind_speed_10m",
-        "daily": "temperature_2m_max,temperature_2m_min,precipitation_probability_max",
+        "current": "temperature_2m,apparent_temperature,precipitation,wind_speed_10m",
+        "daily": "temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum",
         "hourly": "precipitation_probability,precipitation",
-        "wind_speed_unit": "ms", "forecast_days": 1,
+        "wind_speed_unit": "ms", "forecast_days": 7,
     })
     cur, day = data["current"], data["daily"]
     rain_line = rain_timing(data["hourly"])
-
-    nlat, nlon = NAKHIMOVSKY
-    hourly = get_json("https://api.open-meteo.com/v1/forecast", {
-        "latitude": nlat, "longitude": nlon, "timezone": "Europe/Moscow",
-        "hourly": "temperature_2m,apparent_temperature,precipitation,wind_speed_10m",
-        "wind_speed_unit": "ms", "forecast_days": 1,
-    })
-    target = f"{datetime.now(MSK).strftime('%Y-%m-%d')}T08:00"
-    try: i = hourly["hourly"]["time"].index(target)
-    except ValueError: i = 8
-    h = hourly["hourly"]
-
-    t_now = round(cur["temperature_2m"]); t_min = round(day["temperature_2m_min"][0]); t_max = round(day["temperature_2m_max"][0])
-    pop = day["precipitation_probability_max"][0]; wind = cur["wind_speed_10m"]
-    nt = round(h["temperature_2m"][i]); feels = round(h["apparent_temperature"][i]); rain = h["precipitation"][i]; nwind = h["wind_speed_10m"][i]
+    t_now = round(cur["temperature_2m"]); feels = round(cur["apparent_temperature"])
+    t_min = round(day["temperature_2m_min"][0]); t_max = round(day["temperature_2m_max"][0])
+    pop = day["precipitation_probability_max"][0] or 0; wind = cur["wind_speed_10m"]
 
     if t_max <= 12: clothes = "куртка/ветровка, закрытая обувь"
     elif t_min <= 12: clothes = "лёгкая куртка утром, днём можно снять"
-    elif pop and pop >= 50: clothes = "лёгкий слой + компактный зонт"
+    elif pop >= 50: clothes = "лёгкий слой + компактный зонт"
     else: clothes = "футболка/рубашка, лёгкий верх на утро"
+
+    ru_days = ("ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС")
+    forecast = []
+    for dt, lo, hi, probability, mm in zip(
+        day["time"], day["temperature_2m_min"], day["temperature_2m_max"],
+        day["precipitation_probability_max"], day["precipitation_sum"]
+    ):
+        d = datetime.fromisoformat(dt)
+        forecast.append(f"{ru_days[d.weekday()]} {round(lo):+d}…{round(hi):+d}° · 🌧{round(probability or 0):d}% · 💧{float(mm or 0):.1f} мм")
 
     return (
         "🌤 ЗЮЗИНО · МОСКВА\n"
-        f"🌡 Сейчас  {t_now:+d}°   ↕️ день {t_min:+d}…{t_max:+d}°\n"
-        f"🌧 Осадки  до {pop}%   💨 ветер {wind:.1f} м/с\n"
-        f"{rain_line}\n\n"
-        "📍 Нахимовский · ~08:00\n"
-        f"🌡 {nt:+d}° · ощущается {feels:+d}°\n"
-        f"🌧 {rain:g} мм   💨 {nwind:.1f} м/с\n"
-        f"👕 {clothes}\n"
-        "🙂 Утренний гардероб снова работает по схеме «слой снял — слой понёс»."
+        f"🌡 Сейчас {t_now:+d}° · ощущается {feels:+d}° · день {t_min:+d}…{t_max:+d}°\n"
+        f"🌧 Осадки до {pop:.0f}% · 💨 ветер {wind:.1f} м/с\n"
+        f"{rain_line}\n"
+        f"👕 {clothes}\n\n"
+        "📆 ПРОГНОЗ НА НЕДЕЛЮ\n" + "\n".join(forecast)
     )
-
 
 def usd_rub() -> tuple[str, str]:
     r = requests.get("https://www.cbr.ru/scripts/XML_daily.asp", timeout=30, headers={"User-Agent": "morning-dashboard/1.0"}); r.raise_for_status(); root = ET.fromstring(r.content); date = root.attrib.get("Date", "")
