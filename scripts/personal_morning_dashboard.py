@@ -152,6 +152,11 @@ def btc_usd() -> tuple[str, str]:
     data = get_json("https://api.coinbase.com/v2/prices/BTC-USD/spot"); return f"${float(data['data']['amount']):,.0f}", "Coinbase spot"
 
 
+def eth_usdt() -> tuple[str, str]:
+    data = get_json("https://api.binance.com/api/v3/ticker/price", {"symbol": "ETHUSDT"})
+    return f"${float(data['price']):,.2f}", "Binance ETH/USDT spot"
+
+
 def moex_close(secid: str) -> tuple[str, str]:
     today = datetime.now(MSK).date(); start = today - timedelta(days=14)
     data = get_json(f"https://iss.moex.com/iss/history/engines/stock/markets/shares/boards/TQBR/securities/{secid}.json", {"from": start.isoformat(), "till": today.isoformat(), "iss.meta": "off"})
@@ -167,12 +172,14 @@ def finance_block() -> str:
     except Exception: usd, usd_src = "N/A", "ЦБ РФ: данные недоступны"
     try: btc, btc_src = btc_usd()
     except Exception: btc, btc_src = "N/A", "BTC: данные недоступны"
+    try: eth, eth_src = eth_usdt()
+    except Exception: eth, eth_src = "N/A", "ETH/USDT: данные недоступны"
     try: sber, sber_src = moex_close("SBERP")
     except Exception: sber, sber_src = "N/A", "MOEX: официальный SBERP CLOSE недоступен"
     try: vkco, vkco_src = moex_close("VKCO")
     except Exception: vkco, vkco_src = "N/A", "MOEX: официальный VKCO CLOSE недоступен"
     stamp = datetime.now(MSK).strftime("%d.%m.%Y %H:%M МСК")
-    return ("💰 ФИНАНСЫ\n" f"💵 USD/RUB  {usd}\n" f"₿ BTC/USD   {btc}\n" f"🏦 SBERP     {sber}\n" f"   {sber_src}\n" f"🟦 VKCO      {vkco}\n" f"   {vkco_src}\n\n" f"🕒 {stamp}\n" f"Источники: {usd_src}; {btc_src}\n" "🙂 Bitcoin работает без выходных. Сбер хотя бы умеет выключать терминал.")
+    return ("💰 ФИНАНСЫ\n" f"USD/RUB   {usd}\n" f"BTC/USD   {btc}\n" f"ETH/USDT  {eth}\n" f"SBERP     {sber}\n" f"VKCO      {vkco}\n" f"ПОСЛЕДНЕЕ ЗАКРЫТИЕ · {sber_src.split(' · ')[1] if ' · ' in sber_src else 'дата недоступна'} · MOEX ISS\n\n" f"🕒 {stamp}\n" f"Источники: {usd_src}; {btc_src}; {eth_src}\n" "🙂 Bitcoin работает без выходных. Сбер хотя бы умеет выключать терминал.")
 
 
 def make_gismeteo_card() -> Path:
