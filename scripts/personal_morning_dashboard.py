@@ -178,7 +178,7 @@ def finance_block() -> str:
     try: vkco, vkco_src = moex_close("VKCO")
     except Exception: vkco, vkco_src = "N/A", "MOEX: официальный VKCO CLOSE недоступен"
     stamp = datetime.now(MSK).strftime("%d.%m.%Y %H:%M МСК")
-    return ("💰 ФИНАНСЫ\n" f"USD/RUB   {usd}\n" f"BTC/USD   {btc}\n" f"ETH/USD   {eth}\n" f"SBERP     {sber}\n" f"VKCO      {vkco}\n" f"ПОСЛЕДНЕЕ ЗАКРЫТИЕ · {sber_src.split(' · ')[1] if ' · ' in sber_src else 'дата недоступна'} · MOEX ISS\n\n" f"🕒 {stamp}\n" f"Источники: {usd_src}; {btc_src}; {eth_src}\n" "🙂 Bitcoin работает без выходных. Сбер хотя бы умеет выключать терминал.")
+    return ("💰 ФИНАНСЫ\n" f"USD/RUB   {usd}\n" f"BTC/USD   {btc}   -   ETH/USD   {eth}\n" f"SBERP     {sber}   -   VKCO      {vkco}\n" f"ПОСЛЕДНЕЕ ЗАКРЫТИЕ · {sber_src.split(' · ')[1] if ' · ' in sber_src else 'дата недоступна'} · MOEX ISS\n\n" f"🕒 {stamp}\n" f"Источники: {usd_src}; {btc_src}; {eth_src}\n" "🙂 Bitcoin работает без выходных. Сбер хотя бы умеет выключать терминал.")
 
 
 def make_gismeteo_card() -> Path:
