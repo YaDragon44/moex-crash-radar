@@ -152,12 +152,12 @@ def btc_usd() -> tuple[str, str]:
     data = get_json("https://api.coinbase.com/v2/prices/BTC-USD/spot"); return f"${float(data['data']['amount']):,.0f}", "Coinbase spot"
 
 
-def sberp_close() -> tuple[str, str]:
+def moex_close(secid: str) -> tuple[str, str]:
     today = datetime.now(MSK).date(); start = today - timedelta(days=14)
-    data = get_json("https://iss.moex.com/iss/history/engines/stock/markets/shares/boards/TQBR/securities/SBERP.json", {"from": start.isoformat(), "till": today.isoformat(), "iss.meta": "off"})
+    data = get_json(f"https://iss.moex.com/iss/history/engines/stock/markets/shares/boards/TQBR/securities/{secid}.json", {"from": start.isoformat(), "till": today.isoformat(), "iss.meta": "off"})
     hist = data["history"]; cols = hist["columns"]; rows = hist["data"]; idx_date = cols.index("TRADEDATE"); idx_close = cols.index("CLOSE")
     valid = [(r[idx_date], r[idx_close]) for r in rows if r[idx_close] is not None]
-    if not valid: raise RuntimeError("Official SBERP CLOSE unavailable")
+    if not valid: raise RuntimeError(f"Official {secid} CLOSE unavailable")
     trade_date, close = valid[-1]; dt = datetime.strptime(trade_date, "%Y-%m-%d").strftime("%d.%m.%Y")
     return f"{float(close):.2f} ₽", f"ПОСЛЕДНЕЕ ЗАКРЫТИЕ · {dt} · MOEX ISS"
 
@@ -167,10 +167,12 @@ def finance_block() -> str:
     except Exception: usd, usd_src = "N/A", "ЦБ РФ: данные недоступны"
     try: btc, btc_src = btc_usd()
     except Exception: btc, btc_src = "N/A", "BTC: данные недоступны"
-    try: sber, sber_src = sberp_close()
-    except Exception: sber, sber_src = "N/A", "MOEX: официальный CLOSE недоступен"
+    try: sber, sber_src = moex_close("SBERP")
+    except Exception: sber, sber_src = "N/A", "MOEX: официальный SBERP CLOSE недоступен"
+    try: vkco, vkco_src = moex_close("VKCO")
+    except Exception: vkco, vkco_src = "N/A", "MOEX: официальный VKCO CLOSE недоступен"
     stamp = datetime.now(MSK).strftime("%d.%m.%Y %H:%M МСК")
-    return ("💰 ФИНАНСЫ\n" f"💵 USD/RUB  {usd}\n" f"₿ BTC/USD   {btc}\n" f"🏦 SBERP     {sber}\n" f"   {sber_src}\n\n" f"🕒 {stamp}\n" f"Источники: {usd_src}; {btc_src}\n" "🙂 Bitcoin работает без выходных. Сбер хотя бы умеет выключать терминал.")
+    return ("💰 ФИНАНСЫ\n" f"💵 USD/RUB  {usd}\n" f"₿ BTC/USD   {btc}\n" f"🏦 SBERP     {sber}\n" f"   {sber_src}\n" f"🟦 VKCO      {vkco}\n" f"   {vkco_src}\n\n" f"🕒 {stamp}\n" f"Источники: {usd_src}; {btc_src}\n" "🙂 Bitcoin работает без выходных. Сбер хотя бы умеет выключать терминал.")
 
 
 def make_gismeteo_card() -> Path:
