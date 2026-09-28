@@ -91,13 +91,21 @@ def rain_timing(hourly: dict) -> str:
 
 def weather_block() -> str:
     lat, lon = ZYUZINO
-    data = get_json("https://api.open-meteo.com/v1/forecast", {
+    base_params = {
         "latitude": lat, "longitude": lon, "timezone": "Europe/Moscow",
         "current": "temperature_2m,apparent_temperature,precipitation,wind_speed_10m",
         "daily": "temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum",
         "hourly": "precipitation_probability,precipitation",
         "wind_speed_unit": "ms", "forecast_days": 10,
-    })
+    }
+    data = get_json("https://api.open-meteo.com/v1/forecast", base_params)
+    model_daily = {}
+    for model in ("ecmwf_ifs025", "gfs_seamless", "icon_seamless"):
+        try:
+            params = dict(base_params); params["models"] = model
+            model_daily[model] = get_json("https://api.open-meteo.com/v1/forecast", params)["daily"]
+        except Exception as exc:
+            print(f"WARN weather-model {model}: {exc}")
     cur, day = data["current"], data["daily"]
     rain_line = rain_timing(data["hourly"])
     t_now = round(cur["temperature_2m"]); feels = round(cur["apparent_temperature"])
@@ -111,12 +119,15 @@ def weather_block() -> str:
 
     ru_days = ("ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС")
     forecast = []
-    for dt, lo, hi, probability, mm in zip(
+    for idx, (dt, lo, hi, probability, mm) in enumerate(zip(
         day["time"], day["temperature_2m_min"], day["temperature_2m_max"],
         day["precipitation_probability_max"], day["precipitation_sum"]
-    ):
+    )):
         d = datetime.fromisoformat(dt)
-        forecast.append(f"{ru_days[d.weekday()]} {round(lo):+d}…{round(hi):+d}° · 🌧{round(probability or 0):d}% · 💧{float(mm or 0):.1f} мм")
+        highs = [m["temperature_2m_max"][idx] for m in model_daily.values() if idx < len(m["temperature_2m_max"]) and m["temperature_2m_max"][idx] is not None]
+        spread = (max(highs) - min(highs)) if len(highs) >= 2 else None
+        confidence = "🟢" if spread is not None and spread <= 2 else ("🟡" if spread is not None and spread <= 4 else "🔴")
+        forecast.append(f"{ru_days[d.weekday()]} {round(lo):+d}…{round(hi):+d}° · 🌧{round(probability or 0):d}% · 💧{float(mm or 0):.1f} мм {confidence}")
 
     return (
         "🌤 ЗЮЗИНО · МОСКВА\n"
@@ -124,7 +135,7 @@ def weather_block() -> str:
         f"🌧 Осадки до {pop:.0f}% · 💨 ветер {wind:.1f} м/с\n"
         f"{rain_line}\n"
         f"👕 {clothes}\n\n"
-        "📆 ПРОГНОЗ НА 10 ДНЕЙ\n" + "\n".join(forecast)
+        "📆 ПРОГНОЗ НА 10 ДНЕЙ\n" + "\n".join(forecast) + "\n🟢 модели близки · 🟡 расходятся · 🔴 высокая неопределённость"
     )
 
 def usd_rub() -> tuple[str, str]:
