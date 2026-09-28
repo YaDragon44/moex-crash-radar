@@ -104,6 +104,8 @@ def weather_block() -> str:
         try:
             params = dict(base_params); params["models"] = model
             model_daily[model] = get_json("https://api.open-meteo.com/v1/forecast", params)["daily"]
+            md = model_daily[model]
+            print("WEATHER_MODEL", model, list(zip(md["time"], md["temperature_2m_min"], md["temperature_2m_max"], md["precipitation_probability_max"], md["precipitation_sum"])))
         except Exception as exc:
             print(f"WARN weather-model {model}: {exc}")
     cur, day = data["current"], data["daily"]
