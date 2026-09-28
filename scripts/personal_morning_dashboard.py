@@ -136,12 +136,32 @@ def usd_rub() -> tuple[str, str]:
     raise RuntimeError("USD not found in CBR XML")
 
 
+def crypto_usd(symbol: str, decimals: int) -> tuple[str, str]:
+    # Primary: Coinbase spot. Cross-check against Kraken ticker on every run.
+    started = datetime.now(ZoneInfo("UTC"))
+    cb = get_json(f"https://api.coinbase.com/v2/prices/{symbol}-USD/spot")
+    cb_price = float(cb["data"]["amount"])
+    pair = "XBTUSD" if symbol == "BTC" else "ETHUSD"
+    kr = get_json("https://api.kraken.com/0/public/Ticker", {"pair": pair})
+    if kr.get("error"):
+        raise RuntimeError(f"Kraken {symbol} validation failed: {kr['error']}")
+    row = next(iter(kr["result"].values()))
+    kr_price = float(row["c"][0])
+    deviation = abs(cb_price - kr_price) / ((cb_price + kr_price) / 2)
+    if deviation > 0.005:
+        raise RuntimeError(f"{symbol} source divergence {deviation:.2%}")
+    checked = datetime.now(MSK)
+    if (datetime.now(ZoneInfo("UTC")) - started).total_seconds() > 60:
+        raise RuntimeError(f"{symbol} quote validation stale")
+    return f"${cb_price:,.{decimals}f}", f"Coinbase spot + Kraken check {checked:%H:%M:%S} МСК"
+
+
 def btc_usd() -> tuple[str, str]:
-    data = get_json("https://api.coinbase.com/v2/prices/BTC-USD/spot"); return f"${float(data['data']['amount']):,.0f}", "Coinbase spot"
+    return crypto_usd("BTC", 0)
 
 
 def eth_usd() -> tuple[str, str]:
-    data = get_json("https://api.coinbase.com/v2/prices/ETH-USD/spot"); return f"${float(data['data']['amount']):,.2f}", "Coinbase spot"
+    return crypto_usd("ETH", 2)
 
 
 def moex_close(secid: str) -> tuple[str, str]:
