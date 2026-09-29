@@ -40,7 +40,7 @@ Current Control Room exposes four independent strategies, TradingView H1, RSI14,
 
 Valuation UX answers first: **НЕДООЦЕНЕНА / СПРАВЕДЛИВО ОЦЕНЕНА / ПЕРЕОЦЕНЕНА**, then current price, base value, margin/potential and Bear/Base/Bull EV/EBITDA evidence. It is analytical context, not a trading signal.
 
-TradingView limitation: RSI14 is visible in the embed; reliable programmatic MA50 + MA200 overlay inside the public TradingView embed is not currently proven. Do not reintroduce MA9 or claim the external H1 trend-context values are TradingView overlay lines.
+TradingView architecture decision (2026-09-29): the production chart uses the free public Advanced Chart Widget iframe. Its documented embed configuration supports adding studies but does not expose the Advanced Charts library API needed to create two Moving Average instances with independent length inputs. Therefore RSI14 remains inside TradingView; MA50/MA200 remain the deterministic MOEX H1 trend-context block above it. Do not reintroduce MA9, use unsupported embed overrides, or claim MA50/MA200 are TradingView overlay lines. Revisit only if the project adopts the separate Advanced Charts library/API.
 
 ## Fundamental analysis
 Read-only official VK IR evidence layer. Current v1 is tied to the latest implemented official reporting release and fails closed when source validation fails. It does not change strategy gates.
@@ -60,7 +60,7 @@ PR #125 H1 structural S/R; #126 zone-side fix; #127 fundamental analysis; #136/#
 3. Replace source-bound fundamental v1 with robust official VK IR report parsing/history.
 4. Add/maintain explicit fail-closed tests for fundamental source failure.
 5. Improve mobile layout for new fundamental/valuation sections if production smoke shows issues.
-6. TradingView MA50/MA200 overlay remains unresolved unless a supported embed mechanism is proven.
+6. TradingView MA50/MA200 overlay is CLOSED as a public-embed limitation; revisit only with the separate Advanced Charts library/API.
 7. Audit historical S1 TP ordering anomaly only as data-integrity work under freeze.
 
 ## Release policy
