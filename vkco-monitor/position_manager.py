@@ -29,6 +29,9 @@ def has_active_position(state: dict[str, Any]) -> bool:
 
 
 def open_position(signal: dict[str, Any], plan: dict[str, Any]) -> dict[str, Any]:
+    entry=float(signal["entry"]); stop=float(signal["stop"]); tp1=float(signal["tp1"]); tp2=float(signal["tp2"]); tp3=float(signal["tp3"])
+    if not (stop < entry < tp1 < tp2 < tp3):
+        raise ValueError("Invalid LONG target order: require stop < entry < tp1 < tp2 < tp3")
     return {
         "ticker": "VKCO",
         "direction": "LONG",
