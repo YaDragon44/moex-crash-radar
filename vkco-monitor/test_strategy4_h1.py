@@ -69,3 +69,18 @@ def test_structural_zone_sides_do_not_cross_price():
     c=candles(90);x=s.structural_levels(c);p=c[-1].close
     if x["support_zone"]: assert x["support_zone"]["high"] < p
     if x["resistance_zone"]: assert x["resistance_zone"]["low"] > p
+
+
+def test_h1_audit_maps_blocked_gate_and_keeps_wait():
+    wait=s.audit_snapshot({"decision":"WAIT","reason":"NO_TRIGGER","candle":"c1","support":100,"resistance":110,"signal":None})
+    assert wait["status"]=="WAIT"
+    blocked=s.audit_snapshot({"decision":"WAIT","reason":"MARKET_FILTER","candle":"c2","support":100,"resistance":110,"signal":{"setup":"x","signal_id":"id"}})
+    assert blocked["status"]=="BLOCKED"
+    assert blocked["trigger"] is True
+
+def test_h1_audit_deduplicates_same_candle_state(monkeypatch,tmp_path):
+    monkeypatch.setattr(s,"AUDIT_FILE",tmp_path/"s4_audit.jsonl")
+    snap={"decision":"WAIT","reason":"NO_TRIGGER","candle":"c1","support":100,"resistance":110,"signal":None}
+    assert s.append_decision_audit(snap) is True
+    assert s.append_decision_audit(snap) is False
+    assert len((tmp_path/"s4_audit.jsonl").read_text(encoding="utf-8").splitlines())==1
