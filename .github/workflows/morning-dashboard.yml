@@ -6,8 +6,7 @@ on:
     # GitHub scheduled workflows can be delayed under load. Two nearby triggers
     # provide a self-healing retry window; the delivery script remains the
     # single source of truth for the Telegram message.
-    - cron: '1 5 * * *'   # 08:01 Europe/Moscow (UTC+3)
-    - cron: '16 5 * * *'  # 08:16 Europe/Moscow fallback
+    - cron: '13 5 * * *'  # 08:13 Europe/Moscow (UTC+3)
 
   push:
     paths:
