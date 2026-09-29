@@ -1,120 +1,70 @@
 # VKCO PROJECT CHECKPOINT
 
-**Checkpoint date:** 2026-09-24 (Europe/Moscow)  
-**Project:** VKCO Trade Monitor + Control Room  
-**Repository:** YaDragon44/moex-crash-radar  
-**Status:** PRODUCTION OBSERVATION / STRATEGY FREEZE
+**Checkpoint date:** 2026-09-29 (Europe/Moscow)
+**Project:** VKCO Trade Monitor + Control Room
+**Repository:** YaDragon44/moex-crash-radar
+**Status:** PRODUCTION OBSERVATION / STRATEGY #1 FREEZE
 
 ## Recovery anchor
-
-This file is the canonical recovery point for the VKCO-only workstream. Always inspect fresh `main` before acting.
-
-Production engine: **R1.8**. Dashboard accepted source baseline: **R0.6.4**, with later UI/log hotfixes.\n\nStrategy #2 is an independent **SHADOW benchmark**: EMA50/EMA200 crossover on completed M10 VKCO candles. BUY opens a shadow LONG; SELL closes it. It has separate state/journal and does not affect Strategy #1 signals, gates, risk, Telegram decisions or positions.
-
-## Architecture
-
-`GitHub Actions -> MOEX ISS -> adaptive VKCO trigger -> IMOEX filter -> official VK IR event-risk -> trade plan -> model position manager -> journal -> Telegram + sanitized vkco-live/status.json -> GitHub Pages dashboard`
-
-No broker API/orders, VPS, DB, Redis, Docker, Cloudflare or ML.
+Always inspect fresh `main` before acting. Production engine remains **R1.8**. No broker orders.
 
 ## Production paths
-
 - Dashboard: `web/vkco-dashboard/index.html`
 - Monitor: `vkco-monitor/monitor.py`
 - Runtime: `vkco-monitor/run_r18.py`
-- Trade plan: `vkco-monitor/trade_plan.py`
-- Position lifecycle: `vkco-monitor/position_manager.py`
-- Journal: `vkco-monitor/trade_journal.py`
-- Public exporter: `vkco-monitor/export_status.py`
-- Live branch/file: `vkco-live/status.json`
+- Exporter: `vkco-monitor/export_status.py`
+- Strategy #4: `vkco-monitor/strategy4_h1.py`
 - Workflow: `.github/workflows/vkco-monitor.yml`
-- Observation issue: #61
+- Observation gate: issue #61
 
-## Current production facts
+## Current architecture
+`GitHub Actions -> MOEX ISS -> strategy engines -> risk/evidence gates -> model lifecycle/journals -> sanitized status -> GitHub Pages`
 
-- Trading strategy is frozen during Production Observation.
-- Authorized LONG setups only: **Adaptive Wyckoff Spring** and **Adaptive Breakout + Hold**.
-- Adaptive levels: previous 20 completed M10 candles, excluding the latest 3 trigger candles.
-- RVOL threshold: breakout >= 1.20; spring >= 1.30.
-- IMOEX market filter and official VK IR Event Risk Lite remain mandatory.
-- Production risk setting remains 0.5%.
-- Model/paper positions are not broker executions.
-- Dashboard is read-only and consumes the sanitized live state.
+No broker API/orders, VPS, DB, Redis, Docker, Cloudflare or ML.
 
-## Dashboard / entry-log state
+## Strategies
+### Strategy #1 — production / frozen
+Adaptive Wyckoff Spring + Adaptive Breakout/Hold on completed M10. 20-candle adaptive levels; RVOL breakout >=1.20, spring >=1.30; IMOEX + official VK IR event-risk mandatory; risk 0.5%. Issue #61: 10 closed trades diagnostic only; prefer 20 before tuning.
 
-Dashboard recovery R0.6.4 is accepted and uses only `vkco-live/status.json` for VKCO live state and the 72 completed M10 candles.
+### Strategy #2 — SHADOW
+Independent M10 EMA50/EMA200 crossover benchmark. Separate state/journal. Does not affect S1.
 
-2026-09-24 additions:
-- PR #93 added bottom block **Entry setup & indicator log**.
-- Public exporter now exposes a sanitized `entry_log` for up to 20 persisted model entries.
-- Existing historical journal records show setup, opened/closed time, entry/exit, score, status and Result R.
-- Historical RVOL, Support/Resistance, IMOEX filter and Event Risk snapshots were not persisted for the existing trade; UI must show them as **not saved**, never reconstruct/invent them.
-- PR #94 removed the stray literal `\\n` visible between the entry-log and current-action cards.
+### Strategy #3 — SHADOW
+Independent M10 RSI14 + valuation/fair-value + EMA200 regime. Separate state/journal. Does not affect S1/S2.
 
-Known persisted model trade at this checkpoint:
-- setup: Adaptive Wyckoff Spring;
-- opened: 2026-09-21T13:09:59+03:00;
-- entry: 109.80;
-- score: 10/19;
-- journal result: +3.125R;
-- stored terminal status: CLOSED_STOP.
+### Strategy #4 — SHADOW / H1
+S1-derived research strategy on completed H1 candles. Independent state/journal. H1 local S/R, repeated-pivot structural S/R zones, IMOEX H1 gate, official VK IR event-risk, model lifecycle and statistics. H1 MA50/MA200 trend context is read-only. H1 Decision Audit persists future WAIT/READY/BLOCKED evidence independently and does not alter signals.
 
-The combination of profitable result with terminal label CLOSED_STOP and the persisted moved stop above entry requires lifecycle semantics inspection before interpreting it as a defect.
+## Dashboard
+Current Control Room exposes four independent strategies, TradingView H1, RSI14, H1 MA50/MA200 trend context, H1 local/structural S/R, analyst view, risk/volatility, official VK IR news, MOEX fundamental snapshot, detailed VK fundamental analysis and valuation.
 
-## Observability gap
+Valuation UX answers first: **НЕДООЦЕНЕНА / СПРАВЕДЛИВО ОЦЕНЕНА / ПЕРЕОЦЕНЕНА**, then current price, base value, margin/potential and Bear/Base/Bull EV/EBITDA evidence. It is analytical context, not a trading signal.
 
-The current journal persists completed model positions, not a complete decision history. Therefore it cannot prove how many candidate/blocked entry points existed.
+TradingView limitation: RSI14 is visible in the embed; reliable programmatic MA50 + MA200 overlay inside the public TradingView embed is not currently proven. Do not reintroduce MA9 or claim the external H1 trend-context values are TradingView overlay lines.
 
-Recommended next product slice is a minimal **Decision Audit Log** that persists future decision snapshots without changing strategy:
-`timestamp -> candle -> WAIT/READY/BLOCKED -> reason -> setup -> support/resistance -> RVOL -> trigger facts -> IMOEX/SMA20/1h -> Event Risk -> score -> Entry/Stop/TP -> signal_id`.
+## Fundamental analysis
+Read-only official VK IR evidence layer. Current v1 is tied to the latest implemented official reporting release and fails closed when source validation fails. It does not change strategy gates.
 
-Deduplicate unchanged states; do not log every identical heartbeat.
+## Evidence / audit
+- S1 Decision Audit exists and deduplicates unchanged states.
+- S4 H1 Decision Audit: `strategy4_h1_decision_audit.jsonl`, independent, deduplicated.
+- Structural H1 S/R is read-only and does not alter S4 trigger semantics.
+- Never reconstruct missing historical evidence.
 
-## Risk safety
+## Known completed milestones
+PR #125 H1 structural S/R; #126 zone-side fix; #127 fundamental analysis; #136/#137 TradingView sizing; #138-#143 TradingView study experiments/fixes including MA9 removal; #144 H1 MA50/MA200 trend context; #145 readable valuation indicator.
 
-R1.8.1 work exists separately and must remain safety-only:
-- official current MOEX LOTSIZE;
-- risk-budget sizing plus capital/notional cap;
-- fail closed on missing/invalid metadata;
-- no changes to signal thresholds or trading strategy.
+## Remaining work
+1. Accumulate real S4 H1 evidence and compare with S1 only after adequate sample.
+2. Do not promote S4 from SHADOW or tune H1 parameters from a tiny sample.
+3. Replace source-bound fundamental v1 with robust official VK IR report parsing/history.
+4. Add/maintain explicit fail-closed tests for fundamental source failure.
+5. Improve mobile layout for new fundamental/valuation sections if production smoke shows issues.
+6. TradingView MA50/MA200 overlay remains unresolved unless a supported embed mechanism is proven.
+7. Audit historical S1 TP ordering anomaly only as data-integrity work under freeze.
 
-Do not call R1.8.1 released unless its specialized gates are green and the relevant PR is merged.
+## Release policy
+Branch -> smallest scoped change -> tests/CI -> PR -> merge after relevant gates -> production verification. Preserve Strategy #1 freeze and fail closed on missing critical data.
 
-## Production observation gate
-
-Issue #61 governs the freeze:
-- 10 closed model trades -> diagnostic review only;
-- prefer 20 closed model trades before strategy tuning;
-- runtime/data-integrity/state-transition/risk-safety defects may be fixed immediately.
-
-Current public journal contains only **1 completed model trade**.
-
-## Strategy #2 — EMA50/EMA200 shadow\n\n- Timeframe: completed VKCO M10 candles.\n- BUY: EMA50 crosses EMA200 from below to above.\n- SELL: EMA50 crosses EMA200 from above to below; SELL closes shadow LONG only (no short position).\n- No RVOL, Wyckoff, S/R, IMOEX, Event Risk or Confluence inputs.\n- Separate persisted files: `strategy2_ema_state.json` and `strategy2_ema_journal.jsonl`.\n- History begins from real snapshots captured after deployment; no backfill is invented.\n- Public dashboard exposes current EMA50/EMA200, crossover state, shadow position state and captured journal.\n\n## QA / release policy
-
-For every material change:
-1. dedicated branch;
-2. smallest scoped change;
-3. targeted regression + repository CI;
-4. PR;
-5. merge only after relevant gates;
-6. production workflow/Pages verification;
-7. UI changes require real public-page verification;
-8. no invented data;
-9. update this checkpoint after accepted material changes.
-
-## Current transition state
-
-PR #93 is merged; merge commit `a62f47127687dbcdfc5faab866faed7de35d793d`. Its push runs for CI, VKCO Monitor, Live MOEX snapshot and Deploy Dashboard completed successfully.
-
-PR #94 is merged; merge commit `579c0cc01006ed52fc025b2c4522a4e80f7e514e`. It is a presentation-only fix for the visible literal newline. At the moment of this checkpoint its post-merge CI/Deploy runs had just been queued; fresh status must be checked in the new chat before declaring the hotfix fully production-verified.
-
-## New-chat recovery instruction
-
-1. Read this file first.
-2. Fetch fresh `main` and current Actions status.
-3. Verify PR #94 deployment/public page if not already green.
-4. Inspect current `vkco-live/status.json`.
-5. Preserve strategy freeze.
-6. Then continue the authorized next work only; do not reconstruct state from unrelated repository modules.
-7. Principle: **maximum simplicity, capital preservation, no invented data, evidence before release claims.**
+## New-chat recovery
+Read this file, fetch fresh main and Actions, inspect current public/live state, preserve S1 freeze, then continue only authorized VKCO work. Maximum simplicity; capital preservation; no invented data; evidence before release claims.

@@ -7,9 +7,11 @@ import monitor
 import position_manager
 import trade_journal
 import trade_plan
+from decision_audit import append_if_changed
 
 STATE_FILE=Path(os.getenv("STRATEGY4_STATE_FILE","vkco-monitor/state/strategy4_h1_state.json"))
 JOURNAL_FILE=Path(os.getenv("STRATEGY4_JOURNAL_JSONL","vkco-monitor/state/strategy4_h1_journal.jsonl"))
+AUDIT_FILE=Path(os.getenv("STRATEGY4_DECISION_AUDIT_JSONL","vkco-monitor/state/strategy4_h1_decision_audit.jsonl"))
 
 def fetch_h1(days:int=45,secid:str=monitor.TICKER,market:str="shares",board:str|None=monitor.BOARD)->list[monitor.Candle]:
     url=monitor._candles_url(secid,market,board); rows=[]; cols=None; start=0
@@ -126,13 +128,26 @@ def run_shadow(c:list[Any])->dict[str,Any]:
         return {**snap,"decision":"HOLD" if position_manager.has_active_position(state) else "WAIT",
                 "reason":event or "MODEL_POSITION_ACTIVE","position":state.get("position"),
                 "journal_appended":event in {"CLOSED_PROFIT","CLOSED_STOP"}}
-    s=decision_snapshot(c);changed=False
+    s=decision_snapshot(c);append_decision_audit(s);changed=False
     if s["decision"]=="READY":
         sig=s["signal"];plan=trade_plan.build_trade_plan(sig)
         pos=position_manager.open_position(sig,plan)
         state={"position":pos,"last_signal_id":sig["signal_id"]}
         position_manager.save_state_file(STATE_FILE,state);changed=True
     return {**s,"position":state.get("position"),"journal_appended":changed}
+
+def audit_snapshot(s:dict[str,Any])->dict[str,Any]:
+    sig=s.get("signal") or {}; imo=s.get("imoex"); ev=s.get("event_risk")
+    status=s.get("decision")
+    if status=="WAIT" and s.get("reason") in {"MARKET_FILTER","EVENT_RISK","EVENT_DATA_UNAVAILABLE"}: status="BLOCKED"
+    return {"timestamp":monitor.datetime.now(monitor.MOSCOW).isoformat(),"candle":s.get("candle"),"status":status,
+            "reason":s.get("reason"),"setup":sig.get("setup"),"support":s.get("support"),"resistance":s.get("resistance"),
+            "rvol":sig.get("rvol"),"trigger":bool(sig),"imoex":imo,"event_risk":ev,"score":sig.get("score"),
+            "entry":sig.get("entry"),"stop":sig.get("stop"),"tp1":sig.get("tp1"),"tp2":sig.get("tp2"),
+            "tp3":sig.get("tp3"),"signal_id":sig.get("signal_id")}
+
+def append_decision_audit(s:dict[str,Any])->bool:
+    return append_if_changed(audit_snapshot(s),AUDIT_FILE)
 
 def public_snapshot(c:list[Any])->dict[str,Any]:
     s=decision_snapshot(c);state=_load();rows=journal();st=trade_journal.stats(rows)
