@@ -61,7 +61,7 @@ PR #125 H1 structural S/R; #126 zone-side fix; #127 fundamental analysis; #136/#
 4. Add/maintain explicit fail-closed tests for fundamental source failure.
 5. Improve mobile layout for new fundamental/valuation sections if production smoke shows issues.
 6. TradingView MA50/MA200 overlay is CLOSED as a public-embed limitation; revisit only with the separate Advanced Charts library/API.
-7. Audit historical S1 TP ordering anomaly only as data-integrity work under freeze.
+7. Historical S1 TP ordering anomaly audited: lifecycle requires monotonic LONG targets. New model positions now fail closed unless `stop < entry < TP1 < TP2 < TP3`; historical evidence remains immutable.
 
 ## Release policy
 Branch -> smallest scoped change -> tests/CI -> PR -> merge after relevant gates -> production verification. Preserve Strategy #1 freeze and fail closed on missing critical data.
