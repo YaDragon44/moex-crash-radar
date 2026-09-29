@@ -1,15 +1,15 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-29T10:04:49+03:00",
-  "data_quality": "PARTIAL_FRESH; BTC_AND_DOT_FRESH_PUBLIC_REFERENCES; GRAM_SYNCHRONOUS_PRICE_NOT_VERIFIED; BTC_4H_CANONICAL_TRIGGER_NOT_VERIFIED; DERIVATIVES_AND_ORDER_FLOW_NOT_VERIFIED",
+  "generated_at": "2026-09-29T18:03:09+03:00",
+  "data_quality": "PARTIAL_FRESH; BTC_DOT_FRESH_PUBLIC_REFERENCES; GRAM_SYNCHRONOUS_PRICE_NOT_VERIFIED; BTC_4H_TRIGGER_NOT_VERIFIED; DERIVATIVES_ORDER_FLOW_NOT_VERIFIED",
   "market": {
-    "regime": "BTC TESTING/NEAR $82.0K-$82.8K WATCH AREA; MARKET PRESSURE ELEVATED; NO VERIFIED 4H REVERSAL TRIGGER",
-    "btc_filter": "CAUTION / LONG FILTER CLOSED; LEVEL TESTED/NEAR-TESTED BUT HOLD/RECLAIM + HIGHER LOW NOT VERIFIED",
+    "regime": "BTC REBOUNDED ABOVE $82.0K-$82.8K WATCH AREA; NO VERIFIED 4H REVERSAL TRIGGER",
+    "btc_filter": "CAUTION / LONG FILTER CLOSED; REACTION IMPROVED BUT HOLD/RECLAIM + HIGHER LOW NOT VERIFIED",
     "action": "NO TRADE"
   },
   "assets": {
     "BTC": {
-      "price_display": "~$83,158 latest verified public reference",
+      "price_display": "~$83,835-$83,994 fresh public references",
       "status": "WAIT",
       "score": null,
       "score_max": 19,
@@ -27,18 +27,18 @@
       "invalidation": "No active trade; reassess only with fresh synchronous data"
     },
     "DOT": {
-      "price_display": "~$1.17; -4.8%/24h; DOT/BTC ~0.00001394",
-      "status": "INVALID",
+      "price_display": "~$1.21; +3.3%/24h; DOT/BTC ~0.00001446",
+      "status": "WAIT",
       "score": null,
       "score_max": 19,
-      "setup": "Prior recovery setup invalidated; new structure required",
-      "trigger": "NOT SET — require new structure before defining trigger",
-      "invalidation": "Prior recovery setup remains invalidated"
+      "setup": "Recovery watch; new structure confirmation required",
+      "trigger": "NOT SET — require verified structure/level/trigger after BTC filter opens",
+      "invalidation": "No active trade; prior recovery thesis requires fresh confirmation"
     }
   },
-  "best_candidate": "BTC — closest candidate at canonical watch area, but trigger not verified",
+  "best_candidate": "BTC — closest candidate after reaction from canonical watch area, but 4H trigger not verified",
   "trade_plan": {"entry": null, "stop": null, "tp1": null, "tp2": null, "tp3": null, "rr": null},
-  "sources": "Moneycontrol BTC; CoinGecko DOT/DOT-BTC/Global; GRAM fresh synchronous verification unavailable",
-  "source_data_time": "2026-09-29 10:04 MSK",
-  "note": "4H Monitor is the sole decision engine. FAST GATE stopped at trigger: NO TRADE. No DEEP CONFIRMATION and no Confluence Score because no qualified candidate passed FAST GATE. Missing data receive no points. Dashboard READ ONLY; Telegram transport only."
+  "sources": "CoinGecko BTC/DOT/DOT-BTC/Global; MarketWatch BTC; GRAM fresh synchronous verification unavailable",
+  "source_data_time": "2026-09-29 18:03 MSK",
+  "note": "4H Monitor is sole decision engine. FAST GATE stopped at trigger: NO TRADE. No DEEP CONFIRMATION and no Confluence Score because no qualified candidate passed FAST GATE. Missing data receive no points. Dashboard READ ONLY; Telegram transport only."
 }
