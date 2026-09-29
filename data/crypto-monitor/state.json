@@ -1,15 +1,15 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-29T18:03:09+03:00",
+  "generated_at": "2026-09-29T21:56:13+03:00",
   "data_quality": "PARTIAL_FRESH; BTC_DOT_FRESH_PUBLIC_REFERENCES; GRAM_SYNCHRONOUS_PRICE_NOT_VERIFIED; BTC_4H_TRIGGER_NOT_VERIFIED; DERIVATIVES_ORDER_FLOW_NOT_VERIFIED",
   "market": {
-    "regime": "BTC REBOUNDED ABOVE $82.0K-$82.8K WATCH AREA; NO VERIFIED 4H REVERSAL TRIGGER",
-    "btc_filter": "CAUTION / LONG FILTER CLOSED; REACTION IMPROVED BUT HOLD/RECLAIM + HIGHER LOW NOT VERIFIED",
+    "regime": "BTC HOLDING ABOVE $82.0K-$82.8K WATCH AREA; NO VERIFIED 4H REVERSAL TRIGGER",
+    "btc_filter": "CAUTION / LONG FILTER CLOSED; HOLD/RECLAIM + HIGHER LOW NOT VERIFIED",
     "action": "NO TRADE"
   },
   "assets": {
     "BTC": {
-      "price_display": "~$83,835-$83,994 fresh public references",
+      "price_display": "~$83,994 latest fresh public reference",
       "status": "WAIT",
       "score": null,
       "score_max": 19,
@@ -27,7 +27,7 @@
       "invalidation": "No active trade; reassess only with fresh synchronous data"
     },
     "DOT": {
-      "price_display": "~$1.21; +3.3%/24h; DOT/BTC ~0.00001446",
+      "price_display": "~$1.19 fresh public reference",
       "status": "WAIT",
       "score": null,
       "score_max": 19,
@@ -38,7 +38,7 @@
   },
   "best_candidate": "BTC — closest candidate after reaction from canonical watch area, but 4H trigger not verified",
   "trade_plan": {"entry": null, "stop": null, "tp1": null, "tp2": null, "tp3": null, "rr": null},
-  "sources": "CoinGecko BTC/DOT/DOT-BTC/Global; MarketWatch BTC; GRAM fresh synchronous verification unavailable",
-  "source_data_time": "2026-09-29 18:03 MSK",
+  "sources": "MarketWatch BTC; MEXC DOT market reference; GRAM fresh synchronous verification unavailable",
+  "source_data_time": "2026-09-29 21:56 MSK",
   "note": "4H Monitor is sole decision engine. FAST GATE stopped at trigger: NO TRADE. No DEEP CONFIRMATION and no Confluence Score because no qualified candidate passed FAST GATE. Missing data receive no points. Dashboard READ ONLY; Telegram transport only."
 }
