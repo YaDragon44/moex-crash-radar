@@ -1,15 +1,15 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-29T21:56:13+03:00",
-  "data_quality": "PARTIAL_FRESH; BTC_DOT_FRESH_PUBLIC_REFERENCES; GRAM_SYNCHRONOUS_PRICE_NOT_VERIFIED; BTC_4H_TRIGGER_NOT_VERIFIED; DERIVATIVES_ORDER_FLOW_NOT_VERIFIED",
+  "generated_at": "2026-09-30T02:03:59+03:00",
+  "data_quality": "PARTIAL_FRESH; BTC_DIRECTION_AND_ZONE_FRESH_PUBLIC_REFERENCE; GRAM_DOT_FRESH_PUBLIC_REFERENCES; BTC_4H_TRIGGER_NOT_VERIFIED; DERIVATIVES_ORDER_FLOW_NOT_VERIFIED",
   "market": {
-    "regime": "BTC HOLDING ABOVE $82.0K-$82.8K WATCH AREA; NO VERIFIED 4H REVERSAL TRIGGER",
+    "regime": "BTC REBOUNDING BUT CANONICAL 4H REVERSAL TRIGGER NOT VERIFIED",
     "btc_filter": "CAUTION / LONG FILTER CLOSED; HOLD/RECLAIM + HIGHER LOW NOT VERIFIED",
     "action": "NO TRADE"
   },
   "assets": {
     "BTC": {
-      "price_display": "~$83,994 latest fresh public reference",
+      "price_display": "fresh public reference: +~1.3%/24h; exact synchronized spot NOT VERIFIED",
       "status": "WAIT",
       "score": null,
       "score_max": 19,
@@ -18,27 +18,27 @@
       "invalidation": "Sustained 4H acceptance below $82.0K invalidates current long-watch"
     },
     "GRAM": {
-      "price_display": "NOT VERIFIED synchronously",
+      "price_display": "~$1.496 fresh MEXC public reference",
       "status": "WAIT",
       "score": null,
       "score_max": 19,
       "setup": "Relative-strength watch only; BTC filter closed",
       "trigger": "NOT SET — require supportive BTC filter and fresh structure/level/trigger/RR sequence",
-      "invalidation": "No active trade; reassess only with fresh synchronous data"
+      "invalidation": "No active trade; reassess only with fresh synchronous structure data"
     },
     "DOT": {
-      "price_display": "~$1.19 fresh public reference",
+      "price_display": "~$1.194 fresh MEXC public reference",
       "status": "WAIT",
       "score": null,
       "score_max": 19,
       "setup": "Recovery watch; new structure confirmation required",
       "trigger": "NOT SET — require verified structure/level/trigger after BTC filter opens",
-      "invalidation": "No active trade; prior recovery thesis requires fresh confirmation"
+      "invalidation": "No active trade; recovery thesis requires fresh confirmation"
     }
   },
-  "best_candidate": "BTC — closest candidate after reaction from canonical watch area, but 4H trigger not verified",
+  "best_candidate": "BTC — closest candidate, but canonical 4H trigger not verified",
   "trade_plan": {"entry": null, "stop": null, "tp1": null, "tp2": null, "tp3": null, "rr": null},
-  "sources": "MarketWatch BTC; MEXC DOT market reference; GRAM fresh synchronous verification unavailable",
-  "source_data_time": "2026-09-29 21:56 MSK",
+  "sources": "FXEmpire BTC fresh market reference; MEXC GRAM; MEXC DOT",
+  "source_data_time": "2026-09-30 02:03 MSK",
   "note": "4H Monitor is sole decision engine. FAST GATE stopped at trigger: NO TRADE. No DEEP CONFIRMATION and no Confluence Score because no qualified candidate passed FAST GATE. Missing data receive no points. Dashboard READ ONLY; Telegram transport only."
 }
