@@ -75,3 +75,20 @@ def test_stop_is_conservative_priority_inside_same_candle():
     assert event == "CLOSED_STOP"
     assert p["status"] == "CLOSED_STOP"
     assert p["exit_price"] == 116.0
+
+
+def test_open_position_rejects_non_monotonic_targets():
+    s=base_signal();s["tp2"]=125.0
+    try:
+        open_position(s,plan())
+        assert False
+    except ValueError as exc:
+        assert "target order" in str(exc)
+
+def test_open_position_rejects_target_below_entry():
+    s=base_signal();s["tp1"]=119.0
+    try:
+        open_position(s,plan())
+        assert False
+    except ValueError:
+        assert True
