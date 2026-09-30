@@ -1,33 +1,33 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-30T17:57:03+03:00",
-  "data_quality": "PARTIAL_FRESH; BTC_FRESH_PUBLIC_REFERENCE; DOT_FRESH_PUBLIC_REFERENCE; GRAM_SPOT_NOT_VERIFIED; BTC_4H_TRIGGER_NOT_VERIFIED; DERIVATIVES_ORDER_FLOW_NOT_VERIFIED",
+  "generated_at": "2026-10-01T02:01:58+03:00",
+  "data_quality": "PARTIAL_FRESH; BTC_FRESH_PUBLIC_REFERENCE; DOT_PUBLIC_REFERENCE; GRAM_PUBLIC_REFERENCE_NOT_SYNCHRONOUS; BTC_4H_TRIGGER_NOT_VERIFIED; DERIVATIVES_ORDER_FLOW_NOT_VERIFIED",
   "market": {
-    "regime": "BTC REBOUND ABOVE WATCH ZONE AFTER COOLER PCE; CANONICAL 4H REVERSAL TRIGGER NOT VERIFIED",
+    "regime": "BTC FAILED TO SUSTAIN $85K BREAKOUT; BACK BELOW $84K; CANONICAL 4H REVERSAL TRIGGER NOT VERIFIED",
     "btc_filter": "CAUTION / LONG FILTER CLOSED; HOLD/RECLAIM + HIGHER LOW NOT VERIFIED",
     "action": "NO TRADE"
   },
   "assets": {
     "BTC": {
-      "price_display": "~$85,380",
+      "price_display": "~$83,746-$83,966 public references",
       "status": "WAIT",
       "score": null,
       "score_max": 19,
-      "setup": "Canonical $82.0K-$82.8K reaction watch; rebound after cooler PCE",
+      "setup": "Watch reaction above $82.0K-$82.8K after failed $85K breakout",
       "trigger": "NOT SET — require verified 4H hold/reclaim + Higher Low, then acceptable R/R",
       "invalidation": "Sustained 4H acceptance below $82.0K invalidates current long-watch"
     },
     "GRAM": {
-      "price_display": "NOT VERIFIED",
+      "price_display": "~$1.538 public reference; not synchronous",
       "status": "WAIT",
       "score": null,
       "score_max": 19,
       "setup": "Relative-strength watch only; BTC filter closed",
-      "trigger": "NOT SET — require verified synchronous price/structure plus supportive BTC filter",
+      "trigger": "NOT SET — require fresh synchronous price/structure plus supportive BTC filter",
       "invalidation": "No active trade; reassess only with fresh synchronous structure data"
     },
     "DOT": {
-      "price_display": "~$1.224 public reference",
+      "price_display": "~$1.228 public reference",
       "status": "WAIT",
       "score": null,
       "score_max": 19,
@@ -36,9 +36,9 @@
       "invalidation": "No active trade; require fresh structure confirmation"
     }
   },
-  "best_candidate": "BTC — strongest fresh move, but canonical 4H trigger not verified",
+  "best_candidate": "BTC — closest candidate, but failed $85K breakout and canonical 4H trigger remains unverified",
   "trade_plan": {"entry": null, "stop": null, "tp1": null, "tp2": null, "tp3": null, "rr": null},
-  "sources": "Barron's BTC/PCE; MEXC DOT public reference; GRAM synchronous spot unavailable",
-  "source_data_time": "2026-09-30 17:57 MSK",
+  "sources": "MEXC BTC futures/public references; CryptoSlate BTC; MEXC GRAM; MEXC DOT",
+  "source_data_time": "2026-10-01 02:01 MSK",
   "note": "4H Monitor is sole decision engine. FAST GATE stopped at trigger: NO TRADE. No DEEP CONFIRMATION and no Confluence Score because no qualified candidate passed FAST GATE. Missing data receive no points. Dashboard READ ONLY; Telegram transport only."
 }
