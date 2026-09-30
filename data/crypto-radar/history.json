@@ -2,11 +2,11 @@
   "version": "1.6",
   "cadence_minutes": 15,
   "retention_records": 2880,
-  "record_count": 934,
+  "record_count": 935,
   "first_generated_at": "2026-09-12T15:13:27.289827+00:00",
-  "last_generated_at": "2026-09-29T11:21:24.573577+00:00",
+  "last_generated_at": "2026-09-30T11:09:31.843344+00:00",
   "confirmed_transition_count": 38,
-  "regime_change_count": 57,
+  "regime_change_count": 58,
   "records": [
     {
       "generated_at": "2026-09-12T15:13:27.289827+00:00",
@@ -16819,6 +16819,24 @@
       "investor_action": "WAIT",
       "trader_action": "WAIT",
       "quality_ready": false
+    },
+    {
+      "generated_at": "2026-09-30T11:09:31.843344+00:00",
+      "btc_price": 83697.5,
+      "btc_change_24h_pct": -0.36,
+      "total_change_24h_pct": -3.074394044440461,
+      "crowd_score": 50,
+      "crowd_state": "NEUTRAL",
+      "risk_score": 44,
+      "risk_status": "MODERATE",
+      "regime": "NEUTRAL",
+      "regime_candidate": "NEUTRAL",
+      "regime_confirmed": false,
+      "candidate_count": 1,
+      "transition": "WATCH NEUTRAL · 1/2",
+      "investor_action": "HOLD",
+      "trader_action": "WAIT",
+      "quality_ready": true
     }
   ]
 }
