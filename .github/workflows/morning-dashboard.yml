@@ -2,12 +2,10 @@ name: Morning Dashboard MVP
 
 on:
   workflow_dispatch:
-  schedule:
-    # GitHub scheduled workflows can be delayed under load. Two nearby triggers
-    # provide a self-healing retry window; the delivery script remains the
-    # single source of truth for the Telegram message.
-    - cron: '14 5 * * *'  # 08:14 Europe/Moscow (UTC+3)
 
+  # Exact daily timing is owned by the ChatGPT Morning Dashboard 08:00
+  # dispatcher. GitHub schedule was removed because scheduled runs were
+  # observed starting hours late and caused stale daytime delivery.
   push:
     paths:
       - '.github/personal-morning-smoke-test'
@@ -55,5 +53,3 @@ jobs:
         with:
           path: artifacts/morning_dashboard_state.json
           key: morning-dashboard-state-${{ github.run_id }}
-
-
