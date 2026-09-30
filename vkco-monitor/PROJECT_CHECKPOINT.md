@@ -1,6 +1,6 @@
 # VKCO PROJECT CHECKPOINT
 
-**Checkpoint date:** 2026-09-29 (Europe/Moscow)
+**Checkpoint date:** 2026-09-30 (Europe/Moscow)
 **Project:** VKCO Trade Monitor + Control Room
 **Repository:** YaDragon44/moex-crash-radar
 **Status:** PRODUCTION OBSERVATION / STRATEGY #1 FREEZE
@@ -43,7 +43,7 @@ Valuation UX answers first: **НЕДООЦЕНЕНА / СПРАВЕДЛИВО О
 TradingView architecture decision (2026-09-29): the production chart uses the free public Advanced Chart Widget iframe. Its documented embed configuration supports adding studies but does not expose the Advanced Charts library API needed to create two Moving Average instances with independent length inputs. Therefore RSI14 remains inside TradingView; MA50/MA200 remain the deterministic MOEX H1 trend-context block above it. Do not reintroduce MA9, use unsupported embed overrides, or claim MA50/MA200 are TradingView overlay lines. Revisit only if the project adopts the separate Advanced Charts library/API.
 
 ## Fundamental analysis
-Read-only official VK IR evidence layer. Current v1 is tied to the latest implemented official reporting release and fails closed when source validation fails. It does not change strategy gates.
+Read-only official VK IR evidence layer. Official VK IR release values are parsed from source; required-field or source validation failure returns DATA_UNAVAILABLE. It does not change strategy gates.
 
 ## Evidence / audit
 - S1 Decision Audit exists and deduplicates unchanged states.
@@ -51,19 +51,18 @@ Read-only official VK IR evidence layer. Current v1 is tied to the latest implem
 - Structural H1 S/R is read-only and does not alter S4 trigger semantics.
 - Never reconstruct missing historical evidence.
 
+## Canonical documents
+- `README.md` — operator overview.
+- `REQUIREMENTS.md` — current baseline requirements.
+- `ARCHITECTURE.md` — current component/data-flow architecture.
+- `TASK_STATUS.md` — done/observe/next.
+- `FINAL_COMPLETENESS_REVIEW.md` — development completion boundary.
+- `RECOVERY_POINT_2026-09-30.md` — restore anchor.
+
 ## Known completed milestones
-PR #125 H1 structural S/R; #126 zone-side fix; #127 fundamental analysis; #136/#137 TradingView sizing; #138-#143 TradingView study experiments/fixes including MA9 removal; #144 H1 MA50/MA200 trend context; #145 readable valuation indicator.
+PR #125 H1 structural S/R; #126 zone-side fix; #127 fundamental analysis; #136/#137 TradingView sizing; #138-#143 TradingView study experiments/fixes including MA9 removal; #144 H1 MA50/MA200 trend context; #145 readable valuation indicator; #146 H1 Decision Audit + checkpoint sync; #147 fundamental fail-closed/mobile; #148 VK IR parser; #149 TradingView architecture decision; #150 LONG target-order safety.
 
-## Remaining work
-1. Accumulate real S4 H1 evidence and compare with S1 only after adequate sample.
-2. Do not promote S4 from SHADOW or tune H1 parameters from a tiny sample.
-3. Replace source-bound fundamental v1 with robust official VK IR report parsing/history.
-4. Add/maintain explicit fail-closed tests for fundamental source failure.
-5. Improve mobile layout for new fundamental/valuation sections if production smoke shows issues.
-6. TradingView MA50/MA200 overlay is CLOSED as a public-embed limitation; revisit only with the separate Advanced Charts library/API.
-7. Historical S1 TP ordering anomaly audited: lifecycle requires monotonic LONG targets. New model positions now fail closed unless `stop < entry < TP1 < TP2 < TP3`; historical evidence remains immutable.
-
-## Release policy
+## Remaining work\n1. Observe and accumulate S1 evidence: 10 trades diagnostic; prefer 20 before tuning.\n2. Accumulate S4 H1 evidence; keep SHADOW until adequate review.\n3. Maintain VK IR parser if official source format changes; fail closed meanwhile.\n4. Build comparative S1/S2/S3/S4 report only when sample is adequate.\n5. Hotfix only confirmed runtime/data-integrity/risk-safety defects during freeze.\n\n## Release policy
 Branch -> smallest scoped change -> tests/CI -> PR -> merge after relevant gates -> production verification. Preserve Strategy #1 freeze and fail closed on missing critical data.
 
 ## New-chat recovery
