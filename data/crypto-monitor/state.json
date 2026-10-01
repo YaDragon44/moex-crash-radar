@@ -1,44 +1,20 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-01T02:01:58+03:00",
-  "data_quality": "PARTIAL_FRESH; BTC_FRESH_PUBLIC_REFERENCE; DOT_PUBLIC_REFERENCE; GRAM_PUBLIC_REFERENCE_NOT_SYNCHRONOUS; BTC_4H_TRIGGER_NOT_VERIFIED; DERIVATIVES_ORDER_FLOW_NOT_VERIFIED",
+  "generated_at": "2026-10-01T18:04:13+03:00",
+  "data_quality": "INSUFFICIENT_FRESH_SYNCHRONOUS_4H_DATA; DOT_FRESH_PUBLIC_REFERENCE; BTC_CURRENT_4H_STRUCTURE_NOT_VERIFIED; GRAM_SYNCHRONOUS_PRICE_NOT_VERIFIED; DERIVATIVES_ORDER_FLOW_NOT_VERIFIED",
   "market": {
-    "regime": "BTC FAILED TO SUSTAIN $85K BREAKOUT; BACK BELOW $84K; CANONICAL 4H REVERSAL TRIGGER NOT VERIFIED",
-    "btc_filter": "CAUTION / LONG FILTER CLOSED; HOLD/RECLAIM + HIGHER LOW NOT VERIFIED",
+    "regime": "4H STRUCTURE NOT VERIFIED WITH SUFFICIENT FRESH SYNCHRONOUS DATA",
+    "btc_filter": "CLOSED — structure/level/trigger sequence not verified",
     "action": "NO TRADE"
   },
   "assets": {
-    "BTC": {
-      "price_display": "~$83,746-$83,966 public references",
-      "status": "WAIT",
-      "score": null,
-      "score_max": 19,
-      "setup": "Watch reaction above $82.0K-$82.8K after failed $85K breakout",
-      "trigger": "NOT SET — require verified 4H hold/reclaim + Higher Low, then acceptable R/R",
-      "invalidation": "Sustained 4H acceptance below $82.0K invalidates current long-watch"
-    },
-    "GRAM": {
-      "price_display": "~$1.538 public reference; not synchronous",
-      "status": "WAIT",
-      "score": null,
-      "score_max": 19,
-      "setup": "Relative-strength watch only; BTC filter closed",
-      "trigger": "NOT SET — require fresh synchronous price/structure plus supportive BTC filter",
-      "invalidation": "No active trade; reassess only with fresh synchronous structure data"
-    },
-    "DOT": {
-      "price_display": "~$1.228 public reference",
-      "status": "WAIT",
-      "score": null,
-      "score_max": 19,
-      "setup": "Watch only; BTC filter closed",
-      "trigger": "NOT SET — require verified structure/level/trigger after BTC filter opens",
-      "invalidation": "No active trade; require fresh structure confirmation"
-    }
+    "BTC": {"price_display":"NOT VERIFIED","status":"WAIT","score":null,"score_max":19,"setup":"Watch only; BTC filter closed","trigger":"NOT SET — require verified 4H structure → level → trigger → acceptable R/R","invalidation":"No active trade"},
+    "GRAM": {"price_display":"NOT VERIFIED","status":"WAIT","score":null,"score_max":19,"setup":"Relative-strength watch only; BTC filter closed","trigger":"NOT SET — require fresh synchronous price/structure plus supportive BTC filter","invalidation":"No active trade"},
+    "DOT": {"price_display":"~$1.233 fresh public reference","status":"WAIT","score":null,"score_max":19,"setup":"Watch only; BTC filter closed","trigger":"NOT SET — require verified structure/level/trigger after BTC filter opens","invalidation":"No active trade"}
   },
-  "best_candidate": "BTC — closest candidate, but failed $85K breakout and canonical 4H trigger remains unverified",
-  "trade_plan": {"entry": null, "stop": null, "tp1": null, "tp2": null, "tp3": null, "rr": null},
-  "sources": "MEXC BTC futures/public references; CryptoSlate BTC; MEXC GRAM; MEXC DOT",
-  "source_data_time": "2026-10-01 02:01 MSK",
-  "note": "4H Monitor is sole decision engine. FAST GATE stopped at trigger: NO TRADE. No DEEP CONFIRMATION and no Confluence Score because no qualified candidate passed FAST GATE. Missing data receive no points. Dashboard READ ONLY; Telegram transport only."
+  "best_candidate": null,
+  "trade_plan": {"entry":null,"stop":null,"tp1":null,"tp2":null,"tp3":null,"rr":null},
+  "sources": "Fresh public web verification; TechBullion DOT; MarketWatch/Citi BTC context",
+  "source_data_time": "2026-10-01 18:04 MSK",
+  "note": "4H Monitor is sole decision engine. FAST GATE stopped because BTC structure could not be verified from sufficiently fresh synchronous data. NO TRADE. No DEEP CONFIRMATION and no Confluence Score. Missing data receive no points. Dashboard READ ONLY; Telegram transport only."
 }
