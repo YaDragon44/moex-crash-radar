@@ -1,20 +1,20 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-01T18:04:13+03:00",
-  "data_quality": "INSUFFICIENT_FRESH_SYNCHRONOUS_4H_DATA; DOT_FRESH_PUBLIC_REFERENCE; BTC_CURRENT_4H_STRUCTURE_NOT_VERIFIED; GRAM_SYNCHRONOUS_PRICE_NOT_VERIFIED; DERIVATIVES_ORDER_FLOW_NOT_VERIFIED",
+  "generated_at": "2026-10-01T22:00:32+03:00",
+  "data_quality": "PARTIAL_FRESH_PUBLIC_DATA; BTC_SPOT_CROSS_RATE_AVAILABLE; BTC_4H_TRIGGER_NOT_VERIFIED; GRAM_SYNCHRONOUS_SPOT_NOT_VERIFIED; DOT_SYNCHRONOUS_SPOT_NOT_VERIFIED; DERIVATIVES_ORDER_FLOW_NOT_VERIFIED",
   "market": {
-    "regime": "4H STRUCTURE NOT VERIFIED WITH SUFFICIENT FRESH SYNCHRONOUS DATA",
-    "btc_filter": "CLOSED — structure/level/trigger sequence not verified",
+    "regime": "BTC HOLDING ABOVE 84K BUT CANONICAL 4H TRIGGER NOT VERIFIED",
+    "btc_filter": "CAUTION/CLOSED — structure improving, trigger not verified",
     "action": "NO TRADE"
   },
   "assets": {
-    "BTC": {"price_display":"NOT VERIFIED","status":"WAIT","score":null,"score_max":19,"setup":"Watch only; BTC filter closed","trigger":"NOT SET — require verified 4H structure → level → trigger → acceptable R/R","invalidation":"No active trade"},
-    "GRAM": {"price_display":"NOT VERIFIED","status":"WAIT","score":null,"score_max":19,"setup":"Relative-strength watch only; BTC filter closed","trigger":"NOT SET — require fresh synchronous price/structure plus supportive BTC filter","invalidation":"No active trade"},
-    "DOT": {"price_display":"~$1.233 fresh public reference","status":"WAIT","score":null,"score_max":19,"setup":"Watch only; BTC filter closed","trigger":"NOT SET — require verified structure/level/trigger after BTC filter opens","invalidation":"No active trade"}
+    "BTC": {"price_display":"~$84.8K calculated from fresh CoinGecko BTC/INR and Coinbase USDT/INR references","status":"WAIT","score":null,"score_max":19,"setup":"Watch $82.5K support / $84.5K liquidity area; no chase","trigger":"NOT SET — require verified 4H structure → level hold/reclaim → trigger → acceptable R/R","invalidation":"No active trade"},
+    "GRAM": {"price_display":"NOT VERIFIED","status":"WAIT","score":null,"score_max":19,"setup":"Watch only; BTC filter closed","trigger":"NOT SET — require fresh synchronous price/structure and open BTC filter","invalidation":"No active trade"},
+    "DOT": {"price_display":"NOT VERIFIED","status":"WAIT","score":null,"score_max":19,"setup":"Watch only; positive network-activity context is not a trading trigger","trigger":"NOT SET — require verified structure/level/trigger after BTC filter opens","invalidation":"No active trade"}
   },
-  "best_candidate": null,
+  "best_candidate": "BTC",
   "trade_plan": {"entry":null,"stop":null,"tp1":null,"tp2":null,"tp3":null,"rr":null},
-  "sources": "Fresh public web verification; TechBullion DOT; MarketWatch/Citi BTC context",
-  "source_data_time": "2026-10-01 18:04 MSK",
-  "note": "4H Monitor is sole decision engine. FAST GATE stopped because BTC structure could not be verified from sufficiently fresh synchronous data. NO TRADE. No DEEP CONFIRMATION and no Confluence Score. Missing data receive no points. Dashboard READ ONLY; Telegram transport only."
+  "sources": "CoinGecko BTC/INR; Coinbase USDT/INR; Pluang BTC market update; TechBullion DOT network context; fresh public GRAM search",
+  "source_data_time": "2026-10-01 22:00 MSK",
+  "note": "4H Monitor is sole decision engine. FAST GATE stopped at trigger verification. NO TRADE. No DEEP CONFIRMATION and no Confluence Score /19 because no candidate passed FAST GATE. Missing data receive no points. Dashboard READ ONLY; Telegram transport only."
 }
