@@ -1,6 +1,6 @@
 {
   "release": "R0.8.1 Signal History",
-  "updated_at": "2026-09-30T16:36:46+03:00",
+  "updated_at": "2026-10-02T16:47:56+03:00",
   "events": [
     {
       "ticker": "SBERP",
@@ -1555,6 +1555,84 @@
       "reason": "Нет направленной структуры",
       "price": 44.08,
       "time": "2026-09-30T16:36:46+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "D1",
+      "direction": "SHORT",
+      "status": "WAIT",
+      "reason": "FORMING candle",
+      "price": 274.96,
+      "entry": 271.65,
+      "stop": 282.78,
+      "tp1": 270.23,
+      "tp2": 269.3,
+      "tp3": 266.6443,
+      "rr": 0.2111,
+      "time": "2026-10-02T16:47:56+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "H1",
+      "direction": "NEUTRAL",
+      "status": "WAIT",
+      "reason": "Нет направленной структуры",
+      "price": 274.63,
+      "time": "2026-10-02T16:47:56+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "M10",
+      "direction": "SHORT",
+      "status": "WAIT",
+      "reason": "Нет price trigger",
+      "price": 274.92,
+      "entry": 273.85,
+      "stop": 276.3467,
+      "tp1": null,
+      "tp2": null,
+      "tp3": null,
+      "rr": null,
+      "time": "2026-10-02T16:47:56+03:00"
+    },
+    {
+      "ticker": "OZPH",
+      "tf": "D1",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "FORMING candle",
+      "price": 44.46,
+      "entry": 45.76,
+      "stop": 41.1808,
+      "tp1": 46.69,
+      "tp2": 48.13,
+      "tp3": 48.8204,
+      "rr": 0.5176,
+      "time": "2026-10-02T16:47:56+03:00"
+    },
+    {
+      "ticker": "OZPH",
+      "tf": "H1",
+      "direction": "NEUTRAL",
+      "status": "WAIT",
+      "reason": "Нет направленной структуры",
+      "price": 44.46,
+      "time": "2026-10-02T16:47:56+03:00"
+    },
+    {
+      "ticker": "OZPH",
+      "tf": "M10",
+      "direction": "SHORT",
+      "status": "WAIT",
+      "reason": "Нет price trigger",
+      "price": 44.5,
+      "entry": 44.44,
+      "stop": 44.5599,
+      "tp1": 44.4301,
+      "tp2": 44.4148,
+      "tp3": 44.4,
+      "rr": 0.2102,
+      "time": "2026-10-02T16:47:56+03:00"
     }
   ]
 }
