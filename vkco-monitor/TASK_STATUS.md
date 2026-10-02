@@ -1,7 +1,7 @@
 # VKCO TASK STATUS
 
 **Date:** 2026-09-30
-**Phase:** PRODUCTION OBSERVATION / STRATEGY FREEZE
+**Phase:** MANUAL OBSERVATION / STRATEGY FREEZE
 
 ## DONE
 - S1 R1.8 production/freeze.
@@ -30,3 +30,7 @@
 
 ## NEXT
 No feature development is required now. Continue scheduled observation. Hotfix only confirmed runtime, data-integrity or risk-safety defects. Comparative S1/S2/S3/S4 report becomes useful after adequate evidence.
+
+
+## Manual-only decision — 2026-10-02
+Owner decision: all VKCO automation and Telegram delivery are stopped. The VKCO workflow has no schedule/push trigger and runs only via manual workflow_dispatch. Automatic vkco-live publication is disabled. Telegram is hard-disabled for manual workflow runs. Analysis is initiated manually by the owner.

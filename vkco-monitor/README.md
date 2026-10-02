@@ -31,3 +31,7 @@ Strategy #1 remains frozen under issue #61. 10 closed model trades = diagnostic 
 ## Recovery
 Canonical recovery instructions: `vkco-monitor/RECOVERY_POINT_2026-09-30.md`.
 Current state: `vkco-monitor/PROJECT_CHECKPOINT.md`.
+
+
+## Manual-only decision — 2026-10-02
+Owner decision: all VKCO automation and Telegram delivery are stopped. The VKCO workflow has no schedule/push trigger and runs only via manual workflow_dispatch. Automatic vkco-live publication is disabled. Telegram is hard-disabled for manual workflow runs. Analysis is initiated manually by the owner.

@@ -5,7 +5,7 @@ Repository: `YaDragon44/moex-crash-radar`
 Scope: VK / VKCO only.
 Baseline: after merged PR #150; documentation consolidation follows this recovery point.
 Engine: R1.8.
-Phase: PRODUCTION OBSERVATION / STRATEGY #1 FREEZE.
+Phase: MANUAL OBSERVATION / STRATEGY #1 FREEZE.
 
 ## Restore procedure
 1. Fetch fresh `main`.
@@ -36,3 +36,7 @@ Valuation: read-only EV/EBITDA scenarios, not a trade signal.
 
 ## Next milestone
 Observation, not feature expansion. At 10 S1 closed model trades perform diagnostic review; prefer 20 before any tuning decision. Compare S1/S2/S3/S4 only when sample is adequate.
+
+
+## Manual-only decision — 2026-10-02
+Owner decision: all VKCO automation and Telegram delivery are stopped. The VKCO workflow has no schedule/push trigger and runs only via manual workflow_dispatch. Automatic vkco-live publication is disabled. Telegram is hard-disabled for manual workflow runs. Analysis is initiated manually by the owner.
