@@ -1,7 +1,7 @@
 {
   "version": "0.5.4",
   "sourceVersion": "0.5.3",
-  "valuationDate": "2026-09-30",
+  "valuationDate": "2026-10-01",
   "capital": 1000000,
   "status": "PASS",
   "scenarios": [
@@ -15,102 +15,94 @@
         8.0,
         5.0
       ],
-      "buyHoldTerminal": 3211512.466035707,
-      "activeTerminal": 2122823.1461167145,
-      "deltaTerminal": -1088689.3199189925,
-      "deltaCagr": -0.10034866861630887,
-      "buyHoldMaxDrawdown": -0.0007564797848793603,
-      "activeMaxDrawdown": -0.0007564797848793603,
+      "buyHoldTerminal": 3213581.7778735575,
+      "activeTerminal": 2124497.0871508066,
+      "deltaTerminal": -1089084.690722751,
+      "deltaCagr": -0.10032808986823105,
+      "buyHoldMaxDrawdown": -0.0008239006701168394,
+      "activeMaxDrawdown": -0.0008239006701168394,
       "drawdownImprovement": 0.0,
-      "activeTurnoverPct": 1.8520306346440791,
+      "activeTurnoverPct": 1.8570979795403935,
       "activeActions": [
         {
-          "date": "2028-09-30",
+          "date": "2028-10-01",
           "yield": 11.994520547945205,
           "regime": "D",
           "action": "REDUCE",
           "targetExposure": 0.6,
-          "amount": 660025.0327579842
+          "amount": 660235.7232946908
         },
         {
-          "date": "2029-09-30",
+          "date": "2029-10-01",
           "yield": 9.994520547945205,
           "regime": "E",
           "action": "ROTATE",
           "targetExposure": 0.25,
-          "amount": 695048.573173465
+          "amount": 696491.2960854141
         },
         {
           "date": "2029-11-21",
-          "yield": 9.70958904109589,
+          "yield": 9.715068493150685,
           "regime": "E",
           "action": "ROTATE",
           "targetExposure": 0.25,
-          "amount": 1230.2298440939644
+          "amount": 2434.522715358884
         },
         {
           "date": "2030-04-17",
-          "yield": 8.904109589041095,
+          "yield": 8.909589041095892,
           "regime": "E",
           "action": "ROTATE",
           "targetExposure": 0.25,
-          "amount": 10102.10399540881
+          "amount": 8824.027442593193
         },
         {
           "date": "2030-05-22",
-          "yield": 8.712328767123289,
+          "yield": 8.717808219178082,
           "regime": "E",
           "action": "ROTATE",
           "targetExposure": 0.25,
-          "amount": 3866.001136406363
+          "amount": 3864.7469713591377
         },
         {
-          "date": "2030-09-30",
+          "date": "2030-10-01",
           "yield": 7.991780821917808,
           "regime": "E",
           "action": "ROTATE",
           "targetExposure": 0.25,
-          "amount": 23213.772299874112
+          "amount": 24618.87164528468
         },
         {
           "date": "2030-11-20",
-          "yield": 7.572602739726028,
+          "yield": 7.58082191780822,
           "regime": "E",
           "action": "ROTATE",
           "targetExposure": 0.25,
-          "amount": 2715.0494225802113
+          "amount": 2713.772315098052
         },
         {
           "date": "2031-04-16",
-          "yield": 6.364383561643835,
+          "yield": 6.372602739726027,
           "regime": "E",
           "action": "ROTATE",
           "targetExposure": 0.25,
-          "amount": 17225.15592770242
+          "amount": 17216.959537524235
         },
         {
           "date": "2031-05-21",
-          "yield": 6.0767123287671225,
+          "yield": 6.084931506849315,
           "regime": "E",
           "action": "ROTATE",
           "targetExposure": 0.25,
-          "amount": 4422.798128699751
+          "amount": 4420.682027605664
         },
         {
-          "date": "2031-05-28",
-          "yield": 6.019178082191781,
-          "regime": "E",
-          "action": "ROTATE",
-          "targetExposure": 0.25,
-          "amount": 1508.7641030524692
-        },
-        {
-          "date": "2031-09-30",
+          "date": "2031-10-01",
           "yield": 5.0,
           "regime": "E",
           "action": "ROTATE",
           "targetExposure": 0.25,
-          "amount": 29966.50528584273
+          "amount": 31605.153194403978
         }
       ],
       "returnWinner": "BUY_HOLD",
@@ -126,14 +118,14 @@
         14.5,
         14.0
       ],
-      "buyHoldTerminal": 2318964.9580391394,
-      "activeTerminal": 2318964.9580391394,
+      "buyHoldTerminal": 2320534.37846891,
+      "activeTerminal": 2320534.37846891,
       "deltaTerminal": 0.0,
       "deltaCagr": 0.0,
-      "buyHoldMaxDrawdown": -0.006690955923136399,
-      "activeMaxDrawdown": -0.006690955923136399,
+      "buyHoldMaxDrawdown": -0.006473815494648316,
+      "activeMaxDrawdown": -0.006473815494648316,
       "drawdownImprovement": 0.0,
-      "activeTurnoverPct": 1.0350548408367477,
+      "activeTurnoverPct": 1.0359078520905776,
       "activeActions": [],
       "returnWinner": "TIE",
       "riskWinner": "TIE"
@@ -148,54 +140,46 @@
         12.0,
         16.0
       ],
-      "buyHoldTerminal": 1918833.7766261366,
-      "activeTerminal": 1710799.9372440132,
-      "deltaTerminal": -208033.83938212343,
-      "deltaCagr": -0.02584881295345398,
-      "buyHoldMaxDrawdown": -0.11728735781988253,
-      "activeMaxDrawdown": -0.08010739932377131,
-      "drawdownImprovement": 0.03717995849611122,
-      "activeTurnoverPct": 3.330604958367933,
+      "buyHoldTerminal": 1920358.9576165462,
+      "activeTerminal": 1777015.0791124804,
+      "deltaTerminal": -143343.8785040658,
+      "deltaCagr": -0.017541841955355464,
+      "buyHoldMaxDrawdown": -0.11722303353194985,
+      "activeMaxDrawdown": -0.08013494305151148,
+      "drawdownImprovement": 0.037088090480438374,
+      "activeTurnoverPct": 3.4730808717899477,
       "activeActions": [
         {
-          "date": "2028-05-31",
-          "yield": 11.994520547945205,
-          "regime": "D",
-          "action": "REDUCE",
-          "targetExposure": 0.6,
-          "amount": 622321.3274572868
-        },
-        {
-          "date": "2028-09-30",
+          "date": "2028-10-01",
           "yield": 10.994520547945205,
           "regime": "D",
           "action": "REDUCE",
           "targetExposure": 0.6,
-          "amount": 38617.24827562425
+          "amount": 698433.3946973118
         },
         {
           "date": "2029-04-18",
-          "yield": 9.898630136986302,
+          "yield": 9.904109589041095,
           "regime": "E",
           "action": "ROTATE",
           "targetExposure": 0.25,
-          "amount": 624534.5867170877
+          "amount": 649531.8379290879
         },
         {
           "date": "2029-05-23",
-          "yield": 9.706849315068492,
+          "yield": 9.712328767123289,
           "regime": "E",
           "action": "ROTATE",
           "targetExposure": 0.25,
-          "amount": 3684.053863728563
+          "amount": 3682.816619770062
         },
         {
-          "date": "2029-09-30",
+          "date": "2029-10-01",
           "yield": 9.008219178082193,
           "regime": "E",
           "action": "ROTATE",
           "targetExposure": 0.25,
-          "amount": 23530.765464279608
+          "amount": 24838.398806606976
         }
       ],
       "returnWinner": "BUY_HOLD",
@@ -211,14 +195,14 @@
         18.0,
         17.0
       ],
-      "buyHoldTerminal": 2215862.1985686934,
-      "activeTerminal": 2215862.1985686934,
+      "buyHoldTerminal": 2217211.3790404466,
+      "activeTerminal": 2217211.3790404466,
       "deltaTerminal": 0.0,
       "deltaCagr": 0.0,
-      "buyHoldMaxDrawdown": -0.009635246440011125,
-      "activeMaxDrawdown": -0.009635246440011125,
+      "buyHoldMaxDrawdown": -0.009277963462883787,
+      "activeMaxDrawdown": -0.009277963462883787,
       "drawdownImprovement": 0.0,
-      "activeTurnoverPct": 1.0714535423696105,
+      "activeTurnoverPct": 1.0713774237898956,
       "activeActions": [],
       "returnWinner": "TIE",
       "riskWinner": "TIE"
