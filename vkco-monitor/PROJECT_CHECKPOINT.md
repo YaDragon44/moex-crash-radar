@@ -3,7 +3,7 @@
 **Checkpoint date:** 2026-09-30 (Europe/Moscow)
 **Project:** VKCO Trade Monitor + Control Room
 **Repository:** YaDragon44/moex-crash-radar
-**Status:** PRODUCTION OBSERVATION / STRATEGY #1 FREEZE
+**Status:** MANUAL OBSERVATION / STRATEGY #1 FREEZE
 
 ## Recovery anchor
 Always inspect fresh `main` before acting. Production engine remains **R1.8**. No broker orders.
@@ -67,3 +67,7 @@ Branch -> smallest scoped change -> tests/CI -> PR -> merge after relevant gates
 
 ## New-chat recovery
 Read this file, fetch fresh main and Actions, inspect current public/live state, preserve S1 freeze, then continue only authorized VKCO work. Maximum simplicity; capital preservation; no invented data; evidence before release claims.
+
+
+## Manual-only decision — 2026-10-02
+Owner decision: all VKCO automation and Telegram delivery are stopped. The VKCO workflow has no schedule/push trigger and runs only via manual workflow_dispatch. Automatic vkco-live publication is disabled. Telegram is hard-disabled for manual workflow runs. Analysis is initiated manually by the owner.
