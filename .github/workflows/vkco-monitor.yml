@@ -1,29 +1,16 @@
 name: VKCO Monitor R1.8
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "vkco-monitor/**"
-      - ".github/workflows/vkco-monitor.yml"
-  pull_request:
-    paths:
-      - "vkco-monitor/**"
-      - ".github/workflows/vkco-monitor.yml"
   workflow_dispatch:
     inputs:
       mode:
-        description: Run mode
+        description: Manual run mode
         required: true
         default: run
         type: choice
         options:
           - run
-          - test_telegram
           - heartbeat
-  schedule:
-    - cron: "3,13,23,33,43,53 6-20 * * 1-5"
-    - cron: "0 7 * * 1-5"
 
 permissions:
   contents: write
@@ -37,8 +24,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
-      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       TRADING_CAPITAL_RUB: ${{ vars.TRADING_CAPITAL_RUB || '1000000' }}
       RISK_PCT: ${{ vars.RISK_PCT || '0.5' }}
       STATE_FILE: vkco-monitor/state/state.json
@@ -53,7 +38,8 @@ jobs:
       STRATEGY4_STATE_FILE: vkco-monitor/state/strategy4_h1_state.json
       STRATEGY4_JOURNAL_JSONL: vkco-monitor/state/strategy4_h1_journal.jsonl
       STRATEGY4_DECISION_AUDIT_JSONL: vkco-monitor/state/strategy4_h1_decision_audit.jsonl
-      MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || github.event.schedule == '0 7 * * 1-5' && 'heartbeat' || 'run' }}
+      MODE: ${{ inputs.mode }}
+      TELEGRAM_DISABLED: '1'
 
     steps:
       - name: Checkout
@@ -92,38 +78,6 @@ jobs:
       - name: Export public dashboard state
         if: always() && github.event_name != 'pull_request'
         run: python vkco-monitor/export_status.py
-
-      - name: Publish live dashboard state
-        if: always() && github.event_name != 'pull_request'
-        shell: bash
-        run: |
-          set -euo pipefail
-          git fetch origin vkco-live
-          git worktree add /tmp/vkco-live origin/vkco-live
-          cp "$PUBLIC_STATUS_FILE" /tmp/vkco-live/status.json
-          cd /tmp/vkco-live
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add status.json
-          if git diff --cached --quiet; then
-            echo "live_status_unchanged=1"
-          else
-            git commit -m "data(vkco): update live status"
-            git push origin HEAD:vkco-live
-          fi
-
-      - name: Notify Telegram on failure
-        if: failure() && github.event_name != 'pull_request'
-        run: |
-          python - <<'PY'
-          import json, os, urllib.request
-          token=os.environ['TELEGRAM_BOT_TOKEN']
-          chat=os.environ['TELEGRAM_CHAT_ID']
-          text='🔴 VKCO Monitor R1.8 — ERROR\nGitHub Actions run failed. Проверь workflow/logs.'
-          data=json.dumps({'chat_id':chat,'text':text}).encode()
-          req=urllib.request.Request(f'https://api.telegram.org/bot{token}/sendMessage', data=data, headers={'Content-Type':'application/json'})
-          urllib.request.urlopen(req, timeout=20).read()
-          PY
 
       - name: Save signal state and journal
         if: always() && github.event_name != 'pull_request'
