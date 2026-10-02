@@ -253,6 +253,9 @@ def save_state(signal_id: str) -> None:
 
 
 def send_telegram(text: str) -> None:
+    if os.getenv("TELEGRAM_DISABLED", "").strip() == "1":
+        print("telegram=DISABLED manual_only=1")
+        return
     token = os.getenv("TELEGRAM_BOT_TOKEN")
     chat_id = os.getenv("TELEGRAM_CHAT_ID")
     if not token or not chat_id:
