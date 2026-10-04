@@ -19,7 +19,7 @@ def heartbeat() -> int:
 
     if fresh:
         text = (
-            "💚 VKCO Monitor R1.8 — HEARTBEAT OK\n"
+            "⚙️ VKCO MONITOR R1.8 — SYSTEM OK\n"\n            "Trade: WAIT / NO TRIGGER\n"
             f"MOEX latest: {latest.end.isoformat()} MSK\n"
             f"VKCO: {latest.close:.2f} ₽\n"
             f"Data age: {age_min} min"
@@ -27,7 +27,7 @@ def heartbeat() -> int:
         status = "OK"
     else:
         text = (
-            "🟡 VKCO Monitor R1.8 — HEARTBEAT DEGRADED\n"
+            "⚠️ VKCO MONITOR R1.8 — SYSTEM DEGRADED\n"\n            "Trade: BLOCKED — STALE DATA\n"
             f"MOEX latest: {latest.end.isoformat()} MSK\n"
             f"VKCO: {latest.close:.2f} ₽\n"
             f"Data age: {age_min} min\n"
