@@ -123,3 +123,27 @@ def test_neutral_recent_ir_news_does_not_block_ready():
     risk = evaluate_event_risk_html(raw, datetime(2026, 9, 12, 12, 0, tzinfo=MSK), window_days=3)
     assert risk["ok"] is True
     assert risk["items"] == []
+
+
+def test_fetch_lot_size_from_moex(monkeypatch):
+    class Resp:
+        def raise_for_status(self):
+            pass
+        def json(self):
+            return {"securities": {"columns": ["SECID", "BOARDID", "LOTSIZE"], "data": [["VKCO", "TQBR", 1]]}}
+    monkeypatch.setattr(monitor.requests, "get", lambda *a, **k: Resp())
+    assert monitor.fetch_lot_size() == 1
+
+
+def test_fetch_lot_size_fails_closed_on_invalid_metadata(monkeypatch):
+    class Resp:
+        def raise_for_status(self):
+            pass
+        def json(self):
+            return {"securities": {"columns": ["SECID", "BOARDID", "LOTSIZE"], "data": [["VKCO", "TQBR", None]]}}
+    monkeypatch.setattr(monitor.requests, "get", lambda *a, **k: Resp())
+    try:
+        monitor.fetch_lot_size()
+        assert False
+    except RuntimeError as exc:
+        assert "LOTSIZE" in str(exc)

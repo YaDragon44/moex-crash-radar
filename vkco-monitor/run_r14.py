@@ -8,7 +8,7 @@ _original_format_signal = monitor.format_signal
 
 def _format_signal_r14(signal):
     base = _original_format_signal(signal)
-    return base + "\n\n💼 TRADE PLAN\n" + format_trade_plan(signal) + "\n\nДЕЙСТВИЕ: вход только по READY; стоп не расширять."
+    return base + "\n\n💼 TRADE PLAN\n" + format_trade_plan(signal, lot_size=monitor.fetch_lot_size()) + "\n\nДЕЙСТВИЕ: вход только по READY; стоп не расширять."
 
 
 monitor.format_signal = _format_signal_r14
