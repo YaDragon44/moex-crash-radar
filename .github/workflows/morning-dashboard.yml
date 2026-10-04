@@ -2,10 +2,10 @@ name: Morning Dashboard MVP
 
 on:
   workflow_dispatch:
-
-  # Exact daily timing is owned by the ChatGPT Morning Dashboard 08:00
-  # dispatcher. GitHub schedule was removed because scheduled runs were
-  # observed starting hours late and caused stale daytime delivery.
+  schedule:
+    # Independent fallback. GitHub schedules may start late, but this prevents
+    # total delivery loss if the external 08:00 dispatcher is unavailable.
+    - cron: '0 5 * * *'  # 08:00 Europe/Moscow (UTC+3)
   push:
     paths:
       - '.github/personal-morning-smoke-test'
