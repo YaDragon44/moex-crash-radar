@@ -5,9 +5,7 @@ on:
   schedule:
     # Three independent attempts. GitHub cron can be delayed or occasionally
     # skipped; the delivery script is idempotent per Moscow calendar day.
-    - cron: '1 6 * * *'   # 09:01 Europe/Moscow (UTC+3)
-    - cron: '8 6 * * *'   # 09:08 retry
-    - cron: '16 6 * * *'  # 09:16 final fallback
+    - cron: '52 6 * * *'  # TEST: 09:52 Europe/Moscow (UTC+3)
   push:
     paths:
       - '.github/personal-morning-smoke-test'
