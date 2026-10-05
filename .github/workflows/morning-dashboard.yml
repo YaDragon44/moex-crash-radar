@@ -3,9 +3,11 @@ name: Morning Dashboard MVP
 on:
   workflow_dispatch:
   schedule:
-    # Independent fallback. GitHub schedules may start late, but this prevents
-    # total delivery loss if the external 08:00 dispatcher is unavailable.
-    - cron: '0 5 * * *'  # 08:00 Europe/Moscow (UTC+3)
+    # Three independent attempts. GitHub cron can be delayed or occasionally
+    # skipped; the delivery script is idempotent per Moscow calendar day.
+    - cron: '0 5 * * *'   # 08:00 Europe/Moscow (UTC+3)
+    - cron: '7 5 * * *'   # 08:07 retry
+    - cron: '15 5 * * *'  # 08:15 final fallback
   push:
     paths:
       - '.github/personal-morning-smoke-test'
@@ -42,10 +44,15 @@ jobs:
             morning-dashboard-state-
 
       - name: Send Personal Morning Dashboard
+        id: telegram
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python scripts/personal_morning_dashboard.py
+
+      - name: Delivery verification
+        if: success()
+        run: echo "PASS morning-dashboard delivery script completed"
 
       - name: Save Telegram dashboard state
         if: always()
