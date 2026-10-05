@@ -211,18 +211,34 @@ def main() -> int:
         with open(state_path, "r", encoding="utf-8") as fh: state = json.load(fh)
     except (FileNotFoundError, json.JSONDecodeError):
         state = {}
+    today = datetime.now(MSK).date().isoformat()
     for chat_id in parse_chat_ids(raw_ids):
         try:
-            old_id = state.get(chat_id)
+            entry = state.get(chat_id)
+            # Backward compatibility with the old state format: {chat_id: message_id}.
+            old_id = entry.get("message_id") if isinstance(entry, dict) else entry
+            delivered_date = entry.get("delivered_date") if isinstance(entry, dict) else None
+
+            # Daily idempotency: retries/fallbacks must never create a second dashboard.
+            if delivered_date == today and old_id:
+                print(f"PASS already-delivered-today recipient={chat_id} message_id={old_id}")
+                continue
+
+            # Keep only one current morning dashboard in the chat.
             if old_id:
                 try:
                     telegram_delete(token, chat_id, int(old_id))
                     print(f"PASS delete-previous recipient={chat_id}")
                 except Exception as exc:
                     print(f"WARN delete-previous recipient={chat_id}: {exc}")
+
             new_id = telegram_send(token, chat_id, text)
-            state[chat_id] = new_id
-            print(f"PASS personal-morning recipient={chat_id}")
+            state[chat_id] = {
+                "message_id": new_id,
+                "delivered_date": today,
+                "delivered_at": datetime.now(MSK).isoformat(timespec="seconds"),
+            }
+            print(f"PASS personal-morning recipient={chat_id} message_id={new_id} delivered_date={today}")
         except Exception as exc:
             failures += 1; print(f"FAIL personal-morning recipient={chat_id}: {exc}")
     os.makedirs(os.path.dirname(state_path), exist_ok=True)
