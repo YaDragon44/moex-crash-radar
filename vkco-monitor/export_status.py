@@ -16,6 +16,7 @@ import strategy3_value_rsi
 import fundamental_snapshot
 import fundamental_analysis
 import valuation
+import diamond
 import latest_news
 import strategy4_h1
 
@@ -121,6 +122,10 @@ def build_status() -> dict[str, Any]:
     payload["fundamental_analysis"] = fundamental_analysis.fetch_analysis()
     payload["valuation"] = valuation.build(latest.close, payload["fundamentals"], payload["fundamental_analysis"])
 
+    def finalize() -> dict[str, Any]:
+        payload["diamond"] = diamond.build(payload["fundamental_analysis"], payload["valuation"], payload["trade"], payload["strategy2"], payload["strategy4"])
+        return finalize()
+
     if has_active_position(state):
         p = state["position"]
         payload["trade"] = {
@@ -129,16 +134,16 @@ def build_status() -> dict[str, Any]:
             "setup": p.get("setup"),
             "score": p.get("score"),
         }
-        return payload
+        return finalize()
 
     if not fresh:
         payload["trade"] = {"status": "WAIT", "reason": "STALE_OR_MARKET_CLOSED"}
-        return payload
+        return finalize()
 
     signal = monitor.detect_signal(candles)
     if not signal:
         payload["trade"] = {"status": "WAIT", "reason": "NO_TRIGGER"}
-        return payload
+        return finalize()
 
     imoex = monitor.fetch_candles(secid="IMOEX", market="index", board=None, days=3)
     market_filter = monitor.market_filter(imoex)
@@ -161,14 +166,14 @@ def build_status() -> dict[str, Any]:
         "signal_id": signal.get("signal_id"),
     }
     if not market_filter["ok"]:
-        return payload
+        return finalize()
 
     try:
         event_risk = monitor.fetch_event_risk(now=now, window_days=3)
     except Exception as exc:
         payload["trade"]["reason"] = "EVENT_DATA_UNAVAILABLE"
         payload["event_risk"] = {"ok": False, "error": type(exc).__name__}
-        return payload
+        return finalize()
 
     payload["event_risk"] = {
         "ok": event_risk.get("ok", False),
@@ -178,18 +183,15 @@ def build_status() -> dict[str, Any]:
     }
     if not event_risk["ok"]:
         payload["trade"]["reason"] = "EVENT_RISK"
-        return payload
+        return finalize()
 
     if state.get("last_signal_id") == signal["signal_id"]:
         payload["trade"]["reason"] = "DUPLICATE"
-        return payload
+        return finalize()
 
     payload["trade"]["status"] = "READY"
     payload["trade"]["reason"] = "TRIGGER_CONFIRMED"
-    return payload
-
-
-def _audit_snapshot(payload: dict[str, Any]) -> dict[str, Any]:
+    return finalize()\n\n\ndef _audit_snapshot(payload: dict[str, Any]) -> dict[str, Any]:
     trade = payload.get("trade") or {}
     market = payload.get("market") or {}
     imoex = payload.get("imoex") or {}

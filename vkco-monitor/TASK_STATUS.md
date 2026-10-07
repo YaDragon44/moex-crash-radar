@@ -34,3 +34,7 @@ No feature development is required now. Continue scheduled observation. Hotfix o
 
 ## Manual-only decision — 2026-10-02
 Owner decision: all VKCO automation and Telegram delivery are stopped. The VKCO workflow has no schedule/push trigger and runs only via manual workflow_dispatch. Automatic vkco-live publication is disabled. Telegram is hard-disabled for manual workflow runs. Analysis is initiated manually by the owner.
+
+
+## Diamond read-only layer — 2026-10-07
+Manual analysis now classifies VKCO as NO_DIAMOND / DIAMOND_CANDIDATE / DIAMOND_CONFIRMED from official fundamentals, valuation margin of safety and independent technical confirmation. It separates CORE, TRADE and FUTURES semantics. It cannot place orders, alter S1-S4, enable Telegram, or enable scheduling.
