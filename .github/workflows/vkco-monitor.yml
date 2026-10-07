@@ -2,21 +2,13 @@ name: VKCO Monitor R1.8
 
 on:
   workflow_dispatch:
-    inputs:
-      mode:
-        description: Manual run mode
-        required: true
-        default: run
-        type: choice
-        options:
-          - run
-          - heartbeat
+
 
 permissions:
   contents: write
 
 concurrency:
-  group: vkco-monitor-${{ github.event_name }}-${{ github.event.schedule || 'manual' }}
+  group: vkco-monitor-manual
   cancel-in-progress: false
 
 jobs:
@@ -38,7 +30,7 @@ jobs:
       STRATEGY4_STATE_FILE: vkco-monitor/state/strategy4_h1_state.json
       STRATEGY4_JOURNAL_JSONL: vkco-monitor/state/strategy4_h1_journal.jsonl
       STRATEGY4_DECISION_AUDIT_JSONL: vkco-monitor/state/strategy4_h1_decision_audit.jsonl
-      MODE: ${{ inputs.mode }}
+      MODE: run
       TELEGRAM_DISABLED: '1'
 
     steps:
@@ -56,7 +48,6 @@ jobs:
         run: mkdir -p vkco-monitor/state
 
       - name: Restore signal state
-        if: github.event_name != 'pull_request'
         uses: actions/cache/restore@v4
         with:
           path: vkco-monitor/state
@@ -72,15 +63,14 @@ jobs:
         run: pytest -q
 
       - name: Run VKCO monitor
-        if: github.event_name != 'pull_request'
         run: python vkco-monitor/run_r18.py
 
       - name: Export public dashboard state
-        if: always() && github.event_name != 'pull_request'
+        if: always()
         run: python vkco-monitor/export_status.py
 
       - name: Save signal state and journal
-        if: always() && github.event_name != 'pull_request'
+        if: always()
         uses: actions/cache/save@v4
         with:
           path: vkco-monitor/state
