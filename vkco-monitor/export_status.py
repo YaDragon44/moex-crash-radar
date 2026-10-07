@@ -124,7 +124,7 @@ def build_status() -> dict[str, Any]:
 
     def finalize() -> dict[str, Any]:
         payload["diamond"] = diamond.build(payload["fundamental_analysis"], payload["valuation"], payload["trade"], payload["strategy2"], payload["strategy4"])
-        return finalize()
+        return payload
 
     if has_active_position(state):
         p = state["position"]
