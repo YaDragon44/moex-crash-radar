@@ -72,3 +72,16 @@ def test_export_error_degrades_but_writes_json(tmp_path, monkeypatch):
     assert payload['health']=='DEGRADED'
     saved=json.loads(out.read_text(encoding='utf-8'))
     assert saved['trade']['reason']=='STATUS_EXPORT_ERROR'
+
+
+def test_finalize_adds_diamond_without_recursion(tmp_path, monkeypatch):
+    state_path=tmp_path/'state.json'; state_path.write_text('{}',encoding='utf-8')
+    monkeypatch.setattr(export_status.monitor,'STATE_FILE',state_path)
+    monkeypatch.setattr(export_status,'JOURNAL_JSONL',tmp_path/'journal.jsonl')
+    now=monitor.datetime.now(monitor.MOSCOW)
+    monkeypatch.setattr(export_status.monitor,'fetch_candles',lambda *a,**k:_candles(now))
+    monkeypatch.setattr(export_status.fundamental_analysis,'fetch_analysis',lambda:{'status':'OK','indicators':[{'light':'GREEN'}]*6,'facts':{'net_debt_bln':60.2,'guidance_ebitda_2026_bln':24}})
+    monkeypatch.setattr(export_status.fundamental_snapshot,'fetch_snapshot',lambda price:{'status':'OK','issue_size':572904180})
+    payload=export_status.build_status()
+    assert 'diamond' in payload
+    assert payload['diamond']['read_only'] is True
