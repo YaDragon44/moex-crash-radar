@@ -1,10 +1,10 @@
 {
   "input": {
-    "fgi": 73.0,
+    "fgi": 71.0,
     "price_confirm_4h": false,
-    "new_local_low_4h": false,
+    "new_local_low_4h": true,
     "oi_regime": "LEVERAGE_BUILD_UP",
-    "stop_atr": 1.2810346492498592,
+    "stop_atr": -0.5570683616952419,
     "data_ready": true,
     "position_open": false
   },
@@ -20,33 +20,33 @@
     "invalidation": "F&G returns to <=35 and full Quality Gate is restored"
   },
   "market": {
-    "price": 85615.0,
-    "timestamp": "2026-10-06T16:00:00+00:00",
-    "age_h": 7.763049815,
+    "price": 84162.7,
+    "timestamp": "2026-10-07T00:00:00+00:00",
+    "age_h": 5.8316504091666665,
     "fresh": true,
     "price_confirm_4h": false,
-    "new_local_low_4h": false,
-    "atr14_4h": 813.6642857142849,
-    "swing_low_4h": 84979.5,
-    "stop_price": 84572.66785714286,
-    "stop_atr": 1.2810346492498592
+    "new_local_low_4h": true,
+    "atr14_4h": 925.9571428571414,
+    "swing_low_4h": 85141.5,
+    "stop_price": 84678.52142857143,
+    "stop_atr": -0.5570683616952419
   },
   "crowd": {
-    "value": 73.0,
+    "value": 71.0,
     "classification": "Greed",
-    "timestamp": "2026-10-06T00:00:00+00:00",
-    "age_h": 23.763049815000002,
+    "timestamp": "2026-10-07T00:00:00+00:00",
+    "age_h": 5.8316504091666665,
     "fresh": true
   },
   "open_interest": {
     "regime": "LEVERAGE_BUILD_UP",
-    "timestamp": "2026-10-06T20:00:00+00:00",
-    "age_h": 3.763049815,
+    "timestamp": "2026-10-07T04:00:00+00:00",
+    "age_h": 1.8316504091666665,
     "fresh": true,
-    "oi_value": 3040013.5600000136,
-    "delta_24h": 0.06508834451485512,
-    "delta_p10": -0.03092031519645816,
-    "delta_p90": 0.036459230759543715,
+    "oi_value": 3052593.300000007,
+    "delta_24h": 0.04734687662246828,
+    "delta_p10": -0.030689860460447853,
+    "delta_p90": 0.040459163423925096,
     "points": 100
   },
   "quality": {
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-10-06T23:45:46.979334+00:00"
+  "generated_at_utc": "2026-10-07T05:49:53.941473+00:00"
 }
