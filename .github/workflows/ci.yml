@@ -20,7 +20,7 @@ jobs:
       - name: Install
         run: |
           python -m pip install --upgrade pip
-          pip install -e . pytest
+          pip install -e . pytest requests
       - name: Unit tests
         run: pytest
       - name: Investor Radar R2.0 JavaScript tests
