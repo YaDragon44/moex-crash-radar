@@ -3,8 +3,7 @@ name: Morning Dashboard MVP
 on:
   workflow_dispatch:
   schedule:
-    # Three independent attempts. GitHub cron can be delayed or occasionally
-    # skipped; the delivery script is idempotent per Moscow calendar day.
+    # GitHub cron can be delayed; delivery is idempotent per Moscow calendar day.
     - cron: '0 5 * * *'   # 08:00 Europe/Moscow (UTC+3)
   push:
     paths:
@@ -44,6 +43,7 @@ jobs:
       - name: Send Personal Morning Dashboard
         id: telegram
         env:
+          MAKE_API_TOKEN: ${{ secrets.MAKE_API_TOKEN }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python scripts/personal_morning_dashboard.py

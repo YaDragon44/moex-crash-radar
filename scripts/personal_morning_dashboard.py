@@ -8,6 +8,8 @@ import xml.etree.ElementTree as ET
 
 import requests
 
+from morning_make_delivery import DeliveryUncertain, send_via_make
+
 MSK = ZoneInfo("Europe/Moscow")
 ZYUZINO = (55.6557, 37.5763)
 
@@ -202,9 +204,22 @@ def finance_block() -> str:
     return ("💰 ФИНАНСЫ\n" f"USD/RUB   {usd}\n" f"BTC/USD   {btc}   -   ETH/USD   {eth}\n" f"SBERP     {sber}   -   VKCO      {vkco}\n" f"ПОСЛЕДНЕЕ ЗАКРЫТИЕ · {sber_src.split(' · ')[1] if ' · ' in sber_src else 'дата недоступна'} · MOEX ISS\n\n" f"🕒 {stamp}\n" f"Источники: {usd_src}; {btc_src}; {eth_src}\n" "🙂 Bitcoin работает без выходных. Сбер хотя бы умеет выключать терминал.")
 
 
+def save_state(path: str, state: dict) -> None:
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    temporary = path + ".tmp"
+    with open(temporary, "w", encoding="utf-8") as fh:
+        json.dump(state, fh)
+    os.replace(temporary, path)
+
+
 def main() -> int:
-    token = os.getenv("TELEGRAM_BOT_TOKEN"); raw_ids = os.getenv("TELEGRAM_CHAT_ID")
-    if not token or not raw_ids: raise SystemExit("Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID")
+    token = os.getenv("TELEGRAM_BOT_TOKEN")
+    make_token = os.getenv("MAKE_API_TOKEN")
+    raw_ids = os.getenv("TELEGRAM_CHAT_ID")
+    if not raw_ids or not (token or make_token):
+        raise SystemExit("Missing recipient or delivery credentials")
+    transport = "make" if make_token else "telegram"
+    print(f"MORNING_DELIVERY transport={transport}")
     text = morning_header() + "\n\n" + weather_block() + "\n\n" + finance_block(); failures = 0
     state_path = "artifacts/morning_dashboard_state.json"
     try:
@@ -224,25 +239,44 @@ def main() -> int:
                 print(f"PASS already-delivered-today recipient={chat_id} message_id={old_id}")
                 continue
 
-            # Keep only one current morning dashboard in the chat.
-            if old_id:
+            # A timed-out Make run can still deliver. Keep its marker across reruns.
+            if isinstance(entry, dict) and entry.get("pending_date") == today:
+                raise RuntimeError("Unresolved Make delivery today; inspect Make history before retry")
+
+            execution_id = ""
+            if make_token:
+                state[chat_id] = {**(entry if isinstance(entry, dict) else {}),
+                                  "pending_date": today, "transport": "make"}
+                save_state(state_path, state)
+                try:
+                    new_id, execution_id = send_via_make(make_token, chat_id, text)
+                except DeliveryUncertain as exc:
+                    if exc.execution_id:
+                        state[chat_id]["execution_id"] = exc.execution_id
+                        save_state(state_path, state)
+                    raise
+            else:
+                new_id = telegram_send(token, chat_id, text)
+
+            # Persist confirmed delivery before best-effort cleanup of the old message.
+            state[chat_id] = {
+                "message_id": new_id, "delivered_date": today,
+                "delivered_at": datetime.now(MSK).isoformat(timespec="seconds"),
+                "transport": transport, "execution_id": execution_id,
+            }
+            save_state(state_path, state)
+            # Keep only one current morning dashboard when the original bot token is available.
+            if old_id and token:
                 try:
                     telegram_delete(token, chat_id, int(old_id))
                     print(f"PASS delete-previous recipient={chat_id}")
                 except Exception as exc:
                     print(f"WARN delete-previous recipient={chat_id}: {exc}")
 
-            new_id = telegram_send(token, chat_id, text)
-            state[chat_id] = {
-                "message_id": new_id,
-                "delivered_date": today,
-                "delivered_at": datetime.now(MSK).isoformat(timespec="seconds"),
-            }
             print(f"PASS personal-morning recipient={chat_id} message_id={new_id} delivered_date={today}")
         except Exception as exc:
             failures += 1; print(f"FAIL personal-morning recipient={chat_id}: {exc}")
-    os.makedirs(os.path.dirname(state_path), exist_ok=True)
-    with open(state_path, "w", encoding="utf-8") as fh: json.dump(state, fh)
+    save_state(state_path, state)
     return 1 if failures else 0
 
 
