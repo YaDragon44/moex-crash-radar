@@ -191,7 +191,10 @@ def build_status() -> dict[str, Any]:
 
     payload["trade"]["status"] = "READY"
     payload["trade"]["reason"] = "TRIGGER_CONFIRMED"
-    return finalize()\n\n\ndef _audit_snapshot(payload: dict[str, Any]) -> dict[str, Any]:
+    return finalize()
+
+
+def _audit_snapshot(payload: dict[str, Any]) -> dict[str, Any]:
     trade = payload.get("trade") or {}
     market = payload.get("market") or {}
     imoex = payload.get("imoex") or {}
