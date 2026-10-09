@@ -1,6 +1,6 @@
 {
   "release": "R0.8.1 Signal History",
-  "updated_at": "2026-10-08T17:32:01+03:00",
+  "updated_at": "2026-10-09T17:19:07+03:00",
   "events": [
     {
       "ticker": "SBERP",
@@ -1912,6 +1912,90 @@
       "tp3": 45.21,
       "rr": 0.093,
       "time": "2026-10-08T17:32:01+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "D1",
+      "direction": "NEUTRAL",
+      "status": "WAIT",
+      "reason": "Нет направленной структуры",
+      "price": 283.7,
+      "time": "2026-10-09T17:19:07+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "H1",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "R/R < 2",
+      "price": 283.58,
+      "entry": 282.44,
+      "stop": 279.6543,
+      "tp1": 282.4448,
+      "tp2": 282.48,
+      "tp3": 283.1,
+      "rr": 0.0144,
+      "time": "2026-10-09T17:19:07+03:00"
+    },
+    {
+      "ticker": "VKCO",
+      "tf": "D1",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "FORMING candle",
+      "price": 119.8,
+      "entry": 123.95,
+      "stop": 110.35,
+      "tp1": 124.95,
+      "tp2": 127.9,
+      "tp3": 131.397,
+      "rr": 0.2904,
+      "time": "2026-10-09T17:19:07+03:00"
+    },
+    {
+      "ticker": "VKCO",
+      "tf": "H1",
+      "direction": "SHORT",
+      "status": "WAIT",
+      "reason": "Нет price trigger",
+      "price": 120.2,
+      "entry": 117.85,
+      "stop": 120.4,
+      "tp1": 117.45,
+      "tp2": 117.2138,
+      "tp3": 115.3906,
+      "rr": 0.2495,
+      "time": "2026-10-09T17:19:07+03:00"
+    },
+    {
+      "ticker": "OZPH",
+      "tf": "D1",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "FORMING candle",
+      "price": 45.0,
+      "entry": 45.66,
+      "stop": 41.1808,
+      "tp1": 45.76,
+      "tp2": 48.8204,
+      "tp3": 49.4946,
+      "rr": 0.7056,
+      "time": "2026-10-09T17:19:07+03:00"
+    },
+    {
+      "ticker": "OZPH",
+      "tf": "M10",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "RVOL ≤ 1.1x / N/A",
+      "price": 45.16,
+      "entry": 44.9891,
+      "stop": 44.9348,
+      "tp1": 44.995,
+      "tp2": 45.02,
+      "tp3": 45.03,
+      "rr": 0.5686,
+      "time": "2026-10-09T17:19:07+03:00"
     }
   ]
 }
