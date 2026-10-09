@@ -1,51 +1,51 @@
 {
   "input": {
-    "fgi": 64.0,
+    "fgi": 59.0,
     "price_confirm_4h": false,
-    "new_local_low_4h": true,
-    "oi_regime": "STABLE",
-    "stop_atr": 1.4343749761120241,
+    "new_local_low_4h": false,
+    "oi_regime": "DELEVERAGING",
+    "stop_atr": 2.702799872237321,
     "data_ready": true,
     "position_open": false
   },
   "output": {
     "state": "NO_TRADE",
-    "action": "DO NOT CHASE",
+    "action": "WAIT",
     "standard_size": 0.0,
     "why": [
-      "Crowd is in Greed zone",
-      "MVP seeks asymmetric fear entries",
-      "New long lacks crowd discount"
+      "Risk gate failed",
+      "Stop distance is invalid or >2 ATR",
+      "Entry is too late or structure unclear"
     ],
-    "invalidation": "F&G returns to <=35 and full Quality Gate is restored"
+    "invalidation": "Valid stop <=2 ATR"
   },
   "market": {
-    "price": 81778.9,
-    "timestamp": "2026-10-08T16:00:00+00:00",
-    "age_h": 5.270953130555556,
+    "price": 82419.7,
+    "timestamp": "2026-10-09T00:00:00+00:00",
+    "age_h": 6.025139188333334,
     "fresh": true,
     "price_confirm_4h": false,
-    "new_local_low_4h": true,
-    "atr14_4h": 934.4214285714271,
-    "swing_low_4h": 80905.8,
-    "stop_price": 80438.58928571429,
-    "stop_atr": 1.4343749761120241
+    "new_local_low_4h": false,
+    "atr14_4h": 916.8785714285706,
+    "swing_low_4h": 80400.0,
+    "stop_price": 79941.56071428572,
+    "stop_atr": 2.702799872237321
   },
   "crowd": {
-    "value": 64.0,
+    "value": 59.0,
     "classification": "Greed",
-    "timestamp": "2026-10-08T00:00:00+00:00",
-    "age_h": 21.270953130555554,
+    "timestamp": "2026-10-09T00:00:00+00:00",
+    "age_h": 6.025139188333334,
     "fresh": true
   },
   "open_interest": {
-    "regime": "STABLE",
-    "timestamp": "2026-10-08T20:00:00+00:00",
-    "age_h": 1.2709531305555555,
+    "regime": "DELEVERAGING",
+    "timestamp": "2026-10-09T04:00:00+00:00",
+    "age_h": 2.0251391883333336,
     "fresh": true,
-    "oi_value": 2989190.190000016,
-    "delta_24h": -0.025136840358855106,
-    "delta_p10": -0.030689860460447853,
+    "oi_value": 2956966.6900000107,
+    "delta_24h": -0.05364507411591568,
+    "delta_p10": -0.031904776626738886,
     "delta_p90": 0.04228414005781418,
     "points": 100
   },
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-10-08T21:16:15.431270+00:00"
+  "generated_at_utc": "2026-10-09T06:01:30.501078+00:00"
 }
