@@ -1,6 +1,6 @@
 {
   "version": "1.5",
-  "generated_at": "2026-10-11T11:23:35.450200+00:00",
+  "generated_at": "2026-10-12T13:08:54.852281+00:00",
   "source_status": {
     "coingecko_global": "LIVE",
     "coingecko_stablecoins": "LIVE",
@@ -14,54 +14,54 @@
     "gate_contract_stats": null
   },
   "market": {
-    "total_market_cap": 2787601920845.009,
-    "total_change_24h_pct": -2.6819136228334632,
-    "btc_dominance_pct": 59.67386208703513,
-    "btc_cap": 1663469725780.5928,
-    "alt_cap": 1124132195064.416
+    "total_market_cap": 2810261469777.56,
+    "total_change_24h_pct": -2.876680684352705,
+    "btc_dominance_pct": 58.95191365165774,
+    "btc_cap": 1656702915049.075,
+    "alt_cap": 1153558554728.485
   },
   "derivatives": {
-    "btc_price": 83025.0,
-    "price_change_24h_pct": 0.3,
-    "oi_usd": 4363720674.8848,
-    "oi_change_24h_pct": 1.7604927452341768,
-    "funding_pct": -9.999999999999999e-05,
-    "long_short_ratio": 1.3502655420181193
+    "btc_price": 82659.8,
+    "price_change_24h_pct": -0.45,
+    "oi_usd": 4332057384.1776,
+    "oi_change_24h_pct": -1.408775215830682,
+    "funding_pct": 0.0063,
+    "long_short_ratio": 1.2873181425629443
   },
   "context": {
-    "stablecoin_market_cap": 307602145945.0,
-    "stablecoin_market_cap_change_24h_pct": 0.08533288861207744,
+    "stablecoin_market_cap": 308087563255.0,
+    "stablecoin_market_cap_change_24h_pct": 0.00471596120839024,
     "semantic": "market-cap change proxy; not literal net inflow"
   },
   "crowd": {
     "model": "v2-provisional",
     "factors": {
-      "oi_price": 70,
+      "oi_price": 35,
       "funding": 50,
       "long_short": 85,
       "liquidation_risk": null,
       "news": null,
-      "flows": 65
+      "flows": 50
     },
     "coverage_pct": 70,
     "derivative_factor_count": 3,
     "external_context_present": true,
     "quality_passed": true,
-    "score": 66,
-    "state": "GREED",
-    "action": "REDUCE"
+    "score": 53,
+    "state": "NEUTRAL",
+    "action": "WAIT"
   },
   "risk": {
     "model": "risk-v1-provisional",
     "provisional": true,
     "coverage_pct": 100,
-    "score": 49,
-    "status": "ELEVATED",
+    "score": 42,
+    "status": "MODERATE",
     "components": {
       "market_stress": 55,
-      "leverage": 55,
+      "leverage": 45,
       "funding_extreme": 20,
-      "positioning_extreme": 65,
+      "positioning_extreme": 40,
       "liquidity_context": 35
     },
     "reason": "Provisional composite; historical calibration required"
@@ -69,11 +69,11 @@
   "regime": {
     "model": "regime-v1-provisional",
     "provisional": true,
-    "status": "DISTRIBUTION",
-    "candidate": "DISTRIBUTION",
+    "status": "NEUTRAL",
+    "candidate": "NEUTRAL",
     "candidate_count": 1,
     "confirmed": false,
-    "transition": "WATCH DISTRIBUTION · 1/2",
+    "transition": "WATCH NEUTRAL · 1/2",
     "confirmation_rule": "2 consecutive observations"
   },
   "capital_flow": {
@@ -82,16 +82,16 @@
     "reason": "7D persistent history required"
   },
   "transition": {
-    "status": "WATCH DISTRIBUTION · 1/2",
+    "status": "WATCH NEUTRAL · 1/2",
     "confirmed": false
   },
   "action_engine": {
-    "investor": "REDUCE RISK",
-    "trader": "REDUCE EXPOSURE",
+    "investor": "HOLD",
+    "trader": "WAIT",
     "why": [
-      "Long/Short extremity 65/100",
       "Market stress 55/100",
-      "Price/OI leverage 55/100"
+      "Price/OI leverage 45/100",
+      "Long/Short extremity 40/100"
     ],
     "provisional": true
   }
