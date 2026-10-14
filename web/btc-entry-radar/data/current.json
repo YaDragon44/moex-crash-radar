@@ -1,52 +1,52 @@
 {
   "input": {
-    "fgi": 57.0,
+    "fgi": 62.0,
     "price_confirm_4h": false,
     "new_local_low_4h": false,
     "oi_regime": "STABLE",
-    "stop_atr": 2.9355675642482075,
+    "stop_atr": 3.460826830851045,
     "data_ready": true,
     "position_open": false
   },
   "output": {
     "state": "NO_TRADE",
-    "action": "WAIT",
+    "action": "DO NOT CHASE",
     "standard_size": 0.0,
     "why": [
-      "Risk gate failed",
-      "Stop distance is invalid or >2 ATR",
-      "Entry is too late or structure unclear"
+      "Crowd is in Greed zone",
+      "MVP seeks asymmetric fear entries",
+      "New long lacks crowd discount"
     ],
-    "invalidation": "Valid stop <=2 ATR"
+    "invalidation": "F&G returns to <=35 and full Quality Gate is restored"
   },
   "market": {
-    "price": 83299.2,
-    "timestamp": "2026-10-13T16:00:00+00:00",
-    "age_h": 7.7065430402777775,
+    "price": 83705.2,
+    "timestamp": "2026-10-14T00:00:00+00:00",
+    "age_h": 4.775297296944444,
     "fresh": true,
     "price_confirm_4h": false,
     "new_local_low_4h": false,
-    "atr14_4h": 930.5428571428575,
+    "atr14_4h": 902.5857142857151,
     "swing_low_4h": 81032.8,
-    "stop_price": 80567.52857142857,
-    "stop_atr": 2.9355675642482075
+    "stop_price": 80581.50714285714,
+    "stop_atr": 3.460826830851045
   },
   "crowd": {
-    "value": 57.0,
+    "value": 62.0,
     "classification": "Greed",
-    "timestamp": "2026-10-13T00:00:00+00:00",
-    "age_h": 23.706543040277776,
+    "timestamp": "2026-10-14T00:00:00+00:00",
+    "age_h": 4.775297296944444,
     "fresh": true
   },
   "open_interest": {
     "regime": "STABLE",
-    "timestamp": "2026-10-13T20:00:00+00:00",
-    "age_h": 3.706543040277778,
+    "timestamp": "2026-10-14T04:00:00+00:00",
+    "age_h": 0.7752972969444444,
     "fresh": true,
-    "oi_value": 2915738.1200000104,
-    "delta_24h": -0.014249958559957143,
+    "oi_value": 2908826.8200000115,
+    "delta_24h": -0.018723217860270203,
     "delta_p10": -0.03021683018161574,
-    "delta_p90": 0.04228414005781418,
+    "delta_p90": 0.04086415883296432,
     "points": 100
   },
   "quality": {
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-10-13T23:42:23.554945+00:00"
+  "generated_at_utc": "2026-10-14T04:46:31.070269+00:00"
 }
