@@ -2,9 +2,9 @@
   "input": {
     "fgi": 62.0,
     "price_confirm_4h": false,
-    "new_local_low_4h": false,
-    "oi_regime": "STABLE",
-    "stop_atr": 1.0495850309340617,
+    "new_local_low_4h": true,
+    "oi_regime": "LEVERAGE_BUILD_UP",
+    "stop_atr": 0.7333652792990175,
     "data_ready": true,
     "position_open": false
   },
@@ -20,33 +20,33 @@
     "invalidation": "F&G returns to <=35 and full Quality Gate is restored"
   },
   "market": {
-    "price": 83476.6,
-    "timestamp": "2026-10-14T08:00:00+00:00",
-    "age_h": 5.646218900277777,
+    "price": 81843.4,
+    "timestamp": "2026-10-14T16:00:00+00:00",
+    "age_h": 4.174257477499999,
     "fresh": true,
     "price_confirm_4h": false,
-    "new_local_low_4h": false,
-    "atr14_4h": 946.7142857142868,
-    "swing_low_4h": 82956.3,
-    "stop_price": 82482.94285714286,
-    "stop_atr": 1.0495850309340617
+    "new_local_low_4h": true,
+    "atr14_4h": 1043.4285714285725,
+    "swing_low_4h": 81599.9,
+    "stop_price": 81078.1857142857,
+    "stop_atr": 0.7333652792990175
   },
   "crowd": {
     "value": 62.0,
     "classification": "Greed",
     "timestamp": "2026-10-14T00:00:00+00:00",
-    "age_h": 13.646218900277777,
+    "age_h": 20.1742574775,
     "fresh": true
   },
   "open_interest": {
-    "regime": "STABLE",
-    "timestamp": "2026-10-14T12:00:00+00:00",
-    "age_h": 1.6462189002777778,
+    "regime": "LEVERAGE_BUILD_UP",
+    "timestamp": "2026-10-14T20:00:00+00:00",
+    "age_h": 0.17425747749999998,
     "fresh": true,
-    "oi_value": 2982688.590000011,
-    "delta_24h": 0.012247477743137836,
-    "delta_p10": -0.03021683018161574,
-    "delta_p90": 0.04086415883296432,
+    "oi_value": 3090611.6600000123,
+    "delta_24h": 0.05934137122904404,
+    "delta_p10": -0.02893635769071998,
+    "delta_p90": 0.043084679497425095,
     "points": 100
   },
   "quality": {
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-10-14T13:38:46.388041+00:00"
+  "generated_at_utc": "2026-10-14T20:10:27.326919+00:00"
 }
