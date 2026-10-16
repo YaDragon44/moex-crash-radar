@@ -1,6 +1,6 @@
 {
   "release": "R0.8.1 Signal History",
-  "updated_at": "2026-10-15T15:36:48+03:00",
+  "updated_at": "2026-10-16T15:18:46+03:00",
   "events": [
     {
       "ticker": "SBERP",
@@ -2365,6 +2365,99 @@
       "tp3": null,
       "rr": 0.6225,
       "time": "2026-10-15T15:36:48+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "H1",
+      "direction": "NEUTRAL",
+      "status": "WAIT",
+      "reason": "Нет направленной структуры",
+      "price": 285.49,
+      "time": "2026-10-16T15:18:46+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "M10",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "RVOL ≤ 1.1x / N/A",
+      "price": 285.49,
+      "entry": 285.0,
+      "stop": 284.0968,
+      "tp1": 285.1513,
+      "tp2": 285.58,
+      "tp3": 285.9262,
+      "rr": 0.6422,
+      "time": "2026-10-16T15:18:46+03:00"
+    },
+    {
+      "ticker": "VKCO",
+      "tf": "D1",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "FORMING candle",
+      "price": 136.35,
+      "entry": 142.0,
+      "stop": 110.35,
+      "tp1": 145.203,
+      "tp2": 150.05,
+      "tp3": 167.55,
+      "rr": 0.2543,
+      "time": "2026-10-16T15:18:46+03:00"
+    },
+    {
+      "ticker": "VKCO",
+      "tf": "H1",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "R/R < 2",
+      "price": 136.75,
+      "entry": 135.2,
+      "stop": 130.4743,
+      "tp1": 135.3,
+      "tp2": 135.95,
+      "tp3": 136.4656,
+      "rr": 0.1587,
+      "time": "2026-10-16T15:18:46+03:00"
+    },
+    {
+      "ticker": "OZPH",
+      "tf": "D1",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "FORMING candle",
+      "price": 45.83,
+      "entry": 45.96,
+      "stop": 43.2293,
+      "tp1": 48.13,
+      "tp2": 48.8204,
+      "tp3": 49.4946,
+      "rr": 1.0475,
+      "time": "2026-10-16T15:18:46+03:00"
+    },
+    {
+      "ticker": "OZPH",
+      "tf": "H1",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "Нет price trigger",
+      "price": 45.89,
+      "entry": 46.22,
+      "stop": 45.62,
+      "tp1": 46.2512,
+      "tp2": 46.46,
+      "tp3": 46.47,
+      "rr": 0.4,
+      "time": "2026-10-16T15:18:46+03:00"
+    },
+    {
+      "ticker": "OZPH",
+      "tf": "M10",
+      "direction": "NEUTRAL",
+      "status": "WAIT",
+      "reason": "Нет направленной структуры",
+      "price": 45.89,
+      "time": "2026-10-16T15:18:46+03:00"
     }
   ]
 }
