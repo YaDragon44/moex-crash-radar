@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "market": "MOEX_FORTS",
+  "decision_timeframe": "1H",
+  "futoi_source": "MOEX analyticalproducts/futoi",
+  "quality_policy": "fail_closed",
+  "instruments": [
+    {"research_id": "IMOEX", "futoi_ticker": "MX", "underlying": "MIX", "status": "CANDIDATE"},
+    {"research_id": "USDRUB", "futoi_ticker": "Si", "underlying": "Si", "status": "CANDIDATE"},
+    {"research_id": "SBER", "futoi_ticker": "SR", "underlying": "SBRF", "status": "CANDIDATE"},
+    {"research_id": "GAZP", "futoi_ticker": "GZ", "underlying": "GAZR", "status": "CANDIDATE"},
+    {"research_id": "LKOH", "futoi_ticker": "LK", "underlying": "LKOH", "status": "CANDIDATE"}
+  ],
+  "admission": {
+    "min_unique_days": 60,
+    "min_pair_coverage_pct": 90.0,
+    "max_point_in_time_violations": 0,
+    "require_price_1h": true,
+    "require_futoi": true
+  }
+}
