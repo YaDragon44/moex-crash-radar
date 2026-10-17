@@ -53,6 +53,27 @@ def _candles_url(secid: str, market: str, board: str | None = None) -> str:
     return f"{base}/securities/{secid}/candles.json"
 
 
+def fetch_lot_size(secid: str = TICKER, board: str = BOARD) -> int:
+    url = f"https://iss.moex.com/iss/engines/stock/markets/shares/boards/{board}/securities/{secid}.json"
+    r = requests.get(
+        url,
+        params={"iss.meta": "off", "iss.only": "securities", "securities.columns": "SECID,BOARDID,LOTSIZE"},
+        timeout=20,
+    )
+    r.raise_for_status()
+    payload = r.json().get("securities") or {}
+    columns, rows = payload.get("columns") or [], payload.get("data") or []
+    for row in rows:
+        item = dict(zip(columns, row))
+        if item.get("SECID") == secid and item.get("BOARDID") == board:
+            lot_size = item.get("LOTSIZE")
+            if isinstance(lot_size, int) and not isinstance(lot_size, bool) and lot_size > 0:
+                return lot_size
+            if isinstance(lot_size, float) and lot_size.is_integer() and lot_size > 0:
+                return int(lot_size)
+    raise RuntimeError(f"MOEX LOTSIZE unavailable/invalid for {secid}/{board}")
+
+
 def fetch_candles(secid: str = TICKER, market: str = "shares", board: str | None = BOARD,
                   days: int = 7) -> list[Candle]:
     date_from = (datetime.now(MOSCOW) - timedelta(days=days)).date().isoformat()
