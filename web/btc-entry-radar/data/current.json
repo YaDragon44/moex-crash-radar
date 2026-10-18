@@ -4,7 +4,7 @@
     "price_confirm_4h": false,
     "new_local_low_4h": false,
     "oi_regime": "STABLE",
-    "stop_atr": 2.613083402624658,
+    "stop_atr": 1.066654347120011,
     "data_ready": true,
     "position_open": false
   },
@@ -13,39 +13,39 @@
     "action": "WAIT",
     "standard_size": 0.0,
     "why": [
-      "Risk gate failed",
-      "Stop distance is invalid or >2 ATR",
-      "Entry is too late or structure unclear"
+      "No validated MVP setup",
+      "Crowd/price combination is insufficient",
+      "Capital preservation has priority"
     ],
-    "invalidation": "Valid stop <=2 ATR"
+    "invalidation": "Wait for next setup"
   },
   "market": {
-    "price": 82066.1,
-    "timestamp": "2026-10-18T08:00:00+00:00",
-    "age_h": 4.5794741875,
+    "price": 81175.0,
+    "timestamp": "2026-10-18T12:00:00+00:00",
+    "age_h": 6.599907865277777,
     "fresh": true,
     "price_confirm_4h": false,
     "new_local_low_4h": false,
-    "atr14_4h": 592.7357142857103,
+    "atr14_4h": 637.778571428568,
     "swing_low_4h": 80813.6,
-    "stop_price": 80517.23214285714,
-    "stop_atr": 2.613083402624658
+    "stop_price": 80494.71071428573,
+    "stop_atr": 1.066654347120011
   },
   "crowd": {
     "value": 53.0,
     "classification": "Neutral",
     "timestamp": "2026-10-18T00:00:00+00:00",
-    "age_h": 12.5794741875,
+    "age_h": 18.59990786527778,
     "fresh": true
   },
   "open_interest": {
     "regime": "STABLE",
-    "timestamp": "2026-10-18T12:00:00+00:00",
-    "age_h": 0.5794741875,
+    "timestamp": "2026-10-18T16:00:00+00:00",
+    "age_h": 2.599907865277778,
     "fresh": true,
-    "oi_value": 3042803.52000001,
-    "delta_24h": -0.006253901370721904,
-    "delta_p10": -0.02893635769071998,
+    "oi_value": 3103813.680000012,
+    "delta_24h": 0.010187466898427422,
+    "delta_p10": -0.02845391256640547,
     "delta_p90": 0.043084679497425095,
     "points": 100
   },
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-10-18T12:34:46.107075+00:00"
+  "generated_at_utc": "2026-10-18T18:35:59.668315+00:00"
 }
