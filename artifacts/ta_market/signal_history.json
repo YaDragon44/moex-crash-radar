@@ -1,6 +1,6 @@
 {
   "release": "R0.8.1 Signal History",
-  "updated_at": "2026-10-16T15:18:46+03:00",
+  "updated_at": "2026-10-19T17:36:37+03:00",
   "events": [
     {
       "ticker": "SBERP",
@@ -2458,6 +2458,78 @@
       "reason": "Нет направленной структуры",
       "price": 45.89,
       "time": "2026-10-16T15:18:46+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "D1",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "FORMING candle",
+      "price": 287.38,
+      "entry": 289.0,
+      "stop": 275.7167,
+      "tp1": 289.43,
+      "tp2": 291.76,
+      "tp3": 298.8211,
+      "rr": 0.2078,
+      "time": "2026-10-19T17:36:37+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "M10",
+      "direction": "SHORT",
+      "status": "WAIT",
+      "reason": "R/R < 2",
+      "price": 287.67,
+      "entry": 288.1,
+      "stop": 289.7507,
+      "tp1": 287.6256,
+      "tp2": 287.2,
+      "tp3": 287.15,
+      "rr": 0.5452,
+      "time": "2026-10-19T17:36:37+03:00"
+    },
+    {
+      "ticker": "VKCO",
+      "tf": "D1",
+      "direction": "NEUTRAL",
+      "status": "WAIT",
+      "reason": "Нет направленной структуры",
+      "price": 133.75,
+      "time": "2026-10-19T17:36:37+03:00"
+    },
+    {
+      "ticker": "VKCO",
+      "tf": "H1",
+      "direction": "NEUTRAL",
+      "status": "WAIT",
+      "reason": "Нет направленной структуры",
+      "price": 133.95,
+      "time": "2026-10-19T17:36:37+03:00"
+    },
+    {
+      "ticker": "VKCO",
+      "tf": "M10",
+      "direction": "LONG",
+      "status": "INVALID",
+      "reason": "Структурная инвалидация",
+      "price": 133.75,
+      "entry": 134.9,
+      "stop": 134.2,
+      "tp1": 134.9406,
+      "tp2": 135.2611,
+      "tp3": 135.8969,
+      "rr": 0.5159,
+      "time": "2026-10-19T17:36:37+03:00"
+    },
+    {
+      "ticker": "OZPH",
+      "tf": "H1",
+      "direction": "NEUTRAL",
+      "status": "WAIT",
+      "reason": "Нет направленной структуры",
+      "price": 46.98,
+      "time": "2026-10-19T17:36:37+03:00"
     }
   ]
 }
