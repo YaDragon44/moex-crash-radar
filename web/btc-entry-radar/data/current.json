@@ -2,9 +2,9 @@
   "input": {
     "fgi": 55.0,
     "price_confirm_4h": false,
-    "new_local_low_4h": true,
+    "new_local_low_4h": false,
     "oi_regime": "STABLE",
-    "stop_atr": 0.9993002515435846,
+    "stop_atr": 0.9055768241814779,
     "data_ready": true,
     "position_open": false
   },
@@ -13,38 +13,38 @@
     "action": "WAIT",
     "standard_size": 0.0,
     "why": [
-      "Crowd gate is weak",
-      "BTC still makes a local low",
-      "Price reversal is not confirmed"
+      "No validated MVP setup",
+      "Crowd/price combination is insufficient",
+      "Capital preservation has priority"
     ],
-    "invalidation": "BTC stops making local lows"
+    "invalidation": "Wait for next setup"
   },
   "market": {
-    "price": 82133.1,
-    "timestamp": "2026-10-20T00:00:00+00:00",
-    "age_h": 4.692548499444444,
+    "price": 81504.2,
+    "timestamp": "2026-10-20T08:00:00+00:00",
+    "age_h": 5.5297252625,
     "fresh": true,
     "price_confirm_4h": false,
-    "new_local_low_4h": true,
-    "atr14_4h": 780.8928571428551,
-    "swing_low_4h": 81743.2,
-    "stop_price": 81352.75357142856,
-    "stop_atr": 0.9993002515435846
+    "new_local_low_4h": false,
+    "atr14_4h": 750.0428571428555,
+    "swing_low_4h": 81200.0,
+    "stop_price": 80824.97857142857,
+    "stop_atr": 0.9055768241814779
   },
   "crowd": {
     "value": 55.0,
     "classification": "Greed",
     "timestamp": "2026-10-20T00:00:00+00:00",
-    "age_h": 4.692548499444444,
+    "age_h": 13.529725262500001,
     "fresh": true
   },
   "open_interest": {
     "regime": "STABLE",
-    "timestamp": "2026-10-20T04:00:00+00:00",
-    "age_h": 0.6925484994444444,
+    "timestamp": "2026-10-20T12:00:00+00:00",
+    "age_h": 1.5297252625,
     "fresh": true,
-    "oi_value": 3016970.2300000116,
-    "delta_24h": -0.0036590577611470554,
+    "oi_value": 3074563.010000013,
+    "delta_24h": 0.023843189133078813,
     "delta_p10": -0.02807782420447545,
     "delta_p90": 0.043084679497425095,
     "points": 100
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-10-20T04:41:33.174598+00:00"
+  "generated_at_utc": "2026-10-20T13:31:47.010945+00:00"
 }
