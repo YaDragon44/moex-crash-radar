@@ -1,6 +1,6 @@
 {
   "release": "R0.8.1 Signal History",
-  "updated_at": "2026-10-19T17:36:37+03:00",
+  "updated_at": "2026-10-20T15:40:31+03:00",
   "events": [
     {
       "ticker": "SBERP",
@@ -2530,6 +2530,90 @@
       "reason": "Нет направленной структуры",
       "price": 46.98,
       "time": "2026-10-19T17:36:37+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "D1",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "FORMING candle",
+      "price": 292.66,
+      "entry": 289.0,
+      "stop": 276.496,
+      "tp1": 289.43,
+      "tp2": 293.8,
+      "tp3": 301.416,
+      "rr": 0.3839,
+      "time": "2026-10-20T15:40:31+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "H1",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "Нет price trigger",
+      "price": 293.01,
+      "entry": 293.8,
+      "stop": 287.138,
+      "tp1": 296.7322,
+      "tp2": 300.462,
+      "tp3": null,
+      "rr": 1.0,
+      "time": "2026-10-20T15:40:31+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "M10",
+      "direction": "NEUTRAL",
+      "status": "WAIT",
+      "reason": "Нет направленной структуры",
+      "price": 292.74,
+      "time": "2026-10-20T15:40:31+03:00"
+    },
+    {
+      "ticker": "VKCO",
+      "tf": "M10",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "Нет price trigger",
+      "price": 137.0,
+      "entry": 137.5,
+      "stop": 134.8735,
+      "tp1": 138.656,
+      "tp2": 140.1265,
+      "tp3": null,
+      "rr": 1.0,
+      "time": "2026-10-20T15:40:31+03:00"
+    },
+    {
+      "ticker": "OZPH",
+      "tf": "H1",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "Нет price trigger",
+      "price": 47.33,
+      "entry": 47.43,
+      "stop": 45.9901,
+      "tp1": 48.0638,
+      "tp2": 48.8699,
+      "tp3": null,
+      "rr": 1.0,
+      "time": "2026-10-20T15:40:31+03:00"
+    },
+    {
+      "ticker": "OZPH",
+      "tf": "M10",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "Нет price trigger",
+      "price": 47.33,
+      "entry": 47.43,
+      "stop": 47.0592,
+      "tp1": 47.5932,
+      "tp2": 47.8008,
+      "tp3": null,
+      "rr": 1.0,
+      "time": "2026-10-20T15:40:31+03:00"
     }
   ]
 }
