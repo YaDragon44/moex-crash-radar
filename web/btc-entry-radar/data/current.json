@@ -1,50 +1,50 @@
 {
   "input": {
-    "fgi": 55.0,
+    "fgi": 63.0,
     "price_confirm_4h": false,
     "new_local_low_4h": false,
     "oi_regime": "STABLE",
-    "stop_atr": 2.104715899787137,
+    "stop_atr": 2.319416007544152,
     "data_ready": true,
     "position_open": false
   },
   "output": {
     "state": "NO_TRADE",
-    "action": "WAIT",
+    "action": "DO NOT CHASE",
     "standard_size": 0.0,
     "why": [
-      "Risk gate failed",
-      "Stop distance is invalid or >2 ATR",
-      "Entry is too late or structure unclear"
+      "Crowd is in Greed zone",
+      "MVP seeks asymmetric fear entries",
+      "New long lacks crowd discount"
     ],
-    "invalidation": "Valid stop <=2 ATR"
+    "invalidation": "F&G returns to <=35 and full Quality Gate is restored"
   },
   "market": {
-    "price": 82600.0,
-    "timestamp": "2026-10-20T16:00:00+00:00",
-    "age_h": 7.143069205,
+    "price": 82729.7,
+    "timestamp": "2026-10-21T00:00:00+00:00",
+    "age_h": 4.614424604166667,
     "fresh": true,
     "price_confirm_4h": false,
     "new_local_low_4h": false,
-    "atr14_4h": 872.4285714285704,
+    "atr14_4h": 840.7642857142845,
     "swing_low_4h": 81200.0,
-    "stop_price": 80763.78571428571,
-    "stop_atr": 2.104715899787137
+    "stop_price": 80779.61785714286,
+    "stop_atr": 2.319416007544152
   },
   "crowd": {
-    "value": 55.0,
+    "value": 63.0,
     "classification": "Greed",
-    "timestamp": "2026-10-20T00:00:00+00:00",
-    "age_h": 23.143069205,
+    "timestamp": "2026-10-21T00:00:00+00:00",
+    "age_h": 4.614424604166667,
     "fresh": true
   },
   "open_interest": {
     "regime": "STABLE",
-    "timestamp": "2026-10-20T20:00:00+00:00",
-    "age_h": 3.143069205,
+    "timestamp": "2026-10-21T04:00:00+00:00",
+    "age_h": 0.6144246041666667,
     "fresh": true,
-    "oi_value": 2914726.730000009,
-    "delta_24h": -0.023354811165842038,
+    "oi_value": 2967630.48000001,
+    "delta_24h": -0.013447195614327945,
     "delta_p10": -0.02845391256640547,
     "delta_p90": 0.043084679497425095,
     "points": 100
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-10-20T23:08:35.049138+00:00"
+  "generated_at_utc": "2026-10-21T04:36:51.928575+00:00"
 }
