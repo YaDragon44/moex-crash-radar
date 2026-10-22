@@ -2,9 +2,9 @@
   "input": {
     "fgi": 68.0,
     "price_confirm_4h": false,
-    "new_local_low_4h": false,
-    "oi_regime": "STABLE",
-    "stop_atr": 0.8259108164768517,
+    "new_local_low_4h": true,
+    "oi_regime": "DELEVERAGING",
+    "stop_atr": 0.07417217483156317,
     "data_ready": true,
     "position_open": false
   },
@@ -20,33 +20,33 @@
     "invalidation": "F&G returns to <=35 and full Quality Gate is restored"
   },
   "market": {
-    "price": 82929.2,
-    "timestamp": "2026-10-22T00:00:00+00:00",
-    "age_h": 4.590651980555555,
+    "price": 81751.3,
+    "timestamp": "2026-10-22T08:00:00+00:00",
+    "age_h": 5.730671211944444,
     "fresh": true,
     "price_confirm_4h": false,
-    "new_local_low_4h": false,
-    "atr14_4h": 882.4499999999991,
-    "swing_low_4h": 82641.6,
-    "stop_price": 82200.375,
-    "stop_atr": 0.8259108164768517
+    "new_local_low_4h": true,
+    "atr14_4h": 892.614285714284,
+    "swing_low_4h": 82131.4,
+    "stop_price": 81685.09285714285,
+    "stop_atr": 0.07417217483156317
   },
   "crowd": {
     "value": 68.0,
     "classification": "Greed",
     "timestamp": "2026-10-22T00:00:00+00:00",
-    "age_h": 4.590651980555555,
+    "age_h": 13.730671211944443,
     "fresh": true
   },
   "open_interest": {
-    "regime": "STABLE",
-    "timestamp": "2026-10-22T04:00:00+00:00",
-    "age_h": 0.5906519805555556,
+    "regime": "DELEVERAGING",
+    "timestamp": "2026-10-22T12:00:00+00:00",
+    "age_h": 1.7306712119444445,
     "fresh": true,
-    "oi_value": 2985007.1200000066,
-    "delta_24h": -0.011465878915364325,
-    "delta_p10": -0.02845391256640547,
-    "delta_p90": 0.054108951406996904,
+    "oi_value": 3030969.91000001,
+    "delta_24h": -0.041342221888167385,
+    "delta_p10": -0.02893635769071998,
+    "delta_p90": 0.049774225850228726,
     "points": 100
   },
   "quality": {
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-10-22T04:35:26.347130+00:00"
+  "generated_at_utc": "2026-10-22T13:43:50.416363+00:00"
 }
