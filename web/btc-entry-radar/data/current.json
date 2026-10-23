@@ -1,52 +1,52 @@
 {
   "input": {
-    "fgi": 68.0,
+    "fgi": 50.0,
     "price_confirm_4h": false,
-    "new_local_low_4h": true,
-    "oi_regime": "STABLE",
-    "stop_atr": 0.7013240954580419,
+    "new_local_low_4h": false,
+    "oi_regime": "LEVERAGE_BUILD_UP",
+    "stop_atr": 1.672098648123377,
     "data_ready": true,
     "position_open": false
   },
   "output": {
     "state": "NO_TRADE",
-    "action": "DO NOT CHASE",
+    "action": "WAIT",
     "standard_size": 0.0,
     "why": [
-      "Crowd is in Greed zone",
-      "MVP seeks asymmetric fear entries",
-      "New long lacks crowd discount"
+      "No validated MVP setup",
+      "Crowd/price combination is insufficient",
+      "Capital preservation has priority"
     ],
-    "invalidation": "F&G returns to <=35 and full Quality Gate is restored"
+    "invalidation": "Wait for next setup"
   },
   "market": {
-    "price": 81501.0,
-    "timestamp": "2026-10-22T16:00:00+00:00",
-    "age_h": 7.3003338922222225,
+    "price": 81894.1,
+    "timestamp": "2026-10-23T00:00:00+00:00",
+    "age_h": 4.676707116666666,
     "fresh": true,
     "price_confirm_4h": false,
-    "new_local_low_4h": true,
-    "atr14_4h": 927.8571428571419,
-    "swing_low_4h": 81314.2,
-    "stop_price": 80850.27142857143,
-    "stop_atr": 0.7013240954580419
+    "new_local_low_4h": false,
+    "atr14_4h": 826.8928571428561,
+    "swing_low_4h": 80924.9,
+    "stop_price": 80511.45357142856,
+    "stop_atr": 1.672098648123377
   },
   "crowd": {
-    "value": 68.0,
-    "classification": "Greed",
-    "timestamp": "2026-10-22T00:00:00+00:00",
-    "age_h": 23.30033389222222,
+    "value": 50.0,
+    "classification": "Neutral",
+    "timestamp": "2026-10-23T00:00:00+00:00",
+    "age_h": 4.676707116666666,
     "fresh": true
   },
   "open_interest": {
-    "regime": "STABLE",
-    "timestamp": "2026-10-22T20:00:00+00:00",
-    "age_h": 3.300333892222222,
+    "regime": "LEVERAGE_BUILD_UP",
+    "timestamp": "2026-10-23T04:00:00+00:00",
+    "age_h": 0.6767071166666666,
     "fresh": true,
-    "oi_value": 3079136.600000015,
-    "delta_24h": -0.010172891400544892,
+    "oi_value": 3133744.0700000147,
+    "delta_24h": 0.05772195836493599,
     "delta_p10": -0.02893635769071998,
-    "delta_p90": 0.03992893227192952,
+    "delta_p90": 0.04781463754651308,
     "points": 100
   },
   "quality": {
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-10-22T23:18:01.202012+00:00"
+  "generated_at_utc": "2026-10-23T04:40:36.145620+00:00"
 }
