@@ -4,7 +4,7 @@
     "price_confirm_4h": false,
     "new_local_low_4h": true,
     "oi_regime": "STABLE",
-    "stop_atr": 0.6306729690580235,
+    "stop_atr": -0.42238508666913277,
     "data_ready": true,
     "position_open": false
   },
@@ -13,39 +13,39 @@
     "action": "WAIT",
     "standard_size": 0.0,
     "why": [
-      "Crowd gate is weak",
-      "BTC still makes a local low",
-      "Price reversal is not confirmed"
+      "Risk gate failed",
+      "Stop distance is invalid or >2 ATR",
+      "Entry is too late or structure unclear"
     ],
-    "invalidation": "BTC stops making local lows"
+    "invalidation": "Valid stop <=2 ATR"
   },
   "market": {
-    "price": 80600.2,
-    "timestamp": "2026-10-24T08:00:00+00:00",
-    "age_h": 4.640670909444444,
+    "price": 79803.6,
+    "timestamp": "2026-10-24T12:00:00+00:00",
+    "age_h": 6.7573013786111105,
     "fresh": true,
     "price_confirm_4h": false,
     "new_local_low_4h": true,
-    "atr14_4h": 655.8357142857141,
-    "swing_low_4h": 80514.5,
-    "stop_price": 80186.58214285714,
-    "stop_atr": 0.6306729690580235
+    "atr14_4h": 710.0071428571422,
+    "swing_low_4h": 80458.5,
+    "stop_price": 80103.49642857142,
+    "stop_atr": -0.42238508666913277
   },
   "crowd": {
     "value": 51.0,
     "classification": "Neutral",
     "timestamp": "2026-10-24T00:00:00+00:00",
-    "age_h": 12.640670909444443,
+    "age_h": 18.75730137861111,
     "fresh": true
   },
   "open_interest": {
     "regime": "STABLE",
-    "timestamp": "2026-10-24T12:00:00+00:00",
-    "age_h": 0.6406709094444444,
+    "timestamp": "2026-10-24T16:00:00+00:00",
+    "age_h": 2.757301378611111,
     "fresh": true,
-    "oi_value": 3058642.100000013,
-    "delta_24h": -0.017030030444043498,
-    "delta_p10": -0.028965030660547963,
+    "oi_value": 3061112.400000012,
+    "delta_24h": -0.0088790427556803,
+    "delta_p10": -0.02858309617836443,
     "delta_p90": 0.04781463754651308,
     "points": 100
   },
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-10-24T12:38:26.415274+00:00"
+  "generated_at_utc": "2026-10-24T18:45:26.284963+00:00"
 }
