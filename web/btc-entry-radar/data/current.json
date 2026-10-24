@@ -1,10 +1,10 @@
 {
   "input": {
-    "fgi": 50.0,
+    "fgi": 51.0,
     "price_confirm_4h": false,
     "new_local_low_4h": false,
     "oi_regime": "STABLE",
-    "stop_atr": 0.9413471099390422,
+    "stop_atr": 1.0833547723179815,
     "data_ready": true,
     "position_open": false
   },
@@ -20,32 +20,32 @@
     "invalidation": "Wait for next setup"
   },
   "market": {
-    "price": 81289.5,
-    "timestamp": "2026-10-23T16:00:00+00:00",
-    "age_h": 7.096315156944444,
+    "price": 80968.0,
+    "timestamp": "2026-10-24T00:00:00+00:00",
+    "age_h": 4.480163409444445,
     "fresh": true,
     "price_confirm_4h": false,
     "new_local_low_4h": false,
-    "atr14_4h": 826.1071428571429,
-    "swing_low_4h": 80924.9,
-    "stop_price": 80511.84642857143,
-    "stop_atr": 0.9413471099390422
+    "atr14_4h": 777.3999999999984,
+    "swing_low_4h": 80514.5,
+    "stop_price": 80125.8,
+    "stop_atr": 1.0833547723179815
   },
   "crowd": {
-    "value": 50.0,
+    "value": 51.0,
     "classification": "Neutral",
-    "timestamp": "2026-10-23T00:00:00+00:00",
-    "age_h": 23.096315156944446,
+    "timestamp": "2026-10-24T00:00:00+00:00",
+    "age_h": 4.480163409444445,
     "fresh": true
   },
   "open_interest": {
     "regime": "STABLE",
-    "timestamp": "2026-10-23T20:00:00+00:00",
-    "age_h": 3.0963151569444447,
+    "timestamp": "2026-10-24T04:00:00+00:00",
+    "age_h": 0.4801634094444444,
     "fresh": true,
-    "oi_value": 3062998.6100000124,
-    "delta_24h": -0.006875633637870249,
-    "delta_p10": -0.02893635769071998,
+    "oi_value": 3053491.2100000135,
+    "delta_24h": -0.028940385220887044,
+    "delta_p10": -0.02906361548235635,
     "delta_p90": 0.04781463754651308,
     "points": 100
   },
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-10-23T23:05:46.734565+00:00"
+  "generated_at_utc": "2026-10-24T04:28:48.588274+00:00"
 }
