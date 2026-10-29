@@ -2,9 +2,9 @@
   "input": {
     "fgi": 51.0,
     "price_confirm_4h": false,
-    "new_local_low_4h": true,
-    "oi_regime": "MODERATE_BUILD",
-    "stop_atr": -0.21615031418441769,
+    "new_local_low_4h": false,
+    "oi_regime": "STABLE",
+    "stop_atr": 1.1033329232632658,
     "data_ready": true,
     "position_open": false
   },
@@ -13,38 +13,38 @@
     "action": "WAIT",
     "standard_size": 0.0,
     "why": [
-      "Risk gate failed",
-      "Stop distance is invalid or >2 ATR",
-      "Entry is too late or structure unclear"
+      "No validated MVP setup",
+      "Crowd/price combination is insufficient",
+      "Capital preservation has priority"
     ],
-    "invalidation": "Valid stop <=2 ATR"
+    "invalidation": "Wait for next setup"
   },
   "market": {
-    "price": 79859.0,
-    "timestamp": "2026-10-29T00:00:00+00:00",
-    "age_h": 5.655688178611111,
+    "price": 80164.9,
+    "timestamp": "2026-10-29T08:00:00+00:00",
+    "age_h": 7.186632828333334,
     "fresh": true,
     "price_confirm_4h": false,
-    "new_local_low_4h": true,
-    "atr14_4h": 751.3785714285716,
-    "swing_low_4h": 80397.1,
-    "stop_price": 80021.41071428572,
-    "stop_atr": -0.21615031418441769
+    "new_local_low_4h": false,
+    "atr14_4h": 754.807142857143,
+    "swing_low_4h": 79709.5,
+    "stop_price": 79332.09642857143,
+    "stop_atr": 1.1033329232632658
   },
   "crowd": {
     "value": 51.0,
     "classification": "Neutral",
     "timestamp": "2026-10-29T00:00:00+00:00",
-    "age_h": 5.655688178611111,
+    "age_h": 15.186632828333334,
     "fresh": true
   },
   "open_interest": {
-    "regime": "MODERATE_BUILD",
-    "timestamp": "2026-10-29T04:00:00+00:00",
-    "age_h": 1.655688178611111,
+    "regime": "STABLE",
+    "timestamp": "2026-10-29T12:00:00+00:00",
+    "age_h": 3.1866328283333334,
     "fresh": true,
-    "oi_value": 3219800.5400000117,
-    "delta_24h": 0.03507504112765436,
+    "oi_value": 3168191.9300000104,
+    "delta_24h": 0.009275254292966828,
     "delta_p10": -0.029489054154525195,
     "delta_p90": 0.05590836096644569,
     "points": 100
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-10-29T05:39:20.477443+00:00"
+  "generated_at_utc": "2026-10-29T15:11:11.878182+00:00"
 }
