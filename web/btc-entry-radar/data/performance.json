@@ -1,12 +1,12 @@
 {
-  "generated_at_utc": "2026-10-30T05:38:34.817548+00:00",
+  "generated_at_utc": "2026-10-30T15:00:09.043309+00:00",
   "tracked_states": [
     "ARMED",
     "LONG_READY",
     "WATCH"
   ],
-  "signal_count": 1,
-  "scored_count": 0,
+  "signal_count": 2,
+  "scored_count": 1,
   "summary": {
     "ARMED": {
       "signals": 0
@@ -15,9 +15,16 @@
       "signals": 0
     },
     "WATCH": {
-      "signals": 0
+      "signals": 1
     }
   },
-  "signals": [],
+  "signals": [
+    {
+      "signal_time": "2026-10-30T05:38:33.780831+00:00",
+      "state": "WATCH",
+      "entry_price": 78225.0,
+      "horizons": {}
+    }
+  ],
   "interpretation": "Descriptive shadow statistics only; not calibrated probabilities or proof of edge."
 }
