@@ -1,15 +1,15 @@
 {
-  "generated_at_utc": "2026-10-30T15:00:09.043309+00:00",
+  "generated_at_utc": "2026-10-30T20:42:47.020470+00:00",
   "tracked_states": [
     "ARMED",
     "LONG_READY",
     "WATCH"
   ],
-  "signal_count": 2,
-  "scored_count": 1,
+  "signal_count": 3,
+  "scored_count": 2,
   "summary": {
     "ARMED": {
-      "signals": 0
+      "signals": 1
     },
     "LONG_READY": {
       "signals": 0
@@ -23,6 +23,12 @@
       "signal_time": "2026-10-30T05:38:33.780831+00:00",
       "state": "WATCH",
       "entry_price": 78225.0,
+      "horizons": {}
+    },
+    {
+      "signal_time": "2026-10-30T15:00:07.997182+00:00",
+      "state": "ARMED",
+      "entry_price": 77362.4,
       "horizons": {}
     }
   ],
