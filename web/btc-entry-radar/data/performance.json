@@ -1,20 +1,20 @@
 {
-  "generated_at_utc": "2026-10-31T23:19:31.532917+00:00",
+  "generated_at_utc": "2026-11-01T05:54:34.965491+00:00",
   "tracked_states": [
     "ARMED",
     "LONG_READY",
     "WATCH"
   ],
-  "signal_count": 7,
-  "scored_count": 6,
+  "signal_count": 8,
+  "scored_count": 7,
   "summary": {
     "ARMED": {
-      "signals": 4,
+      "signals": 5,
       "24h": {
-        "n": 1,
-        "avg_forward_return": 0.0025309452654003195,
-        "avg_mfe": 0.004319928027052056,
-        "avg_mae": -0.014182600332978246,
+        "n": 2,
+        "avg_forward_return": 0.006069742403145506,
+        "avg_mfe": 0.006964882133468131,
+        "avg_mae": -0.006418313388928787,
         "positive_rate": 1.0
       }
     },
@@ -25,7 +25,7 @@
       "signals": 2,
       "24h": {
         "n": 2,
-        "avg_forward_return": -0.0017956779409459833,
+        "avg_forward_return": -0.0015550672841048718,
         "avg_mfe": 0.005694490868226376,
         "avg_mae": -0.01137370558650247,
         "positive_rate": 0.5
@@ -65,7 +65,7 @@
       "entry_price": 76887.7,
       "horizons": {
         "24h": {
-          "forward_return": 0.007901133731402998,
+          "forward_return": 0.008382355045085221,
           "mfe": 0.011069390812834978,
           "mae": 0.0023059605112392134,
           "bars": 6
@@ -76,7 +76,14 @@
       "signal_time": "2026-10-31T05:29:26.582739+00:00",
       "state": "ARMED",
       "entry_price": 77118.9,
-      "horizons": {}
+      "horizons": {
+        "24h": {
+          "forward_return": 0.009608539540890693,
+          "mfe": 0.009609836239884206,
+          "mae": 0.001345973555120672,
+          "bars": 6
+        }
+      }
     },
     {
       "signal_time": "2026-10-31T14:29:28.273118+00:00",
@@ -88,6 +95,12 @@
       "signal_time": "2026-10-31T19:55:16.963580+00:00",
       "state": "ARMED",
       "entry_price": 77558.2,
+      "horizons": {}
+    },
+    {
+      "signal_time": "2026-10-31T23:19:30.479475+00:00",
+      "state": "ARMED",
+      "entry_price": 77543.4,
       "horizons": {}
     }
   ],

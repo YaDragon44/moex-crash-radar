@@ -1,50 +1,50 @@
 {
   "input": {
-    "fgi": 30.0,
-    "price_confirm_4h": false,
+    "fgi": 34.0,
+    "price_confirm_4h": true,
     "new_local_low_4h": false,
     "oi_regime": "STABLE",
-    "stop_atr": 1.6485087510991003,
+    "stop_atr": 1.2571971754481275,
     "data_ready": true,
     "position_open": false
   },
   "output": {
-    "state": "ARMED",
-    "action": "WAIT FOR 4H CONFIRMATION",
-    "standard_size": 0.0,
+    "state": "LONG_READY",
+    "action": "SELECTIVE LONG",
+    "standard_size": 0.75,
     "why": [
-      "F&G permits long search",
-      "BTC has stopped making a local low",
-      "4H breakout confirmation is still absent"
+      "Fear/Crowd Gate passed",
+      "4H price reversal confirmed",
+      "OI regime: STABLE (risk/size modifier)"
     ],
-    "invalidation": "New local low"
+    "invalidation": "New 4H local low / protective stop"
   },
   "market": {
-    "price": 77543.4,
-    "timestamp": "2026-10-31T16:00:00+00:00",
-    "age_h": 7.3251331875,
+    "price": 77762.0,
+    "timestamp": "2026-11-01T00:00:00+00:00",
+    "age_h": 5.9094456,
     "fresh": true,
-    "price_confirm_4h": false,
+    "price_confirm_4h": true,
     "new_local_low_4h": false,
-    "atr14_4h": 1112.9214285714272,
-    "swing_low_4h": 76265.2,
-    "stop_price": 75708.73928571428,
-    "stop_atr": 1.6485087510991003
+    "atr14_4h": 920.499999999999,
+    "swing_low_4h": 77065.0,
+    "stop_price": 76604.75,
+    "stop_atr": 1.2571971754481275
   },
   "crowd": {
-    "value": 30.0,
+    "value": 34.0,
     "classification": "Fear",
-    "timestamp": "2026-10-31T00:00:00+00:00",
-    "age_h": 23.3251331875,
+    "timestamp": "2026-11-01T00:00:00+00:00",
+    "age_h": 5.9094456,
     "fresh": true
   },
   "open_interest": {
     "regime": "STABLE",
-    "timestamp": "2026-10-31T20:00:00+00:00",
-    "age_h": 3.3251331875,
+    "timestamp": "2026-11-01T04:00:00+00:00",
+    "age_h": 1.9094456000000002,
     "fresh": true,
-    "oi_value": 3461842.3800000213,
-    "delta_24h": -0.010207209689026886,
+    "oi_value": 3460178.6300000204,
+    "delta_24h": 0.0013384570585379674,
     "delta_p10": -0.028343891521453245,
     "delta_p90": 0.06080376586120067,
     "points": 100
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-10-31T23:19:30.479475+00:00"
+  "generated_at_utc": "2026-11-01T05:54:34.004160+00:00"
 }
