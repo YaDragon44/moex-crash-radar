@@ -1,21 +1,21 @@
 {
-  "generated_at_utc": "2026-11-02T18:14:10.668577+00:00",
+  "generated_at_utc": "2026-11-03T02:14:34.627977+00:00",
   "tracked_states": [
     "ARMED",
     "LONG_READY",
     "WATCH"
   ],
-  "signal_count": 10,
+  "signal_count": 11,
   "scored_count": 10,
   "summary": {
     "ARMED": {
       "signals": 7,
       "24h": {
-        "n": 6,
-        "avg_forward_return": 0.00432002464445171,
-        "avg_mfe": 0.00941360234007338,
-        "avg_mae": -0.004436365211984501,
-        "positive_rate": 0.8333333333333334
+        "n": 7,
+        "avg_forward_return": 0.001879568546393944,
+        "avg_mfe": 0.010023397370567646,
+        "avg_mae": -0.005826050225181345,
+        "positive_rate": 0.7142857142857143
       },
       "72h": {
         "n": 1,
@@ -45,10 +45,10 @@
         "positive_rate": 0.5
       },
       "72h": {
-        "n": 1,
-        "avg_forward_return": -0.0015020773410034938,
-        "avg_mfe": 0.008200703100031959,
-        "avg_mae": -0.025053371684244152,
+        "n": 2,
+        "avg_forward_return": -0.0012628240405934132,
+        "avg_mfe": 0.016968469597506086,
+        "avg_mae": -0.013747297201286146,
         "positive_rate": 0.0
       }
     }
@@ -102,6 +102,12 @@
           "mfe": 0.011069390812834978,
           "mae": 0.0023059605112392134,
           "bars": 6
+        },
+        "72h": {
+          "forward_return": -0.0010235707401833327,
+          "mfe": 0.025736236094980214,
+          "mae": -0.00244122271832814,
+          "bars": 18
         }
       }
     },
@@ -187,7 +193,14 @@
       "signal_time": "2026-11-01T20:27:10.926289+00:00",
       "state": "ARMED",
       "entry_price": 77802.0,
-      "horizons": {}
+      "horizons": {
+        "24h": {
+          "forward_return": -0.012763168041952655,
+          "mfe": 0.013682167553533242,
+          "mae": -0.014164160304362405,
+          "bars": 6
+        }
+      }
     }
   ],
   "interpretation": "Descriptive shadow statistics only; not calibrated probabilities or proof of edge."
