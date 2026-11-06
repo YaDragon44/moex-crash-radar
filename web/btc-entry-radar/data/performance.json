@@ -1,15 +1,15 @@
 {
-  "generated_at_utc": "2026-11-06T15:53:10.868712+00:00",
+  "generated_at_utc": "2026-11-06T21:27:28.646627+00:00",
   "tracked_states": [
     "ARMED",
     "LONG_READY",
     "WATCH"
   ],
-  "signal_count": 15,
-  "scored_count": 14,
+  "signal_count": 16,
+  "scored_count": 15,
   "summary": {
     "ARMED": {
-      "signals": 10,
+      "signals": 11,
       "24h": {
         "n": 9,
         "avg_forward_return": 0.005444365155412874,
@@ -26,7 +26,7 @@
       },
       "7d": {
         "n": 1,
-        "avg_forward_return": -0.02044403999875899,
+        "avg_forward_return": -0.019399604976060525,
         "avg_mfe": 0.049605493107762966,
         "avg_mae": -0.03198582257013738,
         "positive_rate": 0.0
@@ -66,10 +66,10 @@
         "positive_rate": 0.0
       },
       "7d": {
-        "n": 1,
-        "avg_forward_return": -0.03327197187599873,
-        "avg_mfe": 0.03803131991051445,
-        "avg_mae": -0.03867050175775011,
+        "n": 2,
+        "avg_forward_return": -0.023570124948530335,
+        "avg_mfe": 0.04705850686054902,
+        "avg_mae": -0.032339931731599214,
         "positive_rate": 0.0
       }
     }
@@ -118,7 +118,7 @@
           "bars": 18
         },
         "7d": {
-          "forward_return": -0.02044403999875899,
+          "forward_return": -0.019399604976060525,
           "mfe": 0.049605493107762966,
           "mae": -0.03198582257013738,
           "bars": 42
@@ -141,6 +141,12 @@
           "mfe": 0.025736236094980214,
           "mae": -0.00244122271832814,
           "bars": 18
+        },
+        "7d": {
+          "forward_return": -0.013868278021061942,
+          "mfe": 0.05608569381058359,
+          "mae": -0.02600936170544832,
+          "bars": 42
         }
       }
     },
@@ -332,6 +338,12 @@
       "signal_time": "2026-11-06T06:31:18.243544+00:00",
       "state": "ARMED",
       "entry_price": 75912.1,
+      "horizons": {}
+    },
+    {
+      "signal_time": "2026-11-06T15:53:09.970018+00:00",
+      "state": "ARMED",
+      "entry_price": 76146.9,
       "horizons": {}
     }
   ],
