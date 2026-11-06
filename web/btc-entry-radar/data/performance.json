@@ -1,15 +1,15 @@
 {
-  "generated_at_utc": "2026-11-06T06:31:19.157365+00:00",
+  "generated_at_utc": "2026-11-06T15:53:10.868712+00:00",
   "tracked_states": [
     "ARMED",
     "LONG_READY",
     "WATCH"
   ],
-  "signal_count": 14,
-  "scored_count": 13,
+  "signal_count": 15,
+  "scored_count": 14,
   "summary": {
     "ARMED": {
-      "signals": 9,
+      "signals": 10,
       "24h": {
         "n": 9,
         "avg_forward_return": 0.005444365155412874,
@@ -23,6 +23,13 @@
         "avg_mfe": 0.029389783078621223,
         "avg_mae": -0.01813620368272449,
         "positive_rate": 0.625
+      },
+      "7d": {
+        "n": 1,
+        "avg_forward_return": -0.02044403999875899,
+        "avg_mfe": 0.049605493107762966,
+        "avg_mae": -0.03198582257013738,
+        "positive_rate": 0.0
       }
     },
     "LONG_READY": {
@@ -52,15 +59,15 @@
         "positive_rate": 0.6666666666666666
       },
       "72h": {
-        "n": 2,
-        "avg_forward_return": -0.0012628240405934132,
-        "avg_mfe": 0.016968469597506086,
-        "avg_mae": -0.013747297201286146,
+        "n": 3,
+        "avg_forward_return": -0.003796968513135083,
+        "avg_mfe": 0.030281091808864808,
+        "avg_mae": -0.01622826182624748,
         "positive_rate": 0.0
       },
       "7d": {
         "n": 1,
-        "avg_forward_return": -0.032994566954298477,
+        "avg_forward_return": -0.03327197187599873,
         "avg_mfe": 0.03803131991051445,
         "avg_mae": -0.03867050175775011,
         "positive_rate": 0.0
@@ -86,7 +93,7 @@
           "bars": 18
         },
         "7d": {
-          "forward_return": -0.032994566954298477,
+          "forward_return": -0.03327197187599873,
           "mfe": 0.03803131991051445,
           "mae": -0.03867050175775011,
           "bars": 42
@@ -109,6 +116,12 @@
           "mfe": 0.019442261356938273,
           "mae": -0.014182600332978246,
           "bars": 18
+        },
+        "7d": {
+          "forward_return": -0.02044403999875899,
+          "mfe": 0.049605493107762966,
+          "mae": -0.03198582257013738,
+          "bars": 42
         }
       }
     },
@@ -293,6 +306,12 @@
           "mfe": 0.024698026761076797,
           "mae": -0.014233092101837874,
           "bars": 6
+        },
+        "72h": {
+          "forward_return": -0.008865257458218423,
+          "mfe": 0.056906336231582255,
+          "mae": -0.02119019107617015,
+          "bars": 18
         }
       }
     },
@@ -308,6 +327,12 @@
           "bars": 6
         }
       }
+    },
+    {
+      "signal_time": "2026-11-06T06:31:18.243544+00:00",
+      "state": "ARMED",
+      "entry_price": 75912.1,
+      "horizons": {}
     }
   ],
   "interpretation": "Descriptive shadow statistics only; not calibrated probabilities or proof of edge."
