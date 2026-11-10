@@ -1,15 +1,15 @@
 {
-  "generated_at_utc": "2026-11-10T12:32:06.351971+00:00",
+  "generated_at_utc": "2026-11-10T21:46:40.150134+00:00",
   "tracked_states": [
     "ARMED",
     "LONG_READY",
     "WATCH"
   ],
-  "signal_count": 23,
-  "scored_count": 22,
+  "signal_count": 24,
+  "scored_count": 23,
   "summary": {
     "ARMED": {
-      "signals": 18,
+      "signals": 19,
       "24h": {
         "n": 18,
         "avg_forward_return": -0.00024987438848303147,
@@ -18,11 +18,11 @@
         "positive_rate": 0.5
       },
       "72h": {
-        "n": 14,
-        "avg_forward_return": -0.0033564513661348432,
-        "avg_mfe": 0.02166283263496744,
-        "avg_mae": -0.02432190036317314,
-        "positive_rate": 0.35714285714285715
+        "n": 15,
+        "avg_forward_return": -0.005669526897921499,
+        "avg_mfe": 0.020565761122603096,
+        "avg_mae": -0.02597022323920403,
+        "positive_rate": 0.3333333333333333
       },
       "7d": {
         "n": 8,
@@ -489,9 +489,9 @@
           "bars": 6
         },
         "72h": {
-          "forward_return": -0.023508013676815653,
+          "forward_return": -0.036550473397857,
           "mfe": 0.0028611813757359883,
-          "mae": -0.03267326993285313,
+          "mae": -0.041115992345616026,
           "bars": 18
         }
       }
@@ -506,6 +506,12 @@
           "mfe": 0.00520675994950226,
           "mae": -0.030410802410913207,
           "bars": 6
+        },
+        "72h": {
+          "forward_return": -0.025010124621893337,
+          "mfe": 0.00520675994950226,
+          "mae": -0.04060402109087358,
+          "bars": 18
         }
       }
     },
@@ -547,6 +553,12 @@
           "bars": 6
         }
       }
+    },
+    {
+      "signal_time": "2026-11-10T12:32:05.336656+00:00",
+      "state": "ARMED",
+      "entry_price": 74430.4,
+      "horizons": {}
     }
   ],
   "interpretation": "Descriptive shadow statistics only; not calibrated probabilities or proof of edge."
