@@ -4,49 +4,49 @@
     "price_confirm_4h": false,
     "new_local_low_4h": false,
     "oi_regime": "STABLE",
-    "stop_atr": 1.8498887338286913,
+    "stop_atr": 2.3074452263771934,
     "data_ready": true,
     "position_open": false
   },
   "output": {
-    "state": "ARMED",
-    "action": "WAIT FOR 4H CONFIRMATION",
+    "state": "NO_TRADE",
+    "action": "WAIT",
     "standard_size": 0.0,
     "why": [
-      "F&G permits long search",
-      "BTC has stopped making a local low",
-      "4H breakout confirmation is still absent"
+      "Risk gate failed",
+      "Stop distance is invalid or >2 ATR",
+      "Entry is too late or structure unclear"
     ],
-    "invalidation": "New local low"
+    "invalidation": "Valid stop <=2 ATR"
   },
   "market": {
-    "price": 74005.5,
-    "timestamp": "2026-11-11T12:00:00+00:00",
-    "age_h": 4.094408414722222,
+    "price": 74411.4,
+    "timestamp": "2026-11-11T16:00:00+00:00",
+    "age_h": 6.653967632777778,
     "fresh": true,
     "price_confirm_4h": false,
     "new_local_low_4h": false,
-    "atr14_4h": 946.8928571428571,
+    "atr14_4h": 931.7571428571433,
     "swing_low_4h": 72727.3,
-    "stop_price": 72253.85357142857,
-    "stop_atr": 1.8498887338286913
+    "stop_price": 72261.42142857143,
+    "stop_atr": 2.3074452263771934
   },
   "crowd": {
     "value": 29.0,
     "classification": "Fear",
     "timestamp": "2026-11-11T00:00:00+00:00",
-    "age_h": 16.09440841472222,
+    "age_h": 22.65396763277778,
     "fresh": true
   },
   "open_interest": {
     "regime": "STABLE",
-    "timestamp": "2026-11-11T16:00:00+00:00",
-    "age_h": 0.09440841472222222,
+    "timestamp": "2026-11-11T20:00:00+00:00",
+    "age_h": 2.6539676327777775,
     "fresh": true,
-    "oi_value": 3616155.1300000153,
-    "delta_24h": 0.005328398368664722,
+    "oi_value": 3513093.3100000164,
+    "delta_24h": -0.020064796570951837,
     "delta_p10": -0.03210034472131022,
-    "delta_p90": 0.04978372343669711,
+    "delta_p90": 0.046497566430570264,
     "points": 100
   },
   "quality": {
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-11-11T16:05:39.870293+00:00"
+  "generated_at_utc": "2026-11-11T22:39:14.283478+00:00"
 }
