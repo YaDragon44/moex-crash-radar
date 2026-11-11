@@ -1,6 +1,6 @@
 {
   "release": "R0.8.1 Signal History",
-  "updated_at": "2026-11-10T18:31:45+03:00",
+  "updated_at": "2026-11-11T18:04:53+03:00",
   "events": [
     {
       "ticker": "SBERP",
@@ -3895,6 +3895,84 @@
       "tp3": null,
       "rr": 0.3182,
       "time": "2026-11-10T18:31:45+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "D1",
+      "direction": "SHORT",
+      "status": "INVALID",
+      "reason": "Структурная инвалидация",
+      "price": 298.2,
+      "entry": 289.21,
+      "stop": 297.64,
+      "tp1": 289.0,
+      "tp2": 288.65,
+      "tp3": 288.55,
+      "rr": 0.0664,
+      "time": "2026-11-11T18:04:53+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "H1",
+      "direction": "SHORT",
+      "status": "INVALID",
+      "reason": "Структурная инвалидация",
+      "price": 298.11,
+      "entry": 290.41,
+      "stop": 295.1933,
+      "tp1": null,
+      "tp2": null,
+      "tp3": null,
+      "rr": null,
+      "time": "2026-11-11T18:04:53+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "M10",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "Нет price trigger",
+      "price": 298.25,
+      "entry": 298.67,
+      "stop": 293.6532,
+      "tp1": 298.9,
+      "tp2": 301.2093,
+      "tp3": 304.1468,
+      "rr": 0.5062,
+      "time": "2026-11-11T18:04:53+03:00"
+    },
+    {
+      "ticker": "VKCO",
+      "tf": "H1",
+      "direction": "SHORT",
+      "status": "WAIT",
+      "reason": "Нет price trigger",
+      "price": 224.9,
+      "entry": 216.0,
+      "stop": 231.5736,
+      "tp1": null,
+      "tp2": null,
+      "tp3": null,
+      "rr": null,
+      "time": "2026-11-11T18:04:53+03:00"
+    },
+    {
+      "ticker": "VKCO",
+      "tf": "M10",
+      "direction": "NEUTRAL",
+      "status": "WAIT",
+      "reason": "Нет направленной структуры",
+      "price": 222.3,
+      "time": "2026-11-11T18:04:53+03:00"
+    },
+    {
+      "ticker": "OZPH",
+      "tf": "M10",
+      "direction": "NEUTRAL",
+      "status": "WAIT",
+      "reason": "Нет направленной структуры",
+      "price": 47.02,
+      "time": "2026-11-11T18:04:53+03:00"
     }
   ]
 }
