@@ -1,25 +1,25 @@
 {
-  "generated_at_utc": "2026-11-11T22:39:15.199204+00:00",
+  "generated_at_utc": "2026-11-12T07:02:56.844536+00:00",
   "tracked_states": [
     "ARMED",
     "LONG_READY",
     "WATCH"
   ],
-  "signal_count": 26,
+  "signal_count": 27,
   "scored_count": 26,
   "summary": {
     "ARMED": {
       "signals": 21,
       "24h": {
-        "n": 19,
-        "avg_forward_return": -0.0005371804166052733,
-        "avg_mfe": 0.008497731625798768,
-        "avg_mae": -0.013261744070014061,
-        "positive_rate": 0.47368421052631576
+        "n": 20,
+        "avg_forward_return": -0.000612185584988928,
+        "avg_mfe": 0.008769967499767889,
+        "avg_mae": -0.012860738582874115,
+        "positive_rate": 0.45
       },
       "72h": {
         "n": 18,
-        "avg_forward_return": -0.00887747933543031,
+        "avg_forward_return": -0.008989571915121033,
         "avg_mfe": 0.017184037101117395,
         "avg_mae": -0.02870344415063766,
         "positive_rate": 0.2777777777777778
@@ -60,7 +60,7 @@
       "signals": 4,
       "24h": {
         "n": 4,
-        "avg_forward_return": 0.006970396768615855,
+        "avg_forward_return": 0.006449088461710911,
         "avg_mfe": 0.013562102476231463,
         "avg_mae": -0.010087658043186343,
         "positive_rate": 0.75
@@ -571,7 +571,7 @@
           "bars": 6
         },
         "72h": {
-          "forward_return": -0.023146532366293382,
+          "forward_return": -0.0251641988007264,
           "mfe": -0.004363269515193724,
           "mae": -0.04217080889722413,
           "bars": 18
@@ -597,7 +597,7 @@
       "entry_price": 73469.0,
       "horizons": {
         "24h": {
-          "forward_return": 0.0095659393757912,
+          "forward_return": 0.007480706148171423,
           "mfe": 0.018161401407396305,
           "mae": -0.003370128897902558,
           "bars": 6
@@ -608,7 +608,14 @@
       "signal_time": "2026-11-11T06:02:30.249565+00:00",
       "state": "ARMED",
       "entry_price": 73774.7,
-      "horizons": {}
+      "horizons": {
+        "24h": {
+          "forward_return": -0.0020372837842783653,
+          "mfe": 0.013942449105181165,
+          "mae": -0.005241634327215139,
+          "bars": 6
+        }
+      }
     },
     {
       "signal_time": "2026-11-11T16:05:39.870293+00:00",
