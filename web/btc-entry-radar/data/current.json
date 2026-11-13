@@ -4,48 +4,48 @@
     "price_confirm_4h": false,
     "new_local_low_4h": false,
     "oi_regime": "DELEVERAGING",
-    "stop_atr": 2.10942726747619,
+    "stop_atr": 1.6268346187997405,
     "data_ready": true,
     "position_open": false
   },
   "output": {
-    "state": "NO_TRADE",
-    "action": "WAIT",
+    "state": "ARMED",
+    "action": "WAIT FOR 4H CONFIRMATION",
     "standard_size": 0.0,
     "why": [
-      "Risk gate failed",
-      "Stop distance is invalid or >2 ATR",
-      "Entry is too late or structure unclear"
+      "F&G permits long search",
+      "BTC has stopped making a local low",
+      "4H breakout confirmation is still absent"
     ],
-    "invalidation": "Valid stop <=2 ATR"
+    "invalidation": "New local low"
   },
   "market": {
-    "price": 69321.5,
-    "timestamp": "2026-11-13T08:00:00+00:00",
-    "age_h": 4.110085706666666,
+    "price": 68897.3,
+    "timestamp": "2026-11-13T12:00:00+00:00",
+    "age_h": 7.6038124,
     "fresh": true,
     "price_confirm_4h": false,
     "new_local_low_4h": false,
-    "atr14_4h": 1125.307142857141,
+    "atr14_4h": 1230.7928571428554,
     "swing_low_4h": 67510.4,
-    "stop_price": 66947.74642857142,
-    "stop_atr": 2.10942726747619
+    "stop_price": 66895.00357142856,
+    "stop_atr": 1.6268346187997405
   },
   "crowd": {
     "value": 20.0,
     "classification": "Extreme Fear",
     "timestamp": "2026-11-13T00:00:00+00:00",
-    "age_h": 12.110085706666666,
+    "age_h": 19.6038124,
     "fresh": true
   },
   "open_interest": {
     "regime": "DELEVERAGING",
-    "timestamp": "2026-11-13T12:00:00+00:00",
-    "age_h": 0.11008570666666666,
+    "timestamp": "2026-11-13T16:00:00+00:00",
+    "age_h": 3.6038124000000002,
     "fresh": true,
-    "oi_value": 3445778.390000014,
-    "delta_24h": -0.07756558892985232,
-    "delta_p10": -0.03210034472131022,
+    "oi_value": 3388237.0000000163,
+    "delta_24h": -0.08216767707031536,
+    "delta_p10": -0.03263694153383871,
     "delta_p90": 0.046497566430570264,
     "points": 100
   },
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-11-13T12:06:36.308544+00:00"
+  "generated_at_utc": "2026-11-13T19:36:13.724640+00:00"
 }
