@@ -1,18 +1,18 @@
 {
-  "generated_at_utc": "2026-11-12T16:45:57.847753+00:00",
+  "generated_at_utc": "2026-11-13T01:01:36.064221+00:00",
   "tracked_states": [
     "ARMED",
     "LONG_READY",
     "WATCH"
   ],
-  "signal_count": 27,
+  "signal_count": 28,
   "scored_count": 27,
   "summary": {
     "ARMED": {
       "signals": 22,
       "24h": {
         "n": 21,
-        "avg_forward_return": -0.002129445791897037,
+        "avg_forward_return": -0.002051845381888898,
         "avg_mfe": 0.008865696659020166,
         "avg_mae": -0.014028692065614043,
         "positive_rate": 0.42857142857142855
@@ -623,7 +623,7 @@
       "entry_price": 74005.5,
       "horizons": {
         "24h": {
-          "forward_return": -0.03289620366053869,
+          "forward_return": -0.031266595050367774,
           "mfe": 0.01078027984406571,
           "mae": -0.03738776172041258,
           "bars": 6
