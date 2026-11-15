@@ -1,10 +1,10 @@
 {
   "input": {
-    "fgi": 13.0,
+    "fgi": 10.0,
     "price_confirm_4h": false,
     "new_local_low_4h": true,
     "oi_regime": "STABLE",
-    "stop_atr": 0.9525035304610664,
+    "stop_atr": 1.3935918256868303,
     "data_ready": true,
     "position_open": false
   },
@@ -20,33 +20,33 @@
     "invalidation": "BTC stops making local lows"
   },
   "market": {
-    "price": 65726.3,
-    "timestamp": "2026-11-14T16:00:00+00:00",
-    "age_h": 7.8652618925,
+    "price": 64824.2,
+    "timestamp": "2026-11-15T00:00:00+00:00",
+    "age_h": 6.299827363611111,
     "fresh": true,
     "price_confirm_4h": false,
     "new_local_low_4h": true,
-    "atr14_4h": 1441.5357142857142,
-    "swing_low_4h": 65074.0,
-    "stop_price": 64353.232142857145,
-    "stop_atr": 0.9525035304610664
+    "atr14_4h": 1688.9142857142858,
+    "swing_low_4h": 63315.0,
+    "stop_price": 62470.54285714286,
+    "stop_atr": 1.3935918256868303
   },
   "crowd": {
-    "value": 13.0,
+    "value": 10.0,
     "classification": "Extreme Fear",
-    "timestamp": "2026-11-14T00:00:00+00:00",
-    "age_h": 23.8652618925,
+    "timestamp": "2026-11-15T00:00:00+00:00",
+    "age_h": 6.299827363611111,
     "fresh": true
   },
   "open_interest": {
     "regime": "STABLE",
-    "timestamp": "2026-11-14T20:00:00+00:00",
-    "age_h": 3.8652618925,
+    "timestamp": "2026-11-15T04:00:00+00:00",
+    "age_h": 2.299827363611111,
     "fresh": true,
-    "oi_value": 3376729.5000000135,
-    "delta_24h": 0.0032368463145100446,
+    "oi_value": 3282743.1900000125,
+    "delta_24h": -0.02403369324224991,
     "delta_p10": -0.03505885247716821,
-    "delta_p90": 0.04079708717545062,
+    "delta_p90": 0.03743475984556288,
     "points": 100
   },
   "quality": {
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-11-14T23:51:54.942813+00:00"
+  "generated_at_utc": "2026-11-15T06:17:59.378509+00:00"
 }
