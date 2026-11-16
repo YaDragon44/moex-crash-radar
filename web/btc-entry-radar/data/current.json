@@ -2,49 +2,49 @@
   "input": {
     "fgi": 10.0,
     "price_confirm_4h": false,
-    "new_local_low_4h": false,
+    "new_local_low_4h": true,
     "oi_regime": "STABLE",
-    "stop_atr": 2.488103709380187,
+    "stop_atr": 0.7240361919748199,
     "data_ready": true,
     "position_open": false
   },
   "output": {
-    "state": "NO_TRADE",
+    "state": "WATCH",
     "action": "WAIT",
     "standard_size": 0.0,
     "why": [
-      "Risk gate failed",
-      "Stop distance is invalid or >2 ATR",
-      "Entry is too late or structure unclear"
+      "Fear zone is present",
+      "BTC still makes a local low",
+      "Price reversal is not confirmed"
     ],
-    "invalidation": "Valid stop <=2 ATR"
+    "invalidation": "BTC stops making local lows"
   },
   "market": {
-    "price": 65113.2,
-    "timestamp": "2026-11-16T00:00:00+00:00",
-    "age_h": 6.288193053333333,
+    "price": 64466.2,
+    "timestamp": "2026-11-16T12:00:00+00:00",
+    "age_h": 6.421477643055555,
     "fresh": true,
     "price_confirm_4h": false,
-    "new_local_low_4h": false,
-    "atr14_4h": 1565.9142857142858,
-    "swing_low_4h": 62000.0,
-    "stop_price": 61217.04285714286,
-    "stop_atr": 2.488103709380187
+    "new_local_low_4h": true,
+    "atr14_4h": 1525.2000000000003,
+    "swing_low_4h": 64124.5,
+    "stop_price": 63361.9,
+    "stop_atr": 0.7240361919748199
   },
   "crowd": {
     "value": 10.0,
     "classification": "Extreme Fear",
     "timestamp": "2026-11-16T00:00:00+00:00",
-    "age_h": 6.288193053333333,
+    "age_h": 18.421477643055553,
     "fresh": true
   },
   "open_interest": {
     "regime": "STABLE",
-    "timestamp": "2026-11-16T04:00:00+00:00",
-    "age_h": 2.2881930533333334,
+    "timestamp": "2026-11-16T16:00:00+00:00",
+    "age_h": 2.4214776430555554,
     "fresh": true,
-    "oi_value": 3250474.3800000125,
-    "delta_24h": -0.00506052458440398,
+    "oi_value": 3118677.9200000125,
+    "delta_24h": -0.03058365627572246,
     "delta_p10": -0.03674408100948877,
     "delta_p90": 0.034758450399704224,
     "points": 100
@@ -58,5 +58,5 @@
     "oi": "LIVE",
     "errors": {}
   },
-  "generated_at_utc": "2026-11-16T06:17:17.494992+00:00"
+  "generated_at_utc": "2026-11-16T18:25:17.319515+00:00"
 }
