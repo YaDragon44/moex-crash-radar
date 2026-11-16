@@ -1,7 +1,7 @@
 {
   "version": "0.5.5",
   "sourceVersion": "0.5.3",
-  "valuationDate": "2026-11-12",
+  "valuationDate": "2026-11-13",
   "status": "PASS",
   "policies": [
     {
@@ -16,55 +16,55 @@
       "scenarios": [
         {
           "scenario": "FAST_FALL",
-          "deltaTerminal": -1076411.645246408,
-          "deltaCagr": -0.09961005608888573,
+          "deltaTerminal": -1077760.949420109,
+          "deltaCagr": -0.09963620758027769,
           "drawdownImprovement": 0.0,
-          "activeMaxDrawdown": -0.008798042485489432,
-          "holdMaxDrawdown": -0.008798042485489432,
-          "turnoverPct": 1.756371118396593,
-          "activeTerminal": 2115386.685614372,
-          "holdTerminal": 3191798.33086078
+          "activeMaxDrawdown": -0.008325515278943652,
+          "holdMaxDrawdown": -0.008325515278943652,
+          "turnoverPct": 1.760151013511865,
+          "activeTerminal": 2117999.6447907113,
+          "holdTerminal": 3195760.5942108203
         },
         {
           "scenario": "HIGH_FOR_LONGER",
           "deltaTerminal": 0.0,
           "deltaCagr": 0.0,
           "drawdownImprovement": 0.0,
-          "activeMaxDrawdown": -0.012597200767273553,
-          "holdMaxDrawdown": -0.012597200767273553,
-          "turnoverPct": 1.071976278341815,
-          "activeTerminal": 2312635.869059487,
-          "holdTerminal": 2312635.869059487
+          "activeMaxDrawdown": -0.01183121675544152,
+          "holdMaxDrawdown": -0.01183121675544152,
+          "turnoverPct": 1.0735830045393118,
+          "activeTerminal": 2315544.273952982,
+          "holdTerminal": 2315544.273952982
         },
         {
           "scenario": "FALL_REVERSAL",
-          "deltaTerminal": -164082.1093611573,
-          "deltaCagr": -0.02021040260320217,
-          "drawdownImprovement": 0.03415063173614985,
-          "activeMaxDrawdown": -0.08084309926734978,
-          "holdMaxDrawdown": -0.11499373100349963,
-          "turnoverPct": 3.30424011473043,
-          "activeTerminal": 1751988.1640067801,
-          "holdTerminal": 1916070.2733679374
+          "deltaTerminal": -165302.95709322998,
+          "deltaCagr": -0.020344836748973805,
+          "drawdownImprovement": 0.03409430913505751,
+          "activeMaxDrawdown": -0.08086904438287157,
+          "holdMaxDrawdown": -0.11496335351792908,
+          "turnoverPct": 3.3085088324051775,
+          "activeTerminal": 1753188.4576410803,
+          "holdTerminal": 1918491.4147343102
         },
         {
           "scenario": "STRESS_RISE",
           "deltaTerminal": 0.0,
           "deltaCagr": 0.0,
           "drawdownImprovement": 0.0,
-          "activeMaxDrawdown": -0.014487716316786026,
-          "holdMaxDrawdown": -0.014487716316786026,
-          "turnoverPct": 1.1141688425741918,
-          "activeTerminal": 2211072.2424718044,
-          "holdTerminal": 2211072.2424718044
+          "activeMaxDrawdown": -0.013576346388679661,
+          "holdMaxDrawdown": -0.013576346388679661,
+          "turnoverPct": 1.115990771219789,
+          "activeTerminal": 2213637.8681134423,
+          "holdTerminal": 2213637.8681134423
         }
       ],
       "summary": {
-        "avgDeltaTerminal": -310123.4386518913,
-        "avgDrawdownImprovement": 0.008537657934037463,
-        "avgTurnoverPct": 1.8116890885107575,
-        "fastFallDelta": -1076411.645246408,
-        "reversalDrawdownImprovement": 0.03415063173614985
+        "avgDeltaTerminal": -310765.9766283347,
+        "avgDrawdownImprovement": 0.008523577283764378,
+        "avgTurnoverPct": 1.8145584054190356,
+        "fastFallDelta": -1077760.949420109,
+        "reversalDrawdownImprovement": 0.03409430913505751
       },
       "pareto": true
     },
@@ -80,55 +80,55 @@
       "scenarios": [
         {
           "scenario": "FAST_FALL",
-          "deltaTerminal": -724936.5148598403,
-          "deltaCagr": -0.06334399322279816,
+          "deltaTerminal": -725851.6325714486,
+          "deltaCagr": -0.06336118608903818,
           "drawdownImprovement": 0.0,
-          "activeMaxDrawdown": -0.008798042485489432,
-          "holdMaxDrawdown": -0.008798042485489432,
-          "turnoverPct": 1.4028573934216635,
-          "activeTerminal": 2466861.81600094,
-          "holdTerminal": 3191798.33086078
+          "activeMaxDrawdown": -0.008325515278943652,
+          "holdMaxDrawdown": -0.008325515278943652,
+          "turnoverPct": 1.4064545234190156,
+          "activeTerminal": 2469908.9616393717,
+          "holdTerminal": 3195760.5942108203
         },
         {
           "scenario": "HIGH_FOR_LONGER",
           "deltaTerminal": 0.0,
           "deltaCagr": 0.0,
           "drawdownImprovement": 0.0,
-          "activeMaxDrawdown": -0.012597200767273553,
-          "holdMaxDrawdown": -0.012597200767273553,
-          "turnoverPct": 1.071976278341815,
-          "activeTerminal": 2312635.869059487,
-          "holdTerminal": 2312635.869059487
+          "activeMaxDrawdown": -0.01183121675544152,
+          "holdMaxDrawdown": -0.01183121675544152,
+          "turnoverPct": 1.0735830045393118,
+          "activeTerminal": 2315544.273952982,
+          "holdTerminal": 2315544.273952982
         },
         {
           "scenario": "FALL_REVERSAL",
-          "deltaTerminal": -97526.88881594245,
-          "deltaCagr": -0.011837307193560465,
-          "drawdownImprovement": 0.020783159878146273,
-          "activeMaxDrawdown": -0.09421057112535336,
-          "holdMaxDrawdown": -0.11499373100349963,
-          "turnoverPct": 2.5329151631960483,
-          "activeTerminal": 1818543.384551995,
-          "holdTerminal": 1916070.2733679374
+          "deltaTerminal": -98272.75921005779,
+          "deltaCagr": -0.011917406318015855,
+          "drawdownImprovement": 0.02075442492787316,
+          "activeMaxDrawdown": -0.09420892859005592,
+          "holdMaxDrawdown": -0.11496335351792908,
+          "turnoverPct": 2.53634090416411,
+          "activeTerminal": 1820218.6555242524,
+          "holdTerminal": 1918491.4147343102
         },
         {
           "scenario": "STRESS_RISE",
           "deltaTerminal": 0.0,
           "deltaCagr": 0.0,
           "drawdownImprovement": 0.0,
-          "activeMaxDrawdown": -0.014487716316786026,
-          "holdMaxDrawdown": -0.014487716316786026,
-          "turnoverPct": 1.1141688425741918,
-          "activeTerminal": 2211072.2424718044,
-          "holdTerminal": 2211072.2424718044
+          "activeMaxDrawdown": -0.013576346388679661,
+          "holdMaxDrawdown": -0.013576346388679661,
+          "turnoverPct": 1.115990771219789,
+          "activeTerminal": 2213637.8681134423,
+          "holdTerminal": 2213637.8681134423
         }
       ],
       "summary": {
-        "avgDeltaTerminal": -205615.85091894568,
-        "avgDrawdownImprovement": 0.005195789969536568,
-        "avgTurnoverPct": 1.5304794193834297,
-        "fastFallDelta": -724936.5148598403,
-        "reversalDrawdownImprovement": 0.020783159878146273
+        "avgDeltaTerminal": -206031.0979453766,
+        "avgDrawdownImprovement": 0.00518860623196829,
+        "avgTurnoverPct": 1.5330923008355564,
+        "fastFallDelta": -725851.6325714486,
+        "reversalDrawdownImprovement": 0.02075442492787316
       },
       "pareto": true
     },
@@ -144,55 +144,55 @@
       "scenarios": [
         {
           "scenario": "FAST_FALL",
-          "deltaTerminal": -501609.8134580548,
-          "deltaCagr": -0.04239953330951085,
+          "deltaTerminal": -502190.5544103002,
+          "deltaCagr": -0.042406257234893774,
           "drawdownImprovement": 0.0,
-          "activeMaxDrawdown": -0.008798042485489432,
-          "holdMaxDrawdown": -0.008798042485489432,
-          "turnoverPct": 1.226139605899199,
-          "activeTerminal": 2690188.5174027253,
-          "holdTerminal": 3191798.33086078
+          "activeMaxDrawdown": -0.008325515278943652,
+          "holdMaxDrawdown": -0.008325515278943652,
+          "turnoverPct": 1.2221960875158409,
+          "activeTerminal": 2693570.03980052,
+          "holdTerminal": 3195760.5942108203
         },
         {
           "scenario": "HIGH_FOR_LONGER",
           "deltaTerminal": 0.0,
           "deltaCagr": 0.0,
           "drawdownImprovement": 0.0,
-          "activeMaxDrawdown": -0.012597200767273553,
-          "holdMaxDrawdown": -0.012597200767273553,
-          "turnoverPct": 1.071976278341815,
-          "activeTerminal": 2312635.869059487,
-          "holdTerminal": 2312635.869059487
+          "activeMaxDrawdown": -0.01183121675544152,
+          "holdMaxDrawdown": -0.01183121675544152,
+          "turnoverPct": 1.0735830045393118,
+          "activeTerminal": 2315544.273952982,
+          "holdTerminal": 2315544.273952982
         },
         {
           "scenario": "FALL_REVERSAL",
-          "deltaTerminal": -60816.64330003504,
-          "deltaCagr": -0.007323327890326858,
-          "drawdownImprovement": 0.013411598191900853,
-          "activeMaxDrawdown": -0.10158213281159878,
-          "holdMaxDrawdown": -0.11499373100349963,
-          "turnoverPct": 2.0656122328748405,
-          "activeTerminal": 1855253.6300679024,
-          "holdTerminal": 1916070.2733679374
+          "deltaTerminal": -61378.19172538631,
+          "deltaCagr": -0.007384250506220047,
+          "drawdownImprovement": 0.013370059270585322,
+          "activeMaxDrawdown": -0.10159329424734376,
+          "holdMaxDrawdown": -0.11496335351792908,
+          "turnoverPct": 2.064187046359386,
+          "activeTerminal": 1857113.223008924,
+          "holdTerminal": 1918491.4147343102
         },
         {
           "scenario": "STRESS_RISE",
           "deltaTerminal": 0.0,
           "deltaCagr": 0.0,
           "drawdownImprovement": 0.0,
-          "activeMaxDrawdown": -0.014487716316786026,
-          "holdMaxDrawdown": -0.014487716316786026,
-          "turnoverPct": 1.1141688425741918,
-          "activeTerminal": 2211072.2424718044,
-          "holdTerminal": 2211072.2424718044
+          "activeMaxDrawdown": -0.013576346388679661,
+          "holdMaxDrawdown": -0.013576346388679661,
+          "turnoverPct": 1.115990771219789,
+          "activeTerminal": 2213637.8681134423,
+          "holdTerminal": 2213637.8681134423
         }
       ],
       "summary": {
-        "avgDeltaTerminal": -140606.61418952246,
-        "avgDrawdownImprovement": 0.0033528995479752133,
-        "avgTurnoverPct": 1.3694742399225117,
-        "fastFallDelta": -501609.8134580548,
-        "reversalDrawdownImprovement": 0.013411598191900853
+        "avgDeltaTerminal": -140892.18653392163,
+        "avgDrawdownImprovement": 0.0033425148176463304,
+        "avgTurnoverPct": 1.3689892274085818,
+        "fastFallDelta": -502190.5544103002,
+        "reversalDrawdownImprovement": 0.013370059270585322
       },
       "pareto": true
     },
@@ -208,55 +208,55 @@
       "scenarios": [
         {
           "scenario": "FAST_FALL",
-          "deltaTerminal": -1146677.864102124,
-          "deltaCagr": -0.10743197467763688,
+          "deltaTerminal": -1148511.6206793906,
+          "deltaCagr": -0.10750488769131539,
           "drawdownImprovement": 0.0,
-          "activeMaxDrawdown": -0.008798042485489432,
-          "holdMaxDrawdown": -0.008798042485489432,
-          "turnoverPct": 1.582077869711583,
-          "activeTerminal": 2045120.466758656,
-          "holdTerminal": 3191798.33086078
+          "activeMaxDrawdown": -0.008325515278943652,
+          "holdMaxDrawdown": -0.008325515278943652,
+          "turnoverPct": 1.582766587682439,
+          "activeTerminal": 2047248.9735314297,
+          "holdTerminal": 3195760.5942108203
         },
         {
           "scenario": "HIGH_FOR_LONGER",
           "deltaTerminal": 0.0,
           "deltaCagr": 0.0,
           "drawdownImprovement": 0.0,
-          "activeMaxDrawdown": -0.012597200767273553,
-          "holdMaxDrawdown": -0.012597200767273553,
-          "turnoverPct": 1.071976278341815,
-          "activeTerminal": 2312635.869059487,
-          "holdTerminal": 2312635.869059487
+          "activeMaxDrawdown": -0.01183121675544152,
+          "holdMaxDrawdown": -0.01183121675544152,
+          "turnoverPct": 1.0735830045393118,
+          "activeTerminal": 2315544.273952982,
+          "holdTerminal": 2315544.273952982
         },
         {
           "scenario": "FALL_REVERSAL",
-          "deltaTerminal": -220017.60052745207,
-          "deltaCagr": -0.027446609247540943,
-          "drawdownImprovement": 0.03952888975826374,
-          "activeMaxDrawdown": -0.07546484124523589,
-          "holdMaxDrawdown": -0.11499373100349963,
-          "turnoverPct": 3.090233281431272,
-          "activeTerminal": 1696052.6728404853,
-          "holdTerminal": 1916070.2733679374
+          "deltaTerminal": -221382.21107508708,
+          "deltaCagr": -0.02759584679590299,
+          "drawdownImprovement": 0.03944933259739669,
+          "activeMaxDrawdown": -0.07551402092053239,
+          "holdMaxDrawdown": -0.11496335351792908,
+          "turnoverPct": 3.093464352025635,
+          "activeTerminal": 1697109.2036592232,
+          "holdTerminal": 1918491.4147343102
         },
         {
           "scenario": "STRESS_RISE",
           "deltaTerminal": 0.0,
           "deltaCagr": 0.0,
           "drawdownImprovement": 0.0,
-          "activeMaxDrawdown": -0.014487716316786026,
-          "holdMaxDrawdown": -0.014487716316786026,
-          "turnoverPct": 1.1141688425741918,
-          "activeTerminal": 2211072.2424718044,
-          "holdTerminal": 2211072.2424718044
+          "activeMaxDrawdown": -0.013576346388679661,
+          "holdMaxDrawdown": -0.013576346388679661,
+          "turnoverPct": 1.115990771219789,
+          "activeTerminal": 2213637.8681134423,
+          "holdTerminal": 2213637.8681134423
         }
       ],
       "summary": {
-        "avgDeltaTerminal": -341673.866157394,
-        "avgDrawdownImprovement": 0.009882222439565935,
-        "avgTurnoverPct": 1.7146140680147155,
-        "fastFallDelta": -1146677.864102124,
-        "reversalDrawdownImprovement": 0.03952888975826374
+        "avgDeltaTerminal": -342473.4579386194,
+        "avgDrawdownImprovement": 0.009862333149349173,
+        "avgTurnoverPct": 1.7164511788667935,
+        "fastFallDelta": -1148511.6206793906,
+        "reversalDrawdownImprovement": 0.03944933259739669
       },
       "pareto": true
     }
