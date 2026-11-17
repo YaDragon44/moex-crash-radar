@@ -1,6 +1,6 @@
 {
   "release": "R0.8.1 Signal History",
-  "updated_at": "2026-11-16T19:56:23+03:00",
+  "updated_at": "2026-11-17T19:50:12+03:00",
   "events": [
     {
       "ticker": "SBERP",
@@ -4255,6 +4255,75 @@
       "reason": "Нет направленной структуры",
       "price": 48.82,
       "time": "2026-11-16T19:56:23+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "H1",
+      "direction": "SHORT",
+      "status": "INVALID",
+      "reason": "Структурная инвалидация",
+      "price": 298.6,
+      "entry": 292.8,
+      "stop": 297.8243,
+      "tp1": 291.9442,
+      "tp2": 291.0675,
+      "tp3": 290.6292,
+      "rr": 0.3448,
+      "time": "2026-11-17T19:50:12+03:00"
+    },
+    {
+      "ticker": "SBERP",
+      "tf": "M10",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "RVOL ≤ 1.1x / N/A",
+      "price": 298.5,
+      "entry": 297.9507,
+      "stop": 295.1684,
+      "tp1": 298.8708,
+      "tp2": 299.0,
+      "tp3": 300.6864,
+      "rr": 0.3772,
+      "time": "2026-11-17T19:50:12+03:00"
+    },
+    {
+      "ticker": "VKCO",
+      "tf": "H1",
+      "direction": "NEUTRAL",
+      "status": "WAIT",
+      "reason": "Нет направленной структуры",
+      "price": 233.0,
+      "time": "2026-11-17T19:50:12+03:00"
+    },
+    {
+      "ticker": "VKCO",
+      "tf": "M10",
+      "direction": "SHORT",
+      "status": "WAIT",
+      "reason": "Нет price trigger",
+      "price": 232.4,
+      "entry": 230.7,
+      "stop": 233.8,
+      "tp1": 230.55,
+      "tp2": 229.9969,
+      "tp3": 229.8521,
+      "rr": 0.2268,
+      "time": "2026-11-17T19:50:12+03:00"
+    },
+    {
+      "ticker": "OZPH",
+      "tf": "H1",
+      "direction": "LONG",
+      "status": "WAIT",
+      "reason": "Нет price trigger",
+      "price": 48.55,
+      "entry": 48.69,
+      "stop": 47.8097,
+      "tp1": 49.22,
+      "tp2": 49.25,
+      "tp3": 49.39,
+      "rr": 0.6361,
+      "time": "2026-11-17T19:50:12+03:00"
     }
   ]
 }
