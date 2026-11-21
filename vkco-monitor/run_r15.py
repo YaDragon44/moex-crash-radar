@@ -19,7 +19,7 @@ _original_save_state = monitor.save_state
 
 def _format_signal_r15(signal):
     base = _original_format_signal(signal)
-    return base + "\n\n💼 TRADE PLAN\n" + format_trade_plan(signal) + "\n\nДЕЙСТВИЕ: вход только по READY; стоп не расширять."
+    return base + "\n\n💼 TRADE PLAN\n" + format_trade_plan(signal, lot_size=monitor.fetch_lot_size()) + "\n\nДЕЙСТВИЕ: вход только по READY; стоп не расширять."
 
 
 def _save_state_r15(signal_id: str) -> None:
@@ -27,7 +27,7 @@ def _save_state_r15(signal_id: str) -> None:
     state["last_signal_id"] = signal_id
     pending = _CURRENT_SIGNAL.get("signal")
     if pending is not None and signal_id == pending.get("signal_id"):
-        plan = build_trade_plan(pending)
+        plan = build_trade_plan(pending, lot_size=monitor.fetch_lot_size())
         state["position"] = open_position(pending, plan)
     save_state_file(monitor.STATE_FILE, state)
 
