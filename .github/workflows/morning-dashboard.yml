@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     # GitHub cron can be delayed; delivery is idempotent per Moscow calendar day.
-    - cron: '0 5 * * *'   # 08:00 Europe/Moscow (UTC+3)
+    - cron: '0 22 * * *'  # 01:00 Europe/Moscow next day (UTC+3); schedule timing experiment
   push:
     paths:
       - '.github/personal-morning-smoke-test'
