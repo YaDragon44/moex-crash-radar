@@ -1,13 +1,15 @@
-name: Morning Dashboard MVP
+name: Morning Dashboard (legacy manual recovery)
 
 on:
+  # Daily delivery moved to the unified Cloudflare project via Make 7952861.
+  # Stop that scheduler before using this legacy recovery workflow: ledgers are separate.
   workflow_dispatch:
-  schedule:
-    # GitHub cron can be delayed; delivery is idempotent per Moscow calendar day.
-    - cron: '0 22 * * *'  # 01:00 Europe/Moscow next day (UTC+3); schedule timing experiment
-  push:
-    paths:
-      - '.github/personal-morning-smoke-test'
+    inputs:
+      confirm_legacy:
+        description: 'I have stopped the unified scheduler and intend to use legacy recovery'
+        type: boolean
+        required: true
+        default: false
 
 concurrency:
   group: morning-dashboard-daily
@@ -18,6 +20,7 @@ permissions:
 
 jobs:
   deliver:
+    if: github.event_name == 'workflow_dispatch' && inputs.confirm_legacy == true
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
