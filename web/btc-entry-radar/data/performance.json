@@ -1,35 +1,35 @@
 {
-  "generated_at_utc": "2026-11-27T13:46:19.172787+00:00",
+  "generated_at_utc": "2026-11-28T00:00:09.414858+00:00",
   "tracked_states": [
     "ARMED",
     "LONG_READY",
     "WATCH"
   ],
-  "signal_count": 49,
+  "signal_count": 50,
   "scored_count": 49,
   "summary": {
     "ARMED": {
       "signals": 33,
       "24h": {
-        "n": 32,
-        "avg_forward_return": -0.01031513555750297,
-        "avg_mfe": 0.00864990623068157,
-        "avg_mae": -0.027060823887497597,
-        "positive_rate": 0.34375
+        "n": 33,
+        "avg_forward_return": -0.010328425926734653,
+        "avg_mfe": 0.009218171652548056,
+        "avg_mae": -0.0271345157989067,
+        "positive_rate": 0.3333333333333333
       },
       "72h": {
-        "n": 31,
-        "avg_forward_return": -0.03120911215808657,
-        "avg_mfe": 0.01544033688270158,
-        "avg_mae": -0.05834417049923632,
-        "positive_rate": 0.22580645161290322
+        "n": 32,
+        "avg_forward_return": -0.03018383977208162,
+        "avg_mfe": 0.016215091015230516,
+        "avg_mae": -0.05784101694741458,
+        "positive_rate": 0.25
       },
       "7d": {
-        "n": 29,
-        "avg_forward_return": -0.08880564287412991,
-        "avg_mfe": 0.019142848800982132,
-        "avg_mae": -0.11599568085935784,
-        "positive_rate": 0.0
+        "n": 30,
+        "avg_forward_return": -0.08529682285250482,
+        "avg_mfe": 0.02169787872468387,
+        "avg_mae": -0.11428834680171646,
+        "positive_rate": 0.03333333333333333
       }
     },
     "LONG_READY": {
@@ -67,10 +67,10 @@
       },
       "72h": {
         "n": 14,
-        "avg_forward_return": -0.026663940487545192,
+        "avg_forward_return": -0.028234808515953908,
         "avg_mfe": 0.014803425351384356,
         "avg_mae": -0.06644810745471008,
-        "positive_rate": 0.14285714285714285
+        "positive_rate": 0.07142857142857142
       },
       "7d": {
         "n": 13,
@@ -1173,6 +1173,12 @@
           "mfe": 0.0957937465120342,
           "mae": -0.06477565913011618,
           "bars": 18
+        },
+        "7d": {
+          "forward_return": 0.016458957774622807,
+          "mfe": 0.0957937465120342,
+          "mae": -0.06477565913011618,
+          "bars": 42
         }
       }
     },
@@ -1207,7 +1213,7 @@
           "bars": 6
         },
         "72h": {
-          "forward_return": 0.016981072748365245,
+          "forward_return": -0.005011079649356764,
           "mfe": 0.029924155290511845,
           "mae": -0.05173426714615037,
           "bars": 18
@@ -1224,6 +1230,12 @@
           "mfe": 0.030141758026853926,
           "mae": -0.042243256840940546,
           "bars": 6
+        },
+        "72h": {
+          "forward_return": 0.0015996041940717909,
+          "mfe": 0.040232469123627546,
+          "mae": -0.042243256840940546,
+          "bars": 18
         }
       }
     },
@@ -1244,7 +1256,14 @@
       "signal_time": "2026-11-27T00:32:20.799220+00:00",
       "state": "ARMED",
       "entry_price": 60574.4,
-      "horizons": {}
+      "horizons": {
+        "24h": {
+          "forward_return": -0.010753717742148505,
+          "mfe": 0.02740266515227563,
+          "mae": -0.029492656963997943,
+          "bars": 6
+        }
+      }
     }
   ],
   "interpretation": "Descriptive shadow statistics only; not calibrated probabilities or proof of edge."
