@@ -1,32 +1,32 @@
 {
-  "generated_at_utc": "2026-11-28T00:00:09.414858+00:00",
+  "generated_at_utc": "2026-11-28T07:38:13.816740+00:00",
   "tracked_states": [
     "ARMED",
     "LONG_READY",
     "WATCH"
   ],
-  "signal_count": 50,
-  "scored_count": 49,
+  "signal_count": 51,
+  "scored_count": 50,
   "summary": {
     "ARMED": {
-      "signals": 33,
+      "signals": 34,
       "24h": {
         "n": 33,
-        "avg_forward_return": -0.010328425926734653,
+        "avg_forward_return": -0.010274497754657561,
         "avg_mfe": 0.009218171652548056,
         "avg_mae": -0.0271345157989067,
         "positive_rate": 0.3333333333333333
       },
       "72h": {
         "n": 32,
-        "avg_forward_return": -0.03018383977208162,
+        "avg_forward_return": -0.030127531865824776,
         "avg_mfe": 0.016215091015230516,
         "avg_mae": -0.05784101694741458,
         "positive_rate": 0.25
       },
       "7d": {
         "n": 30,
-        "avg_forward_return": -0.08529682285250482,
+        "avg_forward_return": -0.08523587003213641,
         "avg_mfe": 0.02169787872468387,
         "avg_mae": -0.11428834680171646,
         "positive_rate": 0.03333333333333333
@@ -1175,7 +1175,7 @@
           "bars": 18
         },
         "7d": {
-          "forward_return": 0.016458957774622807,
+          "forward_return": 0.018287542385675426,
           "mfe": 0.0957937465120342,
           "mae": -0.06477565913011618,
           "bars": 42
@@ -1232,7 +1232,7 @@
           "bars": 6
         },
         "72h": {
-          "forward_return": 0.0015996041940717909,
+          "forward_return": 0.003401457194290858,
           "mfe": 0.040232469123627546,
           "mae": -0.042243256840940546,
           "bars": 18
@@ -1258,12 +1258,18 @@
       "entry_price": 60574.4,
       "horizons": {
         "24h": {
-          "forward_return": -0.010753717742148505,
+          "forward_return": -0.008974088063604446,
           "mfe": 0.02740266515227563,
           "mae": -0.029492656963997943,
           "bars": 6
         }
       }
+    },
+    {
+      "signal_time": "2026-11-28T00:00:08.367457+00:00",
+      "state": "ARMED",
+      "entry_price": 59922.9,
+      "horizons": {}
     }
   ],
   "interpretation": "Descriptive shadow statistics only; not calibrated probabilities or proof of edge."
