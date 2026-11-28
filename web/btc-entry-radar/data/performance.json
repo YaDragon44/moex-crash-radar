@@ -1,15 +1,15 @@
 {
-  "generated_at_utc": "2026-11-28T07:38:13.816740+00:00",
+  "generated_at_utc": "2026-11-28T16:48:54.224510+00:00",
   "tracked_states": [
     "ARMED",
     "LONG_READY",
     "WATCH"
   ],
-  "signal_count": 51,
-  "scored_count": 50,
+  "signal_count": 52,
+  "scored_count": 51,
   "summary": {
     "ARMED": {
-      "signals": 34,
+      "signals": 35,
       "24h": {
         "n": 33,
         "avg_forward_return": -0.010274497754657561,
@@ -66,11 +66,11 @@
         "positive_rate": 0.3333333333333333
       },
       "72h": {
-        "n": 14,
-        "avg_forward_return": -0.028234808515953908,
-        "avg_mfe": 0.014803425351384356,
-        "avg_mae": -0.06644810745471008,
-        "positive_rate": 0.07142857142857142
+        "n": 15,
+        "avg_forward_return": -0.025379891741633073,
+        "avg_mfe": 0.01790245758276472,
+        "avg_mae": -0.06263237327465936,
+        "positive_rate": 0.13333333333333333
       },
       "7d": {
         "n": 13,
@@ -1249,6 +1249,12 @@
           "mfe": 0.05099394102690469,
           "mae": -0.00921209475394913,
           "bars": 6
+        },
+        "72h": {
+          "forward_return": 0.014588943098858609,
+          "mfe": 0.061288908822089816,
+          "mae": -0.00921209475394913,
+          "bars": 18
         }
       }
     },
@@ -1269,6 +1275,12 @@
       "signal_time": "2026-11-28T00:00:08.367457+00:00",
       "state": "ARMED",
       "entry_price": 59922.9,
+      "horizons": {}
+    },
+    {
+      "signal_time": "2026-11-28T07:38:12.736446+00:00",
+      "state": "ARMED",
+      "entry_price": 60030.8,
       "horizons": {}
     }
   ],
